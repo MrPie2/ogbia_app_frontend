@@ -29,7 +29,7 @@
                 <span class="input-group-text bg-white">
                   <ion-icon name="call-outline"></ion-icon>
                 </span>
-                <input type="text" class="form-control"  [(ngModel)]="email" placeholder="Email">
+                <input type="email" class="form-control" [(ngModel)]="email" placeholder="Email" autocomplete="email" inputmode="email">
               </div>
             </div>
             <div class="mb-4">
@@ -43,10 +43,14 @@
               </div>
 
             </div>
-            <button type="button" class="btn btn-primary  " (click)="login()">Login
+            <button type="button" class="btn btn-primary" (click)="login()" [disabled]="loading">{{ loading ? "Signing in…" : "Login" }}
               <ion-icon name="arrow-forward-outline" class="ms-2 align-middle"></ion-icon>
             </button>
 
+
+            @if (errorMessage) {
+              <p class="text-danger small mt-3 mb-0" role="alert">{{ errorMessage }}</p>
+            }
 
             <!-- Login -->
             <div class="text-center mt-4">
