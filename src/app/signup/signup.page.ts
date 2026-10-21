@@ -29,7 +29,7 @@ export class SignupPage {
     const referral = this.referralId.trim();
 
     if (!phone) { this.errorMessage = 'Enter your phone number to continue.'; return; }
-    if (!/^\+?[0-9\s().-]{10,20}$/.test(phone)) {
+    if (!/^\\+?[0-9\\s().-]{10,20}$/.test(phone)) {
       this.errorMessage = 'Enter a valid phone number, including your country code if needed.';
       return;
     }
@@ -40,8 +40,7 @@ export class SignupPage {
     this.auth.register(phone, referral).subscribe({
       next: async () => {
         this.submitting = false;
-        this.successMessage = 'Account created. Welcome to Ogbia Connect!';
-        await this.router.navigateByUrl('/home', { replaceUrl: true });
+        await this.router.navigateByUrl('/complete-profile', { replaceUrl: true });
       },
       error: (error: HttpErrorResponse) => {
         this.submitting = false;
