@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService, AuthUser } from '../services/auth.service';
 import { CommunityPost, PostsService } from '../services/posts.service';
-import { StoriesService, StoryGroup } from '../services/stories.service';
+import { StoriesService, StoryGroup, StoryItem } from '../services/stories.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +14,7 @@ import { StoriesService, StoryGroup } from '../services/stories.service';
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss'
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   user: AuthUser | null = null;
   loadingUser = true;
   userError = '';
@@ -26,6 +26,15 @@ export class HomePage implements OnInit {
   storiesError = '';
   activeStoryGroup: StoryGroup | null = null;
   activeStoryIndex = 0;
+  storyProgress = 0;
+  storyPaused = false;
+  storyActionError = '';
+  deletingStory = false;
+
+  private storyTimer: ReturnType<typeof setInterval> | null = null;
+  private storyStartedAt = 0;
+  private storyElapsedBeforePause = 0;
+  private storyDuration = 7000;
 
   constructor(
     private readonly auth: AuthService,
@@ -55,6 +64,15 @@ export class HomePage implements OnInit {
       }
     });
     this.loadFeed();
+  }
+
+  ngOnDestroy(): void {
+    this.stopStoryTimer();
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.activeStoryGroup) this.closeStory();
   }
 
   ionViewWillEnter(): void {
@@ -109,12 +127,15 @@ export class HomePage implements OnInit {
     if (!group.stories.length) return;
     this.activeStoryGroup = group;
     this.activeStoryIndex = 0;
+    this.storyActionError = '';
+    this.startStoryTimer();
   }
 
   nextStory(): void {
     if (!this.activeStoryGroup) return;
     if (this.activeStoryIndex < this.activeStoryGroup.stories.length - 1) {
       this.activeStoryIndex++;
+      this.startStoryTimer();
       return;
     }
     const currentIndex = this.storyGroups.findIndex(group => group.user.id === this.activeStoryGroup?.user.id);
@@ -122,14 +143,88 @@ export class HomePage implements OnInit {
     if (nextGroup) {
       this.activeStoryGroup = nextGroup;
       this.activeStoryIndex = 0;
+      this.startStoryTimer();
     } else {
       this.closeStory();
     }
   }
 
+  previousStory(): void {
+    if (!this.activeStoryGroup) return;
+    if (this.activeStoryIndex > 0) {
+      this.activeStoryIndex--;
+      this.startStoryTimer();
+      return;
+    }
+    const currentIndex = this.storyGroups.findIndex(group => group.user.id === this.activeStoryGroup?.user.id);
+    const previousGroup = this.storyGroups.slice(0, currentIndex).reverse().find(group => group.stories.length > 0);
+    if (previousGroup) {
+      this.activeStoryGroup = previousGroup;
+      this.activeStoryIndex = previousGroup.stories.length - 1;
+      this.startStoryTimer();
+    } else {
+      this.storyProgress = 0;
+      this.startStoryTimer();
+    }
+  }
+
   closeStory(): void {
+    this.stopStoryTimer();
     this.activeStoryGroup = null;
     this.activeStoryIndex = 0;
+    this.storyProgress = 0;
+    this.storyPaused = false;
+    this.storyActionError = '';
+  }
+
+  toggleStoryPause(paused: boolean): void {
+    if (!this.activeStoryGroup || this.currentStory?.type === 'video') return;
+    if (paused === this.storyPaused) return;
+
+    if (paused) {
+      this.storyElapsedBeforePause += Date.now() - this.storyStartedAt;
+      this.stopStoryTimer();
+      this.storyPaused = true;
+      return;
+    }
+
+    this.storyPaused = false;
+    this.runStoryTimer();
+  }
+
+  deleteCurrentStory(): void {
+    const story = this.currentStory;
+    const group = this.activeStoryGroup;
+    if (!story || !group?.is_mine || this.deletingStory) return;
+
+    this.deletingStory = true;
+    this.storyActionError = '';
+    this.storiesService.deleteStory(story.id).subscribe({
+      next: () => {
+        const updatedStories = group.stories.filter(item => item.id !== story.id);
+        this.storyGroups = this.storyGroups.map(item => item.user.id === group.user.id
+          ? { ...item, stories: updatedStories, has_unseen: updatedStories.length > 0 }
+          : item);
+        this.deletingStory = false;
+        if (!updatedStories.length) {
+          this.closeStory();
+          return;
+        }
+        this.activeStoryGroup = { ...group, stories: updatedStories };
+        this.activeStoryIndex = Math.min(this.activeStoryIndex, updatedStories.length - 1);
+        this.startStoryTimer();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.deletingStory = false;
+        this.storyActionError = error.status === 403
+          ? 'You can only delete your own stories.'
+          : 'Could not delete this story. Please try again.';
+      }
+    });
+  }
+
+  get currentStory(): StoryItem | null {
+    return this.activeStoryGroup?.stories[this.activeStoryIndex] ?? null;
   }
 
   get displayName(): string { return this.user?.name?.trim() || 'Ogbia user'; }
@@ -147,7 +242,38 @@ export class HomePage implements OnInit {
   }
 
   logout(): void {
+    this.closeStory();
     this.auth.logout();
     this.router.navigate(['/login']);
+  }
+
+  private startStoryTimer(): void {
+    this.stopStoryTimer();
+    this.storyProgress = 0;
+    this.storyElapsedBeforePause = 0;
+    this.storyPaused = false;
+    this.storyActionError = '';
+    const story = this.currentStory;
+    if (!story || story.type === 'video') return;
+    this.storyDuration = story.type === 'text' ? 6000 : 7000;
+    this.runStoryTimer();
+  }
+
+  private runStoryTimer(): void {
+    this.stopStoryTimer();
+    this.storyStartedAt = Date.now();
+    this.storyTimer = setInterval(() => {
+      if (this.storyPaused || !this.activeStoryGroup) return;
+      const elapsed = this.storyElapsedBeforePause + (Date.now() - this.storyStartedAt);
+      this.storyProgress = Math.min(100, (elapsed / this.storyDuration) * 100);
+      if (elapsed >= this.storyDuration) this.nextStory();
+    }, 50);
+  }
+
+  private stopStoryTimer(): void {
+    if (this.storyTimer) {
+      clearInterval(this.storyTimer);
+      this.storyTimer = null;
+    }
   }
 }
