@@ -5,55 +5,65 @@
         <button class="menu" aria-label="Open menu"><ion-icon name="menu-outline"></ion-icon></button>
         <span class="home-pill">Home</span>
         <div class="top-icons">
-          <button class="menu notification-button" aria-label="Notifications">
-            <ion-icon name="notifications-outline"></ion-icon><b>1</b>
-          </button>
+          <button class="menu notification-button" aria-label="Notifications"><ion-icon name="notifications-outline"></ion-icon><b>1</b></button>
           <button class="menu" aria-label="Search"><ion-icon name="search-outline"></ion-icon></button>
         </div>
       </div>
 
       <section class="account-card fade-up" aria-label="Your account">
-        <div class="account-avatar" aria-hidden="true">
-          {{ initials }}
-        </div>
+        <div class="account-avatar" aria-hidden="true">{{ initials }}</div>
         <div class="account-copy">
           <small>{{ loadingUser ? 'Loading your account…' : 'Welcome back' }}</small>
           <h1>{{ displayName }}</h1>
           <p>{{ user?.email || 'Your account details' }}</p>
-          @if (user?.phone) {
-            <p class="account-phone">{{ user?.phone }}</p>
-          }
+          @if (user?.phone) { <p class="account-phone">{{ user?.phone }}</p> }
         </div>
-        <button class="logout-button" type="button" (click)="logout()" aria-label="Log out">
-          <ion-icon name="log-out-outline"></ion-icon>
-        </button>
+        <button class="logout-button" type="button" (click)="logout()" aria-label="Log out"><ion-icon name="log-out-outline"></ion-icon></button>
       </section>
 
-      @if (userError) {
-        <p class="account-notice" role="status">{{ userError }}</p>
-      }
+      @if (userError) { <p class="account-notice" role="status">{{ userError }}</p> }
 
       <div class="stories fade-up">
-        <div class="story">
+        <a class="story your-story" routerLink="/create-post">
           <div class="story-ring own account-story-avatar"><span>{{ initials }}</span><em>+</em></div>
           <small>Your Story</small>
-        </div>
+        </a>
         <div class="story"><div class="story-ring"><img src="assets/images/rep-jennifer.jpg" alt=""></div><small>Amara</small></div>
         <div class="story"><div class="story-ring"><img src="assets/images/youth-pearl.jpg" alt=""></div><small>Fatima</small></div>
         <div class="story"><div class="story-ring"><img src="assets/images/rep-samuel.jpg" alt=""></div><small>Daniel</small></div>
         <div class="story"><div class="story-ring"><img src="assets/images/clan-king.jpg" alt=""></div><small>Linda</small></div>
       </div>
 
-      <article class="post card fade-up delay-1">
-        <div class="post-head">
-          <img src="assets/images/cdc-godstime.jpg" alt="Ogbia CDC">
-          <div><b>Ogbia CDC <ion-icon name="checkmark-circle"></ion-icon></b><small>2 hrs ago</small></div>
-          <ion-icon name="ellipsis-horizontal"></ion-icon>
-        </div>
-        <p>Community cleanup exercise was a success! Thank you to everyone who showed up.</p>
-        <img class="post-image" src="assets/images/cleanup.jpg" alt="Community cleanup exercise">
-        <div class="post-actions"><span>♥ 128</span><span>● 32</span><span>⌁ 16</span></div>
-      </article>
+      <div class="feed-heading">
+        <div><h2>Community Feed</h2><p>What's happening around Ogbia</p></div>
+        <a routerLink="/create-post" class="write-post"><ion-icon name="create-outline"></ion-icon> Write post</a>
+      </div>
+
+      @if (loadingPosts) {
+        <div class="feed-state card"><ion-icon name="sync-outline" class="spin"></ion-icon><span>Loading community posts…</span></div>
+      } @else if (feedError) {
+        <div class="feed-state card"><p>{{ feedError }}</p><button type="button" (click)="loadFeed()">Try again</button></div>
+      } @else if (!posts.length) {
+        <div class="feed-state card"><div class="empty-feed-icon"><ion-icon name="chatbubbles-outline"></ion-icon></div><h3>Start the conversation</h3><p>No posts yet. Share an update, photo or video with the Ogbia community.</p><a routerLink="/create-post">Create the first post</a></div>
+      } @else {
+        @for (post of posts; track post.id) {
+          <article class="post card fade-up">
+            <div class="post-head">
+              <div class="feed-avatar">{{ postInitials(post) }}</div>
+              <div class="post-author"><b>{{ post.author?.name || 'Ogbia member' }}</b><small>{{ post.created_at | date:'medium' }}</small></div>
+              <ion-icon name="ellipsis-horizontal"></ion-icon>
+            </div>
+            @if (post.content) { <p class="post-content">{{ post.content }}</p> }
+            @if (post.media_url && post.media_type === 'image') {
+              <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy">
+            }
+            @if (post.media_url && post.media_type === 'video') {
+              <video class="post-video" [src]="post.media_url" controls playsinline preload="metadata"></video>
+            }
+            <div class="post-actions"><span><ion-icon name="heart-outline"></ion-icon> Like</span><span><ion-icon name="chatbubble-outline"></ion-icon> Comment</span><span><ion-icon name="share-social-outline"></ion-icon> Share</span></div>
+          </article>
+        }
+      }
 
       <div class="section-title"><h2>Events</h2><a>See all</a></div>
       <article class="event-card card fade-up delay-2">
