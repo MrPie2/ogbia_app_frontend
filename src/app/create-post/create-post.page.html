@@ -1,1 +1,51 @@
-<ion-content [fullscreen]="true"><div class="page create-page"><div class="container"><div class="topbar"><a class="back" routerLink="/home"><ion-icon name="arrow-back"></ion-icon></a><h1>Create Post</h1><span></span></div><div class="post-to"><b>Post to</b><span>Public⌄</span></div><div class="composer card fade-up"><textarea placeholder="What's on your mind, Israel?"></textarea><div class="composer-tools"><span><ion-icon name="image-outline"></ion-icon> Photo</span><span><ion-icon name="videocam-outline"></ion-icon> Video</span><span><ion-icon name="calendar-outline"></ion-icon> Event</span><span><ion-icon name="stats-chart-outline"></ion-icon> Poll</span></div></div><div class="location-row"><span><ion-icon name="location-outline"></ion-icon> Add Location</span><ion-icon name="chevron-forward"></ion-icon></div><button class="post-btn">Post</button></div><nav class="bottom-nav"><a routerLink="/home"><ion-icon name="home-outline"></ion-icon><span>Home</span></a><a routerLink="/explore"><ion-icon name="compass-outline"></ion-icon><span>Explore</span></a><a routerLink="/create-post" class="active"><span class="fab"><ion-icon name="add"></ion-icon></span></a><a routerLink="/groups"><ion-icon name="people-outline"></ion-icon><span>Groups</span></a><a routerLink="/profile"><ion-icon name="person-outline"></ion-icon><span>Profile</span></a></nav></div></ion-content>
+<ion-content [fullscreen]="true">
+  <div class="page create-page">
+    <div class="container">
+      <div class="topbar">
+        <a class="back" routerLink="/home" aria-label="Back to feed"><ion-icon name="arrow-back"></ion-icon></a>
+        <h1>Create Post</h1>
+        <span></span>
+      </div>
+
+      <div class="post-to"><b>Share with the Ogbia community</b><span>Public <ion-icon name="globe-outline"></ion-icon></span></div>
+
+      <form class="composer card fade-up" (ngSubmit)="publish()">
+        <div class="composer-author">
+          <div class="composer-avatar">{{ initials }}</div>
+          <div><b>{{ displayName }}</b><small>Share a thought, update or moment</small></div>
+        </div>
+
+        <textarea name="content" [(ngModel)]="content" maxlength="10000" placeholder="What's on your mind? Share it with Ogbia…" aria-label="Post content"></textarea>
+
+        @if (previewUrl && mediaKind === 'image') {
+          <div class="media-preview"><img [src]="previewUrl" alt="Selected image preview"><button type="button" class="remove-media" (click)="removeMedia()" aria-label="Remove media"><ion-icon name="close-circle"></ion-icon></button></div>
+        }
+        @if (previewUrl && mediaKind === 'video') {
+          <div class="media-preview"><video [src]="previewUrl" controls playsinline></video><button type="button" class="remove-media" (click)="removeMedia()" aria-label="Remove media"><ion-icon name="close-circle"></ion-icon></button></div>
+        }
+
+        <div class="composer-tools">
+          <label class="tool-button"><ion-icon name="image-outline"></ion-icon><span>Photo</span><input type="file" accept="image/jpeg,image/png,image/webp" (change)="onFileSelected($event)" aria-label="Choose photo"></label>
+          <label class="tool-button"><ion-icon name="videocam-outline"></ion-icon><span>Video</span><input type="file" accept="video/mp4,video/quicktime,video/webm" (change)="onFileSelected($event)" aria-label="Choose video"></label>
+          <span class="media-hint">Images or videos up to 50 MB</span>
+        </div>
+      </form>
+
+      @if (errorMessage) { <p class="form-message error" role="alert">{{ errorMessage }}</p> }
+      @if (successMessage) { <p class="form-message success" role="status">{{ successMessage }}</p> }
+
+      <button class="post-btn" type="button" (click)="publish()" [disabled]="submitting">
+        @if (submitting) { <ion-icon name="sync-outline" class="spin"></ion-icon> Publishing… }
+        @else { Publish Post <ion-icon name="paper-plane-outline"></ion-icon> }
+      </button>
+    </div>
+
+    <nav class="bottom-nav">
+      <a routerLink="/home"><ion-icon name="home-outline"></ion-icon><span>Home</span></a>
+      <a routerLink="/explore"><ion-icon name="compass-outline"></ion-icon><span>Explore</span></a>
+      <a routerLink="/create-post" class="active"><span class="fab"><ion-icon name="add"></ion-icon></span></a>
+      <a routerLink="/friends"><ion-icon name="people-outline"></ion-icon><span>Friends</span></a>
+      <a routerLink="/profile"><ion-icon name="person-outline"></ion-icon><span>Profile</span></a>
+    </nav>
+  </div>
+</ion-content>
