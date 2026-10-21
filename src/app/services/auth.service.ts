@@ -22,7 +22,6 @@ export interface AuthResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apiUrl = environment.apiUrl;
-
   constructor(private readonly http: HttpClient) {}
 
   register(phone: string, referralId: string): Observable<AuthResponse> {
@@ -33,17 +32,14 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
-      tap((response) => this.storeSession(response))
-    );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password })
+      .pipe(tap((response) => this.storeSession(response)));
   }
 
   private storeSession(response: AuthResponse): void {
     if (response.token) {
       localStorage.setItem('token', response.token);
-      if (response.user) {
-        localStorage.setItem('auth_user', JSON.stringify(response.user));
-      }
+      if (response.user) localStorage.setItem('auth_user', JSON.stringify(response.user));
     }
   }
 
@@ -52,22 +48,15 @@ export class AuthService {
     const headers = token
       ? new HttpHeaders({ Authorization: `Bearer ${token}`, Accept: 'application/json' })
       : new HttpHeaders({ Accept: 'application/json' });
-
-    return this.http.get<AuthUser>(`${this.apiUrl}/user`, { headers }).pipe(
-      tap((user) => localStorage.setItem('auth_user', JSON.stringify(user)))
-    );
+    return this.http.get<AuthUser>(`${this.apiUrl}/user`, { headers })
+      .pipe(tap((user) => localStorage.setItem('auth_user', JSON.stringify(user))));
   }
 
   getCachedUser(): AuthUser | null {
     const cached = localStorage.getItem('auth_user');
     if (!cached) return null;
-
-    try {
-      return JSON.parse(cached) as AuthUser;
-    } catch {
-      localStorage.removeItem('auth_user');
-      return null;
-    }
+    try { return JSON.parse(cached) as AuthUser; }
+    catch { localStorage.removeItem('auth_user'); return null; }
   }
 
   logout(): void {
