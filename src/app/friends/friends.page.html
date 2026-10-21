@@ -1,0 +1,87 @@
+<ion-content [fullscreen]="true">
+  <main class="friends-page">
+    <header class="friends-header">
+      <a routerLink="/home" class="back-button" aria-label="Back home"><ion-icon name="arrow-back-outline"></ion-icon></a>
+      <div><p>OGBIA CONNECT</p><h1>Friends</h1></div>
+      <button class="header-icon" type="button" (click)="loadFriends()" aria-label="Refresh friends"><ion-icon name="refresh-outline"></ion-icon></button>
+    </header>
+
+    @if (errorMessage) { <div class="feedback error" role="alert">{{ errorMessage }}</div> }
+    @if (successMessage) { <div class="feedback success" role="status">{{ successMessage }}</div> }
+
+    @if (!findMode) {
+      <section class="online-section">
+        <div class="section-heading">
+          <div><span class="eyebrow">YOUR CIRCLE</span><h2>Online now <span class="count">{{ onlineFriends.length }}</span></h2></div>
+          <span class="live-indicator"><i></i> Live</span>
+        </div>
+
+        @if (loadingFriends) {
+          <div class="empty-state"><div class="loader"></div><p>Checking who's online…</p></div>
+        } @else if (onlineFriends.length === 0) {
+          <div class="empty-state">
+            <div class="empty-icon"><ion-icon name="people-outline"></ion-icon></div>
+            <h3>No friends are online</h3>
+            <p>Your friends will appear here when they're active on Ogbia Connect.</p>
+            <button class="primary-button" type="button" (click)="openFindFriends()"><ion-icon name="person-add-outline"></ion-icon> Find Friend</button>
+          </div>
+        } @else {
+          <div class="friend-list">
+            @for (friend of onlineFriends; track friend.id) {
+              <article class="friend-row">
+                <div class="avatar-wrap"><div class="avatar">{{ initials(friend.name) }}</div><span class="online-dot"></span></div>
+                <div class="friend-info"><h3>{{ friend.name }}</h3><p><i></i> Online now</p></div>
+              </article>
+            }
+          </div>
+          <button class="secondary-button" type="button" (click)="openFindFriends()"><ion-icon name="person-add-outline"></ion-icon> Find Friend</button>
+        }
+      </section>
+
+      @if (incomingRequests.length > 0) {
+        <section class="requests-section">
+          <div class="section-heading"><div><span class="eyebrow">CONNECTIONS</span><h2>Friend requests <span class="count">{{ incomingRequests.length }}</span></h2></div></div>
+          @for (request of incomingRequests; track request.request_id) {
+            <article class="friend-row request-row">
+              <div class="avatar">{{ initials(request.name) }}</div>
+              <div class="friend-info"><h3>{{ request.name }}</h3><p>Wants to connect with you</p></div>
+              <button class="small-primary" type="button" (click)="acceptRequest(request)">Accept</button>
+            </article>
+          }
+        </section>
+      }
+      <button class="primary-button find-wide" type="button" (click)="openFindFriends()"><ion-icon name="search-outline"></ion-icon> Find Friend</button>
+    } @else {
+      <section class="find-section">
+        <div class="find-title">
+          <button class="back-button" type="button" (click)="closeFindFriends()" aria-label="Back to friends"><ion-icon name="arrow-back-outline"></ion-icon></button>
+          <div><span class="eyebrow">GROW YOUR CIRCLE</span><h2>Find friends</h2></div>
+        </div>
+        <label class="search-box"><ion-icon name="search-outline"></ion-icon><input type="search" [(ngModel)]="search" (ngModelChange)="onSearchChange($event)" placeholder="Search by name or email" aria-label="Search users"></label>
+
+        @if (loadingUsers) { <div class="empty-state compact"><div class="loader"></div><p>Finding people…</p></div> }
+        @else if (candidates.length === 0) {
+          <div class="empty-state compact"><div class="empty-icon"><ion-icon name="person-outline"></ion-icon></div><h3>No users found</h3><p>Try another name or email address.</p></div>
+        } @else {
+          <div class="friend-list candidates-list">
+            @for (candidate of candidates; track candidate.id) {
+              <article class="friend-row candidate-row">
+                <div class="avatar-wrap"><div class="avatar">{{ initials(candidate.name) }}</div>@if (candidate.is_online) { <span class="online-dot"></span> }</div>
+                <div class="friend-info"><h3>{{ candidate.name }}</h3><p>{{ candidate.is_online ? 'Online now' : candidate.email }}</p></div>
+                <button class="small-primary" type="button" [disabled]="candidate.friendship_status === 'accepted' || (candidate.friendship_status === 'pending' && candidate.request_sent_by_me)" (click)="handleCandidateAction(candidate)">
+                  {{ relationshipLabel(candidate) }}
+                </button>
+              </article>
+            }
+          </div>
+        }
+      </section>
+    }
+    <nav class="bottom-nav">
+      <a routerLink="/home"><ion-icon name="home-outline"></ion-icon><span>Home</span></a>
+      <a routerLink="/friends" class="active"><ion-icon name="people"></ion-icon><span>Friends</span></a>
+      <a routerLink="/create-post"><ion-icon name="add-circle-outline"></ion-icon><span>Post</span></a>
+      <a routerLink="/profile"><ion-icon name="person-outline"></ion-icon><span>Profile</span></a>
+    </nav>
+  </main>
+</ion-content>
