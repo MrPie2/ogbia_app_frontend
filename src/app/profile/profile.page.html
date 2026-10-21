@@ -2,6 +2,10 @@
 <div class="profile-top"><button class="settings"><ion-icon name="settings-outline"></ion-icon></button></div>
 <div class="profile-hero fade-up"><div class="profile-photo"><img src="assets/images/profile-israel.jpg"><span><ion-icon name="create-outline"></ion-icon></span></div><h1>Israel Damiekumo</h1><p>israelD</p><small><i></i> Active Citizen</small></div>
 <div class="stats fade-up delay-1"><div><b>128</b><span>Posts</span></div><div><b>2.4k</b><span>Connections</span></div><div><b>768</b><span>Following</span></div></div>
+<section class="referral-card" *ngIf="referralCode">
+  <div class="referral-copy"><span class="referral-eyebrow">INVITE A MEMBER</span><strong>Your Referral ID</strong><p>Share this code with people you invite to Ogbia Connect.</p><code>{{ referralCode }}</code></div>
+  <button type="button" class="copy-referral" (click)="copyReferralId()"><ion-icon name="copy-outline"></ion-icon> Copy ID</button>
+</section>
 <div class="section-title"><h2>Quick Access</h2><a>Edit</a></div>
 <div class="card list-card fade-up delay-2">
 <a class="list-row" routerLink="/constituency"><span class="leading"><ion-icon name="people-outline"></ion-icon></span><span class="copy"><strong>My Constituency</strong><span>View your ward, communities & info</span></span><ion-icon name="chevron-forward"></ion-icon></a>
