@@ -129,3 +129,16 @@ input, textarea { font-family:inherit; }
 .logo{
   width: 100px;
 }
+
+
+/* Reserve space for the shared, fixed application navbar. */
+ion-router-outlet {
+  top: 66px;
+  height: calc(100% - 66px);
+}
+@media (max-width: 760px) {
+  ion-router-outlet {
+    top: 62px;
+    height: calc(100% - 62px);
+  }
+}
