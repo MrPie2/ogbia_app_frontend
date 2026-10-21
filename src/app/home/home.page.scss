@@ -34,3 +34,97 @@
 .story-add-button small{margin-top:0;color:#e7eaf0;font-size:10px;white-space:nowrap}
 .story-add-button:hover .story-add-circle,.story-add-button:focus-visible .story-add-circle{background:#1764ff;border-color:#1764ff;transform:scale(1.04)}
 .story-add-button:focus-visible{outline:2px solid #80aaff;outline-offset:4px;border-radius:12px}
+
+
+/* Ogbia Connect shared light-purple theme: keep feed cards consistent with the rest of the app. */
+.home-page {
+  background: linear-gradient(180deg, #f4ecff 0, #fbf9fe 230px, #fbf9fe 100%);
+  color: var(--ink, #302347);
+}
+.home-page .account-card {
+  border: 1px solid #e9def7;
+  background: linear-gradient(135deg, #ffffff 0%, #f4ecff 100%);
+  color: #302347;
+  box-shadow: 0 10px 26px rgba(67, 38, 105, .07);
+}
+.home-page .account-avatar,
+.home-page .account-story-avatar,
+.home-page .feed-avatar,
+.home-page .friend-story-avatar {
+  background: linear-gradient(135deg, #7542bd, #a779e4);
+}
+.home-page .account-copy > small,
+.home-page .account-copy .account-phone { color: #80758f; }
+.home-page .account-copy p { color: #71657f; }
+.home-page .logout-button {
+  border: 1px solid #e4d7f4;
+  background: #fff;
+  color: #7542bd;
+}
+.home-page .account-notice { color: #8a5a16; }
+.home-page .stories-heading,
+.home-page .feed-heading { color: #302347; }
+.home-page .stories-heading > span,
+.home-page .feed-heading p { color: #8a7e97; }
+.home-page .story small,
+.home-page .story-add-button small { color: #71657f; }
+.home-page .story-ring.own { background: #f4ecff; }
+.home-page .story-ring em,
+.home-page .account-story-avatar em { border-color: #fbf9fe; background: #7542bd; }
+.home-page .story-add-circle {
+  border-color: #e3d5f5;
+  background: #fff;
+  color: #7542bd;
+  box-shadow: 0 3px 12px rgba(67, 38, 105, .07);
+}
+.home-page .story-add-button:hover .story-add-circle,
+.home-page .story-add-button:focus-visible .story-add-circle {
+  border-color: #7542bd;
+  background: #7542bd;
+  color: #fff;
+}
+.home-page .story-button .story-ring { border-color: #d5c2ef; }
+.home-page .story-button .story-ring.has-story,
+.home-page .story-button .story-ring.has-unseen { border-color: #7542bd; }
+.home-page .story-button .story-ring.has-story:not(.has-unseen) { border-color: #c8bbd9; }
+.home-page .write-post,
+.home-page .feed-state a,
+.home-page .feed-state button {
+  background: #7542bd;
+  color: #fff;
+}
+.home-page .post,
+.home-page .feed-state,
+.home-page .event-card {
+  border: 1px solid #eee5f8;
+  background: #fff;
+  color: #302347;
+  box-shadow: 0 4px 20px rgba(65, 39, 95, .045);
+}
+.home-page .post-author small { color: #8a7e97; }
+.home-page .post-head > ion-icon { color: #a59aaf; }
+.home-page .post-content { color: #463753; }
+.home-page .post-actions {
+  border-top-color: #eee5f8;
+  color: #80758f;
+}
+.home-page .post-image,
+.home-page .post-video { background: #f4effa; }
+.home-page .feed-state p { color: #80758f; }
+.home-page .empty-feed-icon {
+  background: #f2eafd;
+  color: #7542bd;
+}
+.home-page .stories-retry { color: #7542bd; }
+.home-page .event-card .date { background: #f2eafd; color: #302347; }
+.home-page .event-card .date b { color: #7542bd; }
+.home-page .event-copy small { color: #80758f; }
+.home-page .event-card button {
+  border-color: #d8c6f0;
+  color: #7542bd;
+  background: #faf7ff;
+}
+/* The story viewer is intentionally immersive and dark; only the page/feed surfaces use the shared light theme. */
+@media (prefers-reduced-motion: reduce) {
+  .home-page .spin { animation: none; }
+}
