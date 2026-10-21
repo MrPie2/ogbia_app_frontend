@@ -131,14 +131,28 @@ input, textarea { font-family:inherit; }
 }
 
 
-/* Reserve space for the shared, fixed application navbar. */
-ion-router-outlet {
-  top: 66px;
-  height: calc(100% - 66px);
+/* Keep the shared navbar above every routed standalone page. */
+ion-app.ogbia-app-shell {
+  position: relative;
 }
+
+ion-router-outlet.app-router-outlet {
+  position: absolute;
+  inset: 66px 0 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  z-index: 1;
+}
+
+app-shared-navbar {
+  position: relative;
+  z-index: 1000;
+}
+
 @media (max-width: 760px) {
-  ion-router-outlet {
-    top: 62px;
-    height: calc(100% - 62px);
+  ion-router-outlet.app-router-outlet {
+    inset: 62px 0 0;
   }
 }
