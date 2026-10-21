@@ -19,6 +19,12 @@ export interface AuthResponse {
   user: AuthUser;
 }
 
+export interface ProfileCompletionResponse {
+  success: boolean;
+  message: string;
+  user: AuthUser;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apiUrl = environment.apiUrl;
@@ -29,6 +35,22 @@ export class AuthService {
       phone: phone.trim(),
       referral_id: referralId.trim(),
     }).pipe(tap((response) => this.storeSession(response)));
+  }
+
+  completeProfile(name: string, email: string, password: string, passwordConfirmation: string): Observable<ProfileCompletionResponse> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token ?? ''}`,
+      Accept: 'application/json',
+    });
+    return this.http.put<ProfileCompletionResponse>(`${this.apiUrl}/profile/complete`, {
+      name: name.trim(),
+      email: email.trim(),
+      password,
+      password_confirmation: passwordConfirmation,
+    }, { headers }).pipe(tap((response) => {
+      if (response.user) localStorage.setItem('auth_user', JSON.stringify(response.user));
+    }));
   }
 
   login(email: string, password: string): Observable<AuthResponse> {
