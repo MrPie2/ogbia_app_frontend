@@ -30,6 +30,8 @@ export class HomePage implements OnInit, OnDestroy {
   storyPaused = false;
   storyActionError = '';
   deletingStory = false;
+  private storyPointerStartedAt = 0;
+  private suppressStoryTap = false;
 
   private storyTimer: ReturnType<typeof setInterval> | null = null;
   private storyStartedAt = 0;
@@ -190,6 +192,28 @@ export class HomePage implements OnInit, OnDestroy {
 
     this.storyPaused = false;
     this.runStoryTimer();
+  }
+
+  beginStoryPress(): void {
+    if (!this.activeStoryGroup || this.currentStory?.type === 'video') return;
+    this.storyPointerStartedAt = Date.now();
+    this.toggleStoryPause(true);
+  }
+
+  endStoryPress(): void {
+    if (!this.storyPointerStartedAt) return;
+    this.suppressStoryTap = Date.now() - this.storyPointerStartedAt > 250;
+    this.storyPointerStartedAt = 0;
+    this.toggleStoryPause(false);
+  }
+
+  handleStoryTap(direction: 'previous' | 'next'): void {
+    if (this.suppressStoryTap) {
+      this.suppressStoryTap = false;
+      return;
+    }
+    if (direction === 'previous') this.previousStory();
+    else this.nextStory();
   }
 
   deleteCurrentStory(): void {
