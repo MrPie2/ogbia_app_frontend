@@ -1,47 +1,42 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-    imports: [IonContent, IonIcon, CommonModule, FormsModule],
+  imports: [IonContent, IonIcon, RouterLink, CommonModule, FormsModule],
   standalone: true,
 })
 export class LoginPage {
-
-  constructor(private http: HttpClient,private router: Router) {}
- email: string = '';
-  password: string = '';
+  email = '';
+  password = '';
   loading = false;
   errorMessage = '';
-  private apiUrl = 'https://api.parcellsend.com/api';
 
+  constructor(private readonly auth: AuthService, private readonly router: Router) {}
 
-  login() {
+  login(): void {
+    if (!this.email.trim() || !this.password) {
+      this.errorMessage = 'Enter your email and password to continue.';
+      return;
+    }
+
     this.loading = true;
     this.errorMessage = '';
 
-    this.http.post<any>(`${this.apiUrl}/login`, {
-      email: this.email,
-      password: this.password
-    }).subscribe({
-      next: (response) => {
-        localStorage.setItem('token', response.token);
-
+    this.auth.login(this.email.trim(), this.password).subscribe({
+      next: () => {
         this.loading = false;
-
         this.router.navigate(['/home']);
       },
-
       error: (error) => {
         this.loading = false;
-
-        this.errorMessage =
-          error.error?.message || 'Unable to log in. Please try again.';
+        this.errorMessage = error.error?.message || 'Unable to log in. Please try again.';
       }
     });
   }
