@@ -1,34 +1,71 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonIcon } from '@ionic/angular';
+import { IonContent, IonIcon, LoadingController } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
   styleUrls: ['./signup.page.scss'],
-    imports: [IonContent, IonIcon, RouterLink, CommonModule, FormsModule],
-
+  imports: [IonContent, IonIcon, RouterLink, CommonModule, FormsModule],
   standalone: true,
 })
-export class SignupPage  {
-  phoneNumber: string = '';
-  referralId: string = '';
+export class SignupPage {
+  phoneNumber = '';
+  referralId = '';
+  submitting = false;
+  errorMessage = '';
+  successMessage = '';
 
-  register() {
-    if (!this.phoneNumber) {
-      alert('Please enter your phone number');
+  constructor(
+    private readonly auth: AuthService,
+    private readonly router: Router,
+    private readonly loadingController: LoadingController,
+  ) {}
+
+  register(): void {
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    const phone = this.phoneNumber.trim();
+    const referral = this.referralId.trim();
+
+    if (!phone) {
+      this.errorMessage = 'Enter your phone number to continue.';
       return;
     }
 
-    const registrationData = {
-      phone: this.phoneNumber,
-      referral_id: this.referralId
-    };
+    if (!/^\\+?[0-9\\s().-]{10,20}$/.test(phone)) {
+      this.errorMessage = 'Enter a valid phone number, including your country code if needed.';
+      return;
+    }
 
-    console.log(registrationData);
+    if (!referral) {
+      this.errorMessage = 'A Referral ID is required. Ogbia Connect is invite-only.';
+      return;
+    }
 
-    // API request will be added here later
+    if (this.submitting) return;
+    this.submitting = true;
+
+    this.auth.register(phone, referral).subscribe({
+      next: async () => {
+        this.submitting = false;
+        this.successMessage = 'Account created. Welcome to Ogbia Connect!';
+        await this.router.navigateByUrl('/home', { replaceUrl: true });
+      },
+      error: (error: HttpErrorResponse) => {
+        this.submitting = false;
+        const errors = error.error?.errors as Record<string, string[]> | undefined;
+        this.errorMessage =
+          errors?.['referral_id']?.[0] ||
+          errors?.['phone']?.[0] ||
+          error.error?.message ||
+          'We could not create your account. Check your details and try again.';
+      },
+    });
   }
 }
