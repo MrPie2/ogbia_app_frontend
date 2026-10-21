@@ -90,30 +90,38 @@
   </div>
 
   @if (activeStoryGroup; as activeGroup) {
-    <div class="story-viewer" role="dialog" aria-modal="true" [attr.aria-label]="activeGroup.user.name + ' story'">
-      <div class="viewer-top">
-        <div class="story-progress">
-          @for (story of activeGroup.stories; track story.id; let i = $index) {
-            <span [class.complete]="i <= activeStoryIndex"><i></i></span>
+    @if (activeGroup.stories[activeStoryIndex]; as story) {
+      <div class="story-viewer" role="dialog" aria-modal="true" [attr.aria-label]="activeGroup.user.name + ' story'">
+        <div class="viewer-top">
+          <div class="story-progress" aria-label="Story progress">
+            @for (item of activeGroup.stories; track item.id; let i = $index) {
+              <span [class.complete]="i < activeStoryIndex"><i [style.width.%]="i < activeStoryIndex ? 100 : i === activeStoryIndex ? storyProgress : 0"></i></span>
+            }
+          </div>
+          <div class="viewer-author">
+            <div class="viewer-avatar">{{ storyInitials(activeGroup) }}</div>
+            <div class="viewer-author-copy"><b>{{ activeGroup.user.name }}</b><small>{{ story.created_at | date:'shortTime' }}</small></div>
+            @if (activeGroup.is_mine) {
+              <button class="viewer-delete" type="button" (click)="deleteCurrentStory()" [disabled]="deletingStory" aria-label="Delete this story"><ion-icon name="trash-outline"></ion-icon></button>
+            }
+            <button class="viewer-close" type="button" (click)="closeStory()" aria-label="Close story"><ion-icon name="close"></ion-icon></button>
+          </div>
+        </div>
+        <div class="viewer-content" (pointerdown)="beginStoryPress()" (pointerup)="endStoryPress()" (pointercancel)="endStoryPress()" (pointerleave)="endStoryPress()">
+          @if (story.type === 'text') {
+            <div class="viewer-text-story">{{ story.content }}</div>
+          } @else if (story.type === 'image') {
+            <img [src]="story.media_url" alt="Story image" draggable="false">
+          } @else {
+            <video [src]="story.media_url" controls autoplay playsinline (ended)="nextStory()" (click)="$event.stopPropagation()"></video>
           }
+          <button class="viewer-tap-zone viewer-tap-previous" type="button" (click)="handleStoryTap('previous')" aria-label="Previous story"></button>
+          <button class="viewer-tap-zone viewer-tap-next" type="button" (click)="handleStoryTap('next')" aria-label="Next story"></button>
+          <div class="viewer-playback-state" [class.visible]="storyPaused" aria-live="polite"><ion-icon name="pause"></ion-icon><span>Paused</span></div>
         </div>
-        <div class="viewer-author">
-          <div class="viewer-avatar">{{ storyInitials(activeGroup) }}</div>
-          <div><b>{{ activeGroup.user.name }}</b><small>{{ activeGroup.stories[activeStoryIndex].created_at | date:'shortTime' }}</small></div>
-          <button type="button" (click)="closeStory()" aria-label="Close story"><ion-icon name="close"></ion-icon></button>
-        </div>
+        @if (storyActionError) { <p class="viewer-error" role="alert">{{ storyActionError }}</p> }
+        <p class="viewer-hint">Tap sides to navigate · Hold to pause</p>
       </div>
-      <div class="viewer-content" (click)="nextStory()">
-        @if (activeGroup.stories[activeStoryIndex].type === 'text') {
-          <div class="viewer-text-story">{{ activeGroup.stories[activeStoryIndex].content }}</div>
-        } @else if (activeGroup.stories[activeStoryIndex].type === 'image') {
-          <img [src]="activeGroup.stories[activeStoryIndex].media_url" alt="Story image">
-        } @else {
-          <video [src]="activeGroup.stories[activeStoryIndex].media_url" controls autoplay playsinline (click)="$event.stopPropagation()"></video>
-        }
-        <button class="viewer-next" type="button" (click)="$event.stopPropagation(); nextStory()" aria-label="Next story"><ion-icon name="chevron-forward"></ion-icon></button>
-      </div>
-      <p class="viewer-hint">Tap to continue</p>
-    </div>
+    }
   }
 </ion-content>
