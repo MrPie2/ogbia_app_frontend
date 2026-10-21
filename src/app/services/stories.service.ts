@@ -13,6 +13,7 @@ export interface StoryItem {
   expires_at: string;
   created_at: string;
   author?: { id: number; name: string } | null;
+  is_viewed?: boolean;
 }
 
 export interface StoryGroup {
@@ -42,6 +43,10 @@ export class StoriesService {
 
   deleteStory(id: number): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/stories/${id}`, { headers: this.headers() });
+  }
+
+  markViewed(id: number): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/stories/${id}/view`, {}, { headers: this.headers() });
   }
 
   private headers(): HttpHeaders {
