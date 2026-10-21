@@ -33,20 +33,22 @@
 
 .app-bottom-nav {
   position: fixed;
-  z-index: 999;
-  left: 50%;
-  bottom: max(10px, env(safe-area-inset-bottom));
-  transform: translateX(-50%);
-  width: min(680px, calc(100% - 24px));
-  min-height: 68px;
+  z-index: 1100;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: none;
+  width: 100%;
+  min-height: calc(68px + env(safe-area-inset-bottom));
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: center;
-  padding: 7px 8px;
-  border: 1px solid #eee5f8;
-  border-radius: 22px;
-  background: rgba(255,255,255,.97);
-  box-shadow: 0 10px 35px rgba(65,39,95,.17);
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  border: 0;
+  border-top: 1px solid #eee5f8;
+  border-radius: 0;
+  background: rgba(255,255,255,.99);
+  box-shadow: 0 -6px 24px rgba(65,39,95,.09);
   backdrop-filter: blur(18px);
 }
 .app-bottom-nav a {
