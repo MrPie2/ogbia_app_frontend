@@ -271,6 +271,31 @@ export class HomePage implements OnInit, OnDestroy {
     this.router.navigate(['/login']);
   }
 
+  updateVideoProgress(event: Event): void {
+    const video = event.target as HTMLVideoElement;
+    if (Number.isFinite(video.duration) && video.duration > 0) {
+      this.storyProgress = Math.min(100, (video.currentTime / video.duration) * 100);
+    }
+  }
+
+  private markStoryViewed(story: StoryItem): void {
+    const group = this.activeStoryGroup;
+    if (!group || group.is_mine || story.is_viewed) return;
+
+    this.storiesService.markViewed(story.id).subscribe({
+      next: () => {
+        story.is_viewed = true;
+        this.storyGroups = this.storyGroups.map(item => item.user.id === group.user.id
+          ? {
+              ...item,
+              stories: item.stories.map(entry => entry.id === story.id ? { ...entry, is_viewed: true } : entry),
+              has_unseen: item.stories.some(entry => entry.id !== story.id && !entry.is_viewed)
+            }
+          : item);
+      }
+    });
+  }
+
   private startStoryTimer(): void {
     this.stopStoryTimer();
     this.storyProgress = 0;
@@ -278,7 +303,9 @@ export class HomePage implements OnInit, OnDestroy {
     this.storyPaused = false;
     this.storyActionError = '';
     const story = this.currentStory;
-    if (!story || story.type === 'video') return;
+    if (!story) return;
+    this.markStoryViewed(story);
+    if (story.type === 'video') return;
     this.storyDuration = story.type === 'text' ? 6000 : 7000;
     this.runStoryTimer();
   }
