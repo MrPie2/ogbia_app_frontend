@@ -113,7 +113,7 @@
           } @else if (story.type === 'image') {
             <img [src]="story.media_url" alt="Story image" draggable="false">
           } @else {
-            <video [src]="story.media_url" controls autoplay playsinline (ended)="nextStory()" (click)="$event.stopPropagation()"></video>
+            <video [src]="story.media_url" controls autoplay playsinline (timeupdate)="updateVideoProgress($event)" (ended)="nextStory()" (click)="$event.stopPropagation()"></video>
           }
           @if (story.type !== 'video') {
             <button class="viewer-tap-zone viewer-tap-previous" type="button" (click)="handleStoryTap('previous')" aria-label="Previous story"></button>
