@@ -1,29 +1,74 @@
-<ion-content [fullscreen]="true"><div class="page light home-page"><div class="container">
-  <div class="home-top"><button class="menu"><ion-icon name="menu-outline"></ion-icon></button>
-    <span class="home-pill">Home</span>
-    <div class="top-icons"><button class="menu">
-      <ion-icon name="notifications-outline"></ion-icon>
-      <b>1</b></button>
-      <button class="menu"><ion-icon name="search-outline"></ion-icon></button></div>
+<ion-content [fullscreen]="true">
+  <div class="page light home-page">
+    <div class="container">
+      <div class="home-top">
+        <button class="menu" aria-label="Open menu"><ion-icon name="menu-outline"></ion-icon></button>
+        <span class="home-pill">Home</span>
+        <div class="top-icons">
+          <button class="menu notification-button" aria-label="Notifications">
+            <ion-icon name="notifications-outline"></ion-icon><b>1</b>
+          </button>
+          <button class="menu" aria-label="Search"><ion-icon name="search-outline"></ion-icon></button>
+        </div>
+      </div>
+
+      <section class="account-card fade-up" aria-label="Your account">
+        <div class="account-avatar" aria-hidden="true">
+          {{ initials }}
+        </div>
+        <div class="account-copy">
+          <small>{{ loadingUser ? 'Loading your account…' : 'Welcome back' }}</small>
+          <h1>{{ displayName }}</h1>
+          <p>{{ user?.email || 'Your account details' }}</p>
+          @if (user?.phone) {
+            <p class="account-phone">{{ user?.phone }}</p>
+          }
+        </div>
+        <button class="logout-button" type="button" (click)="logout()" aria-label="Log out">
+          <ion-icon name="log-out-outline"></ion-icon>
+        </button>
+      </section>
+
+      @if (userError) {
+        <p class="account-notice" role="status">{{ userError }}</p>
+      }
+
+      <div class="stories fade-up">
+        <div class="story">
+          <div class="story-ring own account-story-avatar"><span>{{ initials }}</span><em>+</em></div>
+          <small>Your Story</small>
+        </div>
+        <div class="story"><div class="story-ring"><img src="assets/images/rep-jennifer.jpg" alt=""></div><small>Amara</small></div>
+        <div class="story"><div class="story-ring"><img src="assets/images/youth-pearl.jpg" alt=""></div><small>Fatima</small></div>
+        <div class="story"><div class="story-ring"><img src="assets/images/rep-samuel.jpg" alt=""></div><small>Daniel</small></div>
+        <div class="story"><div class="story-ring"><img src="assets/images/clan-king.jpg" alt=""></div><small>Linda</small></div>
+      </div>
+
+      <article class="post card fade-up delay-1">
+        <div class="post-head">
+          <img src="assets/images/cdc-godstime.jpg" alt="Ogbia CDC">
+          <div><b>Ogbia CDC <ion-icon name="checkmark-circle"></ion-icon></b><small>2 hrs ago</small></div>
+          <ion-icon name="ellipsis-horizontal"></ion-icon>
+        </div>
+        <p>Community cleanup exercise was a success! Thank you to everyone who showed up.</p>
+        <img class="post-image" src="assets/images/cleanup.jpg" alt="Community cleanup exercise">
+        <div class="post-actions"><span>♥ 128</span><span>● 32</span><span>⌁ 16</span></div>
+      </article>
+
+      <div class="section-title"><h2>Events</h2><a>See all</a></div>
+      <article class="event-card card fade-up delay-2">
+        <div class="date"><b>24</b><small>MAY</small></div>
+        <div class="event-copy"><b>Town Hall Meeting</b><small>Sat, 24 May · 10:00 AM<br>Ogbia Civic Centre</small></div>
+        <button type="button">Interested</button>
+      </article>
     </div>
-  <div class="stories fade-up"><div class="story"><div class="story-ring own">
-    <img src="assets/images/profile-israel.jpg"><em>+</em></div><small>Your Story</small></div>
-    <div class="story"><div class="story-ring"><img src="assets/images/rep-jennifer.jpg"></div><small>Amara</small></div>
-    <div class="story"><div class="story-ring"><img src="assets/images/youth-pearl.jpg"></div><small>Fatima</small></div>
-    <div class="story"><div class="story-ring"><img src="assets/images/rep-samuel.jpg"></div><small>Daniel</small></div>
-    <div class="story"><div class="story-ring"><img src="assets/images/clan-king.jpg"></div><small>Linda</small></div></div>
-  <article class="post card fade-up delay-1"><div class="post-head"><img src="assets/images/cdc-godstime.jpg">
-    <div><b>Ogbia CDC <ion-icon name="checkmark-circle"></ion-icon></b><small>2 hrs ago</small></div>
-    <ion-icon name="ellipsis-horizontal"></ion-icon></div><p>Community cleanup exercise was a success! Thank you to everyone who showed up.</p><img class="post-image" src="assets/images/cleanup.jpg">
-    <div class="post-actions"><span>♥ 128</span><span>● 32</span><span>⌁ 16</span></div></article>
-  <div class="section-title">
-    <h2>Events</h2><a>See all</a></div>
-    <article class="event-card card fade-up delay-2">
-      <div class="date"><b>24</b><small>MAY</small></div>
-      <div class="event-copy"><b>Town Hall Meeting</b><small>Sat, 24 May · 10:00 AM<br>Ogbia Civic Centre</small></div>
-      <button>Interested</button></article>
-</div>
-<nav class="bottom-nav"><a routerLink="/home" class="active"><ion-icon name="home"></ion-icon><span>Home</span></a>
-  <a routerLink="/explore"><ion-icon name="compass-outline"></ion-icon><span>Explore</span></a><a routerLink="/create-post"><span class="bi bi-pen"><ion-icon name="add"></ion-icon>
-  </span></a><a routerLink="/groups"><ion-icon name="people-outline"></ion-icon><span>Groups</span></a><a routerLink="/profile"><ion-icon name="person-outline"></ion-icon><span>Profile</span></a></nav>
-</div></ion-content>
+
+    <nav class="bottom-nav">
+      <a routerLink="/home" class="active"><ion-icon name="home"></ion-icon><span>Home</span></a>
+      <a routerLink="/explore"><ion-icon name="compass-outline"></ion-icon><span>Explore</span></a>
+      <a routerLink="/create-post"><span class="bi bi-pen"><ion-icon name="add"></ion-icon></span></a>
+      <a routerLink="/groups"><ion-icon name="people-outline"></ion-icon><span>Groups</span></a>
+      <a routerLink="/profile"><ion-icon name="person-outline"></ion-icon><span>Profile</span></a>
+    </nav>
+  </div>
+</ion-content>
