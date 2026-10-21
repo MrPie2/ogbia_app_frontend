@@ -1,39 +1,36 @@
-ion-content {
-    --background: #393185;
-}
-
-.input-group-text {
-  border-color: #dee2e6;
-}
-
-.form-control {
-  border-color: #dee2e6;
-  box-shadow: none;
-}
-
-.form-control:focus {
-  border-color: #212529;
-  box-shadow: none;
-}
-
-.card {
-  overflow: hidden;
-}
-
-.fw-bold{
-    color:white;
-}
-
-.signup-card{
-    background: #493D8E;
-    color: white;
-}
-
-.text-light-muted{
-    color:w #aaa;
-}
-
-inptut[type="text"]{
-    border: 0px
-}
-
+.signup-content { --background: #f8f5fc; }
+.signup-shell { width: min(100%, 520px); min-height: 100%; margin: 0 auto; padding: 22px 22px calc(34px + env(safe-area-inset-bottom)); color: #302347; }
+.back-link { display: inline-flex; align-items: center; gap: 7px; color: #6f42b7; text-decoration: none; font-size: 14px; font-weight: 650; }
+.back-link ion-icon { font-size: 19px; }
+.signup-intro { padding: 30px 2px 24px; }
+.brand-mark { width: 58px; height: 58px; display: grid; place-items: center; border-radius: 19px; color: white; background: linear-gradient(145deg,#7542bd,#a477df); box-shadow: 0 10px 24px #7542bd30; }
+.brand-mark ion-icon { font-size: 34px; }
+.eyebrow { margin: 20px 0 9px; color: #8059b8; font-size: 10px; font-weight: 800; letter-spacing: 1.7px; }
+h1 { margin: 0; color: #302347; font-size: clamp(30px,8vw,38px); font-weight: 800; letter-spacing: -1.3px; line-height: 1.1; }
+.intro-copy { max-width: 420px; margin: 12px 0 0; color: #7e748b; font-size: 14px; line-height: 1.65; }
+.signup-card { padding: 23px 19px 20px; border: 1px solid #eee5f7; border-radius: 24px; background: #fff; box-shadow: 0 14px 40px #3023470d; }
+.field { margin-bottom: 20px; }
+.field label { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 9px; color: #3b2b50; font-size: 13px; font-weight: 750; }
+.field label span { color: #9a8ca8; font-size: 10px; font-weight: 600; }
+.field label .required-pill { padding: 4px 8px; border-radius: 999px; color: #7542bd; background: #f2eafd; }
+.input-wrap { display: flex; align-items: center; gap: 11px; min-height: 53px; padding: 0 14px; border: 1px solid #e9e1f1; border-radius: 14px; background: #fcfbfe; transition: border-color .18s, box-shadow .18s; }
+.input-wrap:focus-within { border-color: #9870d1; box-shadow: 0 0 0 3px #7542bd18; }
+.input-wrap ion-icon { flex: 0 0 auto; color: #8c6abd; font-size: 20px; }
+.input-wrap input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: #302347; font: inherit; font-size: 14px; }
+.input-wrap input::placeholder { color: #b3aabb; }
+.field small { display: block; margin: 8px 2px 0; color: #93879f; font-size: 11px; line-height: 1.5; }
+.notice { display: flex; align-items: flex-start; gap: 9px; margin: 0 0 16px; padding: 12px; border-radius: 12px; font-size: 12px; line-height: 1.5; }
+.notice ion-icon { flex: 0 0 auto; font-size: 18px; }
+.notice-error { color: #a7354a; background: #fff0f2; }
+.notice-success { color: #247a57; background: #eaf8f1; }
+.submit-button { width: 100%; min-height: 53px; display: flex; align-items: center; justify-content: center; gap: 12px; border: 0; border-radius: 15px; background: linear-gradient(105deg,#7542bd,#9060d1); color: #fff; font-size: 14px; font-weight: 750; box-shadow: 0 9px 20px #7542bd2b; }
+.submit-button:disabled { opacity: .62; box-shadow: none; }
+.submit-button ion-icon { font-size: 19px; }
+.button-spinner { width: 17px; height: 17px; border: 2px solid #ffffff70; border-top-color: white; border-radius: 50%; animation: spin .7s linear infinite; }
+.invite-note { display: flex; align-items: flex-start; justify-content: center; gap: 7px; margin: 17px 0 0; color: #8a7e97; font-size: 11px; line-height: 1.5; text-align: center; }
+.invite-note ion-icon { flex: 0 0 auto; color: #8d64c8; font-size: 16px; }
+.login-prompt { margin: 22px 0 0; color: #887c95; font-size: 12px; text-align: center; }
+.login-prompt a { margin-left: 4px; color: #7542bd; font-weight: 800; text-decoration: none; }
+.terms-note { margin: 17px 8px 0; color: #a096ab; font-size: 10px; line-height: 1.6; text-align: center; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (min-width: 700px) { .signup-shell { padding-top: 30px; } .signup-intro { padding-top: 34px; } .signup-card { padding: 27px; } }
