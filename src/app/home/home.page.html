@@ -115,8 +115,10 @@
           } @else {
             <video [src]="story.media_url" controls autoplay playsinline (ended)="nextStory()" (click)="$event.stopPropagation()"></video>
           }
-          <button class="viewer-tap-zone viewer-tap-previous" type="button" (click)="handleStoryTap('previous')" aria-label="Previous story"></button>
-          <button class="viewer-tap-zone viewer-tap-next" type="button" (click)="handleStoryTap('next')" aria-label="Next story"></button>
+          @if (story.type !== 'video') {
+            <button class="viewer-tap-zone viewer-tap-previous" type="button" (click)="handleStoryTap('previous')" aria-label="Previous story"></button>
+            <button class="viewer-tap-zone viewer-tap-next" type="button" (click)="handleStoryTap('next')" aria-label="Next story"></button>
+          }
           <div class="viewer-playback-state" [class.visible]="storyPaused" aria-live="polite"><ion-icon name="pause"></ion-icon><span>Paused</span></div>
         </div>
         @if (storyActionError) { <p class="viewer-error" role="alert">{{ storyActionError }}</p> }
