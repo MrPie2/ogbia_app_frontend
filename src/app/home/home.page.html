@@ -27,7 +27,7 @@
                 </a>
               } @else {
                 <button type="button" class="story story-button" (click)="openStory(group)" [attr.aria-label]="'View ' + group.user.name + ' story'">
-                  <div class="story-ring" [class.has-story]="group.stories.length">
+                  <div class="story-ring" [class.has-story]="group.stories.length" [class.has-unseen]="group.has_unseen">
                     @if (group.is_mine) { <span class="account-story-avatar">{{ initials }}</span> }
                     @else { <span class="friend-story-avatar">{{ storyInitials(group) }}</span> }
                   </div>
