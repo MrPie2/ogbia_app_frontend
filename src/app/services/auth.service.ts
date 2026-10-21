@@ -5,13 +5,14 @@ import { environment } from '../../environments/environment';
 
 export interface AuthUser {
   id: number;
-  name: string;
-  email: string;
+  name: string | null;
+  email: string | null;
   phone?: string | null;
+  referral_code?: string | null;
   [key: string]: unknown;
 }
 
-interface LoginResponse {
+export interface AuthResponse {
   success: boolean;
   message: string;
   token: string;
@@ -24,17 +25,26 @@ export class AuthService {
 
   constructor(private readonly http: HttpClient) {}
 
-  login(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
-      tap((response) => {
-        if (response.token) {
-          localStorage.setItem('token', response.token);
-          if (response.user) {
-            localStorage.setItem('auth_user', JSON.stringify(response.user));
-          }
-        }
-      })
+  register(phone: string, referralId: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, {
+      phone: phone.trim(),
+      referral_id: referralId.trim(),
+    }).pipe(tap((response) => this.storeSession(response)));
+  }
+
+  login(email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password }).pipe(
+      tap((response) => this.storeSession(response))
     );
+  }
+
+  private storeSession(response: AuthResponse): void {
+    if (response.token) {
+      localStorage.setItem('token', response.token);
+      if (response.user) {
+        localStorage.setItem('auth_user', JSON.stringify(response.user));
+      }
+    }
   }
 
   getAuthenticatedUser(): Observable<AuthUser> {
