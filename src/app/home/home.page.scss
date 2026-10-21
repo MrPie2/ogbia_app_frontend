@@ -25,3 +25,12 @@
 
 .story-button .story-ring.has-unseen{border-color:#47c4a1}
 .story-button .story-ring.has-story:not(.has-unseen){border-color:#657083}
+
+
+/* Clear, rounded add-story action when the user has no active story. */
+.story-add-button{display:flex;flex-direction:column;align-items:center;flex:0 0 62px;min-width:62px;gap:6px;cursor:pointer}
+.story-add-circle{display:grid;place-items:center;width:54px;height:54px;border:1px solid #3d4b5e;border-radius:50%;background:#202630;color:#f5f8ff;box-shadow:0 2px 8px #0002;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.story-add-circle ion-icon{font-size:28px}
+.story-add-button small{margin-top:0;color:#e7eaf0;font-size:10px;white-space:nowrap}
+.story-add-button:hover .story-add-circle,.story-add-button:focus-visible .story-add-circle{background:#1764ff;border-color:#1764ff;transform:scale(1.04)}
+.story-add-button:focus-visible{outline:2px solid #80aaff;outline-offset:4px;border-radius:12px}
