@@ -1,0 +1,46 @@
+:host { display: block; }
+.app-navbar {
+  position: fixed;
+  z-index: 1000;
+  inset: 0 0 auto;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 0 clamp(16px, 4vw, 44px);
+  color: #f7f9ff;
+  background: rgba(14, 20, 31, .96);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  backdrop-filter: blur(18px);
+}
+.brand { display:flex; align-items:center; gap:10px; min-width:0; color:inherit; text-decoration:none; flex-shrink:0; }
+.brand-mark { display:grid; place-items:center; width:38px; height:38px; border-radius:13px; color:#fff; font-size:21px; background:linear-gradient(145deg,#2bb58c,#176c65); box-shadow:0 6px 16px rgba(28,161,127,.22); }
+.brand-copy { display:flex; flex-direction:column; gap:2px; }
+.brand-copy strong { font-size:15px; line-height:1.1; letter-spacing:-.35px; }
+.brand-copy strong span { color:#5bd3ac; }
+.brand-copy small { color:#aab4c5; font-size:9px; letter-spacing:.1px; }
+.desktop-links { display:flex; align-items:center; justify-content:center; gap:5px; flex:1; }
+.desktop-links a { padding:10px 12px; border-radius:10px; text-decoration:none; color:#b5bfce; font-size:12px; font-weight:600; white-space:nowrap; transition:background .18s ease,color .18s ease; }
+.desktop-links a:hover,.desktop-links a.active { color:#fff; background:rgba(67,199,159,.13); }
+.navbar-actions { display:flex; align-items:center; gap:8px; }
+.profile-action { display:flex; align-items:center; gap:6px; padding:9px 12px; border:1px solid rgba(255,255,255,.12); border-radius:12px; color:#dce5f2; text-decoration:none; font-size:11px; font-weight:600; }
+.profile-action ion-icon { font-size:18px; }
+.profile-action.active { border-color:rgba(91,211,172,.5); color:#69dfb8; }
+.menu-toggle { display:none; place-items:center; width:38px; height:38px; border:1px solid rgba(255,255,255,.13); border-radius:12px; background:#202a39; color:#fff; font-size:22px; }
+.mobile-links { display:none; }
+@media (max-width: 760px) {
+  .app-navbar { height:62px; gap:12px; padding:0 14px; }
+  .brand-mark { width:35px; height:35px; }
+  .brand-copy strong { font-size:14px; }
+  .brand-copy small { font-size:8px; }
+  .desktop-links { display:none; }
+  .navbar-actions { margin-left:auto; }
+  .profile-action { width:36px; height:36px; justify-content:center; padding:0; }
+  .profile-action span { display:none; }
+  .menu-toggle { display:grid; }
+  .mobile-links { position:absolute; display:flex; flex-direction:column; top:calc(100% + 8px); right:12px; width:min(280px,calc(100vw - 24px)); padding:8px; border:1px solid rgba(255,255,255,.1); border-radius:17px; background:#151d2a; box-shadow:0 18px 45px rgba(0,0,0,.35); }
+  .mobile-links a { display:flex; align-items:center; gap:12px; min-height:45px; padding:0 12px; border-radius:11px; color:#d4dce8; text-decoration:none; font-size:12px; font-weight:600; }
+  .mobile-links a ion-icon { font-size:18px; color:#70d9b5; }
+  .mobile-links a.active,.mobile-links a:active { background:rgba(67,199,159,.13); color:#fff; }
+}
