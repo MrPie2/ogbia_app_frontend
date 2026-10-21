@@ -1,0 +1,72 @@
+<ion-content [fullscreen]="true">
+  <div class="container min-vh-100 d-flex align-items-center justify-content-center py-5">
+    <div class="row justify-content-center">
+
+      <div class="col-12 ">
+
+        <!-- Header -->
+        <div class="text-center mb-4">
+
+          <div
+            class=" text-white rounded-4 d-inline-flex
+                   align-items-center justify-content-center mb-3"
+            style="width: 70px; height: 70px;"
+          >
+            <ion-icon
+              name="person-add-outline"
+              style="font-size: 32px;"
+            ></ion-icon>
+          </div>
+
+          <h2 class="fw-bold mb-2">Welcome Back</h2>
+        </div>
+
+        <div class="card signup-card border-0 shadow-sm rounded-4">
+          <div class="card-body p-4 p-md-5">
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Email</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white">
+                  <ion-icon name="call-outline"></ion-icon>
+                </span>
+                <input type="text" class="form-control"  [(ngModel)]="email" placeholder="Email">
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Password
+              </label>
+
+              <div class="input-group">
+                <span class="input-group-text bg-white">
+                  <ion-icon name="people-outline"></ion-icon>
+                </span><input type="password"class="form-control" [(ngModel)]="password" placeholder="Password">
+              </div>
+
+            </div>
+            <button type="button" class="btn btn-primary  " (click)="login()">Login
+              <ion-icon name="arrow-forward-outline" class="ms-2 align-middle"></ion-icon>
+            </button>
+
+
+            <!-- Login -->
+            <div class="text-center mt-4">
+
+              <span class="text-light-muted"> Don't have an account?</span>
+              <a routerLink="/get_started" class=" fw-semibold text-decoration-none ms-1" style="color: #393185">Create Account</a>
+
+            </div>
+
+          </div>
+
+        </div>
+        <div class="finger-print" style="display: flex; justify-content: center; margin-top: 30px;">
+              <span class="fas fa-fingerprint" style="font-size: 35pt; color: white;"></span>
+            </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>

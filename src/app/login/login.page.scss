@@ -1,0 +1,39 @@
+ion-content {
+    --background: #393185;
+}
+
+.input-group-text {
+  border-color: #dee2e6;
+}
+
+.form-control {
+  border-color: #dee2e6;
+  box-shadow: none;
+}
+
+.form-control:focus {
+  border-color: #212529;
+  box-shadow: none;
+}
+
+.card {
+  overflow: hidden;
+}
+
+.fw-bold{
+    color:white;
+}
+
+.signup-card{
+    background: #493D8E;
+    color: white;
+}
+
+.text-light-muted{
+    color:w #aaa;
+}
+
+inptut[type="text"]{
+    border: 0px
+}
+

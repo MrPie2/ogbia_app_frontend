@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.css" integrity="sha512-x9WwyMYBnlXMNQ6kQ/Lyzu1NqIhLQKL5Oq6xByfXuRj7s9CskyCbLv/1IjqzJmXwFXWr0ov6jBV7Qbc0hh9nHg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<ion-content [fullscreen]="true">
+  <div class="container min-vh-100 d-flex align-items-center justify-content-center py-5">
+    <div class="row justify-content-center">
+
+      <div class="col-12 ">
+
+        <!-- Header -->
+        <div class="text-center mb-4">
+
+          <div
+            class=" text-white rounded-4 d-inline-flex
+                   align-items-center justify-content-center mb-3"
+            style="width: 70px; height: 70px;"
+          >
+            <ion-icon
+              name="person-add-outline"
+              style="font-size: 32px;"
+            ></ion-icon>
+          </div>
+
+          <h2 class="fw-bold mb-2">Create Account</h2>
+        </div>
+
+        <div class="card signup-card border-0 shadow-sm rounded-4">
+          <div class="card-body p-4 p-md-5">
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Phone Number</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white">
+                  <ion-icon name="call-outline"></ion-icon>
+                </span>
+                <input type="tel" class="form-control"  [(ngModel)]="phoneNumber" placeholder="Enter your phone number">
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Referral
+                <span class="text-light-muted fw-normal">(Required)</span>
+              </label>
+
+              <div class="input-group">
+                <span class="input-group-text bg-white">
+                  <ion-icon name="people-outline"></ion-icon>
+                </span><input type="text"class="form-control" [(ngModel)]="referralId" placeholder="Enter referral ID">
+              </div>
+
+            </div>
+            <button type="button" class="btn btn-primary  " (click)="register()">Create Account
+              <ion-icon name="arrow-forward-outline" class="ms-2 align-middle"></ion-icon>
+            </button>
+
+
+            <!-- Login -->
+            <div class="text-center mt-4">
+
+              <span class="text-light-muted"> Already have an account?</span>
+              <a routerLink="/login" class="fw-semibold text-decoration-none ms-1" style="color: #393185">Login</a>
+
+            </div>
+
+            
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ion-content>
