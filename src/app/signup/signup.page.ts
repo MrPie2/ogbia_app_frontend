@@ -29,7 +29,7 @@ export class SignupPage {
     const referral = this.referralId.trim();
 
     if (!phone) { this.errorMessage = 'Enter your phone number to continue.'; return; }
-    if (!/^\\+?[0-9\\s().-]{10,20}$/.test(phone)) {
+    if (!/^\+?[0-9\s().-]{7,20}$/.test(phone)) {
       this.errorMessage = 'Enter a valid phone number, including your country code if needed.';
       return;
     }
