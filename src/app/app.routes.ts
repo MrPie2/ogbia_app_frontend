@@ -20,6 +20,10 @@ export const routes: Routes = [
     loadComponent: () => import('./login/login.page').then( m => m.LoginPage)
   },
   {
+    path: 'friends',
+    loadComponent: () => import('./friends/friends.page').then(m => m.FriendsPage)
+  },
+  {
     path: 'profile',
     loadComponent: () => import('./profile/profile.page').then( m => m.ProfilePage)
   },
