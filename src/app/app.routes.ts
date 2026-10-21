@@ -9,15 +9,15 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    loadComponent: () => import('./home/home.page').then( m => m.HomePage)
+    loadComponent: () => import('./home/home.page').then(m => m.HomePage)
   },
   {
     path: 'welcome',
-    loadComponent: () => import('./welcome/welcome.page').then( m => m.WelcomePage)
+    loadComponent: () => import('./welcome/welcome.page').then(m => m.WelcomePage)
   },
   {
     path: 'login',
-    loadComponent: () => import('./login/login.page').then( m => m.LoginPage)
+    loadComponent: () => import('./login/login.page').then(m => m.LoginPage)
   },
   {
     path: 'friends',
@@ -25,27 +25,31 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
-    loadComponent: () => import('./profile/profile.page').then( m => m.ProfilePage)
+    loadComponent: () => import('./profile/profile.page').then(m => m.ProfilePage)
   },
   {
     path: 'cdc',
-    loadComponent: () => import('./cdc/cdc.page').then( m => m.CdcPage)
+    loadComponent: () => import('./cdc/cdc.page').then(m => m.CdcPage)
   },
   {
     path: 'constituency',
-    loadComponent: () => import('./constituency/constituency.page').then( m => m.ConstituencyPage)
+    loadComponent: () => import('./constituency/constituency.page').then(m => m.ConstituencyPage)
   },
   {
     path: 'create-post',
-    loadComponent: () => import('./create-post/create-post.page').then( m => m.CreatePostPage)
+    loadComponent: () => import('./create-post/create-post.page').then(m => m.CreatePostPage)
   },
   {
     path: 'reps',
-    loadComponent: () => import('./reps/reps.page').then( m => m.RepsPage)
+    loadComponent: () => import('./reps/reps.page').then(m => m.RepsPage)
   },
-   {
+  {
     path: 'get_started',
-    loadComponent: () => import('./signup/signup.page').then( m => m.SignupPage)
+    loadComponent: () => import('./signup/signup.page').then(m => m.SignupPage)
+  },
+  {
+    path: 'complete-profile',
+    loadComponent: () => import('./complete-profile/complete-profile.page').then(m => m.CompleteProfilePage)
   },
 ];
 
