@@ -149,6 +149,18 @@ input, textarea { font-family:inherit; }
 
 
 
+/* Keep every routed page on the same light-purple canvas, regardless of OS theme. */
+html, body, ion-app, ion-router-outlet, .ion-page {
+  background: #fbf9fe;
+}
+ion-content {
+  --background: #fbf9fe;
+  --color: #302347;
+}
+ion-content::part(background) {
+  background: #fbf9fe;
+}
+
 /* Shared shell spacing: every routed page stays between the fixed top and bottom bars. */
 ion-app.ogbia-app-shell { position: relative; }
 ion-router-outlet.app-router-outlet {
