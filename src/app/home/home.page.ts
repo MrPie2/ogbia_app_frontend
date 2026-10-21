@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService, AuthUser } from '../services/auth.service';
+import { CommunityPost, PostsService } from '../services/posts.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, IonContent, IonIcon, RouterLink],
+  imports: [CommonModule, DatePipe, IonContent, IonIcon, RouterLink],
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss'
 })
@@ -16,8 +17,15 @@ export class HomePage implements OnInit {
   user: AuthUser | null = null;
   loadingUser = true;
   userError = '';
+  posts: CommunityPost[] = [];
+  loadingPosts = true;
+  feedError = '';
 
-  constructor(private readonly auth: AuthService, private readonly router: Router) {}
+  constructor(
+    private readonly auth: AuthService,
+    private readonly postsService: PostsService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
@@ -42,6 +50,28 @@ export class HomePage implements OnInit {
         this.userError = 'We could not refresh your account details. Showing saved details if available.';
       }
     });
+
+    this.loadFeed();
+  }
+
+  loadFeed(): void {
+    this.loadingPosts = true;
+    this.postsService.getPosts().subscribe({
+      next: (response) => {
+        this.posts = response.data || [];
+        this.loadingPosts = false;
+        this.feedError = '';
+      },
+      error: (error: HttpErrorResponse) => {
+        this.loadingPosts = false;
+        if (error.status === 401) {
+          this.auth.logout();
+          this.router.navigate(['/login']);
+          return;
+        }
+        this.feedError = 'The community feed could not be loaded. Please try again.';
+      }
+    });
   }
 
   get displayName(): string {
@@ -50,6 +80,10 @@ export class HomePage implements OnInit {
 
   get initials(): string {
     return this.displayName.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+  }
+
+  postInitials(post: CommunityPost): string {
+    return (post.author?.name || 'Ogbia member').split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
   }
 
   logout(): void {
