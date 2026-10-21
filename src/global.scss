@@ -34,31 +34,33 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+/* Ogbia Connect uses a consistent light theme. */
+/* @import "@ionic/angular/css/palettes/dark.system.css"; */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
   --ion-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --primary: #165dff;
-  --primary-2: #4a7dff;
-  --ink: #15171d;
-  --muted: #707784;
-  --line: #e9ebf1;
-  --surface: #f7f8fb;
-  --soft-blue: #edf3ff;
-  --success: #21b36b;
+  --primary: #7542bd;
+  --primary-2: #9b69df;
+  --ink: #302347;
+  --muted: #80758f;
+  --line: #eee5f8;
+  --surface: #fbf9fe;
+  --soft-blue: #f2eafd;
+  --success: #2eaa79;
   --danger: #ed4b55;
-  --shadow: 0 12px 35px rgba(20, 33, 61, .08);
+  --shadow: 0 12px 35px rgba(65, 39, 95, .09);
 }
 
 * { box-sizing: border-box; }
 html, body, ion-app, ion-content { margin: 0; width: 100%; height: 100%; font-family: var(--ion-font-family); }
-body { background: #fff; color: var(--ink); }
-ion-content { --background: #f7f8fb; }
+html { color-scheme: light; }
+body { background: #fbf9fe; color: var(--ink); }
+ion-content { --background: #fbf9fe; color: var(--ink); }
 
 .page { min-height: 100%; padding: 18px 18px 92px; }
-.page.dark { --background: #111214; background: #111214; color: #fff; }
+.page.dark { --background: #fbf9fe; background: #fbf9fe; color: var(--ink); }
 .container { max-width: 720px; margin: 0 auto; }
 
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
@@ -97,13 +99,13 @@ ion-content { --background: #f7f8fb; }
 .avatar { width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,.12); }
 .avatar.sm { width:38px; height:38px; }
 
-.blue-hero { background: linear-gradient(135deg, #203c82, #17306a); color:#fff; border-radius:18px; padding:17px; overflow:hidden; position:relative; box-shadow: var(--shadow); }
+.blue-hero { background: linear-gradient(135deg, #8c5acb, #60369e); color:#fff; border-radius:18px; padding:17px; overflow:hidden; position:relative; box-shadow: var(--shadow); }
 .blue-hero:after { content:''; position:absolute; width:140px; height:140px; right:-70px; top:-60px; border-radius:50%; background:rgba(255,255,255,.07); }
 .blue-hero h2 { font-size:18px; margin:0 0 4px; }
 .blue-hero p { font-size:11px; opacity:.9; margin:5px 0; line-height:1.5; }
 
 .btn-primary { border:0; background:var(--primary); color:#fff; border-radius:13px; padding:11px 18px; font-weight:600; font-size:12px; }
-.btn-ghost { border:1px solid #d7def0; background:transparent; color:#23437c; border-radius:12px; padding:9px 15px; font-size:11px; }
+.btn-ghost { border:1px solid #e2d4f3; background:#fff; color:#69429c; border-radius:12px; padding:9px 15px; font-size:11px; }
 
 .fade-up { animation: fadeUp .55s ease both; }
 .delay-1 { animation-delay:.08s; } .delay-2 { animation-delay:.16s; } .delay-3 { animation-delay:.24s; } .delay-4 { animation-delay:.32s; }
@@ -117,7 +119,7 @@ input, textarea { font-family:inherit; }
 @media (min-width: 760px) { .page { padding-left: 28px; padding-right:28px; } .bottom-nav { max-width:700px; margin:auto; } }
 
 .list-row, .rep-row, .youth-row, .group-row, .service-grid a, .ward { transition: transform .18s ease, background .18s ease; }
-.list-row:active, .rep-row:active, .youth-row:active, .group-row:active, .service-grid a:active, .ward:active { transform: scale(.985); background:#f5f7fc; }
+.list-row:active, .rep-row:active, .youth-row:active, .group-row:active, .service-grid a:active, .ward:active { transform: scale(.985); background:#f5effc; }
 
 .w-100{
   opacity: 0.2;
@@ -131,28 +133,19 @@ input, textarea { font-family:inherit; }
 }
 
 
-/* Keep the shared navbar above every routed standalone page. */
-ion-app.ogbia-app-shell {
-  position: relative;
-}
 
+/* Shared shell spacing: every routed page stays between the fixed top and bottom bars. */
+ion-app.ogbia-app-shell { position: relative; }
 ion-router-outlet.app-router-outlet {
   position: absolute;
-  inset: 66px 0 0;
+  inset: 66px 0 94px;
   display: block;
   width: 100%;
   height: auto;
   overflow: hidden;
   z-index: 1;
 }
-
-app-shared-navbar {
-  position: relative;
-  z-index: 1000;
-}
-
+app-shared-navbar { position: relative; z-index: 1000; }
 @media (max-width: 760px) {
-  ion-router-outlet.app-router-outlet {
-    inset: 62px 0 0;
-  }
+  ion-router-outlet.app-router-outlet { inset: 62px 0 92px; }
 }
