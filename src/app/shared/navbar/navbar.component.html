@@ -27,7 +27,25 @@
       <a routerLink="/constituency" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="map-outline"></ion-icon>Constituency</a>
       <a routerLink="/reps" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="people-circle-outline"></ion-icon>Representatives</a>
       <a routerLink="/profile" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="person-outline"></ion-icon>Profile</a>
-      <a routerLink="/create-post" (click)="closeMenu()"><ion-icon name="create-outline"></ion-icon>Create a post</a>
+      <a routerLink="/create-post" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="create-outline"></ion-icon>Create a post</a>
     </nav>
   }
 </header>
+
+<nav class="app-bottom-nav" aria-label="Primary bottom navigation">
+  <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
+    <ion-icon name="home-outline"></ion-icon><span>Home</span>
+  </a>
+  <a routerLink="/friends" routerLinkActive="active" aria-label="Friends">
+    <ion-icon name="people-outline"></ion-icon><span>Friends</span>
+  </a>
+  <a class="create-nav" routerLink="/create-post" routerLinkActive="active" aria-label="Create a post">
+    <span class="create-nav-icon"><ion-icon name="add"></ion-icon></span><span>Create</span>
+  </a>
+  <a routerLink="/constituency" routerLinkActive="active" aria-label="Constituency">
+    <ion-icon name="map-outline"></ion-icon><span>Constituency</span>
+  </a>
+  <a routerLink="/profile" routerLinkActive="active" aria-label="Profile">
+    <ion-icon name="person-circle-outline"></ion-icon><span>Profile</span>
+  </a>
+</nav>
