@@ -1,49 +1,81 @@
-:host{display:block;color:#f6f7f9}
-.friends-page{min-height:100%;padding:20px 18px 100px;background:#101216;color:#f6f7f9}
-.friends-header{display:flex;align-items:center;gap:13px;margin:2px 0 28px}
-.friends-header>div{flex:1}.friends-header p{margin:0 0 4px;color:#7f8996;font-size:9px;font-weight:800;letter-spacing:2px}
-.friends-header h1{font-size:27px;font-weight:800;margin:0;letter-spacing:-.6px}
-.back-button,.header-icon{display:grid;place-items:center;width:40px;height:40px;border:1px solid #2d323a;border-radius:13px;background:#1a1e24;color:#f5f7fa;font-size:20px;text-decoration:none}
-.header-icon{font-size:18px}
-.section-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px}
-.eyebrow{font-size:9px;letter-spacing:1.8px;color:#73808f;font-weight:800}
-.section-heading h2,.find-title h2{margin:5px 0 0;font-size:20px;font-weight:750;letter-spacing:-.3px}
-.count{display:inline-grid;place-items:center;min-width:23px;height:23px;margin-left:5px;padding:0 6px;border-radius:8px;background:#1d463b;color:#65d7a4;font-size:11px;vertical-align:2px}
-.live-indicator{display:flex;align-items:center;gap:6px;color:#70d7a7;font-size:11px;font-weight:650}
-.live-indicator i,.friend-info p i{width:7px;height:7px;border-radius:50%;background:#40d995;display:inline-block}
-.empty-state{display:flex;align-items:center;flex-direction:column;text-align:center;padding:35px 20px 29px;border:1px solid #272c33;border-radius:22px;background:linear-gradient(145deg,#1a1e24,#15181d)}
-.empty-icon{width:62px;height:62px;display:grid;place-items:center;border:1px solid #34453f;border-radius:20px;background:#1d302b;color:#68d8a5;font-size:29px;margin-bottom:17px}
-.empty-state h3{font-size:16px;font-weight:750;margin:0 0 8px}
-.empty-state p{max-width:270px;margin:0 auto 20px;color:#939ca8;font-size:12px;line-height:1.65}
-.primary-button,.secondary-button,.small-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;background:#2f9b71;color:white;font-size:12px;font-weight:750;padding:12px 17px}
-.primary-button{min-height:43px}.secondary-button{width:100%;margin-top:14px;background:#1d2925;border:1px solid #2d5144;color:#7be0b1}
-.friend-list{display:flex;flex-direction:column;gap:4px}
-.friend-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #242930}
-.avatar-wrap{position:relative;flex:0 0 45px}
-.avatar{display:grid;place-items:center;width:45px;height:45px;border:1px solid #3b5149;border-radius:16px;background:linear-gradient(135deg,#285847,#253b37);color:#a5f0cf;font-size:13px;font-weight:800}
-.online-dot{position:absolute;right:-1px;bottom:-1px;width:13px;height:13px;border:3px solid #101216;border-radius:50%;background:#40d995}
-.friend-info{min-width:0;flex:1}
-.friend-info h3{margin:0 0 5px;font-size:13px;font-weight:700;overflow-wrap:anywhere}
-.friend-info p{display:flex;align-items:center;gap:6px;margin:0;color:#9099a5;font-size:10px;overflow-wrap:anywhere}
-.friend-info p i{width:6px;height:6px}
-.small-primary{padding:9px 11px;min-height:34px;white-space:nowrap;font-size:10px;border-radius:10px}
-.small-primary:disabled{background:#272c32;color:#8b949f}
-.requests-section{margin-top:28px}
-.request-row .avatar{flex:0 0 45px}
-.find-wide{width:100%;margin-top:25px}
-.find-title{display:flex;align-items:center;gap:12px;margin-bottom:22px}
-.find-title>div{flex:1}
-.search-box{display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;margin-bottom:17px;border:1px solid #303640;border-radius:14px;background:#1a1e24;color:#8b96a3}
-.search-box ion-icon{font-size:19px}
-.search-box input{width:100%;border:0;outline:0;background:transparent;color:#f7f8fa;font-size:12px}
-.search-box input::placeholder{color:#77818e}
-.candidates-list{margin-top:8px}.candidate-row{padding:13px 0}
-.compact{padding:28px 14px}
-.feedback{padding:11px 13px;margin:-12px 0 17px;border-radius:11px;font-size:12px}
-.feedback.error{background:#402326;color:#ffb8bc}.feedback.success{background:#1c382d;color:#8de4b8}
-.loader{width:23px;height:23px;border:2px solid #2d493e;border-top-color:#64d6a3;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
-.bottom-nav{position:fixed;z-index:10;left:0;right:0;bottom:0;display:flex;justify-content:space-around;align-items:center;padding:10px 8px calc(10px + env(safe-area-inset-bottom));border-top:1px solid #282d34;background:rgba(17,20,25,.96);backdrop-filter:blur(18px)}
-.bottom-nav a{display:flex;flex:1;flex-direction:column;align-items:center;gap:4px;color:#818b98;text-decoration:none;font-size:9px}
-.bottom-nav a ion-icon{font-size:20px}.bottom-nav a.active{color:#6fddb0}
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(min-width:700px){.friends-page{max-width:760px;margin:auto;padding:30px 28px 110px}.empty-state{padding:48px 24px}.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:min(760px,100%);border-left:1px solid #282d34;border-right:1px solid #282d34;border-radius:18px 18px 0 0}}
+:host { display: block; color: #302347; }
+
+ion-content {
+  --background: #fbf9fe;
+  --color: #302347;
+}
+
+.friends-page {
+  min-height: 100%;
+  padding: 20px 18px 100px;
+  background: #fbf9fe;
+  color: #302347;
+}
+
+.friends-header { display: flex; align-items: center; gap: 13px; margin: 2px 0 28px; }
+.friends-header > div { flex: 1; min-width: 0; }
+.friends-header p { margin: 0 0 4px; color: #8a7e97; font-size: 9px; font-weight: 800; letter-spacing: 2px; }
+.friends-header h1 { margin: 0; color: #302347; font-size: 27px; font-weight: 800; letter-spacing: -.6px; }
+
+.back-button, .header-icon {
+  display: grid; place-items: center; width: 40px; height: 40px;
+  border: 1px solid #e9def7; border-radius: 13px; background: #fff;
+  color: #7542bd; font-size: 20px; text-decoration: none; cursor: pointer;
+}
+.header-icon { font-size: 18px; }
+.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 17px; }
+.eyebrow { color: #8a7e97; font-size: 9px; font-weight: 800; letter-spacing: 1.8px; }
+.section-heading h2, .find-title h2 { margin: 5px 0 0; color: #302347; font-size: 20px; font-weight: 750; letter-spacing: -.3px; }
+.count { display: inline-grid; place-items: center; min-width: 23px; height: 23px; margin-left: 5px; padding: 0 6px; border-radius: 8px; background: #f2eafd; color: #7542bd; font-size: 11px; vertical-align: 2px; }
+.live-indicator { display: flex; align-items: center; gap: 6px; color: #26845f; font-size: 11px; font-weight: 650; }
+.live-indicator i, .friend-info p i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #2eaa79; }
+
+.empty-state {
+  display: flex; align-items: center; flex-direction: column; text-align: center;
+  padding: 35px 20px 29px; border: 1px solid #eee5f8; border-radius: 22px;
+  background: #fff; color: #302347; box-shadow: 0 4px 20px rgba(65, 39, 95, .045);
+}
+.empty-icon { display: grid; place-items: center; width: 62px; height: 62px; margin-bottom: 17px; border: 1px solid #e4d7f4; border-radius: 20px; background: #f2eafd; color: #7542bd; font-size: 29px; }
+.empty-state h3 { margin: 0 0 8px; color: #302347; font-size: 16px; font-weight: 750; }
+.empty-state p { max-width: 270px; margin: 0 auto 20px; color: #80758f; font-size: 12px; line-height: 1.65; }
+
+.primary-button, .secondary-button, .small-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: 0; border-radius: 12px; background: #7542bd; color: #fff;
+  font-size: 12px; font-weight: 750; padding: 12px 17px; cursor: pointer;
+}
+.primary-button { min-height: 43px; }
+.secondary-button { width: 100%; margin-top: 14px; border: 1px solid #e4d7f4; background: #f7f1ff; color: #7542bd; }
+.friend-list { display: flex; flex-direction: column; gap: 4px; }
+.friend-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee5f8; }
+.avatar-wrap { position: relative; flex: 0 0 45px; }
+.avatar { display: grid; place-items: center; width: 45px; height: 45px; border: 1px solid #e4d7f4; border-radius: 16px; background: linear-gradient(135deg, #7542bd, #a779e4); color: #fff; font-size: 13px; font-weight: 800; }
+.online-dot { position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border: 3px solid #fbf9fe; border-radius: 50%; background: #2eaa79; }
+.friend-info { min-width: 0; flex: 1; }
+.friend-info h3 { margin: 0 0 5px; color: #302347; font-size: 13px; font-weight: 700; overflow-wrap: anywhere; }
+.friend-info p { display: flex; align-items: center; gap: 6px; margin: 0; color: #80758f; font-size: 10px; overflow-wrap: anywhere; }
+.friend-info p i { width: 6px; height: 6px; }
+.small-primary { min-height: 34px; padding: 9px 11px; border-radius: 10px; white-space: nowrap; font-size: 10px; }
+.small-primary:disabled { background: #f0ebf6; color: #9b90a8; cursor: not-allowed; }
+.requests-section { margin-top: 28px; }
+.request-row .avatar { flex: 0 0 45px; }
+.find-wide { width: 100%; margin-top: 25px; }
+.find-title { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+.find-title > div { flex: 1; min-width: 0; }
+.search-box { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 14px; margin-bottom: 17px; border: 1px solid #e9e1f1; border-radius: 14px; background: #fff; color: #8c6abd; }
+.search-box ion-icon { font-size: 19px; }
+.search-box input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: #302347; font: inherit; font-size: 12px; }
+.search-box input::placeholder { color: #b3aabb; }
+.candidates-list { margin-top: 8px; }
+.candidate-row { padding: 13px 0; }
+.compact { padding: 28px 14px; }
+.feedback { padding: 11px 13px; margin: -12px 0 17px; border-radius: 11px; font-size: 12px; }
+.feedback.error { border: 1px solid #f5cbd2; background: #fff0f2; color: #a7354a; }
+.feedback.success { border: 1px solid #c9ead9; background: #eaf8f1; color: #247a57; }
+.loader { width: 23px; height: 23px; margin-bottom: 12px; border: 2px solid #e4d7f4; border-top-color: #7542bd; border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (min-width: 700px) {
+  .friends-page { max-width: 760px; margin: auto; padding: 30px 28px 110px; }
+  .empty-state { padding: 48px 24px; }
+}
