@@ -153,7 +153,7 @@ input, textarea { font-family:inherit; }
 ion-app.ogbia-app-shell { position: relative; }
 ion-router-outlet.app-router-outlet {
   position: absolute;
-  inset: 66px 0 94px;
+  inset: 66px 0 calc(68px + env(safe-area-inset-bottom));
   display: block;
   width: 100%;
   height: auto;
@@ -162,5 +162,5 @@ ion-router-outlet.app-router-outlet {
 }
 app-shared-navbar { position: relative; z-index: 1000; }
 @media (max-width: 760px) {
-  ion-router-outlet.app-router-outlet { inset: 62px 0 92px; }
+  ion-router-outlet.app-router-outlet { inset: 62px 0 calc(68px + env(safe-area-inset-bottom)); }
 }
