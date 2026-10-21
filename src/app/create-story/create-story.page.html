@@ -1,0 +1,44 @@
+<ion-content [fullscreen]="true">
+  <div class="story-page">
+    <div class="story-container">
+      <header class="topbar">
+        <a routerLink="/home" class="back" aria-label="Back"><ion-icon name="arrow-back"></ion-icon></a>
+        <h1>Create story</h1><span class="duration">24 hours</span>
+      </header>
+      <p class="intro">Share a moment with your Ogbia friends. Stories disappear after 24 hours.</p>
+
+      <div class="type-tabs" role="tablist" aria-label="Story type">
+        <button type="button" [class.active]="type === 'text'" (click)="chooseType('text')"><ion-icon name="text-outline"></ion-icon> Text</button>
+        <button type="button" [class.active]="type === 'image'" (click)="chooseType('image')"><ion-icon name="image-outline"></ion-icon> Photo</button>
+        <button type="button" [class.active]="type === 'video'" (click)="chooseType('video')"><ion-icon name="videocam-outline"></ion-icon> Video</button>
+      </div>
+
+      @if (type === 'text') {
+        <div class="text-preview" [style.background]="backgrounds[textBackground]">
+          <textarea [(ngModel)]="content" maxlength="5000" placeholder="Write your story…" aria-label="Story text"></textarea>
+          <div class="backgrounds" aria-label="Text background">
+            @for (bg of backgrounds; track bg; let i = $index) {
+              <button type="button" [style.background]="bg" [class.selected]="i === textBackground" (click)="textBackground = i" [attr.aria-label]="'Background ' + (i + 1)"></button>
+            }
+          </div>
+        </div>
+      } @else {
+        <div class="upload-preview">
+          @if (previewUrl && type === 'image') { <img [src]="previewUrl" alt="Story photo preview"> }
+          @else if (previewUrl && type === 'video') { <video [src]="previewUrl" controls playsinline></video> }
+          @else {
+            <div class="upload-empty"><ion-icon [name]="type === 'image' ? 'image-outline' : 'videocam-outline'"></ion-icon><b>Add a {{ type }}</b><span>Choose a file up to 50 MB</span></div>
+          }
+          @if (previewUrl) { <button type="button" class="remove-media" (click)="removeMedia()" aria-label="Remove media"><ion-icon name="close-circle"></ion-icon></button> }
+        </div>
+        <label class="choose-file"><ion-icon [name]="type === 'image' ? 'images-outline' : 'film-outline'"></ion-icon>{{ previewUrl ? 'Change ' + type : 'Choose ' + type }}<input type="file" [accept]="type === 'image' ? 'image/jpeg,image/png,image/webp' : 'video/mp4,video/quicktime,video/webm'" (change)="onFileSelected($event)"></label>
+      }
+
+      @if (errorMessage) { <p class="error" role="alert">{{ errorMessage }}</p> }
+      <button type="button" class="publish" (click)="publish()" [disabled]="submitting">
+        @if (submitting) { <ion-icon name="sync-outline" class="spin"></ion-icon> Publishing… }
+        @else { Share story <ion-icon name="paper-plane-outline"></ion-icon> }
+      </button>
+    </div>
+  </div>
+</ion-content>
