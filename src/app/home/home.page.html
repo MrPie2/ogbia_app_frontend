@@ -21,9 +21,9 @@
           } @else {
             @for (group of storyGroups; track group.user.id) {
               @if (group.is_mine && !group.stories.length) {
-                <a class="story your-story" routerLink="/create-story" aria-label="Add your story">
-                  <div class="story-ring own account-story-avatar"><span>{{ initials }}</span><em>+</em></div>
-                  <small>Your story</small>
+                <a class="story story-add-button" routerLink="/create-story" aria-label="Add a story">
+                  <span class="story-add-circle"><ion-icon name="add" aria-hidden="true"></ion-icon></span>
+                  <small>Add story</small>
                 </a>
               } @else {
                 <button type="button" class="story story-button" (click)="openStory(group)" [attr.aria-label]="'View ' + group.user.name + ' story'">
@@ -36,8 +36,9 @@
               }
             }
             @if (!storyGroups.length) {
-              <a class="story your-story" routerLink="/create-story">
-                <div class="story-ring own account-story-avatar"><span>{{ initials }}</span><em>+</em></div><small>Your story</small>
+              <a class="story story-add-button" routerLink="/create-story" aria-label="Add a story">
+                <span class="story-add-circle"><ion-icon name="add" aria-hidden="true"></ion-icon></span>
+                <small>Add story</small>
               </a>
             }
           }
