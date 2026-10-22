@@ -1,4 +1,4 @@
 <ion-app class="ogbia-app-shell">
-  <app-shared-navbar></app-shared-navbar>
+  @if (includeNavbar) {\n    <app-shared-navbar></app-shared-navbar>\n  }
   <ion-router-outlet class="app-router-outlet"></ion-router-outlet>
 </ion-app>
