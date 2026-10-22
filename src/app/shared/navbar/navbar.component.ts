@@ -21,10 +21,7 @@ export class NavbarComponent implements OnDestroy {
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
         takeUntil(this.destroy$)
       )
-      .subscribe((event) => {
-        this.closeMenu();
-      });
-
+      .subscribe(() => this.closeMenu());
   }
 
   toggleMenu(): void {
