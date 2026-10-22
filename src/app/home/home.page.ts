@@ -2,6 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { timeout } from 'rxjs';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService, AuthUser } from '../services/auth.service';
 import { CommunityPost, PostsService } from '../services/posts.service';
@@ -96,7 +97,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   loadFeed(): void {
     this.loadingPosts = true;
-    this.postsService.getPosts().subscribe({
+    this.postsService.getPosts().pipe(timeout(15000)).subscribe({
       next: (response) => {
         this.posts = response.data || [];
         this.loadingPosts = false;
@@ -109,14 +110,16 @@ export class HomePage implements OnInit, OnDestroy {
           this.router.navigate(['/login']);
           return;
         }
-        this.feedError = 'The community feed could not be loaded. Please try again.';
+        this.feedError = error.name === 'TimeoutError'
+          ? 'The community feed is taking too long to respond. Check your connection or API server, then retry.'
+          : 'The community feed could not be loaded. Please try again.';
       }
     });
   }
 
   loadStories(): void {
     this.loadingStories = true;
-    this.storiesService.getStories().subscribe({
+    this.storiesService.getStories().pipe(timeout(15000)).subscribe({
       next: (response) => {
         this.storyGroups = response.data || [];
         this.loadingStories = false;
@@ -129,7 +132,9 @@ export class HomePage implements OnInit, OnDestroy {
           this.router.navigate(['/login']);
           return;
         }
-        this.storiesError = 'Stories could not be loaded.';
+        this.storiesError = error.name === 'TimeoutError'
+          ? 'Stories are taking too long to load. Check your connection or API server, then retry.'
+          : 'Stories could not be loaded.';
       }
     });
   }
