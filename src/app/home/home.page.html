@@ -1,18 +1,6 @@
 <ion-content [fullscreen]="true">
   <div class="page light home-page">
     <div class="container">
-      <section class="account-card fade-up" aria-label="Your account">
-        <div class="account-avatar" aria-hidden="true">{{ initials }}</div>
-        <div class="account-copy">
-          <small>{{ loadingUser ? 'Loading your account…' : 'Welcome back' }}</small>
-          <h1>{{ displayName }}</h1>
-          <p>{{ user?.email || 'Your account details' }}</p>
-          @if (user?.phone) { <p class="account-phone">{{ user?.phone }}</p> }
-        </div>
-        <button class="logout-button" type="button" (click)="logout()" aria-label="Log out"><ion-icon name="log-out-outline"></ion-icon></button>
-      </section>
-      @if (userError) { <p class="account-notice" role="status">{{ userError }}</p> }
-
       <section class="stories-section fade-up" aria-label="Friends' stories">
         <div class="stories-heading"><h2>Stories</h2><span>Lasts 24 hours</span></div>
         <div class="stories">
