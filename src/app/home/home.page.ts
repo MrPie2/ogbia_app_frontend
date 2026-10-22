@@ -37,6 +37,7 @@ export class HomePage implements OnInit, OnDestroy {
   private storyStartedAt = 0;
   private storyElapsedBeforePause = 0;
   private storyDuration = 7000;
+  private skipNextViewEnterRefresh = false;
 
   constructor(
     private readonly auth: AuthService,
@@ -53,6 +54,12 @@ export class HomePage implements OnInit, OnDestroy {
     }
 
     this.user = this.auth.getCachedUser();
+
+    // Load immediately when Home is first created (including immediately after login).
+    // The Ionic view-enter hook below handles later returns to this cached page.
+    this.loadFeed();
+    this.loadStories();
+    this.skipNextViewEnterRefresh = true;
     this.auth.getAuthenticatedUser().subscribe({
       next: (user) => { this.user = user; this.loadingUser = false; },
       error: (error: HttpErrorResponse) => {
@@ -80,6 +87,12 @@ export class HomePage implements OnInit, OnDestroy {
     // Ionic can keep this page alive between navigation events, so ngOnInit
     // is not guaranteed to run again after login or returning from another page.
     if (localStorage.getItem('token')) {
+      // Avoid duplicate requests on the first render; still refresh whenever
+      // the user returns to Home from another page.
+      if (this.skipNextViewEnterRefresh) {
+        this.skipNextViewEnterRefresh = false;
+        return;
+      }
       this.loadFeed();
       this.loadStories();
     }
