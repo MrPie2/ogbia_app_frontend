@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IonRouterOutlet, IonApp } from '@ionic/angular';
@@ -55,6 +55,9 @@ import {
 } from 'ionicons/icons';
 import { PresenceService } from './services/presence.service';
 import { NavbarComponent } from './shared/navbar/navbar.component';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subject, filter, takeUntil } from 'rxjs';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -63,8 +66,22 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
   standalone: true,
   imports: [FormsModule, CommonModule, IonRouterOutlet, IonApp, NavbarComponent],
 })
-export class AppComponent {
-  constructor(private readonly presence: PresenceService) {
+export class AppComponent implements OnDestroy {
+  includeNavbar = false;
+  private readonly destroy$ = new Subject<void>();
+
+  constructor(
+    private readonly presence: PresenceService,
+    private readonly router: Router,
+    private readonly auth: AuthService
+  ) {
+    this.updateNavbarInclusion(this.router.url);
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd), takeUntil(this.destroy$))
+      .subscribe((event) => this.updateNavbarInclusion(event.urlAfterRedirects));
+    this.auth.sessionChanges$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updateNavbarInclusion(this.router.url));
     // Register the Ionicons used across the app so they render reliably in
     // standalone Angular/Ionic pages instead of depending on lazy icon loading.
     addIcons({
@@ -118,5 +135,17 @@ export class AppComponent {
       'videocam-outline': videocamOutline,
     });
     this.presence.start();
+  }
+
+  private updateNavbarInclusion(url: string): void {
+    const path = url.split('?')[0].split('#')[0].replace(/\/$/, '') || '/';
+    const publicRoutes = ['/', '/welcome', '/login', '/get_started', '/complete-profile'];
+    const hasSessionToken = typeof localStorage !== 'undefined' && !!localStorage.getItem('token');
+    this.includeNavbar = hasSessionToken && !publicRoutes.includes(path);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
