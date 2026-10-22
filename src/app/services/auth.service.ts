@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface AuthUser {
@@ -28,6 +28,9 @@ export interface ProfileCompletionResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apiUrl = environment.apiUrl;
+  private readonly sessionChanges = new Subject<boolean>();
+  readonly sessionChanges$ = this.sessionChanges.asObservable();
+
   constructor(private readonly http: HttpClient) {}
 
   register(phone: string, referralId: string): Observable<AuthResponse> {
@@ -62,6 +65,7 @@ export class AuthService {
     if (response.token) {
       localStorage.setItem('token', response.token);
       if (response.user) localStorage.setItem('auth_user', JSON.stringify(response.user));
+      this.sessionChanges.next(true);
     }
   }
 
@@ -84,5 +88,6 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('auth_user');
+    this.sessionChanges.next(false);
   }
 }
