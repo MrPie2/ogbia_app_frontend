@@ -59,7 +59,7 @@
           }
         } @else {
           <div class="ward-grid">
-            @for (ward of wards; track ward.number) {
+            @for (ward of wards; track ward.id) {
               <article class="ward-card">
                 <span class="ward-number">{{ ward.code || ward.id.toString().padStart(2, '0') }}</span>
                 <div><strong>{{ ward.name }}</strong><small>{{ ward.description || (ward.communities?.length ? ward.communities.length + ' linked communities' : 'Community mapping to be confirmed') }}</small></div>
