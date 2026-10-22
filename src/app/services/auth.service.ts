@@ -9,6 +9,9 @@ export interface AuthUser {
   email: string | null;
   phone?: string | null;
   referral_code?: string | null;
+  profile_photo_path?: string | null;
+  profile_photo_url?: string | null;
+  created_at?: string | null;
   [key: string]: unknown;
 }
 
@@ -52,6 +55,21 @@ export class AuthService {
       password,
       password_confirmation: passwordConfirmation,
     }, { headers }).pipe(tap((response) => {
+      if (response.user) localStorage.setItem('auth_user', JSON.stringify(response.user));
+    }));
+  }
+
+  uploadProfilePhoto(file: File): Observable<{ success: boolean; message: string; user: AuthUser }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token ?? ''}`,
+      Accept: 'application/json',
+    });
+    const form = new FormData();
+    form.append('profile_photo', file, file.name);
+    return this.http.post<{ success: boolean; message: string; user: AuthUser }>(
+      `${this.apiUrl}/profile/photo`, form, { headers }
+    ).pipe(tap((response) => {
       if (response.user) localStorage.setItem('auth_user', JSON.stringify(response.user));
     }));
   }
