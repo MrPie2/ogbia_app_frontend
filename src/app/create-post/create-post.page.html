@@ -7,7 +7,7 @@
         <span></span>
       </div>
 
-      <div class="post-to"><b>Share with the Ogbia community</b><span>Public <ion-icon name="globe-outline"></ion-icon></span></div>
+      
 
       <form class="composer card fade-up" (ngSubmit)="publish()">
         <div class="composer-author">
@@ -16,6 +16,20 @@
         </div>
 
         <textarea name="content" [(ngModel)]="content" maxlength="10000" placeholder="What's on your mind? Share it with Ogbia…" aria-label="Post content"></textarea>
+
+        <section class="privacy-picker" aria-labelledby="privacy-title">
+          <label id="privacy-title" for="postPrivacy">Who can see your post?</label>
+          <select id="postPrivacy" name="privacy" [(ngModel)]="privacy">
+            <option value="only_me">🔒 Only me</option>
+            <option value="villagers">🏘️ My villagers only</option>
+            <option value="public">🌍 Entire public</option>
+          </select>
+          <small>
+            @if (privacy === 'only_me') { Only you will be able to see this post. }
+            @else if (privacy === 'villagers') { Only you and people from your hometown can see this post. }
+            @else { Everyone on Ogbia Connect can see this post. }
+          </small>
+        </section>
 
         @if (previewUrl && mediaKind === 'image') {
           <div class="media-preview"><img [src]="previewUrl" alt="Selected image preview"><button type="button" class="remove-media" (click)="removeMedia()" aria-label="Remove media"><ion-icon name="close-circle"></ion-icon></button></div>
