@@ -40,6 +40,10 @@ export const routes: Routes = [
     loadComponent: () => import('./create-post/create-post.page').then(m => m.CreatePostPage)
   },
   {
+    path: 'create-story',
+    loadComponent: () => import('./create-story/create-story.page').then(m => m.CreateStoryPage)
+  },
+  {
     path: 'reps',
     loadComponent: () => import('./reps/reps.page').then(m => m.RepsPage)
   },
