@@ -1,1 +1,91 @@
-<ion-content [fullscreen]="true"><div class="page"><div class="container"><div class="topbar"><a class="back" routerLink="/explore"><ion-icon name="arrow-back"></ion-icon></a><h1>My Constituency</h1><span></span></div><div class="blue-hero fade-up"><div class="seal">OGBIA</div><h2>Ogbia LGA</h2><p>Bayelsa State, Nigeria</p><small>Ogbia Local Government Area is made up<br>of 14 wards and several communities.</small></div><div class="mini-stats fade-up delay-1"><div><b>14</b><span>Wards</span></div><div><b>98+</b><span>Communities</span></div><div><b>214K+</b><span>Population</span></div></div><div class="section-title"><h2>My Ward</h2></div><div class="ward card fade-up delay-2"><span class="ward-icon"><ion-icon name="location-outline"></ion-icon></span><div><b>Ward 6</b><small>Etogwe</small></div><button>View Details</button></div><div class="section-title"><h2>Popular Services</h2></div><div class="service-grid"><a class="card" routerLink="/groups"><ion-icon name="people-outline"></ion-icon><b>Ward Projects</b></a><a class="card"><ion-icon name="newspaper-outline"></ion-icon><b>Community News</b></a><a class="card"><ion-icon name="document-text-outline"></ion-icon><b>Documents</b></a><a class="card"><ion-icon name="stats-chart-outline"></ion-icon><b>Budget & Plans</b></a></div></div></div></ion-content>
+<ion-content [fullscreen]="true">
+  <main class="my-ogbia-page">
+    <section class="page-heading">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> OGBIA KNOWLEDGE BASE</div>
+      <h1>My <span>Ogbia</span></h1>
+      <p>Explore our communities, wards, traditional leadership and elected representatives.</p>
+    </section>
+
+    <section class="intro-card">
+      <div class="intro-copy">
+        <span class="intro-label">YOUR COMMUNITY. YOUR VOICE.</span>
+        <h2>Know where you belong.</h2>
+        <p>Find community information and learn who represents your people at every level of government.</p>
+      </div>
+      <div class="intro-art" aria-hidden="true"><ion-icon name="compass-outline"></ion-icon></div>
+    </section>
+
+    <section class="stats-grid" aria-label="Directory overview">
+      <div class="stat-card"><span class="stat-icon"><ion-icon name="location-outline"></ion-icon></span><div><strong>{{ communities.length }}</strong><small>Listed communities</small></div></div>
+      <div class="stat-card"><span class="stat-icon"><ion-icon name="grid-outline"></ion-icon></span><div><strong>{{ wards.length }}</strong><small>Electoral wards</small></div></div>
+      <div class="stat-card"><span class="stat-icon"><ion-icon name="people-outline"></ion-icon></span><div><strong>6</strong><small>Leadership categories</small></div></div>
+    </section>
+
+    @if (!selectedCommunity) {
+      <section class="directory-section">
+        <div class="section-heading">
+          <div><span class="section-kicker">EXPLORE OGBIA</span><h2>Community directory</h2></div>
+          <span class="directory-count">{{ activeTab === 'communities' ? filteredCommunities.length : wards.length }} {{ activeTab === 'communities' ? 'communities' : 'wards' }}</span>
+        </div>
+
+        <div class="directory-tabs" role="tablist" aria-label="Directory type">
+          <button type="button" role="tab" [attr.aria-selected]="activeTab === 'communities'" [class.active]="activeTab === 'communities'" (click)="selectTab('communities')"><ion-icon name="home-outline"></ion-icon> Communities</button>
+          <button type="button" role="tab" [attr.aria-selected]="activeTab === 'wards'" [class.active]="activeTab === 'wards'" (click)="selectTab('wards')"><ion-icon name="grid-outline"></ion-icon> Wards</button>
+        </div>
+
+        @if (activeTab === 'communities') {
+          <label class="search-box">
+            <ion-icon name="search-outline"></ion-icon>
+            <input type="search" placeholder="Search for your community..." [value]="searchTerm" (input)="searchTerm = $any($event.target).value" aria-label="Search communities">
+            @if (searchTerm) { <button type="button" aria-label="Clear search" (click)="searchTerm = ''"><ion-icon name="close-circle"></ion-icon></button> }
+          </label>
+          <div class="community-grid">
+            @for (community of filteredCommunities; track community.name) {
+              <button class="community-card" type="button" (click)="openCommunity(community)">
+                <span class="community-symbol"><ion-icon name="location-outline"></ion-icon></span>
+                <span class="community-copy"><strong>{{ community.name }}</strong><small>Community profile</small></span>
+                <ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon>
+              </button>
+            }
+          </div>
+          @if (!filteredCommunities.length) {
+            <div class="empty-state"><ion-icon name="search-outline"></ion-icon><strong>No community found</strong><p>Try another spelling or search term.</p></div>
+          }
+        } @else {
+          <div class="ward-grid">
+            @for (ward of wards; track ward.number) {
+              <article class="ward-card">
+                <span class="ward-number">{{ ward.number.toString().padStart(2, '0') }}</span>
+                <div><strong>{{ ward.name }}</strong><small>{{ ward.note }}</small></div>
+                <span class="verification-tag"><ion-icon name="time-outline"></ion-icon> To verify</span>
+              </article>
+            }
+          </div>
+          <p class="directory-note"><ion-icon name="information-circle-outline"></ion-icon> Ward names and community-to-ward assignments will be confirmed against official electoral records.</p>
+        }
+      </section>
+    } @else {
+      <section class="community-detail">
+        <button class="back-link" type="button" (click)="closeCommunity()"><ion-icon name="arrow-back-outline"></ion-icon> Back to directory</button>
+        <div class="community-hero">
+          <div class="large-community-symbol"><ion-icon name="location-outline"></ion-icon></div>
+          <div><span class="section-kicker">COMMUNITY PROFILE</span><h2>{{ selectedCommunity.name }}</h2><p>Ogbia Local Government Area · Bayelsa State</p></div>
+          <span class="verification-tag"><ion-icon name="time-outline"></ion-icon> Profile in progress</span>
+        </div>
+        <div class="detail-intro"><h3>Leadership & representation</h3><p>Find the people serving this community, from traditional leadership to elected representatives.</p></div>
+        <div class="officials-grid">
+          @for (role of leadershipRoles; track role.title) {
+            <article class="official-card">
+              <span class="official-icon"><ion-icon [name]="role.icon"></ion-icon></span>
+              <div class="official-info"><strong>{{ role.title }}</strong><small>{{ role.subtitle }}</small><span class="pending-info">Details to be verified</span></div>
+              <ion-icon class="official-arrow" name="chevron-forward-outline"></ion-icon>
+            </article>
+          }
+        </div>
+        <div class="verification-notice"><ion-icon name="shield-checkmark-outline"></ion-icon><div><strong>Accuracy matters</strong><p>Names and contact details will only be published after verification. This avoids displaying incorrect or outdated leadership information.</p></div></div>
+      </section>
+    }
+
+    <footer class="page-footer"><ion-icon name="leaf-outline"></ion-icon><span>My Ogbia · Preserving our people, places and representation.</span></footer>
+  </main>
+</ion-content>
