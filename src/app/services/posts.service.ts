@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export type PostPrivacy = 'only_me' | 'villagers' | 'public';
+
 export interface CommunityPost {
   id: number;
   user_id: number;
@@ -10,8 +12,9 @@ export interface CommunityPost {
   media_path: string | null;
   media_type: 'image' | 'video' | null;
   media_url: string | null;
+  privacy: PostPrivacy;
   created_at: string;
-  author: { id: number; name: string } | null;
+  author: { id: number; name: string; hometown?: string | null } | null;
 }
 
 export interface PostsPage {
@@ -33,10 +36,11 @@ export class PostsService {
     });
   }
 
-  createPost(content: string, media?: File | null): Observable<{ message: string; data: CommunityPost }> {
+  createPost(content: string, media?: File | null, privacy: PostPrivacy = 'public'): Observable<{ message: string; data: CommunityPost }> {
     const form = new FormData();
     if (content.trim()) form.append('content', content.trim());
     if (media) form.append('media', media, media.name);
+    form.append('privacy', privacy);
 
     return this.http.post<{ message: string; data: CommunityPost }>(`${this.apiUrl}/posts`, form, {
       headers: this.authHeaders()
