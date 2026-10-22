@@ -30,6 +30,15 @@
       </div>
 
       <div class="field">
+        <label for="hometown">Hometown <span>{{ hasReferrer ? 'Inherited from your referrer' : 'Required' }}</span></label>
+        <input id="hometown" name="hometown" type="text" [(ngModel)]="hometown"
+          [readonly]="hasReferrer" [required]="!hasReferrer" maxlength="120"
+          [placeholder]="hasReferrer ? 'Your referrer’s hometown' : 'Enter your hometown'">
+        <small *ngIf="hasReferrer">Your hometown is automatically set to match the person who invited you.</small>
+        <small *ngIf="!hasReferrer">This hometown will be inherited by people you invite to Ogbia Connect.</small>
+      </div>
+
+      <div class="field">
         <label for="email">Email address <span>Required</span></label>
         <input id="email" name="email" type="email" autocomplete="email" [(ngModel)]="email"
           placeholder="you@example.com" required email maxlength="255">
