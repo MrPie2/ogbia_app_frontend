@@ -138,7 +138,7 @@ export class AppComponent implements OnDestroy {
   }
 
   private updateNavbarInclusion(url: string): void {
-    const path = url.split('?')[0].split('#')[0].replace(/\\/$/, '') || '/';
+    const path = url.split('?')[0].split('#')[0].replace(/\/$/, '') || '/';
     const publicRoutes = ['/', '/welcome', '/login', '/get_started', '/complete-profile'];
     const hasSessionToken = typeof localStorage !== 'undefined' && !!localStorage.getItem('token');
     this.includeNavbar = hasSessionToken && !publicRoutes.includes(path);
