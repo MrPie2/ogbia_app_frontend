@@ -1,5 +1,5 @@
 <ion-content [fullscreen]="true">
-  <div class="page light home-page">
+  <div class="page light home-page" style="padding: 5px;">
     <div class="container">
       <section class="stories-section fade-up" aria-label="Friends' stories" style="padding-top: -30px">
         <div class="stories-heading"><h2>Stories</h2><span>Lasts 24 hours</span></div>
@@ -41,15 +41,15 @@
       } @else {
         @for (post of posts; track post.id) {
           <article class="post card fade-up" style="padding: 0px">
-            <div class="post-head" style="padding: 15px">
+            <div class="post-head" style="padding: 10px 10px 0px 10px">
               <div class="feed-avatar">{{ postInitials(post) }}</div>
               <div class="post-author"><b>{{ post.author?.name || 'Ogbia member' }}</b><small>{{ post.created_at | date:'medium' }}</small></div>
               <ion-icon name="ellipsis-horizontal"></ion-icon>
             </div>
-            @if (post.content) { <p class="post-content" style="padding: 20px">{{ post.content }}</p> }
-            @if (post.media_url && post.media_type === 'image') { <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy" style="border: 0px"> }
+            @if (post.content) { <p class="post-content" style="padding: 8px 10px 0px 10px; margin-top: -2px">{{ post.content }}</p> }
+            @if (post.media_url && post.media_type === 'image') { <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy" style="margin-top: -3px;border-radius: 0px"> }
             @if (post.media_url && post.media_type === 'video') { <video class="post-video" [src]="post.media_url" controls playsinline preload="metadata"></video> }
-            <div class="post-actions" style="padding: 15px"><span><ion-icon name="heart-outline"></ion-icon> Like</span><span><ion-icon name="chatbubble-outline"></ion-icon> Comment</span><span><ion-icon name="share-social-outline"></ion-icon> Share</span></div>
+            <div class="post-actions" style="padding: 8px; border: 0px;"><span><ion-icon name="heart-outline"></ion-icon> Like</span><span><ion-icon name="chatbubble-outline"></ion-icon> Comment</span><span><ion-icon name="share-social-outline"></ion-icon> Share</span></div>
           </article>
         }
       }

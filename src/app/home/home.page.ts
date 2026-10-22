@@ -114,7 +114,7 @@ export class HomePage implements OnInit, OnDestroy {
           this.router.navigate(['/login']);
           return;
         }
-        this.feedError = (error as any).name === 'TimeoutError'
+        this.feedError = error.error === 'TimeoutError'
           ? 'The community feed is taking too long to respond. Check your connection or API server, then retry.'
           : 'The community feed could not be loaded. Please try again.';
       }
@@ -138,7 +138,7 @@ export class HomePage implements OnInit, OnDestroy {
           this.router.navigate(['/login']);
           return;
         }
-        this.storiesError = (error as any).name === 'TimeoutError'
+        this.storiesError = error.error === 'TimeoutError'
           ? 'Stories are taking too long to load. Check your connection or API server, then retry.'
           : 'Stories could not be loaded.';
       }

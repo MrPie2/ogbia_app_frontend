@@ -48,7 +48,7 @@ ion-content {
   .composer textarea { min-height: 230px; }
 }
 
-.privacy-picker { display: grid; gap: 8px; margin: 14px 0 18px; padding: 14px; border: 1px solid #e8e2f2; border-radius: 14px; background: #fbf9fe; }
+.privacy-picker { display: grid; gap: 8px; margin: 14px 0 18px; border-radius: 14px;  }
 .privacy-picker > label { color: #29243a; font-size: 12px; font-weight: 750; }
 .privacy-picker select { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid #d9cde9; border-radius: 10px; background: #fff; color: #302744; font: inherit; font-size: 13px; }
 .privacy-picker select:focus { outline: 2px solid #b9a0df; outline-offset: 2px; }
