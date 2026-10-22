@@ -1,17 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
-
-interface Community {
-  name: string;
-  note?: string;
-}
-
-interface OfficialRole {
-  title: string;
-  subtitle: string;
-  icon: string;
-}
+import { KnowledgeBaseService, KnowledgeCommunity, KnowledgeWard, KnowledgeRepresentative } from '../services/knowledge-base.service';
 
 @Component({
   selector: 'app-constituency',
@@ -20,72 +11,105 @@ interface OfficialRole {
   templateUrl: './constituency.page.html',
   styleUrl: './constituency.page.scss'
 })
-export class ConstituencyPage {
+export class ConstituencyPage implements OnInit {
   searchTerm = '';
-  selectedCommunity: Community | null = null;
+  selectedCommunity: KnowledgeCommunity | null = null;
   activeTab: 'communities' | 'wards' = 'communities';
+  communities: KnowledgeCommunity[] = [];
+  wards: KnowledgeWard[] = [];
+  loading = false;
+  detailLoading = false;
+  errorMessage = '';
+  detailError = '';
 
-  // Initial directory compiled from public town/community listings.
-  // Ward-to-community assignments and office holders should be confirmed
-  // against official records before being marked as verified.
-  readonly communities: Community[] = [
-    { name: 'Abobiri' }, { name: 'Abulabiri' }, { name: 'Agbura' },
-    { name: 'Agudama' }, { name: 'Akalabagi' }, { name: 'Akipelai' },
-    { name: 'Akolomani' }, { name: 'Alagbafama' }, { name: 'Amadugama' },
-    { name: 'Amakalakala' }, { name: 'Amerokeni' }, { name: 'Anyama' },
-    { name: 'Awiakalakala' }, { name: 'Ayakoro' }, { name: 'Ebelebiri' },
-    { name: 'Egbedama' }, { name: 'Egeleama' }, { name: 'Elebele' },
-    { name: 'Elogiama' }, { name: 'Emadike' }, { name: 'Emeyal I' },
-    { name: 'Emeyal II' }, { name: 'Epebu' }, { name: 'Ewoama' },
-    { name: 'Ewoi' }, { name: 'Ibobio' }, { name: 'Idema' },
-    { name: 'Imiringi' }, { name: 'Iyalakiri' }, { name: 'Kolo I' },
-    { name: 'Kolo II' }, { name: 'Kolo III' }, { name: 'Obeduma' },
-    { name: 'Odobio' }, { name: 'Ogbia Town' }, { name: 'Ogbomama' },
-    { name: 'Ogireyankiri' }, { name: 'Okiki' }, { name: 'Okodi' },
-    { name: 'Okodogu' }, { name: 'Okpiniama' }, { name: 'Ologanga' },
-    { name: 'Ologi' }, { name: 'Ologohe' }, { name: 'Oloibiri' },
-    { name: 'Onuebum' }, { name: 'Opume' }, { name: 'Oruma' },
-    { name: 'Otabagi' }, { name: 'Otakeme' }, { name: 'Otuaba' },
-    { name: 'Otuabula I' }, { name: 'Otuabula II' }, { name: 'Otuaka' },
-    { name: 'Otuakanagu' }, { name: 'Otuasega' }, { name: 'Otuedu' },
-    { name: 'Otuegila' }, { name: 'Otuegwe' }, { name: 'Otuekpein' },
-    { name: 'Otuogidi' }, { name: 'Otuogori' }, { name: 'Otuoke' },
-    { name: 'Otuokpoti' }, { name: 'Otuobhi' }, { name: 'Otuagbagi' },
-    { name: 'Outar' }, { name: 'Sangabama' }, { name: 'Uruama' },
-    { name: 'Waribugoama' }, { name: 'Oruema' }, { name: 'Ewoma' }
-  ];
+  constructor(private readonly knowledgeBase: KnowledgeBaseService) {}
 
-  readonly wards = Array.from({ length: 13 }, (_, index) => ({
-    number: index + 1,
-    name: `Ward ${index + 1}`,
-    note: 'Official ward name and community mapping to be confirmed'
-  }));
-
-  readonly leadershipRoles: OfficialRole[] = [
-    { title: 'Ward Leader / Councillor', subtitle: 'Ward-level representation', icon: 'people-outline' },
-    { title: 'Clan Head', subtitle: 'Traditional clan leadership', icon: 'ribbon-outline' },
-    { title: 'Community Representative', subtitle: 'Community-level leadership', icon: 'home-outline' },
-    { title: 'House of Assembly', subtitle: 'Bayelsa State constituency', icon: 'business-outline' },
-    { title: 'House of Representatives', subtitle: 'Federal constituency', icon: 'people-circle-outline' },
-    { title: 'Senate', subtitle: 'Bayelsa East Senatorial District', icon: 'podium-outline' }
-  ];
-
-  get filteredCommunities(): Community[] {
-    const term = this.searchTerm.trim().toLocaleLowerCase();
-    if (!term) return this.communities;
-    return this.communities.filter(community => community.name.toLocaleLowerCase().includes(term));
+  ngOnInit(): void {
+    this.loadCommunities();
+    this.loadWards();
   }
 
-  openCommunity(community: Community): void {
+  get filteredCommunities(): KnowledgeCommunity[] {
+    const term = this.searchTerm.trim().toLocaleLowerCase();
+    return term
+      ? this.communities.filter(item => item.name.toLocaleLowerCase().includes(term))
+      : this.communities;
+  }
+
+  loadCommunities(): void {
+    this.loading = true;
+    this.errorMessage = '';
+    this.knowledgeBase.getCommunities().subscribe({
+      next: response => {
+        this.communities = response.data ?? [];
+        this.loading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.loading = false;
+        this.errorMessage = error.status === 0
+          ? 'Could not connect to the knowledge base. Check your internet connection and try again.'
+          : 'The community directory could not be loaded. Please try again later.';
+      }
+    });
+  }
+
+  loadWards(): void {
+    this.knowledgeBase.getWards().subscribe({
+      next: response => this.wards = response.data ?? [],
+      error: () => {
+        // Keep the directory usable if wards have not been loaded into the database yet.
+        this.wards = [];
+      }
+    });
+  }
+
+  openCommunity(community: KnowledgeCommunity): void {
     this.selectedCommunity = community;
+    this.detailLoading = true;
+    this.detailError = '';
+    this.knowledgeBase.getCommunity(community.slug).subscribe({
+      next: response => {
+        this.selectedCommunity = response.data;
+        this.detailLoading = false;
+      },
+      error: () => {
+        this.detailLoading = false;
+        this.detailError = 'Community details are temporarily unavailable. Please try again.';
+      }
+    });
   }
 
   closeCommunity(): void {
     this.selectedCommunity = null;
+    this.detailError = '';
   }
 
   selectTab(tab: 'communities' | 'wards'): void {
     this.activeTab = tab;
     this.selectedCommunity = null;
+  }
+
+  roleIcon(role: string): string {
+    const value = role.toLowerCase();
+    if (value.includes('clan') || value.includes('traditional')) return 'ribbon-outline';
+    if (value.includes('senate') || value.includes('senator')) return 'podium-outline';
+    if (value.includes('assembly')) return 'business-outline';
+    if (value.includes('representative') || value.includes('house of reps')) return 'people-circle-outline';
+    if (value.includes('ward') || value.includes('councillor') || value.includes('councilor')) return 'people-outline';
+    return 'home-outline';
+  }
+
+  roleSubtitle(role: string): string {
+    const value = role.toLowerCase();
+    if (value.includes('clan') || value.includes('traditional')) return 'Traditional leadership';
+    if (value.includes('senate') || value.includes('senator')) return 'Bayelsa East Senatorial District';
+    if (value.includes('assembly')) return 'Bayelsa State legislature';
+    if (value.includes('representative') || value.includes('house of reps')) return 'Federal constituency';
+    if (value.includes('ward') || value.includes('councillor') || value.includes('councilor')) return 'Ward-level representation';
+    return 'Community leadership';
+  }
+
+  representativeLabel(person: KnowledgeRepresentative): string {
+    return person.full_name?.trim() || 'Representative not yet listed';
   }
 }
