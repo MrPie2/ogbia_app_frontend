@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { PostsService } from '../services/posts.service';
+import { PostsService, PostPrivacy } from '../services/posts.service';
 
 @Component({
   selector: 'app-create-post',
@@ -18,6 +18,7 @@ export class CreatePostPage implements OnDestroy {
   displayName = 'Your profile';
   selectedFile: File | null = null;
   previewUrl: string | null = null;
+  privacy: PostPrivacy = 'public';
   submitting = false;
   errorMessage = '';
   successMessage = '';
@@ -83,7 +84,7 @@ export class CreatePostPage implements OnDestroy {
     }
 
     this.submitting = true;
-    this.posts.createPost(this.content, this.selectedFile).subscribe({
+    this.posts.createPost(this.content, this.selectedFile, this.privacy).subscribe({
       next: () => {
         this.submitting = false;
         this.content = '';
