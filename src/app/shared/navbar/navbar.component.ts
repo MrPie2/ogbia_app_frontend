@@ -3,6 +3,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { IonIcon } from '@ionic/angular';
 import { Subject, filter, takeUntil } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-shared-navbar',
@@ -16,7 +17,7 @@ export class NavbarComponent implements OnDestroy {
   showNavbar = false;
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private readonly router: Router) {
+  constructor(private readonly router: Router, private readonly auth: AuthService) {
     this.updateNavbarVisibility(this.router.url);
 
     this.router.events
@@ -28,13 +29,17 @@ export class NavbarComponent implements OnDestroy {
         this.closeMenu();
         this.updateNavbarVisibility(event.urlAfterRedirects);
       });
+
+    this.auth.sessionChanges$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updateNavbarVisibility(this.router.url));
   }
 
   private updateNavbarVisibility(url: string): void {
     const path = url.split('?')[0].split('#')[0].replace(/\/$/, '') || '/';
-    const authenticationRoutes = ['/welcome', '/login', '/get_started', '/complete-profile'];
+    const authenticationRoutes = ['/welcome', '/login', '/get_started'];
     const isAuthenticationPage = authenticationRoutes.includes(path);
-    const hasSessionToken = !!localStorage.getItem('token');
+    const hasSessionToken = typeof localStorage !== 'undefined' && !!localStorage.getItem('token');
 
     this.showNavbar = hasSessionToken && !isAuthenticationPage;
   }
