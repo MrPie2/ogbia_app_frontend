@@ -7,7 +7,7 @@
   <nav class="desktop-links" aria-label="Main navigation">
     <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
     <a routerLink="/friends" routerLinkActive="active">Friends</a>
-    <a routerLink="/constituency" routerLinkActive="active">Constituency</a>
+    <a routerLink="/constituency" routerLinkActive="active">My Ogbia</a>
     <a routerLink="/reps" routerLinkActive="active">Representatives</a>
   </nav>
 
@@ -24,7 +24,7 @@
     <nav id="mobile-navigation" class="mobile-links" aria-label="Mobile navigation">
       <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()"><ion-icon name="home-outline"></ion-icon>Home</a>
       <a routerLink="/friends" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="people-outline"></ion-icon>Friends</a>
-      <a routerLink="/constituency" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="map-outline"></ion-icon>Constituency</a>
+      <a routerLink="/constituency" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="map-outline"></ion-icon>My Ogbia</a>
       <a routerLink="/reps" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="people-circle-outline"></ion-icon>Representatives</a>
       <a routerLink="/profile" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="person-outline"></ion-icon>Profile</a>
       <a routerLink="/create-post" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="create-outline"></ion-icon>Create a post</a>
@@ -42,8 +42,8 @@
   <a class="create-nav" routerLink="/create-post" routerLinkActive="active" aria-label="Create a post">
     <span class="create-nav-icon"><ion-icon name="add"></ion-icon></span><span>Create</span>
   </a>
-  <a routerLink="/constituency" routerLinkActive="active" aria-label="Constituency">
-    <ion-icon name="map-outline"></ion-icon><span>Constituency</span>
+  <a routerLink="/constituency" routerLinkActive="active" aria-label="My Ogbia">
+    <ion-icon name="map-outline"></ion-icon><span>My Ogbia</span>
   </a>
   <a routerLink="/profile" routerLinkActive="active" aria-label="Profile">
     <ion-icon name="person-circle-outline"></ion-icon><span>Profile</span>
