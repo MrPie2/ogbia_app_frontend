@@ -10,6 +10,19 @@
     </section>
 
     <form class="profile-card" (ngSubmit)="completeProfile()" #profileForm="ngForm">
+      <div class="optional-photo-field">
+        <label for="profilePhoto">Profile picture <span>Optional</span></label>
+        <div class="optional-photo-row">
+          <div class="optional-photo-preview">
+            <img *ngIf="photoPreview" [src]="photoPreview" alt="Selected profile picture preview">
+            <span *ngIf="!photoPreview" aria-hidden="true">OC</span>
+          </div>
+          <div class="optional-photo-copy">
+            <input id="profilePhoto" name="profilePhoto" type="file" accept="image/jpeg,image/png,image/webp" (change)="onPhotoSelected($event)">
+            <small>JPG, PNG or WebP. Maximum 5 MB. You can add or change it later from your Profile page.</small>
+          </div>
+        </div>
+      </div>
       <div class="field">
         <label for="fullName">Full name <span>Required</span></label>
         <input id="fullName" name="fullName" type="text" autocomplete="name" [(ngModel)]="fullName"

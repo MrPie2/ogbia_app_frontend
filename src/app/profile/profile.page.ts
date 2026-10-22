@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { AuthService } from '../services/auth.service';
+import { AuthService, AuthUser } from '../services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -12,17 +13,93 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './profile.page.html',
   styleUrl: './profile.page.scss',
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage implements OnInit, OnDestroy {
+  user: AuthUser | null = null;
   referralCode = '';
+  loading = true;
+  savingPhoto = false;
+  photoError = '';
+  photoSuccess = '';
+  photoPreview: string | null = null;
+  selectedPhoto: File | null = null;
 
-  constructor(private readonly auth: AuthService) {}
+  constructor(private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    const cached = this.auth.getCachedUser();
-    this.referralCode = cached?.referral_code || '';
+    this.user = this.auth.getCachedUser();
+    this.referralCode = this.user?.referral_code || '';
     this.auth.getAuthenticatedUser().subscribe({
-      next: (user) => this.referralCode = user.referral_code || '',
-      error: () => {},
+      next: (user) => {
+        this.user = user;
+        this.referralCode = user.referral_code || '';
+        this.loading = false;
+        this.cdr.markForCheck();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.loading = false;
+        this.photoError = error.status === 401
+          ? 'Your session has expired. Please sign in again.'
+          : 'Could not refresh your profile. Showing saved details if available.';
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.photoPreview) URL.revokeObjectURL(this.photoPreview);
+  }
+
+  get displayName(): string {
+    return this.user?.name?.trim() || 'Ogbia Member';
+  }
+
+  get initials(): string {
+    return this.displayName.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+  }
+
+  onPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    this.photoError = '';
+    this.photoSuccess = '';
+    if (!file) return;
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      this.photoError = 'Choose a JPG, PNG, or WebP image.';
+      input.value = '';
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      this.photoError = 'Your profile picture must be 5 MB or smaller.';
+      input.value = '';
+      return;
+    }
+    if (this.photoPreview) URL.revokeObjectURL(this.photoPreview);
+    this.selectedPhoto = file;
+    this.photoPreview = URL.createObjectURL(file);
+    this.cdr.markForCheck();
+  }
+
+  uploadProfilePhoto(): void {
+    if (!this.selectedPhoto || this.savingPhoto) return;
+    this.savingPhoto = true;
+    this.photoError = '';
+    this.photoSuccess = '';
+    this.auth.uploadProfilePhoto(this.selectedPhoto).subscribe({
+      next: (response) => {
+        this.user = response.user;
+        this.selectedPhoto = null;
+        if (this.photoPreview) URL.revokeObjectURL(this.photoPreview);
+        this.photoPreview = null;
+        this.savingPhoto = false;
+        this.photoSuccess = response.message || 'Profile picture updated.';
+        this.cdr.markForCheck();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.savingPhoto = false;
+        this.photoError = error.error?.errors?.profile_photo?.[0] ||
+          error.error?.message || 'Could not upload your profile picture. Please try again.';
+        this.cdr.markForCheck();
+      }
     });
   }
 
