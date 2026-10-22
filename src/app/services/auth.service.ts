@@ -8,6 +8,8 @@ export interface AuthUser {
   name: string | null;
   email: string | null;
   phone?: string | null;
+  hometown?: string | null;
+  referred_by?: number | null;
   referral_code?: string | null;
   profile_photo_path?: string | null;
   profile_photo_url?: string | null;
@@ -43,7 +45,7 @@ export class AuthService {
     }).pipe(tap((response) => this.storeSession(response)));
   }
 
-  completeProfile(name: string, email: string, password: string, passwordConfirmation: string): Observable<ProfileCompletionResponse> {
+  completeProfile(name: string, email: string, password: string, passwordConfirmation: string, hometown?: string): Observable<ProfileCompletionResponse> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token ?? ''}`,
@@ -54,6 +56,7 @@ export class AuthService {
       email: email.trim(),
       password,
       password_confirmation: passwordConfirmation,
+      ...(hometown?.trim() ? { hometown: hometown.trim() } : {}),
     }, { headers }).pipe(tap((response) => {
       if (response.user) localStorage.setItem('auth_user', JSON.stringify(response.user));
     }));
@@ -85,6 +88,10 @@ export class AuthService {
       if (response.user) localStorage.setItem('auth_user', JSON.stringify(response.user));
       this.sessionChanges.next(true);
     }
+  }
+
+  cacheUser(user: AuthUser): void {
+    localStorage.setItem('auth_user', JSON.stringify(user));
   }
 
   getAuthenticatedUser(): Observable<AuthUser> {
