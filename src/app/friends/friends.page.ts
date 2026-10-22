@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -32,7 +32,8 @@ export class FriendsPage implements OnInit, OnDestroy {
     private readonly friendsService: FriendsService,
     private readonly auth: AuthService,
     private readonly presence: PresenceService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -64,20 +65,22 @@ export class FriendsPage implements OnInit, OnDestroy {
       next: response => {
         this.friends = response.data || [];
         this.loadingFriends = false;
+        this.cdr.markForCheck();
       },
       error: error => {
         this.loadingFriends = false;
         this.handleError(error, error?.name === 'TimeoutError'
           ? 'The friends request timed out. Check the API server/network and retry.'
           : 'Could not load your friends. Please try again.');
+        this.cdr.markForCheck();
       }
     });
   }
 
   loadRequests(): void {
     this.friendsService.getRequests().pipe(timeout(15000)).subscribe({
-      next: response => this.incomingRequests = response.incoming || [],
-      error: () => { this.errorMessage = 'Friend requests could not be loaded. Check the API server/network.'; }
+      next: response => { this.incomingRequests = response.incoming || []; this.cdr.markForCheck(); },
+      error: () => { this.errorMessage = 'Friend requests could not be loaded. Check the API server/network.'; this.cdr.markForCheck(); }
     });
   }
 
@@ -103,12 +106,14 @@ export class FriendsPage implements OnInit, OnDestroy {
       next: response => {
         this.candidates = response.data || [];
         this.loadingUsers = false;
+        this.cdr.markForCheck();
       },
       error: error => {
         this.loadingUsers = false;
         this.handleError(error, error?.name === 'TimeoutError'
           ? 'Finding friends timed out. Check the API server/network and retry.'
           : 'Could not find users right now.');
+        this.cdr.markForCheck();
       }
     });
   }
@@ -121,12 +126,14 @@ export class FriendsPage implements OnInit, OnDestroy {
         user.friendship_status = 'pending';
         user.request_sent_by_me = true;
         this.successMessage = response.message || 'Friend request sent.';
+        this.cdr.markForCheck();
       },
       error: error => {
         if (error.status === 409) {
           user.friendship_status = error.error?.friendship_status || 'pending';
           user.request_sent_by_me = true;
           this.errorMessage = error.error?.message || 'A request already exists.';
+          this.cdr.markForCheck();
           return;
         }
         this.handleError(error, 'Unable to send friend request.');
@@ -139,6 +146,7 @@ export class FriendsPage implements OnInit, OnDestroy {
       next: response => {
         this.incomingRequests = this.incomingRequests.filter(item => item.request_id !== request.request_id);
         this.successMessage = response.message || 'Friend request accepted.';
+        this.cdr.markForCheck();
         this.loadFriends();
         this.loadCandidates(this.search);
       },
@@ -169,6 +177,7 @@ export class FriendsPage implements OnInit, OnDestroy {
       return;
     }
     this.errorMessage = error?.error?.message || fallback;
+    this.cdr.markForCheck();
   }
 
   initials(name: string): string {

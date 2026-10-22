@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -43,7 +43,8 @@ export class HomePage implements OnInit, OnDestroy {
     private readonly auth: AuthService,
     private readonly postsService: PostsService,
     private readonly storiesService: StoriesService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -60,9 +61,10 @@ export class HomePage implements OnInit, OnDestroy {
     this.loadFeed();
     this.loadStories();
     this.auth.getAuthenticatedUser().subscribe({
-      next: (user) => { this.user = user; this.loadingUser = false; },
+      next: (user) => { this.user = user; this.loadingUser = false; this.cdr.markForCheck(); },
       error: (error: HttpErrorResponse) => {
         this.loadingUser = false;
+        this.cdr.markForCheck();
         if (error.status === 401 || error.status === 419) {
           this.auth.logout();
           this.router.navigate(['/login']);
@@ -102,9 +104,11 @@ export class HomePage implements OnInit, OnDestroy {
         this.posts = response.data || [];
         this.loadingPosts = false;
         this.feedError = '';
+        this.cdr.markForCheck();
       },
       error: (error: HttpErrorResponse) => {
         this.loadingPosts = false;
+        this.cdr.markForCheck();
         if (error.status === 401) {
           this.auth.logout();
           this.router.navigate(['/login']);
@@ -124,9 +128,11 @@ export class HomePage implements OnInit, OnDestroy {
         this.storyGroups = response.data || [];
         this.loadingStories = false;
         this.storiesError = '';
+        this.cdr.markForCheck();
       },
       error: (error: HttpErrorResponse) => {
         this.loadingStories = false;
+        this.cdr.markForCheck();
         if (error.status === 401) {
           this.auth.logout();
           this.router.navigate(['/login']);
@@ -248,6 +254,7 @@ export class HomePage implements OnInit, OnDestroy {
           ? { ...item, stories: updatedStories, has_unseen: updatedStories.length > 0 }
           : item);
         this.deletingStory = false;
+        this.cdr.markForCheck();
         if (!updatedStories.length) {
           this.closeStory();
           return;
@@ -261,6 +268,7 @@ export class HomePage implements OnInit, OnDestroy {
         this.storyActionError = error.status === 403
           ? 'You can only delete your own stories.'
           : 'Could not delete this story. Please try again.';
+        this.cdr.markForCheck();
       }
     });
   }
@@ -303,6 +311,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.storiesService.markViewed(story.id).subscribe({
       next: () => {
         story.is_viewed = true;
+        this.cdr.markForCheck();
         this.storyGroups = this.storyGroups.map(item => item.user.id === group.user.id
           ? {
               ...item,
@@ -335,6 +344,7 @@ export class HomePage implements OnInit, OnDestroy {
       if (this.storyPaused || !this.activeStoryGroup) return;
       const elapsed = this.storyElapsedBeforePause + (Date.now() - this.storyStartedAt);
       this.storyProgress = Math.min(100, (elapsed / this.storyDuration) * 100);
+      this.cdr.markForCheck();
       if (elapsed >= this.storyDuration) this.nextStory();
     }, 50);
   }
