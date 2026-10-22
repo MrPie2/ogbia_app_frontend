@@ -9,7 +9,7 @@
         <button class="profile-photo photo-button" type="button" (click)="photoInput.click()" aria-label="Choose a profile picture">
           <img *ngIf="photoPreview || currentUser.profile_photo_url" [src]="photoPreview || currentUser.profile_photo_url" alt="Your profile picture">
           <span *ngIf="!photoPreview && !currentUser.profile_photo_url" class="profile-initials">{{ initials }}</span>
-          <span class="photo-edit-icon"><ion-icon name="camera-outline"></ion-icon></span>
+          <span class="photo-edit-icon"><ion-icon name="create-outline"></ion-icon></span>
         </button>
         <input #photoInput class="visually-hidden-file" type="file" accept="image/jpeg,image/png,image/webp" (change)="onPhotoSelected($event)">
         <h1>{{ displayName }}</h1>
