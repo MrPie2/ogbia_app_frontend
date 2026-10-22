@@ -1,1 +1,49 @@
-.create-page{min-height:100%;padding-top:24px;padding-bottom:100px;background:#101114;color:#f5f6f8}.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.topbar h1{font-size:18px;font-weight:750;margin:0}.back{display:grid;place-items:center;width:38px;height:38px;border:1px solid #303238;background:#1b1c20;color:#fff;border-radius:12px;text-decoration:none;font-size:19px}.post-to{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;margin:0 3px 12px;color:#f3f4f6}.post-to span{display:flex;align-items:center;gap:5px;border:1px solid #36383f;background:#1b1c20;border-radius:20px;padding:7px 10px;color:#d9dce2;font-size:10px}.composer{padding:16px;border:1px solid #2d2f35;background:#1b1c20;border-radius:18px}.composer-author{display:flex;align-items:center;gap:10px}.composer-avatar{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#246b5b,#43a58c);font-weight:800;color:#fff}.composer-author b,.composer-author small{display:block}.composer-author b{font-size:12px;color:#fff}.composer-author small{font-size:10px;color:#9297a2;margin-top:3px}.composer textarea{display:block;width:100%;min-height:190px;margin:14px 0;padding:4px 0;border:0;outline:0;resize:vertical;background:transparent;color:#f5f6f8;font-size:15px;line-height:1.65;font-family:inherit}.composer textarea::placeholder{color:#858a95}.composer-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-top:1px solid #303238;padding-top:13px}.tool-button{position:relative;display:flex;align-items:center;gap:7px;border:1px solid #33363d;background:#23252a;border-radius:11px;padding:10px 12px;color:#e8eaee;font-size:11px;cursor:pointer}.tool-button ion-icon{font-size:18px;color:#58c3a5}.tool-button input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.media-hint{font-size:9px;color:#858a95}.media-preview{position:relative;margin:10px 0 14px;overflow:hidden;border-radius:13px;background:#0d0e10}.media-preview img,.media-preview video{display:block;width:100%;max-height:360px;object-fit:contain}.remove-media{position:absolute;right:9px;top:9px;border:0;background:#15161be8;color:#fff;border-radius:50%;font-size:23px;padding:0;line-height:1}.post-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;height:48px;margin-top:16px;border:0;border-radius:13px;background:#1c54df;color:#fff;font-weight:700;font-size:13px;box-shadow:0 8px 22px #1c54df35}.post-btn:disabled{opacity:.65}.form-message{padding:11px 13px;border-radius:10px;font-size:11px;line-height:1.5}.form-message.error{background:#3b2024;color:#ffb9c0}.form-message.success{background:#17352e;color:#a9f2d9}.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}@media(min-width:640px){.create-page .container{max-width:680px}.composer textarea{min-height:230px}}
+:host { display: block; color: #302347; }
+
+ion-content {
+  --background: #fbf9fe;
+  --color: #302347;
+}
+
+.create-page {
+  min-height: 100%;
+  padding: 24px 18px 100px;
+  background: #fbf9fe;
+  color: #302347;
+}
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
+.topbar h1 { margin: 0; color: #302347; font-size: 20px; font-weight: 800; letter-spacing: -.35px; }
+.back {
+  display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 40px;
+  border: 1px solid #e9def7; border-radius: 12px; background: #fff;
+  color: #7542bd; text-decoration: none; font-size: 19px;
+}
+.post-to { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 3px 12px; color: #504260; font-size: 12px; }
+.post-to span { display: flex; align-items: center; gap: 5px; padding: 7px 10px; border: 1px solid #e9def7; border-radius: 20px; background: #fff; color: #7542bd; font-size: 10px; white-space: nowrap; }
+.composer { padding: 16px; border: 1px solid #eee5f8; border-radius: 18px; background: #fff; color: #302347; box-shadow: 0 6px 24px rgba(65, 39, 95, .045); }
+.composer-author { display: flex; align-items: center; gap: 10px; }
+.composer-avatar { display: grid; place-items: center; width: 42px; height: 42px; flex: 0 0 42px; border: 1px solid #e4d7f4; border-radius: 50%; background: linear-gradient(135deg, #7542bd, #a779e4); color: #fff; font-weight: 800; }
+.composer-author b, .composer-author small { display: block; }
+.composer-author b { color: #302347; font-size: 12px; }
+.composer-author small { margin-top: 3px; color: #80758f; font-size: 10px; }
+.composer textarea { display: block; width: 100%; min-height: 190px; margin: 14px 0; padding: 8px 0; border: 0; outline: 0; resize: vertical; background: transparent; color: #302347; font-family: inherit; font-size: 15px; line-height: 1.65; }
+.composer textarea::placeholder { color: #a79bb4; }
+.composer-tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding-top: 13px; border-top: 1px solid #f0e8f7; }
+.tool-button { position: relative; display: flex; align-items: center; gap: 7px; padding: 10px 12px; border: 1px solid #e9def7; border-radius: 11px; background: #faf7ff; color: #504260; font-size: 11px; cursor: pointer; }
+.tool-button ion-icon { color: #7542bd; font-size: 18px; }
+.tool-button input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.media-hint { color: #8a7e97; font-size: 9px; }
+.media-preview { position: relative; overflow: hidden; margin: 10px 0 14px; border: 1px solid #eee5f8; border-radius: 13px; background: #f7f3fb; }
+.media-preview img, .media-preview video { display: block; width: 100%; max-height: 360px; object-fit: contain; }
+.remove-media { position: absolute; top: 9px; right: 9px; display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 1px solid #e9def7; border-radius: 50%; background: rgba(255,255,255,.95); color: #7542bd; font-size: 23px; }
+.post-btn { display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; min-height: 48px; margin-top: 16px; padding: 12px 16px; border: 0; border-radius: 13px; background: #7542bd; color: #fff; font-size: 13px; font-weight: 750; box-shadow: 0 8px 22px rgba(117,66,189,.18); cursor: pointer; }
+.post-btn:disabled { opacity: .65; cursor: wait; }
+.form-message { padding: 11px 13px; border: 1px solid transparent; border-radius: 10px; font-size: 11px; line-height: 1.5; }
+.form-message.error { border-color: #f5cbd2; background: #fff0f2; color: #a7354a; }
+.form-message.success { border-color: #c9ead9; background: #eaf8f1; color: #247a57; }
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (min-width: 640px) {
+  .create-page .container { max-width: 680px; margin-inline: auto; }
+  .composer textarea { min-height: 230px; }
+}
