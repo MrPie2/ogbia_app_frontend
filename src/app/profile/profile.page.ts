@@ -21,7 +21,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   photoError = '';
   photoSuccess = '';
   photoPreview: string | null = null;
-  private selectedPhoto: File | null = null;
+  selectedPhoto: File | null = null;
 
   constructor(private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef) {}
 
