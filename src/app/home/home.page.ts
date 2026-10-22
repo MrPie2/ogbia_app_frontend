@@ -65,7 +65,6 @@ export class HomePage implements OnInit, OnDestroy {
         this.userError = 'We could not refresh your account details. Showing saved details if available.';
       }
     });
-    this.loadFeed();
   }
 
   ngOnDestroy(): void {
@@ -78,7 +77,12 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter(): void {
-    if (localStorage.getItem('token')) this.loadStories();
+    // Ionic can keep this page alive between navigation events, so ngOnInit
+    // is not guaranteed to run again after login or returning from another page.
+    if (localStorage.getItem('token')) {
+      this.loadFeed();
+      this.loadStories();
+    }
   }
 
   loadFeed(): void {
