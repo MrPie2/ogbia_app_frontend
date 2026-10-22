@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { Subscription, debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, Subject, timeout } from 'rxjs';
 import { FriendUser, FriendsService } from '../services/friends.service';
 import { AuthService } from '../services/auth.service';
 import { PresenceService } from '../services/presence.service';
@@ -60,22 +60,24 @@ export class FriendsPage implements OnInit, OnDestroy {
 
   loadFriends(): void {
     this.loadingFriends = true;
-    this.friendsService.getFriends().subscribe({
+    this.friendsService.getFriends().pipe(timeout(15000)).subscribe({
       next: response => {
         this.friends = response.data || [];
         this.loadingFriends = false;
       },
       error: error => {
         this.loadingFriends = false;
-        this.handleError(error, 'Could not load your friends. Please try again.');
+        this.handleError(error, error?.name === 'TimeoutError'
+          ? 'The friends request timed out. Check the API server/network and retry.'
+          : 'Could not load your friends. Please try again.');
       }
     });
   }
 
   loadRequests(): void {
-    this.friendsService.getRequests().subscribe({
+    this.friendsService.getRequests().pipe(timeout(15000)).subscribe({
       next: response => this.incomingRequests = response.incoming || [],
-      error: () => undefined
+      error: () => { this.errorMessage = 'Friend requests could not be loaded. Check the API server/network.'; }
     });
   }
 
@@ -97,14 +99,16 @@ export class FriendsPage implements OnInit, OnDestroy {
 
   private loadCandidates(search: string): void {
     this.loadingUsers = true;
-    this.friendsService.findUsers(search).subscribe({
+    this.friendsService.findUsers(search).pipe(timeout(15000)).subscribe({
       next: response => {
         this.candidates = response.data || [];
         this.loadingUsers = false;
       },
       error: error => {
         this.loadingUsers = false;
-        this.handleError(error, 'Could not find users right now.');
+        this.handleError(error, error?.name === 'TimeoutError'
+          ? 'Finding friends timed out. Check the API server/network and retry.'
+          : 'Could not find users right now.');
       }
     });
   }
