@@ -67,6 +67,7 @@
   border-radius: 14px;
 }
 .app-bottom-nav a > ion-icon { font-size: 21px; }
+.app-bottom-nav a .bottom-nav-label { display: inline-block; max-width: 100%; white-space: nowrap; font-size: 10px; line-height: 1.2; }
 .app-bottom-nav a.active { color: #7542bd; background: #f4edfc; }
 .app-bottom-nav .create-nav { color: #7542bd; }
 .create-nav-icon { display:grid; place-items:center; width:31px; height:31px; border-radius:11px; color:#fff; background:linear-gradient(145deg,#a779e4,#7542bd); box-shadow:0 5px 13px rgba(117,66,189,.25); }
