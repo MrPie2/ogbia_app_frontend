@@ -40,21 +40,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --ion-color-primary: #7542bd;
-  --ion-color-primary-rgb: 117, 66, 189;
+  --ion-color-primary: #393185;
+  --ion-color-primary-rgb: 57, 49, 133;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #673aa6;
-  --ion-color-primary-tint: #8355c4;
-  --ion-color-secondary: #a779e4;
+  --ion-color-primary-shade: #30296f;
+  --ion-color-primary-tint: #50499b;
+  --ion-color-secondary: #756fc0;
   --ion-color-secondary-rgb: 167, 121, 228;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
   --ion-color-secondary-shade: #936ac9;
   --ion-color-secondary-tint: #b087e7;
   --ion-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --primary: #7542bd;
-  --primary-2: #9b69df;
+  --primary: #393185;
+  --primary-2: #6c65b6;
   --ink: #302347;
   --muted: #80758f;
   --line: #eee5f8;
@@ -71,7 +71,7 @@ html { color-scheme: light; }
 body { background: #fbf9fe; color: var(--ink); }
 ion-content { --background: #fbf9fe; --color: var(--ink); color: var(--ink); }
 ion-button { --background: var(--primary); --background-hover: #6537a6; --background-activated: #6537a6; --color: #fff; --border-radius: 12px; }
-a { --ion-color-primary: #7542bd; }
+a { --ion-color-primary: #393185; }
 
 
 .page { min-height: 100%; padding: 18px 18px 92px; }
@@ -114,7 +114,7 @@ a { --ion-color-primary: #7542bd; }
 .avatar { width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,.12); }
 .avatar.sm { width:38px; height:38px; }
 
-.blue-hero { background: linear-gradient(135deg, #8c5acb, #60369e); color:#fff; border-radius:18px; padding:17px; overflow:hidden; position:relative; box-shadow: var(--shadow); }
+.blue-hero { background: linear-gradient(135deg, #5b54a7, #30296f); color:#fff; border-radius:18px; padding:17px; overflow:hidden; position:relative; box-shadow: var(--shadow); }
 .blue-hero:after { content:''; position:absolute; width:140px; height:140px; right:-70px; top:-60px; border-radius:50%; background:rgba(255,255,255,.07); }
 .blue-hero h2 { font-size:18px; margin:0 0 4px; }
 .blue-hero p { font-size:11px; opacity:.9; margin:5px 0; line-height:1.5; }
