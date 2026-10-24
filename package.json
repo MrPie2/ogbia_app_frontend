@@ -28,7 +28,8 @@
     "bootstrap": "^5.3.8",
     "ionicons": "^8.1.0",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "@capacitor/push-notifications": "^8.0.2"
   },
   "devDependencies": {
     "@angular/build": "22.0.1",
