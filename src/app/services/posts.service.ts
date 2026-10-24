@@ -19,7 +19,7 @@ export interface CommunityPost {
   event_ends_at: string | null;
   event_location: string | null;
   created_at: string;
-  author: { id: number; name: string; hometown?: string | null } | null;
+  author: { id: number; name: string; hometown?: string | null; profile_photo_url?: string | null } | null;
 }
 
 export interface PostsPage {

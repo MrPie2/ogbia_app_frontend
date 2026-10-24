@@ -5,6 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { PostsService, PostPrivacy } from '../services/posts.service';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-create-post',
@@ -109,7 +110,7 @@ export class CreatePostPage implements OnDestroy {
       endsAt: this.eventEndsAt || null,
       location: this.eventLocation.trim()
     } : undefined;
-    this.posts.createPost(this.content, this.selectedFile, this.privacy, eventDetails).subscribe({
+    this.posts.createPost(this.content, this.selectedFile, this.privacy, eventDetails).pipe(timeout(45000)).subscribe({
       next: () => {
         this.submitting = false;
         this.content = '';
@@ -129,9 +130,15 @@ export class CreatePostPage implements OnDestroy {
           return;
         }
         const validation = error.error?.errors;
-        this.errorMessage = validation
-          ? Object.values(validation).flat().join(' ')
-          : (error.error?.message || 'We could not publish your post. Please try again.');
+        if (error.name === 'TimeoutError') {
+          this.errorMessage = 'The server took too long to respond. Your post may not have been saved. Please check your feed before trying again.';
+        } else if (error.status === 0) {
+          this.errorMessage = 'Could not reach the Ogbia server. Check your internet connection and try again.';
+        } else {
+          this.errorMessage = validation
+            ? Object.values(validation).flat().join(' ')
+            : (error.error?.message || `We could not publish your post (HTTP ${error.status}). Please try again.`);
+        }
       }
     });
   }
