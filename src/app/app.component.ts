@@ -58,6 +58,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject, filter, takeUntil } from 'rxjs';
 import { AuthService } from './services/auth.service';
+import { NotificationService, AppNotification } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -68,12 +69,14 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnDestroy {
   includeNavbar = false;
+  notificationToast: AppNotification | null = null;
   private readonly destroy$ = new Subject<void>();
 
   constructor(
     private readonly presence: PresenceService,
     private readonly router: Router,
-    private readonly auth: AuthService
+    private readonly auth: AuthService,
+    private readonly notifications: NotificationService
   ) {
     this.updateNavbarInclusion(this.router.url);
     this.router.events
@@ -135,6 +138,10 @@ export class AppComponent implements OnDestroy {
       'videocam-outline': videocamOutline,
     });
     this.presence.start();
+    this.notifications.start();
+    this.notifications.toast$.pipe(takeUntil(this.destroy$)).subscribe((notification) => {
+      this.notificationToast = notification;
+    });
   }
 
   private updateNavbarInclusion(url: string): void {
@@ -144,7 +151,14 @@ export class AppComponent implements OnDestroy {
     this.includeNavbar = hasSessionToken && !publicRoutes.includes(path);
   }
 
+  dismissNotification(): void {
+    const notification = this.notificationToast;
+    this.notificationToast = null;
+    if (notification?.id) this.notifications.markRead(notification.id);
+  }
+
   ngOnDestroy(): void {
+    this.notifications.stop();
     this.destroy$.next();
     this.destroy$.complete();
   }
