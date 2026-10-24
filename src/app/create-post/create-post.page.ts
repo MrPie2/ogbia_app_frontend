@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { PostsService, PostPrivacy } from '../services/posts.service';
 
@@ -28,7 +28,8 @@ export class CreatePostPage implements OnDestroy {
   errorMessage = '';
   successMessage = '';
 
-  constructor(private readonly posts: PostsService, private readonly router: Router) {
+  constructor(private readonly posts: PostsService, private readonly router: Router, private readonly route: ActivatedRoute) {
+    this.postType = this.route.snapshot.queryParamMap.get('type') === 'event' ? 'event' : 'standard';
     if (!localStorage.getItem('token')) {
       this.router.navigate(['/login']);
       return;
