@@ -130,7 +130,7 @@ export class CreatePostPage implements OnDestroy {
           return;
         }
         const validation = error.error?.errors;
-        if (error.name === 'TimeoutError') {
+        if (error.error === 'TimeoutError') {
           this.errorMessage = 'The server took too long to respond. Your post may not have been saved. Please check your feed before trying again.';
         } else if (error.status === 0) {
           this.errorMessage = 'Could not reach the Ogbia server. Check your internet connection and try again.';
