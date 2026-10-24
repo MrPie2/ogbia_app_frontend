@@ -1,76 +1,46 @@
-<ion-content [fullscreen]="true">
-  <div class="container min-vh-100 d-flex align-items-center justify-content-center py-5">
-    <div class="row justify-content-center">
+<ion-content [fullscreen]="true" class="login-content">
+  <main class="login-shell">
+    <a class="back-link" routerLink="/welcome" aria-label="Back to welcome">
+      <ion-icon name="arrow-back-outline"></ion-icon><span>Back</span>
+    </a>
 
-      <div class="col-12 ">
+    <section class="login-intro">
+      <div class="brand-mark" aria-hidden="true"><ion-icon name="people-circle-outline"></ion-icon></div>
+      <p class="eyebrow">OGBIA CONNECT COMMUNITY</p>
+      <h1>Welcome back.</h1>
+      <p class="intro-copy">Log in to stay connected with your people.</p>
+    </section>
 
-        <!-- Header -->
-        <div class="text-center mb-4">
-
-          <div
-            class=" text-white rounded-4 d-inline-flex
-                   align-items-center justify-content-center mb-3"
-            style="width: 70px; height: 70px;"
-          >
-            <ion-icon
-              name="person-add-outline"
-              style="font-size: 32px;"
-            ></ion-icon>
-          </div>
-
-          <h2 class="fw-bold mb-2">Welcome Back</h2>
+    <form class="login-card" (ngSubmit)="login()" #loginForm="ngForm">
+      <div class="field">
+        <label for="phoneNumber">Phone number</label>
+        <div class="input-wrap">
+          <ion-icon name="call-outline" aria-hidden="true"></ion-icon>
+          <input id="phoneNumber" name="phoneNumber" type="tel" inputmode="tel" autocomplete="tel"
+            [(ngModel)]="phoneNumber" placeholder="e.g. +234 801 234 5678" required maxlength="20">
         </div>
-
-        <div class="card signup-card border-0 shadow-sm rounded-4">
-          <div class="card-body p-4 p-md-5">
-            <div class="mb-4">
-              <label class="form-label fw-semibold">Email</label>
-              <div class="input-group">
-                <span class="input-group-text bg-white">
-                  <ion-icon name="call-outline"></ion-icon>
-                </span>
-                <input type="email" class="form-control" [(ngModel)]="email" placeholder="Email" autocomplete="email" inputmode="email">
-              </div>
-            </div>
-            <div class="mb-4">
-              <label class="form-label fw-semibold">Password
-              </label>
-
-              <div class="input-group">
-                <span class="input-group-text bg-white">
-                  <ion-icon name="people-outline"></ion-icon>
-                </span><input type="password"class="form-control" [(ngModel)]="password" placeholder="Password">
-              </div>
-
-            </div>
-            <button type="button" class="btn btn-primary" (click)="login()" [disabled]="loading">{{ loading ? "Signing in…" : "Login" }}
-              <ion-icon name="arrow-forward-outline" class="ms-2 align-middle"></ion-icon>
-            </button>
-
-
-            @if (errorMessage) {
-              <p class="text-danger small mt-3 mb-0" role="alert">{{ errorMessage }}</p>
-            }
-
-            <!-- Login -->
-            <div class="text-center mt-4">
-
-              <span class="text-light-muted"> Don't have an account?</span>
-              <a routerLink="/get_started" class=" fw-semibold text-decoration-none ms-1" style="color: #393185">Create Account</a>
-
-            </div>
-
-          </div>
-
-        </div>
-        <div class="finger-print" style="display: flex; justify-content: center; margin-top: 30px;">
-              <span class="fas fa-fingerprint" style="font-size: 35pt; color: white;"></span>
-            </div>
-
       </div>
 
-    </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <ion-icon name="lock-closed-outline" aria-hidden="true"></ion-icon>
+          <input id="password" name="password" type="password" autocomplete="current-password"
+            [(ngModel)]="password" placeholder="Enter your password" required>
+        </div>
+      </div>
 
-  </div>
+      @if (errorMessage) {
+        <p class="login-error" role="alert">{{ errorMessage }}</p>
+      }
 
+      <button class="submit-button" type="submit" [disabled]="loading || !loginForm.valid">
+        <span>{{ loading ? 'Signing in…' : 'Log in' }}</span>
+        @if (!loading) { <ion-icon name="arrow-forward-outline"></ion-icon> }
+        @if (loading) { <span class="button-spinner" aria-hidden="true"></span> }
+      </button>
+
+      <p class="signup-prompt">New to Ogbia Connect? <a routerLink="/get_started">Create an account</a></p>
+    </form>
+  </main>
 </ion-content>
