@@ -84,7 +84,11 @@ export class AppComponent implements OnDestroy {
       .subscribe((event) => this.updateNavbarInclusion(event.urlAfterRedirects));
     this.auth.sessionChanges$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.updateNavbarInclusion(this.router.url));
+      .subscribe(() => {
+        this.updateNavbarInclusion(this.router.url);
+        if (localStorage.getItem('token')) this.notifications.start();
+        else this.notifications.stop();
+      });
     // Register the Ionicons used across the app so they render reliably in
     // standalone Angular/Ionic pages instead of depending on lazy icon loading.
     addIcons({
