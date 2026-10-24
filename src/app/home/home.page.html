@@ -36,7 +36,7 @@
         <div class="feed-state card"><ion-icon name="sync-outline" class="spin"></ion-icon><span>Loading community posts…</span></div>
       } @else if (feedError) {
         <div class="feed-state card"><p>{{ feedError }}</p><button type="button" (click)="loadFeed()">Try again</button></div>
-      } @else if (!feedPosts.length && !upcomingEvents.length && !loadingEvents && !eventsError) {
+      } @else if (!feedPosts.length) {
         <div class="feed-state card"><div class="empty-feed-icon"><ion-icon name="chatbubbles-outline"></ion-icon></div><h3>Start the conversation</h3><p>No posts yet. Share an update, photo or video with the Ogbia community.</p><a routerLink="/create-post">Create the first post</a></div>
       } @else {
         @for (post of feedPosts; track post.id) {
