@@ -24,6 +24,28 @@ export interface AuthResponse {
   user: AuthUser;
 }
 
+export interface CommunityLeader {
+  id: number;
+  name: string;
+  hometown: string | null;
+  community_role: string;
+  role_label: string;
+  profile_photo_path?: string | null;
+  profile_photo_url?: string | null;
+}
+
+export interface CommunityLeadersResponse {
+  success: boolean;
+  hometown: string;
+  data: { representative: CommunityLeader[]; clan_head: CommunityLeader[]; youth_leader: CommunityLeader[]; cdc_chairman: CommunityLeader[] };
+}
+
+export interface MemberProfile {
+  id: number; name: string | null; hometown: string | null; community_role: string | null;
+  profile_photo_url: string | null; created_at: string | null;
+}
+export interface MemberProfileResponse { success: boolean; data: MemberProfile; }
+
 export interface ProfileCompletionResponse {
   success: boolean;
   message: string;
@@ -94,6 +116,17 @@ export class AuthService {
     localStorage.setItem('auth_user', JSON.stringify(user));
   }
 
+  getCommunityLeaders(): Observable<CommunityLeadersResponse> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.get<CommunityLeadersResponse>(`${this.apiUrl}/community-leaders`, { headers });
+  }
+
+  getMemberProfile(id: number): Observable<MemberProfileResponse> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.get<MemberProfileResponse>(`${this.apiUrl}/members/${id}`, { headers });
+  }
   getAuthenticatedUser(): Observable<AuthUser> {
     const token = localStorage.getItem('token');
     const headers = token
