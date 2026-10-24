@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { AuthService, AuthUser } from '../services/auth.service';
+import { AuthService, AuthUser, CommunityLeader } from '../services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -22,6 +22,9 @@ export class ProfilePage implements OnInit, OnDestroy {
   photoSuccess = '';
   photoPreview: string | null = null;
   selectedPhoto: File | null = null;
+  leadersLoading = true;
+  leadersError = '';
+  leadershipGroups: { key: string; title: string; subtitle: string; icon: string; members: CommunityLeader[] }[] = [];
 
   constructor(private readonly auth: AuthService, private readonly router: Router, private readonly cdr: ChangeDetectorRef) {}
 
@@ -31,6 +34,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadCommunityLeaders();
     this.user = this.auth.getCachedUser();
     this.referralCode = this.user?.referral_code || '';
     this.auth.getAuthenticatedUser().subscribe({
@@ -45,6 +49,29 @@ export class ProfilePage implements OnInit, OnDestroy {
         this.photoError = error.status === 401
           ? 'Your session has expired. Please sign in again.'
           : 'Could not refresh your profile. Showing saved details if available.';
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  loadCommunityLeaders(): void {
+    this.leadersLoading = true;
+    this.leadersError = '';
+    this.auth.getCommunityLeaders().subscribe({
+      next: response => {
+        const data = response.data;
+        this.leadershipGroups = [
+          { key: 'representative', title: 'Rep Member', subtitle: 'Your hometown representative', icon: 'people-circle-outline', members: data?.representative ?? [] },
+          { key: 'clan_head', title: 'Clan Head', subtitle: 'Traditional leadership', icon: 'ribbon-outline', members: data?.clan_head ?? [] },
+          { key: 'youth_leader', title: 'Youth Leader', subtitle: 'Youth leadership', icon: 'people-outline', members: data?.youth_leader ?? [] },
+          { key: 'cdc_chairman', title: 'CDC Chairman', subtitle: 'Community development', icon: 'business-outline', members: data?.cdc_chairman ?? [] },
+        ];
+        this.leadersLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.leadersLoading = false;
+        this.leadersError = 'Community leaders could not be loaded. Please try again.';
         this.cdr.markForCheck();
       },
     });
