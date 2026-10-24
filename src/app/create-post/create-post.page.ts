@@ -19,6 +19,11 @@ export class CreatePostPage implements OnDestroy {
   selectedFile: File | null = null;
   previewUrl: string | null = null;
   privacy: PostPrivacy = 'public';
+  postType: 'standard' | 'event' = 'standard';
+  eventTitle = '';
+  eventStartsAt = '';
+  eventEndsAt = '';
+  eventLocation = '';
   submitting = false;
   errorMessage = '';
   successMessage = '';
@@ -78,16 +83,40 @@ export class CreatePostPage implements OnDestroy {
   publish(): void {
     this.errorMessage = '';
     this.successMessage = '';
-    if (!this.content.trim() && !this.selectedFile) {
+    if (this.postType === 'event') {
+      if (!this.eventTitle.trim() || !this.eventStartsAt || !this.eventLocation.trim()) {
+        this.errorMessage = 'Add an event title, start date and time, and location.';
+        return;
+      }
+      if (new Date(this.eventStartsAt).getTime() <= Date.now()) {
+        this.errorMessage = 'Choose a future date and time for your event.';
+        return;
+      }
+      if (this.eventEndsAt && new Date(this.eventEndsAt).getTime() <= new Date(this.eventStartsAt).getTime()) {
+        this.errorMessage = 'The event end time must be after its start time.';
+        return;
+      }
+    } else if (!this.content.trim() && !this.selectedFile) {
       this.errorMessage = 'Write something or add a photo/video before posting.';
       return;
     }
 
     this.submitting = true;
-    this.posts.createPost(this.content, this.selectedFile, this.privacy).subscribe({
+    const eventDetails = this.postType === 'event' ? {
+      title: this.eventTitle.trim(),
+      startsAt: this.eventStartsAt,
+      endsAt: this.eventEndsAt || null,
+      location: this.eventLocation.trim()
+    } : undefined;
+    this.posts.createPost(this.content, this.selectedFile, this.privacy, eventDetails).subscribe({
       next: () => {
         this.submitting = false;
         this.content = '';
+        this.eventTitle = '';
+        this.eventStartsAt = '';
+        this.eventEndsAt = '';
+        this.eventLocation = '';
+        this.postType = 'standard';
         this.clearPreview();
         this.selectedFile = null;
         this.router.navigate(['/home']);
