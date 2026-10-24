@@ -42,7 +42,13 @@
         @for (post of feedPosts; track post.id) {
           <article class="post card fade-up" style="padding: 0px">
             <div class="post-head" style="padding: 10px 10px 0px 10px">
-              <div class="feed-avatar">{{ postInitials(post) }}</div>
+              <div class="feed-avatar">
+                @if (post.author?.profile_photo_url) {
+                  <img [src]="post.author?.profile_photo_url" [alt]="post.author?.name || 'User profile picture'" loading="lazy" (error)="$event.target && (($any($event.target).style.display = 'none'))">
+                } @else {
+                  <span>{{ postInitials(post) }}</span>
+                }
+              </div>
               <div class="post-author"><b>{{ post.author?.name || 'Ogbia member' }}</b><small>{{ post.created_at | date:'medium' }}</small></div>
               <ion-icon name="ellipsis-horizontal"></ion-icon>
             </div>
