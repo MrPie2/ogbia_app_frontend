@@ -1,71 +1,50 @@
-ion-content {
-  --background: #fbf9fe;
-  --color: #302347;
-}
-
-:host {
-  color: #302347;
-}
-
-.input-group-text {
-  border-color: #e9e1f1;
-  background: #fff;
-  color: #8c6abd;
-}
-
-.form-control {
-  border-color: #e9e1f1;
-  box-shadow: none;
-  background: #fff;
-  color: #302347;
-}
-
-.form-control:focus {
-  border-color: #9870d1;
-  box-shadow: 0 0 0 3px #39318518;
-}
-
-.card {
+:host { display: block; height: 100%; color: #302347; }
+.login-content { --background: #f8f5fc; }
+.login-shell {
+  box-sizing: border-box;
+  width: min(100%, 520px);
+  height: 100%;
+  min-height: 0;
+  margin: 0 auto;
+  padding: max(10px, env(safe-area-inset-top)) 22px max(10px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   overflow: hidden;
 }
-
-.fw-bold {
-  color: #302347;
-}
-
-.signup-card {
-  background: #fff;
-  color: #302347;
-  border: 1px solid #eee5f8;
-  box-shadow: 0 14px 40px rgba(48, 35, 71, .07);
-}
-
-.text-light-muted {
-  color: #80758f;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  border: 0;
-}
-
-ion-content .btn.btn-primary {
-  border: 0;
-  border-radius: 12px;
-  background: #393185;
-  color: #fff;
-  box-shadow: none;
-}
-
-ion-content a {
-  color: #393185 !important;
-}
-
-.finger-print {
-  color: #756fc0;
-}
-
-.finger-print .fas {
-  color: #756fc0 !important;
+.back-link { flex: 0 0 auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; color: #393185; text-decoration: none; font-size: 13px; font-weight: 700; }
+.back-link ion-icon { font-size: 19px; }
+.login-intro { flex: 0 0 auto; padding: 18px 2px 17px; }
+.brand-mark { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 16px; color: #fff; background: linear-gradient(145deg,#393185,#8f70cf); box-shadow: 0 8px 20px #39318525; }
+.brand-mark ion-icon { font-size: 29px; }
+.eyebrow { margin: 12px 0 7px; color: #705ca9; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; }
+h1 { margin: 0; color: #302347; font-size: clamp(28px,7vw,36px); font-weight: 850; letter-spacing: -1.1px; line-height: 1.1; }
+.intro-copy { margin: 8px 0 0; color: #7e748b; font-size: 13px; line-height: 1.45; }
+.login-card { flex: 0 0 auto; padding: 20px 18px 17px; border: 1px solid #eee5f7; border-radius: 22px; background: #fff; box-shadow: 0 14px 40px #3023470d; }
+.field { margin-bottom: 15px; }
+.field label { display: block; margin-bottom: 7px; color: #3b2b50; font-size: 12px; font-weight: 750; }
+.input-wrap { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 13px; border: 1px solid #e9e1f1; border-radius: 13px; background: #fcfbfe; }
+.input-wrap:focus-within { border-color: #393185; box-shadow: 0 0 0 3px #39318518; }
+.input-wrap ion-icon { flex: 0 0 auto; color: #7567b1; font-size: 19px; }
+.input-wrap input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: #302347; font: inherit; font-size: 14px; }
+.input-wrap input::placeholder { color: #b3aabb; }
+.submit-button { width: 100%; min-height: 49px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 14px; background: #393185; color: #fff; font-size: 14px; font-weight: 750; }
+.submit-button:disabled { opacity: .65; }
+.submit-button ion-icon { font-size: 18px; }
+.button-spinner { width: 16px; height: 16px; border: 2px solid #ffffff70; border-top-color: white; border-radius: 50%; animation: spin .7s linear infinite; }
+.login-error { margin: 0 0 12px; color: #a7354a; font-size: 12px; line-height: 1.4; }
+.signup-prompt { margin: 17px 0 0; color: #887c95; font-size: 12px; text-align: center; }
+.signup-prompt a { margin-left: 3px; color: #393185; font-weight: 800; text-decoration: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-height: 620px) {
+  .login-shell { justify-content: flex-start; padding-top: 6px; padding-bottom: 6px; }
+  .login-intro { padding-top: 8px; padding-bottom: 10px; }
+  .brand-mark { width: 38px; height: 38px; border-radius: 12px; }
+  .brand-mark ion-icon { font-size: 24px; }
+  .eyebrow { margin-top: 7px; }
+  .intro-copy { margin-top: 5px; }
+  .login-card { padding: 13px 15px; }
+  .field { margin-bottom: 10px; }
+  .input-wrap { min-height: 42px; }
+  .signup-prompt { margin-top: 10px; }
 }
