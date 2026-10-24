@@ -128,3 +128,19 @@
 @media (prefers-reduced-motion: reduce) {
   .home-page .spin { animation: none; }
 }
+
+/* Scheduled community events */
+.home-page .event-card { gap: 12px; margin-bottom: 12px; }
+.home-page .event-card .date { flex: 0 0 44px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 5px 0; }
+.home-page .event-copy { min-width: 0; }
+.home-page .event-copy > b { overflow-wrap: anywhere; }
+.home-page .event-copy .event-description { margin-top: 6px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.home-page .event-status { flex: 0 0 auto; align-self: center; border-radius: 10px; padding: 7px 9px; font-weight: 700; }
+.home-page .events-empty { display: flex; align-items: center; gap: 12px; padding: 15px; margin-bottom: 14px; border: 1px solid #eee5f8; border-radius: 15px; background: #fff; color: #7542bd; }
+.home-page .events-empty > ion-icon { flex: 0 0 auto; font-size: 22px; }
+.home-page .events-empty > div { flex: 1; min-width: 0; }
+.home-page .events-empty b, .home-page .events-empty small { display: block; }
+.home-page .events-empty b { color: #302347; font-size: 12px; }
+.home-page .events-empty small { margin-top: 4px; color: #80758f; font-size: 10px; line-height: 1.45; }
+.home-page .events-empty > a { display: grid; place-items: center; flex: 0 0 32px; width: 32px; height: 32px; border-radius: 10px; background: #7542bd; color: #fff; font-size: 20px; text-decoration: none; }
+.home-page .event-retry { border: 1px solid #d8c6f0; border-radius: 9px; padding: 7px 9px; background: #faf7ff; color: #7542bd; font-size: 10px; }
