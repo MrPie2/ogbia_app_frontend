@@ -144,3 +144,9 @@
 .home-page .events-empty small { margin-top: 4px; color: #80758f; font-size: 10px; line-height: 1.45; }
 .home-page .events-empty > a { display: grid; place-items: center; flex: 0 0 32px; width: 32px; height: 32px; border-radius: 10px; background: #7542bd; color: #fff; font-size: 20px; text-decoration: none; }
 .home-page .event-retry { border: 1px solid #d8c6f0; border-radius: 9px; padding: 7px 9px; background: #faf7ff; color: #7542bd; font-size: 10px; }
+
+
+/* Post avatars use the author's profile photo when available. */
+.home-page .feed-avatar { overflow: hidden; }
+.home-page .feed-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.home-page .feed-avatar span { display: grid; place-items: center; width: 100%; height: 100%; }
