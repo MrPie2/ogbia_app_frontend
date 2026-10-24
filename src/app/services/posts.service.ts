@@ -13,6 +13,11 @@ export interface CommunityPost {
   media_type: 'image' | 'video' | null;
   media_url: string | null;
   privacy: PostPrivacy;
+  is_event: boolean;
+  event_title: string | null;
+  event_starts_at: string | null;
+  event_ends_at: string | null;
+  event_location: string | null;
   created_at: string;
   author: { id: number; name: string; hometown?: string | null } | null;
 }
@@ -36,11 +41,29 @@ export class PostsService {
     });
   }
 
-  createPost(content: string, media?: File | null, privacy: PostPrivacy = 'public'): Observable<{ message: string; data: CommunityPost }> {
+  getEvents(page = 1): Observable<PostsPage> {
+    return this.http.get<PostsPage>(`${this.apiUrl}/events?page=${page}`, {
+      headers: this.authHeaders()
+    });
+  }
+
+  createPost(
+    content: string,
+    media?: File | null,
+    privacy: PostPrivacy = 'public',
+    event?: { title: string; startsAt: string; endsAt: string | null; location: string }
+  ): Observable<{ message: string; data: CommunityPost }> {
     const form = new FormData();
     if (content.trim()) form.append('content', content.trim());
     if (media) form.append('media', media, media.name);
     form.append('privacy', privacy);
+    form.append('is_event', event ? '1' : '0');
+    if (event) {
+      form.append('event_title', event.title);
+      form.append('event_starts_at', event.startsAt);
+      if (event.endsAt) form.append('event_ends_at', event.endsAt);
+      form.append('event_location', event.location);
+    }
 
     return this.http.post<{ message: string; data: CommunityPost }>(`${this.apiUrl}/posts`, form, {
       headers: this.authHeaders()
