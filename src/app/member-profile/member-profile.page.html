@@ -1,0 +1,20 @@
+<ion-content [fullscreen]="true">
+  <main class="member-profile-page">
+    <a class="back-link" routerLink="/profile"><ion-icon name="arrow-back-outline"></ion-icon><span>Back to my profile</span></a>
+    <div class="member-state" *ngIf="loading"><span class="member-loader"></span><p>Loading member profile…</p></div>
+    <div class="member-error" *ngIf="!loading && errorMessage" role="alert"><ion-icon name="alert-circle-outline"></ion-icon><p>{{ errorMessage }}</p><a routerLink="/profile">Return to profile</a></div>
+    <section class="member-profile-card" *ngIf="!loading && member as currentMember">
+      <div class="member-cover"><span class="cover-orb orb-one"></span><span class="cover-orb orb-two"></span></div>
+      <div class="member-details">
+        <div class="member-photo"><img *ngIf="currentMember.profile_photo_url" [src]="currentMember.profile_photo_url" [alt]="currentMember.name || 'Member photo'"><span *ngIf="!currentMember.profile_photo_url">{{ initials }}</span></div>
+        <span class="member-badge"><ion-icon name="ribbon-outline"></ion-icon>{{ roleLabel }}</span>
+        <h1>{{ currentMember.name || 'Ogbia Member' }}</h1>
+        <p class="member-community" *ngIf="currentMember.hometown"><ion-icon name="location-outline"></ion-icon>{{ currentMember.hometown }}</p>
+        <p class="member-description">A member serving the Ogbia community. Connect with your local leaders and stay involved in community life.</p>
+        <div class="member-info-row"><span class="info-icon"><ion-icon name="people-outline"></ion-icon></span><span><small>Community</small><strong>{{ currentMember.hometown || 'Ogbia' }}</strong></span></div>
+        <div class="member-info-row"><span class="info-icon"><ion-icon name="shield-checkmark-outline"></ion-icon></span><span><small>Community role</small><strong>{{ roleLabel }}</strong></span></div>
+        <a class="return-button" routerLink="/profile">Return to my profile</a>
+      </div>
+    </section>
+  </main>
+</ion-content>
