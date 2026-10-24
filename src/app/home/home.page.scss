@@ -153,3 +153,12 @@
 .home-page .feed-avatar .feed-avatar-fallback.visible { display: grid; }
 .home-page .feed-avatar.avatar-fallback img { display: none; }
 .home-page .feed-avatar.avatar-fallback .feed-avatar-fallback { display: grid; }
+
+
+/* Event posts appear inline in the same feed as regular community posts. */
+.home-page .feed-event-details { margin: 10px 10px 4px; padding: 14px; border: 1px solid #e4e1f5; border-radius: 13px; background: #f7f6fc; color: #302347; }
+.home-page .feed-event-label { display: flex; align-items: center; gap: 6px; color: #393185; font-size: 9px; font-weight: 800; letter-spacing: 1px; }
+.home-page .feed-event-label ion-icon { font-size: 15px; }
+.home-page .feed-event-details h3 { margin: 9px 0 10px; color: #302347; font-size: 15px; font-weight: 800; overflow-wrap: anywhere; }
+.home-page .feed-event-details p { display: flex; align-items: flex-start; gap: 7px; margin: 7px 0 0; color: #625b78; font-size: 11px; line-height: 1.5; }
+.home-page .feed-event-details p ion-icon { flex: 0 0 15px; margin-top: 1px; color: #393185; font-size: 15px; }
