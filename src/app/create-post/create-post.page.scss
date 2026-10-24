@@ -53,3 +53,15 @@ ion-content {
 .privacy-picker select { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid #d9cde9; border-radius: 10px; background: #fff; color: #302744; font: inherit; font-size: 13px; }
 .privacy-picker select:focus { outline: 2px solid #b9a0df; outline-offset: 2px; }
 .privacy-picker small { color: #776b8c; font-size: 11px; line-height: 1.5; }
+
+.post-type-picker { display: grid; gap: 8px; margin: 18px 0 12px; }
+.post-type-picker > label, .event-fields > label { color: #302347; font-size: 12px; font-weight: 750; }
+.post-type-picker select, .event-fields input { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid #d9cde9; border-radius: 10px; background: #fff; color: #302744; font: inherit; font-size: 13px; }
+.post-type-picker small { color: #80758f; font-size: 10px; line-height: 1.5; }
+.event-fields { display: grid; gap: 9px; margin: 16px 0; padding: 15px; border: 1px solid #e5d7f6; border-radius: 14px; background: #faf7ff; }
+.event-fields h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 3px; color: #7542bd; font-size: 14px; }
+.event-fields h2 ion-icon { font-size: 20px; }
+.event-datetime-grid { display: grid; grid-template-columns: 1fr; gap: 9px; }
+.event-datetime-grid > div { display: grid; gap: 7px; min-width: 0; }
+.event-fields p { margin: 0; color: #80758f; font-size: 10px; line-height: 1.5; }
+@media (min-width: 520px) { .event-datetime-grid { grid-template-columns: 1fr 1fr; } }
