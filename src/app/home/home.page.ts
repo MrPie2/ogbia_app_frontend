@@ -20,6 +20,9 @@ export class HomePage implements OnInit, OnDestroy {
   loadingUser = true;
   userError = '';
   posts: CommunityPost[] = [];
+  events: CommunityPost[] = [];
+  loadingEvents = true;
+  eventsError = '';
   loadingPosts = true;
   feedError = '';
   storyGroups: StoryGroup[] = [];
@@ -59,6 +62,7 @@ export class HomePage implements OnInit, OnDestroy {
     // Load immediately when Home is first created (including immediately after login).
     // The Ionic view-enter hook below handles later returns to this cached page.
     this.loadFeed();
+    this.loadEvents();
     this.loadStories();
     this.auth.getAuthenticatedUser().subscribe({
       next: (user) => { this.user = user; this.loadingUser = false; this.cdr.markForCheck(); },
@@ -94,6 +98,7 @@ export class HomePage implements OnInit, OnDestroy {
     }
 
     this.loadFeed();
+    this.loadEvents();
     this.loadStories();
   }
 
@@ -117,6 +122,26 @@ export class HomePage implements OnInit, OnDestroy {
         this.feedError = error.error === 'TimeoutError'
           ? 'The community feed is taking too long to respond. Check your connection or API server, then retry.'
           : 'The community feed could not be loaded. Please try again.';
+      }
+    });
+  }
+
+
+  loadEvents(): void {
+    this.loadingEvents = true;
+    this.postsService.getEvents().pipe(timeout(15000)).subscribe({
+      next: (response) => {
+        this.events = response.data || [];
+        this.loadingEvents = false;
+        this.eventsError = '';
+        this.cdr.markForCheck();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.loadingEvents = false;
+        this.eventsError = error.error === 'TimeoutError'
+          ? 'Upcoming events are taking too long to load.'
+          : 'Upcoming events could not be loaded.';
+        this.cdr.markForCheck();
       }
     });
   }
@@ -271,6 +296,17 @@ export class HomePage implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  get upcomingEvents(): CommunityPost[] {
+    const now = Date.now();
+    return this.events
+      .filter(event => !!event.event_starts_at && new Date(event.event_starts_at).getTime() >= now)
+      .sort((a, b) => new Date(a.event_starts_at!).getTime() - new Date(b.event_starts_at!).getTime());
+  }
+
+  get feedPosts(): CommunityPost[] {
+    return this.posts.filter(post => !post.is_event);
   }
 
   get currentStory(): StoryItem | null {
