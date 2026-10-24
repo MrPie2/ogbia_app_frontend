@@ -14,6 +14,37 @@
           <div class="composer-avatar">{{ initials }}</div>
           <div><b>{{ displayName }}</b><small>Share a thought, update or moment</small></div>
         </div>
+
+        <section class="post-type-picker" aria-labelledby="post-type-title">
+          <label id="post-type-title" for="postType">What are you sharing?</label>
+          <select id="postType" name="postType" [(ngModel)]="postType">
+            <option value="standard">Regular post</option>
+            <option value="event">Schedule an event</option>
+          </select>
+          <small>Event posts will appear in the Events section on the home page.</small>
+        </section>
+
+        @if (postType === 'event') {
+          <section class="event-fields" aria-label="Event schedule">
+            <h2><ion-icon name="calendar-outline"></ion-icon> Event schedule</h2>
+            <label for="eventTitle">Event title</label>
+            <input id="eventTitle" name="eventTitle" type="text" maxlength="160" [(ngModel)]="eventTitle" placeholder="e.g. Ogbia Town Hall Meeting">
+            <div class="event-datetime-grid">
+              <div>
+                <label for="eventStartsAt">Starts</label>
+                <input id="eventStartsAt" name="eventStartsAt" type="datetime-local" [(ngModel)]="eventStartsAt">
+              </div>
+              <div>
+                <label for="eventEndsAt">Ends (optional)</label>
+                <input id="eventEndsAt" name="eventEndsAt" type="datetime-local" [(ngModel)]="eventEndsAt" [min]="eventStartsAt || null">
+              </div>
+            </div>
+            <label for="eventLocation">Location</label>
+            <input id="eventLocation" name="eventLocation" type="text" maxlength="255" [(ngModel)]="eventLocation" placeholder="Venue or meeting point">
+            <p>Choose a future date and time. Add details below so people know what the event is about.</p>
+          </section>
+        }
+
    <section class="privacy-picker" aria-labelledby="privacy-title">
           <label id="privacy-title" for="postPrivacy">Who can see your post?</label>
           <select id="postPrivacy" name="privacy" [(ngModel)]="privacy">
