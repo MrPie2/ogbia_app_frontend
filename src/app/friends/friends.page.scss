@@ -20,13 +20,13 @@ ion-content {
 .back-button, .header-icon {
   display: grid; place-items: center; width: 40px; height: 40px;
   border: 1px solid #e9def7; border-radius: 13px; background: #fff;
-  color: #7542bd; font-size: 20px; text-decoration: none; cursor: pointer;
+  color: #393185; font-size: 20px; text-decoration: none; cursor: pointer;
 }
 .header-icon { font-size: 18px; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 17px; }
 .eyebrow { color: #8a7e97; font-size: 9px; font-weight: 800; letter-spacing: 1.8px; }
 .section-heading h2, .find-title h2 { margin: 5px 0 0; color: #302347; font-size: 20px; font-weight: 750; letter-spacing: -.3px; }
-.count { display: inline-grid; place-items: center; min-width: 23px; height: 23px; margin-left: 5px; padding: 0 6px; border-radius: 8px; background: #f2eafd; color: #7542bd; font-size: 11px; vertical-align: 2px; }
+.count { display: inline-grid; place-items: center; min-width: 23px; height: 23px; margin-left: 5px; padding: 0 6px; border-radius: 8px; background: #f2eafd; color: #393185; font-size: 11px; vertical-align: 2px; }
 .live-indicator { display: flex; align-items: center; gap: 6px; color: #26845f; font-size: 11px; font-weight: 650; }
 .live-indicator i, .friend-info p i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #2eaa79; }
 
@@ -35,21 +35,21 @@ ion-content {
   padding: 35px 20px 29px; border: 1px solid #eee5f8; border-radius: 22px;
   background: #fff; color: #302347; box-shadow: 0 4px 20px rgba(65, 39, 95, .045);
 }
-.empty-icon { display: grid; place-items: center; width: 62px; height: 62px; margin-bottom: 17px; border: 1px solid #e4d7f4; border-radius: 20px; background: #f2eafd; color: #7542bd; font-size: 29px; }
+.empty-icon { display: grid; place-items: center; width: 62px; height: 62px; margin-bottom: 17px; border: 1px solid #e4d7f4; border-radius: 20px; background: #f2eafd; color: #393185; font-size: 29px; }
 .empty-state h3 { margin: 0 0 8px; color: #302347; font-size: 16px; font-weight: 750; }
 .empty-state p { max-width: 270px; margin: 0 auto 20px; color: #80758f; font-size: 12px; line-height: 1.65; }
 
 .primary-button, .secondary-button, .small-primary {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  border: 0; border-radius: 12px; background: #7542bd; color: #fff;
+  border: 0; border-radius: 12px; background: #393185; color: #fff;
   font-size: 12px; font-weight: 750; padding: 12px 17px; cursor: pointer;
 }
 .primary-button { min-height: 43px; }
-.secondary-button { width: 100%; margin-top: 14px; border: 1px solid #e4d7f4; background: #f7f1ff; color: #7542bd; }
+.secondary-button { width: 100%; margin-top: 14px; border: 1px solid #e4d7f4; background: #f7f1ff; color: #393185; }
 .friend-list { display: flex; flex-direction: column; gap: 4px; }
 .friend-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee5f8; }
 .avatar-wrap { position: relative; flex: 0 0 45px; }
-.avatar { display: grid; place-items: center; width: 45px; height: 45px; border: 1px solid #e4d7f4; border-radius: 16px; background: linear-gradient(135deg, #7542bd, #a779e4); color: #fff; font-size: 13px; font-weight: 800; }
+.avatar { display: grid; place-items: center; width: 45px; height: 45px; border: 1px solid #e4d7f4; border-radius: 16px; background: linear-gradient(135deg, #393185, #756fc0); color: #fff; font-size: 13px; font-weight: 800; }
 .online-dot { position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border: 3px solid #fbf9fe; border-radius: 50%; background: #2eaa79; }
 .friend-info { min-width: 0; flex: 1; }
 .friend-info h3 { margin: 0 0 5px; color: #302347; font-size: 13px; font-weight: 700; overflow-wrap: anywhere; }
@@ -72,7 +72,7 @@ ion-content {
 .feedback { padding: 11px 13px; margin: -12px 0 17px; border-radius: 11px; font-size: 12px; }
 .feedback.error { border: 1px solid #f5cbd2; background: #fff0f2; color: #a7354a; }
 .feedback.success { border: 1px solid #c9ead9; background: #eaf8f1; color: #247a57; }
-.loader { width: 23px; height: 23px; margin-bottom: 12px; border: 2px solid #e4d7f4; border-top-color: #7542bd; border-radius: 50%; animation: spin .8s linear infinite; }
+.loader { width: 23px; height: 23px; margin-bottom: 12px; border: 2px solid #e4d7f4; border-top-color: #393185; border-radius: 50%; animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (min-width: 700px) {
