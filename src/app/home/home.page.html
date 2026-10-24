@@ -47,37 +47,13 @@
               <ion-icon name="ellipsis-horizontal"></ion-icon>
             </div>
             @if (post.content) { <p class="post-content" style="padding: 8px 10px 0px 10px; margin-top: -2px">{{ post.content }}</p> }
-            @if (post.media_url && post.media_type === 'image') { <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy" style="margin-top: -3px;border-radius: 0px"> }
+            @if (post.media_url && post.media_type === 'image') { <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy" style="margin-top: -3px;border-radius: 0px;"> }
             @if (post.media_url && post.media_type === 'video') { <video class="post-video" [src]="post.media_url" controls playsinline preload="metadata"></video> }
             <div class="post-actions" style="padding: 8px; border: 0px;"><span><ion-icon name="heart-outline"></ion-icon> Like</span><span><ion-icon name="chatbubble-outline"></ion-icon> Comment</span><span><ion-icon name="share-social-outline"></ion-icon> Share</span></div>
           </article>
         }
       }
-
-      <div class="section-title"><h2>Upcoming Events</h2><a routerLink="/create-post" [queryParams]="{ type: 'event' }">Create event</a></div>
-      @if (loadingEvents) {
-        <div class="events-empty"><ion-icon name="sync-outline" class="spin"></ion-icon><div><b>Loading events…</b><small>Checking the community schedule.</small></div></div>
-      } @else if (eventsError) {
-        <div class="events-empty"><ion-icon name="alert-circle-outline"></ion-icon><div><b>{{ eventsError }}</b><small>Try loading the schedule again.</small></div><button type="button" class="event-retry" (click)="loadEvents()">Retry</button></div>
-      } @else if (upcomingEvents.length) {
-        @for (event of upcomingEvents; track event.id) {
-          <article class="event-card card fade-up delay-2">
-            <div class="date"><b>{{ event.event_starts_at | date:'dd' }}</b><small>{{ event.event_starts_at | date:'MMM' | uppercase }}</small></div>
-            <div class="event-copy">
-              <b>{{ event.event_title }}</b>
-              <small>{{ event.event_starts_at | date:'EEE, d MMM · h:mm a' }}@if (event.event_ends_at) { – {{ event.event_ends_at | date:'h:mm a' }} }<br>{{ event.event_location }}</small>
-              @if (event.content) { <small class="event-description">{{ event.content }}</small> }
-            </div>
-            <button type="button" class="event-status">Upcoming</button>
-          </article>
-        }
-      } @else {
-        <div class="events-empty">
-          <ion-icon name="calendar-outline"></ion-icon>
-          <div><b>No upcoming events yet</b><small>Schedule a community event and it will appear here.</small></div>
-          <a routerLink="/create-post" [queryParams]="{ type: 'event' }" aria-label="Schedule an event"><ion-icon name="add"></ion-icon></a>
-        </div>
-      }
+      
     </div>
 
   </div>
