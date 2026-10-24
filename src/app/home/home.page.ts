@@ -327,6 +327,12 @@ export class HomePage implements OnInit, OnDestroy {
     return (post.author?.name || 'Ogbia member').split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
   }
 
+  onPostAvatarError(event: Event): void {
+    const image = event.target as HTMLImageElement | null;
+    const avatar = image?.parentElement;
+    if (avatar) avatar.classList.add('avatar-fallback');
+  }
+
   logout(): void {
     this.closeStory();
     this.auth.logout();
