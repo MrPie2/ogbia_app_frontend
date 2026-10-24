@@ -306,7 +306,8 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   get feedPosts(): CommunityPost[] {
-    return this.posts.filter(post => !post.is_event);
+    // Events are posts too; keep them in chronological feed order alongside regular posts.
+    return this.posts;
   }
 
   get currentStory(): StoryItem | null {
