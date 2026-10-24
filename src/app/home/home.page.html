@@ -36,10 +36,10 @@
         <div class="feed-state card"><ion-icon name="sync-outline" class="spin"></ion-icon><span>Loading community posts…</span></div>
       } @else if (feedError) {
         <div class="feed-state card"><p>{{ feedError }}</p><button type="button" (click)="loadFeed()">Try again</button></div>
-      } @else if (!posts.length) {
+      } @else if (!feedPosts.length && !upcomingEvents.length) {
         <div class="feed-state card"><div class="empty-feed-icon"><ion-icon name="chatbubbles-outline"></ion-icon></div><h3>Start the conversation</h3><p>No posts yet. Share an update, photo or video with the Ogbia community.</p><a routerLink="/create-post">Create the first post</a></div>
       } @else {
-        @for (post of posts; track post.id) {
+        @for (post of feedPosts; track post.id) {
           <article class="post card fade-up" style="padding: 0px">
             <div class="post-head" style="padding: 10px 10px 0px 10px">
               <div class="feed-avatar">{{ postInitials(post) }}</div>
@@ -54,12 +54,30 @@
         }
       }
 
-      <div class="section-title"><h2>Events</h2><a>See all</a></div>
-      <article class="event-card card fade-up delay-2">
-        <div class="date"><b>24</b><small>MAY</small></div>
-        <div class="event-copy"><b>Town Hall Meeting</b><small>Sat, 24 May · 10:00 AM<br>Ogbia Civic Centre</small></div>
-        <button type="button">Interested</button>
-      </article>
+      <div class="section-title"><h2>Upcoming Events</h2><a routerLink="/create-post">Create event</a></div>
+      @if (loadingEvents) {
+        <div class="events-empty"><ion-icon name="sync-outline" class="spin"></ion-icon><div><b>Loading events…</b><small>Checking the community schedule.</small></div></div>
+      } @else if (eventsError) {
+        <div class="events-empty"><ion-icon name="alert-circle-outline"></ion-icon><div><b>{{ eventsError }}</b><small>Try loading the schedule again.</small></div><button type="button" class="event-retry" (click)="loadEvents()">Retry</button></div>
+      } @else if (upcomingEvents.length) {
+        @for (event of upcomingEvents; track event.id) {
+          <article class="event-card card fade-up delay-2">
+            <div class="date"><b>{{ event.event_starts_at | date:'dd' }}</b><small>{{ event.event_starts_at | date:'MMM' | uppercase }}</small></div>
+            <div class="event-copy">
+              <b>{{ event.event_title }}</b>
+              <small>{{ event.event_starts_at | date:'EEE, d MMM · h:mm a' }}@if (event.event_ends_at) { – {{ event.event_ends_at | date:'h:mm a' }} }<br>{{ event.event_location }}</small>
+              @if (event.content) { <small class="event-description">{{ event.content }}</small> }
+            </div>
+            <button type="button" class="event-status">Upcoming</button>
+          </article>
+        }
+      } @else {
+        <div class="events-empty">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <div><b>No upcoming events yet</b><small>Schedule a community event and it will appear here.</small></div>
+          <a routerLink="/create-post" aria-label="Schedule an event"><ion-icon name="add"></ion-icon></a>
+        </div>
+      }
     </div>
 
   </div>
