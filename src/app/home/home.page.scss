@@ -51,7 +51,7 @@
 .home-page .account-story-avatar,
 .home-page .feed-avatar,
 .home-page .friend-story-avatar {
-  background: linear-gradient(135deg, #7542bd, #a779e4);
+  background: linear-gradient(135deg, #393185, #756fc0);
 }
 .home-page .account-copy > small,
 .home-page .account-copy .account-phone { color: #80758f; }
@@ -59,7 +59,7 @@
 .home-page .logout-button {
   border: 1px solid #e4d7f4;
   background: #fff;
-  color: #7542bd;
+  color: #393185;
 }
 .home-page .account-notice { color: #8a5a16; }
 .home-page .stories-heading,
@@ -70,27 +70,27 @@
 .home-page .story-add-button small { color: #71657f; }
 .home-page .story-ring.own { background: #f4ecff; }
 .home-page .story-ring em,
-.home-page .account-story-avatar em { border-color: #fbf9fe; background: #7542bd; }
+.home-page .account-story-avatar em { border-color: #fbf9fe; background: #393185; }
 .home-page .story-add-circle {
   border-color: #e3d5f5;
   background: #fff;
-  color: #7542bd;
+  color: #393185;
   box-shadow: 0 3px 12px rgba(67, 38, 105, .07);
 }
 .home-page .story-add-button:hover .story-add-circle,
 .home-page .story-add-button:focus-visible .story-add-circle {
-  border-color: #7542bd;
-  background: #7542bd;
+  border-color: #393185;
+  background: #393185;
   color: #fff;
 }
 .home-page .story-button .story-ring { border-color: #d5c2ef; }
 .home-page .story-button .story-ring.has-story,
-.home-page .story-button .story-ring.has-unseen { border-color: #7542bd; }
+.home-page .story-button .story-ring.has-unseen { border-color: #393185; }
 .home-page .story-button .story-ring.has-story:not(.has-unseen) { border-color: #c8bbd9; }
 .home-page .write-post,
 .home-page .feed-state a,
 .home-page .feed-state button {
-  background: #7542bd;
+  background: #393185;
   color: #fff;
 }
 .home-page .post,
@@ -113,15 +113,15 @@
 .home-page .feed-state p { color: #80758f; }
 .home-page .empty-feed-icon {
   background: #f2eafd;
-  color: #7542bd;
+  color: #393185;
 }
-.home-page .stories-retry { color: #7542bd; }
+.home-page .stories-retry { color: #393185; }
 .home-page .event-card .date { background: #f2eafd; color: #302347; }
-.home-page .event-card .date b { color: #7542bd; }
+.home-page .event-card .date b { color: #393185; }
 .home-page .event-copy small { color: #80758f; }
 .home-page .event-card button {
   border-color: #d8c6f0;
-  color: #7542bd;
+  color: #393185;
   background: #faf7ff;
 }
 /* The story viewer is intentionally immersive and dark; only the page/feed surfaces use the shared light theme. */
@@ -136,14 +136,14 @@
 .home-page .event-copy > b { overflow-wrap: anywhere; }
 .home-page .event-copy .event-description { margin-top: 6px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .home-page .event-status { flex: 0 0 auto; align-self: center; border-radius: 10px; padding: 7px 9px; font-weight: 700; }
-.home-page .events-empty { display: flex; align-items: center; gap: 12px; padding: 15px; margin-bottom: 14px; border: 1px solid #eee5f8; border-radius: 15px; background: #fff; color: #7542bd; }
+.home-page .events-empty { display: flex; align-items: center; gap: 12px; padding: 15px; margin-bottom: 14px; border: 1px solid #eee5f8; border-radius: 15px; background: #fff; color: #393185; }
 .home-page .events-empty > ion-icon { flex: 0 0 auto; font-size: 22px; }
 .home-page .events-empty > div { flex: 1; min-width: 0; }
 .home-page .events-empty b, .home-page .events-empty small { display: block; }
 .home-page .events-empty b { color: #302347; font-size: 12px; }
 .home-page .events-empty small { margin-top: 4px; color: #80758f; font-size: 10px; line-height: 1.45; }
-.home-page .events-empty > a { display: grid; place-items: center; flex: 0 0 32px; width: 32px; height: 32px; border-radius: 10px; background: #7542bd; color: #fff; font-size: 20px; text-decoration: none; }
-.home-page .event-retry { border: 1px solid #d8c6f0; border-radius: 9px; padding: 7px 9px; background: #faf7ff; color: #7542bd; font-size: 10px; }
+.home-page .events-empty > a { display: grid; place-items: center; flex: 0 0 32px; width: 32px; height: 32px; border-radius: 10px; background: #393185; color: #fff; font-size: 20px; text-decoration: none; }
+.home-page .event-retry { border: 1px solid #d8c6f0; border-radius: 9px; padding: 7px 9px; background: #faf7ff; color: #393185; font-size: 10px; }
 
 
 /* Post avatars use the author's profile photo when available. */
