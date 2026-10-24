@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { IonRouterOutlet, IonApp } from '@ionic/angular';
+import { IonRouterOutlet, IonApp, IonIcon } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
   add,
@@ -65,7 +65,7 @@ import { NotificationService, AppNotification } from './services/notification.se
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
-  imports: [FormsModule, CommonModule, IonRouterOutlet, IonApp, NavbarComponent],
+  imports: [FormsModule, CommonModule, IonRouterOutlet, IonApp, IonIcon, NavbarComponent],
 })
 export class AppComponent implements OnDestroy {
   includeNavbar = false;
