@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonIcon } from '@ionic/angular';
@@ -23,7 +23,12 @@ export class ProfilePage implements OnInit, OnDestroy {
   photoPreview: string | null = null;
   selectedPhoto: File | null = null;
 
-  constructor(private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef) {}
+  constructor(private readonly auth: AuthService, private readonly router: Router, private readonly cdr: ChangeDetectorRef) {}
+
+  logout(): void {
+    this.auth.logout();
+    void this.router.navigateByUrl('/login', { replaceUrl: true });
+  }
 
   ngOnInit(): void {
     this.user = this.auth.getCachedUser();
