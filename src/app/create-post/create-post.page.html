@@ -58,7 +58,7 @@
             @else { Everyone on Ogbia Connect can see this post. }
           </small>
         </section>
-        <textarea name="content" [(ngModel)]="content" maxlength="10000" placeholder="What's on your mind? Share it with Ogbia…" aria-label="Post content"></textarea>
+        <textarea name="content" [(ngModel)]="content" maxlength="10000" [placeholder]="postType === 'event' ? 'Add event details, agenda or other information…' : 'What is on your mind? Share it with Ogbia…'" aria-label="Post content"></textarea>
 
      
 
