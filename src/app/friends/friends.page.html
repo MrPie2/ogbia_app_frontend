@@ -38,6 +38,44 @@
         }
       </section>
 
+      <section class="all-friends-section">
+        <div class="section-heading">
+          <div><span class="eyebrow">YOUR CONNECTIONS</span><h2>All friends <span class="count">{{ friends.length }}</span></h2></div>
+          <button class="text-refresh" type="button" (click)="loadFriends()" [disabled]="loadingFriends" aria-label="Refresh all friends">
+            <ion-icon name="refresh-outline"></ion-icon>
+          </button>
+        </div>
+
+        @if (loadingFriends) {
+          <div class="empty-state compact"><div class="loader"></div><p>Loading your friends…</p></div>
+        } @else if (friends.length === 0) {
+          <div class="empty-state compact">
+            <div class="empty-icon"><ion-icon name="people-outline"></ion-icon></div>
+            <h3>Your friend list is empty</h3>
+            <p>When someone accepts your friend request, they will automatically appear here.</p>
+            <button class="primary-button" type="button" (click)="openFindFriends()"><ion-icon name="person-add-outline"></ion-icon> Find Friend</button>
+          </div>
+        } @else {
+          <div class="friend-list all-friends-list">
+            @for (friend of friends; track friend.id) {
+              <article class="friend-row">
+                <div class="avatar-wrap">
+                  <div class="avatar">{{ initials(friend.name) }}</div>
+                  @if (friend.is_online) { <span class="online-dot"></span> }
+                </div>
+                <div class="friend-info">
+                  <h3>{{ friend.name }}</h3>
+                  <p>
+                    @if (friend.is_online) { <i></i> Online now } @else { {{ friend.last_seen_at ? ('Last active ' + (friend.last_seen_at | date:'medium')) : 'Offline' }} }
+                  </p>
+                </div>
+                <span class="friend-status">Friends</span>
+              </article>
+            }
+          </div>
+        }
+      </section>
+
       @if (incomingRequests.length > 0) {
         <section class="requests-section">
           <div class="section-heading"><div><span class="eyebrow">CONNECTIONS</span><h2>Friend requests <span class="count">{{ incomingRequests.length }}</span></h2></div></div>
