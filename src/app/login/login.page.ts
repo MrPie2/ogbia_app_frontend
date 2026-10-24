@@ -13,26 +13,31 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
 })
 export class LoginPage {
-  email = '';
+  phoneNumber = '';
   password = '';
   loading = false;
   errorMessage = '';
 
-  constructor(private readonly auth: AuthService, private readonly router: Router) {}
+  constructor(private readonly auth: AuthService, private readonly router: Router) {
+    if (localStorage.getItem('token')) {
+      const user = this.auth.getCachedUser();
+      void this.router.navigateByUrl(user?.name && user.name !== 'Ogbia Member' && user.email ? '/home' : '/complete-profile', { replaceUrl: true });
+    }
+  }
 
   login(): void {
-    if (!this.email.trim() || !this.password) {
-      this.errorMessage = 'Enter your email and password to continue.';
+    const phone = this.phoneNumber.trim();
+    if (!phone || !this.password) {
+      this.errorMessage = 'Enter your phone number and password to continue.';
       return;
     }
 
     this.loading = true;
     this.errorMessage = '';
-
-    this.auth.login(this.email.trim(), this.password).subscribe({
+    this.auth.login(phone, this.password).subscribe({
       next: () => {
         this.loading = false;
-        this.router.navigate(['/home']);
+        void this.router.navigate(['/home'], { replaceUrl: true });
       },
       error: (error) => {
         this.loading = false;
