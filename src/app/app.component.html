@@ -3,4 +3,15 @@
     <app-shared-navbar></app-shared-navbar>
   }
   <ion-router-outlet class="app-router-outlet"></ion-router-outlet>
+  @if (notificationToast; as toast) {
+    <div class="ogbia-notification-toast" role="status" aria-live="polite">
+      <div class="notification-toast-icon"><ion-icon name="checkmark-circle-outline"></ion-icon></div>
+      <div class="notification-toast-copy">
+        <div class="notification-toast-eyebrow">MY OGBIA · CONGRATULATIONS</div>
+        <div class="notification-toast-title">{{ toast.title }}</div>
+        <div class="notification-toast-body">{{ toast.body }}</div>
+      </div>
+      <button type="button" class="notification-toast-close" aria-label="Dismiss notification" (click)="dismissNotification()">×</button>
+    </div>
+  }
 </ion-app>
