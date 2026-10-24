@@ -66,7 +66,9 @@
                 <div class="friend-info">
                   <h3>{{ friend.name }}</h3>
                   <p>
-                    @if (friend.is_online) { <i></i> Online now } @else { {{ friend.last_seen_at ? ('Last active ' + (friend.last_seen_at | date:'medium')) : 'Offline' }} }
+                    @if (friend.is_online) { <i></i> Online now }
+                    @else if (friend.last_seen_at) { Last active {{ friend.last_seen_at | date:'medium' }} }
+                    @else { Offline }
                   </p>
                 </div>
                 <span class="friend-status">Friends</span>
