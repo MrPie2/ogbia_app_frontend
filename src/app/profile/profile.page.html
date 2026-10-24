@@ -29,14 +29,27 @@
         <button type="button" class="copy-referral" (click)="copyReferralId()"><ion-icon name="copy-outline"></ion-icon> Copy ID</button>
       </section>
 
-      <div class="section-title"><h2>Quick Access</h2></div>
-      <div class="card list-card fade-up delay-2">
-        <a class="list-row" routerLink="/constituency"><span class="leading"><ion-icon name="people-outline"></ion-icon></span><span class="copy"><strong>My Ogbia</strong><span>View your wards, communities & local information</span></span><ion-icon name="chevron-forward"></ion-icon></a>
-        <a class="list-row" routerLink="/reps"><span class="leading"><ion-icon name="person-add-outline"></ion-icon></span><span class="copy"><strong>My Reps</strong><span>Know your elected representatives</span></span><ion-icon name="chevron-forward"></ion-icon></a>
-        <a class="list-row" routerLink="/clan-head"><span class="leading"><ion-icon name="person-circle-outline"></ion-icon></span><span class="copy"><strong>My Clan Head</strong><span>Connect with your clan head</span></span><ion-icon name="chevron-forward"></ion-icon></a>
-        <a class="list-row" routerLink="/cdc"><span class="leading"><ion-icon name="people-circle-outline"></ion-icon></span><span class="copy"><strong>CDC Chairman</strong><span>Connect with your CDC Chairman</span></span><ion-icon name="chevron-forward"></ion-icon></a>
-        <a class="list-row" routerLink="/youth"><span class="leading"><ion-icon name="people-outline"></ion-icon></span><span class="copy"><strong>Youth Leaders</strong><span>Meet and connect with youth leaders</span></span><ion-icon name="chevron-forward"></ion-icon></a>
-      </div>
+      <div class="section-title leadership-heading"><h2>My Community Leaders</h2><p>People serving your hometown</p></div>
+      <div class="leaders-loading" *ngIf="leadersLoading"><span class="loading-dot"></span> Finding leaders in your hometown…</div>
+      <div class="leaders-error" *ngIf="leadersError" role="alert"><span>{{ leadersError }}</span><button type="button" (click)="loadCommunityLeaders()">Retry</button></div>
+      <section class="leadership-groups fade-up delay-2" *ngIf="!leadersLoading && !leadersError">
+        <article class="leader-group card" *ngFor="let group of leadershipGroups">
+          <div class="leader-group-heading">
+            <span class="leader-role-icon"><ion-icon [name]="group.icon"></ion-icon></span>
+            <span class="leader-role-copy"><strong>{{ group.title }}</strong><small>{{ group.subtitle }}</small></span>
+            <span class="leader-count">{{ group.members.length }}</span>
+          </div>
+          <a class="leader-member" *ngFor="let leader of group.members" [routerLink]="['/members', leader.id]">
+            <span class="leader-avatar">
+              <img *ngIf="leader.profile_photo_url" [src]="leader.profile_photo_url" [alt]="leader.name">
+              <span *ngIf="!leader.profile_photo_url">{{ leader.name || "O" }}</span>
+            </span>
+            <span class="leader-member-copy"><strong>{{ leader.name || "Ogbia Member" }}</strong><small>{{ leader.hometown }}</small></span>
+            <ion-icon class="leader-open-icon" name="chevron-forward"></ion-icon>
+          </a>
+          <p class="leader-empty" *ngIf="group.members.length === 0">No {{ group.title.toLowerCase() }} from your hometown has been assigned yet.</p>
+        </article>
+      </section>
 
       <button class="logout-button" type="button" (click)="logout()">
         <ion-icon name="log-out-outline"></ion-icon><span>Log out</span>
