@@ -77,8 +77,8 @@ export class AuthService {
     }));
   }
 
-  login(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password })
+  login(phone: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { phone: phone.trim(), password })
       .pipe(tap((response) => this.storeSession(response)));
   }
 
