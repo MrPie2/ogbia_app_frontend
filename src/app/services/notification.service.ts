@@ -96,7 +96,13 @@ export class NotificationService {
           this.pushRegistrationStarted = false;
         });
         await PushNotifications.addListener('pushNotificationReceived', (notification: PushNotificationSchema) => {
+          const notificationId = notification.data?.['notification_id']
+            ? String(notification.data['notification_id'])
+            : undefined;
+          if (notificationId && this.seenIds.has(notificationId)) return;
+          if (notificationId) this.seenIds.add(notificationId);
           this.toastSubject.next({
+            id: notificationId,
             title: notification.title || 'My Ogbia notification',
             body: notification.body || ''
           });
