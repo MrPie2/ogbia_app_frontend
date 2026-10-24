@@ -60,8 +60,8 @@ export class PostsService {
     form.append('is_event', event ? '1' : '0');
     if (event) {
       form.append('event_title', event.title);
-      form.append('event_starts_at', event.startsAt);
-      if (event.endsAt) form.append('event_ends_at', event.endsAt);
+      form.append('event_starts_at', new Date(event.startsAt).toISOString());
+      if (event.endsAt) form.append('event_ends_at', new Date(event.endsAt).toISOString());
       form.append('event_location', event.location);
     }
 
