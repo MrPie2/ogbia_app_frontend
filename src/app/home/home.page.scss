@@ -173,3 +173,53 @@
 .story-avatar-button{display:block;width:100%;min-width:0}
 .story-person-link{display:block;max-width:72px;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:inherit;font-size:9px;text-decoration:none}
 .story-person-link:hover,.story-person-link:focus-visible{color:#756fc0;text-decoration:underline;outline-offset:3px}
+
+
+/* Ogbia Connect visual consistency pass: light surfaces and shared purple accents. */
+.home-page{background:#fbf9fe;color:#302347}
+.home-page .home-top,.home-page .feed-heading,.home-page .stories-heading{color:#302347}
+.home-page .menu{background:#393185;color:#fff}
+.home-page .home-pill{border-color:#e4d7f4;background:#fff;color:#393185}
+.home-page .story-ring{border-color:#756fc0}
+.home-page .story-ring.own{background:#f2eafd}
+.home-page .story-ring em,.home-page .account-story-avatar em{background:#393185;border-color:#fff}
+.home-page .story small,.home-page .story-person-link{color:#625b78}
+.home-page .feed-heading h2,.home-page .stories-heading h2{color:#302347;font-size:16px}
+.home-page .feed-heading p,.home-page .stories-heading>span{color:#80758f}
+.home-page .write-post,.home-page .feed-state a,.home-page .feed-state button{background:#393185;color:#fff}
+.home-page .post{background:#fff;border-color:#eee5f8;color:#302347;box-shadow:0 5px 20px rgba(65,39,95,.045)}
+.home-page .feed-avatar,.home-page .account-avatar,.home-page .friend-story-avatar,.home-page .viewer-avatar{background:linear-gradient(135deg,#393185,#756fc0);color:#fff}
+.home-page .post-author b,.home-page .account-copy h1{color:#302347}
+.home-page .post-author small,.home-page .account-copy>small,.home-page .account-copy .account-phone{color:#93879f}
+.home-page .post-head>ion-icon{color:#9d91b0}
+.home-page .post-content{color:#504260}
+.home-page .post-image,.home-page .post-video{background:#f2eafd}
+.home-page .post-actions{border-color:#eee5f8;color:#80758f}
+.home-page .feed-state{background:#fff;border-color:#eee5f8;color:#302347}
+.home-page .empty-feed-icon{background:#f2eafd;color:#393185}
+.home-page .feed-state p{color:#80758f}
+.home-page .event-card{background:#fff;border-color:#eee5f8;color:#302347}
+.home-page .event-card button{border-color:#d9cdee;color:#393185}
+.home-page .account-card{background:linear-gradient(135deg,#fff,#f4efff);border-color:#e9def7;color:#302347;box-shadow:0 8px 22px rgba(65,39,95,.06)}
+.home-page .account-copy p{color:#625b78}
+.home-page .logout-button{background:#f2eafd;border-color:#e4d7f4;color:#393185}
+.home-page .account-notice{color:#8a6b2e}
+.home-page .story-loading{color:#80758f}
+.home-page .stories-retry{color:#a7354a}
+.home-page .feed-event-details{background:#faf7ff;border-color:#e5d7f6}
+.home-page .story-button .story-ring.has-story{border-color:#756fc0}
+.home-page .story-button .story-ring{border-color:#c9b7e8}
+.home-page .story-button .story-ring.own{background:#f2eafd}
+.home-page .story-button small,.home-page .your-story small{color:#625b78}
+.home-page .post-author .person-name-link:hover,.home-page .post-author .person-name-link:focus-visible,.home-page .viewer-author-copy .person-name-link:hover,.home-page .viewer-author-copy .person-name-link:focus-visible{color:#393185}
+.home-page .story-person-link:hover,.home-page .story-person-link:focus-visible{color:#393185}
+.home-page .account-copy h1{font-size:17px}
+.home-page .feed-heading h2,.home-page .stories-heading h2{font-size:16px}
+.home-page .post-author b,.home-page .event-copy>b{font-size:12px}
+.home-page .post-content{font-size:13px;line-height:1.6}
+.home-page .post-actions{font-size:10px}
+.home-page .feed-state h3{font-size:14px}
+.home-page .feed-state p,.home-page .event-copy small{font-size:11px}
+.home-page .story small,.home-page .story-person-link{font-size:10px}
+.home-page .story-viewer{background:#171327;color:#fff}
+.home-page .viewer-content{background:#211b32}
