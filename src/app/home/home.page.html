@@ -63,7 +63,7 @@
             }
             @if (post.content) {
               <div class="post-text-block">
-                <p class="post-content" style="padding: 8px 10px 0px 10px; margin-top: -2px">{{ post.content.length > 100 && !isPostExpanded(post.id) ? (post.content | slice:0:100).trimEnd() + '…' : post.content }}</p>
+                <p class="post-content" style="padding: 8px 10px 0px 10px; margin-top: -2px">{{ post.content.length > 100 && !isPostExpanded(post.id) ? (post.content | slice:0:100) + '…' : post.content }}</p>
                 @if (post.content.length > 100) {
                   <button class="post-read-toggle" type="button" (click)="togglePostContent(post.id)" [attr.aria-expanded]="isPostExpanded(post.id)">
                     {{ isPostExpanded(post.id) ? 'Show less' : 'Read more' }}
