@@ -223,3 +223,23 @@
 .home-page .story small,.home-page .story-person-link{font-size:10px}
 .home-page .story-viewer{background:#171327;color:#fff}
 .home-page .viewer-content{background:#211b32}
+
+
+/* Expand/collapse long community post text */
+.home-page .post-text-block { padding-bottom: 2px; }
+.home-page .post-read-toggle {
+  display: inline-block;
+  margin: 0 10px 8px;
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: #393185;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.home-page .post-read-toggle:focus-visible {
+  outline: 2px solid #756fc0;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
