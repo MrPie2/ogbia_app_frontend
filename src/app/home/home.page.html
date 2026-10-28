@@ -13,13 +13,15 @@
           } @else {
             @for (group of storyGroups; track group.user.id) {
               @if (!group.is_mine || group.stories.length) {
-                <button type="button" class="story story-button" (click)="openStory(group)" [attr.aria-label]="'View ' + (group.is_mine ? 'your' : group.user.name) + ' story'">
-                  <div class="story-ring" [class.has-story]="group.stories.length" [class.has-unseen]="group.has_unseen">
-                    @if (group.is_mine) { <span class="account-story-avatar">{{ initials }}</span> }
-                    @else { <span class="friend-story-avatar">{{ storyInitials(group) }}</span> }
-                  </div>
-                  <small>{{ group.is_mine ? 'Your story' : group.user.name }}</small>
-                </button>
+                <div class="story story-button-shell">
+                  <button type="button" class="story-button story-avatar-button" (click)="openStory(group)" [attr.aria-label]="'View ' + (group.is_mine ? 'your' : group.user.name) + ' story'">
+                    <div class="story-ring" [class.has-story]="group.stories.length" [class.has-unseen]="group.has_unseen">
+                      @if (group.is_mine) { <span class="account-story-avatar">{{ initials }}</span> }
+                      @else { <span class="friend-story-avatar">{{ storyInitials(group) }}</span> }
+                    </div>
+                  </button>
+                  <a class="story-person-link" [routerLink]="group.is_mine ? ['/profile'] : ['/members', group.user.id]">{{ group.is_mine ? 'Your story' : group.user.name }}</a>
+                </div>
               }
             }
           }
