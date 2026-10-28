@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { timeout } from 'rxjs';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService, MemberProfile } from '../services/auth.service';
 
@@ -16,7 +17,7 @@ export class MemberProfilePage implements OnInit {
   loading = true;
   errorMessage = '';
 
-  constructor(private readonly route: ActivatedRoute, private readonly auth: AuthService) {}
+  constructor(private readonly route: ActivatedRoute, private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -28,16 +29,23 @@ export class MemberProfilePage implements OnInit {
       }
       this.loading = true;
       this.errorMessage = '';
-      this.auth.getMemberProfile(id).subscribe({
+      this.auth.getMemberProfile(id).pipe(timeout(15000)).subscribe({
         next: response => {
-          this.member = response.data;
+          this.member = response?.data ?? null;
           this.loading = false;
+          if (!this.member) this.errorMessage = 'This member profile could not be found.';
+          this.cdr.markForCheck();
         },
         error: error => {
           this.loading = false;
+          this.cdr.markForCheck();
           this.errorMessage = error.status === 404
             ? 'This member profile could not be found.'
-            : 'Unable to load this member profile. Please try again.';
+            : error.name === 'TimeoutError'
+              ? 'Loading this profile took too long. Check your connection and try again.'
+              : error.status === 0
+                ? 'Could not reach the profile server. Check your connection and try again.'
+                : 'Unable to load this member profile. Please try again.';
         }
       });
     });
