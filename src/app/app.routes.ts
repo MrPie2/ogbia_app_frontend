@@ -35,6 +35,11 @@ export const routes: Routes = [
     path: 'cdc',
     loadComponent: () => import('./cdc/cdc.page').then(m => m.CdcPage)
   },
+  { path: 'archive', loadComponent: () => import('./resource-page/resource.page').then(m => m.ResourcePage), data: { title: 'Archive' } },
+  { path: 'library', loadComponent: () => import('./resource-page/resource.page').then(m => m.ResourcePage), data: { title: 'Library' } },
+  { path: 'history', loadComponent: () => import('./resource-page/resource.page').then(m => m.ResourcePage), data: { title: 'History' } },
+  { path: 'services', loadComponent: () => import('./services-page/services.page').then(m => m.ServicesPage) },
+  { path: 'account-security', loadComponent: () => import('./account-security/account-security.page').then(m => m.AccountSecurityPage) },
   {
     path: 'constituency',
     loadComponent: () => import('./constituency/constituency.page').then(m => m.ConstituencyPage)
