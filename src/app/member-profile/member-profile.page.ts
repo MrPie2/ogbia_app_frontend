@@ -16,6 +16,7 @@ export class MemberProfilePage implements OnInit {
   member: MemberProfile | null = null;
   loading = true;
   errorMessage = '';
+  photoFailed = false;
 
   constructor(private readonly route: ActivatedRoute, private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef) {}
 
@@ -29,6 +30,7 @@ export class MemberProfilePage implements OnInit {
       }
       this.loading = true;
       this.errorMessage = '';
+      this.photoFailed = false;
       this.auth.getMemberProfile(id).pipe(timeout(15000)).subscribe({
         next: response => {
           this.member = response?.data ?? null;
@@ -49,6 +51,25 @@ export class MemberProfilePage implements OnInit {
         }
       });
     });
+  }
+
+  get profilePhotoUrl(): string | null {
+    const raw = this.member?.profile_photo_url?.trim();
+    if (!raw) return null;
+
+    // Older records may contain a local development URL or a relative Laravel storage path.
+    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\//i.test(raw)) {
+      return raw.replace(/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/i, 'https://api.parcellsend.com');
+    }
+    if (raw.startsWith('/storage/')) return `https://api.parcellsend.com${raw}`;
+    if (raw.startsWith('storage/')) return `https://api.parcellsend.com/${raw}`;
+    if (raw.startsWith('/api/storage/')) return `https://api.parcellsend.com${raw.replace(/^\/api/i, '')}`;
+    return raw;
+  }
+
+  onPhotoError(): void {
+    this.photoFailed = true;
+    this.cdr.markForCheck();
   }
 
   get roleLabel(): string {
