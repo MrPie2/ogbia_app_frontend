@@ -29,7 +29,7 @@
             @for (friend of onlineFriends; track friend.id) {
               <article class="friend-row">
                 <div class="avatar-wrap"><div class="avatar">{{ initials(friend.name) }}</div><span class="online-dot"></span></div>
-                <div class="friend-info"><h3>{{ friend.name }}</h3><p><i></i> Online now</p></div>
+                <div class="friend-info"><h3><a class="person-name-link" [routerLink]="['/members', friend.id]">{{ friend.name }}</a></h3><p><i></i> Online now</p></div>
               </article>
             }
           </div>
@@ -63,7 +63,7 @@
                   @if (friend.is_online) { <span class="online-dot"></span> }
                 </div>
                 <div class="friend-info">
-                  <h3>{{ friend.name }}</h3>
+                  <h3><a class="person-name-link" [routerLink]="['/members', friend.id]">{{ friend.name }}</a></h3>
                   <p>
                     @if (friend.is_online) { <i></i> Online now }
                     @else if (friend.last_seen_at) { Last active {{ friend.last_seen_at | date:'medium' }} }
@@ -83,7 +83,7 @@
           @for (request of incomingRequests; track request.request_id) {
             <article class="friend-row request-row">
               <div class="avatar">{{ initials(request.name) }}</div>
-              <div class="friend-info"><h3>{{ request.name }}</h3><p>Wants to connect with you</p></div>
+              <div class="friend-info"><h3><a class="person-name-link" [routerLink]="['/members', request.id]">{{ request.name }}</a></h3><p>Wants to connect with you</p></div>
               <button class="small-primary" type="button" (click)="acceptRequest(request)">Accept</button>
             </article>
           }
@@ -105,7 +105,7 @@
             @for (candidate of candidates; track candidate.id) {
               <article class="friend-row candidate-row">
                 <div class="avatar-wrap"><div class="avatar">{{ initials(candidate.name) }}</div>@if (candidate.is_online) { <span class="online-dot"></span> }</div>
-                <div class="friend-info"><h3>{{ candidate.name }}</h3><p>{{ candidate.is_online ? 'Online now' : candidate.email }}</p></div>
+                <div class="friend-info"><h3><a class="person-name-link" [routerLink]="['/members', candidate.id]">{{ candidate.name }}</a></h3><p>{{ candidate.is_online ? 'Online now' : candidate.email }}</p></div>
                 <button class="small-primary" type="button" [disabled]="candidate.friendship_status === 'accepted' || (candidate.friendship_status === 'pending' && candidate.request_sent_by_me)" (click)="handleCandidateAction(candidate)">
                   {{ relationshipLabel(candidate) }}
                 </button>
