@@ -48,7 +48,7 @@
                 }
                 <span class="feed-avatar-fallback" [class.visible]="!post.author?.profile_photo_url">{{ postInitials(post) }}</span>
               </div>
-              <div class="post-author"><b>{{ post.author?.name || 'Ogbia member' }}</b><small>{{ post.created_at | date:'medium' }}</small></div>
+              <div class="post-author"><a class="person-name-link" [routerLink]="['/members', post.author?.id]" *ngIf="post.author?.id; else unnamedPostAuthor"><b>{{ post.author?.name || 'Ogbia member' }}</b></a><ng-template #unnamedPostAuthor><b>{{ post.author?.name || 'Ogbia member' }}</b></ng-template><small>{{ post.created_at | date:'medium' }}</small></div>
               <ion-icon name="ellipsis-horizontal"></ion-icon>
             </div>
             @if (post.is_event) {
@@ -82,7 +82,7 @@
           </div>
           <div class="viewer-author">
             <div class="viewer-avatar">{{ storyInitials(activeGroup) }}</div>
-            <div class="viewer-author-copy"><b>{{ activeGroup.user.name }}</b><small>{{ story.created_at | date:'shortTime' }}</small></div>
+            <div class="viewer-author-copy"><a class="person-name-link" [routerLink]="['/members', activeGroup.user.id]" (click)="closeStory()"><b>{{ activeGroup.user.name }}</b></a><small>{{ story.created_at | date:'shortTime' }}</small></div>
             @if (activeGroup.is_mine) {
               <button class="viewer-delete" type="button" (click)="deleteCurrentStory()" [disabled]="deletingStory" aria-label="Delete this story"><ion-icon name="trash-outline"></ion-icon></button>
             }
