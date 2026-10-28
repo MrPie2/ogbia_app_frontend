@@ -39,7 +39,7 @@
             <span class="leader-role-copy"><strong>{{ group.title }}</strong><small>{{ group.subtitle }}</small></span>
             <span class="leader-count">{{ group.members.length }}</span>
           </div>
-          <a class="leader-member" *ngFor="let leader of group.members" [routerLink]="['/members', leader.id]">
+          <a class="leader-member" *ngFor="let leader of group.members" [routerLink]="leader.id === user?.id ? ['/profile'] : ['/members', leader.id]">
             <span class="leader-avatar">
               <img *ngIf="leader.profile_photo_url" [src]="leader.profile_photo_url" [alt]="leader.name">
               <span *ngIf="!leader.profile_photo_url">{{ leader.name || "O" }}</span>
