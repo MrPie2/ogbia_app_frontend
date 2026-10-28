@@ -31,3 +31,18 @@
 .profile-information .info-copy{display:flex;min-width:0;flex-direction:column;gap:4px}
 .profile-information .info-copy small{color:#7a8190;font-size:10px}
 .profile-information .info-copy strong{color:#302347;font-size:13px;font-weight:750;overflow-wrap:anywhere}
+
+
+/* Shared light-purple page canvas and component palette. */
+.profile-page{background:linear-gradient(180deg,#f0edff 0,#fbf9fe 28%,#fbf9fe 100%)}
+.profile-top .settings{color:#393185}
+.profile-photo{box-shadow:0 8px 24px rgba(57,49,133,.14)}
+.profile-page .list-row .leading{background:#f2eafd;color:#393185}
+.profile-information .info-icon{background:#f2eafd}
+.referral-card{border-color:#e9def7;background:linear-gradient(135deg,#fff 0%,#f4efff 100%)}
+.referral-eyebrow{color:#7560b4}
+.referral-copy code{border-color:#c9b7e8;color:#393185}
+.profile-hero h1{font-size:17px}
+.profile-hero p{font-size:11px}
+.profile-information .section-title h2,.leadership-heading h2{font-size:17px}
+.profile-information .section-title p,.leadership-heading p{font-size:11px}
