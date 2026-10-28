@@ -16,3 +16,12 @@
     width: 200px
 }.login{border:1px solid rgba(255,255,255,.45);color:#fff;background:rgba(0,0,0,.2)}.start{background:#1764ff;color:#fff;box-shadow:0 9px 25px rgba(23,100,255,.35)}
 @media(min-width:700px){.welcome-shell{max-width:420px;margin:auto;border-radius:28px}.welcome-content{--background:#0b0d10}.brand{top:46px}.copy{bottom:215px}}
+
+
+/* Keep the photo-led welcome screen while matching the app's purple brand. */
+.brand-mark{color:#9b8cf0}
+.brand small{color:#d0c8ff}
+.copy h1{font-size:clamp(24px,7vw,27px);line-height:1.08;letter-spacing:-.65px}
+.copy h1 span{color:#c8bfff}
+.start{background:#393185;box-shadow:0 9px 25px rgba(57,49,133,.35)}
+.dots .on{background:#c8bfff}
