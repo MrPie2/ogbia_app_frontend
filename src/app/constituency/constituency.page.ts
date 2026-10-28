@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { KnowledgeBaseService, KnowledgeCommunity, KnowledgeWard, KnowledgeRepresentative } from '../services/knowledge-base.service';
@@ -7,7 +8,7 @@ import { KnowledgeBaseService, KnowledgeCommunity, KnowledgeWard, KnowledgeRepre
 @Component({
   selector: 'app-constituency',
   standalone: true,
-  imports: [CommonModule, IonContent, IonIcon],
+  imports: [CommonModule, IonContent, IonIcon, RouterLink],
   templateUrl: './constituency.page.html',
   styleUrl: './constituency.page.scss'
 })
