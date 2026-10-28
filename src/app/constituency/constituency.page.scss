@@ -109,4 +109,14 @@
 .verification-tag.verified-tag { color:#237653; background:#eaf8f0; }
 
 
-.resource-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 20px}.resource-shortcut{min-width:0;min-height:118px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:8px;padding:16px;border:1px solid #e8e5f6;border-radius:16px;background:#fff;text-decoration:none;color:#27243d;box-shadow:0 6px 18px rgba(40,32,100,.04);transition:transform .18s,border-color .18s}.resource-shortcut:active{transform:scale(.98)}.resource-shortcut ion-icon{font-size:25px;color:#393185}.resource-shortcut strong{font-size:14px}.resource-shortcut span{font-size:11px;color:#817e97;line-height:1.35}@media(max-width:480px){.resource-shortcuts{gap:7px}.resource-shortcut{min-height:104px;padding:10px;border-radius:13px;gap:6px}.resource-shortcut strong{font-size:12px}.resource-shortcut span{font-size:9px}.resource-shortcut ion-icon{font-size:22px}}
+.resource-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 20px}
+.resource-shortcut{min-width:0;min-height:118px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px 10px;border:1px solid #e8e5f6;border-radius:16px;background:#fff;text-decoration:none;color:#27243d;text-align:center;box-shadow:0 6px 18px rgba(40,32,100,.04);transition:transform .18s,border-color .18s}
+.resource-shortcut:active{transform:scale(.98)}
+.resource-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;color:#393185;background:#efeeff}
+.resource-icon ion-icon{font-size:24px;color:inherit}
+.resource-shortcut strong{font-size:14px}
+.resource-shortcut span:not(.resource-icon){font-size:11px;color:#817e97;line-height:1.35}
+.stat-card{flex-direction:column;align-items:center;justify-content:center;gap:9px;min-height:112px;text-align:center}
+.stat-card>div{min-width:0;text-align:center}
+.stat-card strong,.stat-card small{text-align:center}
+@media(max-width:480px){.resource-shortcuts{gap:7px}.resource-shortcut{min-height:104px;padding:10px 5px;border-radius:13px;gap:6px}.resource-icon{width:37px;height:37px;border-radius:11px}.resource-icon ion-icon{font-size:21px}.resource-shortcut strong{font-size:12px}.resource-shortcut span:not(.resource-icon){font-size:9px}.stat-card{min-height:104px;padding:10px 5px}.stat-card strong{font-size:17px}.stat-card small{font-size:9px;line-height:1.35}}
