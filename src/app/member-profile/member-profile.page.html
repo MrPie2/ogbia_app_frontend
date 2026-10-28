@@ -1,57 +1,37 @@
 <ion-content [fullscreen]="true">
-  <main class="member-profile-page">
-    <a class="back-link" routerLink="/profile"><ion-icon name="arrow-back-outline"></ion-icon><span>Back to my profile</span></a>
+  <div class="profile-page page member-view-page">
+    <div class="container">
+      <div class="profile-top">
+        <span class="profile-label">OGBIA CONNECT MEMBER</span>
+        <a class="settings" routerLink="/home" aria-label="Back to community feed"><ion-icon name="arrow-back-outline"></ion-icon></a>
+      </div>
 
-    <div class="member-state" *ngIf="loading"><span class="member-loader"></span><p>Loading member profile…</p></div>
-    <div class="member-error" *ngIf="!loading && errorMessage" role="alert"><ion-icon name="alert-circle-outline"></ion-icon><p>{{ errorMessage }}</p><a routerLink="/profile">Return to profile</a></div>
+      <div class="profile-loading" *ngIf="loading">Loading member profile…</div>
+      <div class="member-error" *ngIf="!loading && errorMessage" role="alert">
+        <ion-icon name="alert-circle-outline"></ion-icon><p>{{ errorMessage }}</p><a routerLink="/home">Return to community feed</a>
+      </div>
 
-    <section class="member-profile" *ngIf="!loading && member as currentMember">
-      <header class="profile-heading">
-        <div class="member-photo">
-          <img *ngIf="currentMember.profile_photo_url" [src]="currentMember.profile_photo_url" [alt]="currentMember.name || 'Member photo'">
-          <span *ngIf="!currentMember.profile_photo_url">{{ initials }}</span>
-        </div>
-        <div class="heading-copy">
-          <p class="eyebrow">OGBIA CONNECT MEMBER</p>
-          <h1>{{ currentMember.name || 'Ogbia Member' }}</h1>
-          <p class="member-community"><ion-icon name="location-outline"></ion-icon>{{ currentMember.hometown || 'Hometown not provided' }}</p>
-          <span class="member-badge"><ion-icon name="ribbon-outline"></ion-icon>{{ roleLabel }}</span>
-        </div>
-      </header>
+      <ng-container *ngIf="!loading && member as currentMember">
+        <section class="profile-hero member-profile-hero fade-up">
+          <div class="profile-photo member-photo">
+            <img *ngIf="currentMember.profile_photo_url" [src]="currentMember.profile_photo_url" [alt]="currentMember.name || 'Member photo'">
+            <span *ngIf="!currentMember.profile_photo_url" class="profile-initials">{{ initials }}</span>
+          </div>
+          <h1>{{ currentMember.name || 'Ogbia Member' }}<ng-container *ngIf="currentMember.hometown"> - {{ currentMember.hometown }}</ng-container></h1>
+          <p class="member-role"><ion-icon name="ribbon-outline"></ion-icon>{{ roleLabel }}</p>
+          <small class="member-status"><i></i> Ogbia Connect member</small>
+        </section>
 
-      <section class="details-section" aria-labelledby="about-member-heading">
-        <h2 id="about-member-heading">Member information</h2>
-        <p class="section-intro">Profile details available to the Ogbia Connect community.</p>
-        <div class="member-info-row">
-          <span class="info-icon"><ion-icon name="person-outline"></ion-icon></span>
-          <span class="info-copy"><small>Full name</small><strong>{{ currentMember.name || 'Not provided' }}</strong></span>
-        </div>
-        <div class="member-info-row">
-          <span class="info-icon"><ion-icon name="location-outline"></ion-icon></span>
-          <span class="info-copy"><small>Hometown / community</small><strong>{{ currentMember.hometown || 'Not provided' }}</strong></span>
-        </div>
-        <div class="member-info-row">
-          <span class="info-icon"><ion-icon name="shield-checkmark-outline"></ion-icon></span>
-          <span class="info-copy"><small>Community role</small><strong>{{ roleLabel }}</strong></span>
-        </div>
-        <div class="member-info-row">
-          <span class="info-icon"><ion-icon name="finger-print-outline"></ion-icon></span>
-          <span class="info-copy"><small>Member ID</small><strong>#{{ currentMember.id }}</strong></span>
-        </div>
-        <div class="member-info-row">
-          <span class="info-icon"><ion-icon name="calendar-outline"></ion-icon></span>
-          <span class="info-copy"><small>Joined Ogbia Connect</small><strong>{{ currentMember.created_at ? (currentMember.created_at | date:'longDate') : 'Date not available' }}</strong></span>
-        </div>
-        <div class="member-info-row">
-          <span class="info-icon"><ion-icon name="image-outline"></ion-icon></span>
-          <span class="info-copy"><small>Profile picture</small><strong>{{ currentMember.profile_photo_url ? 'Added' : 'Not added yet' }}</strong></span>
-        </div>
-      </section>
-
-      <footer class="profile-footer">
-        <p>You're viewing this member's available community profile information.</p>
-        <a class="return-button" routerLink="/profile">Return to my profile</a>
-      </footer>
-    </section>
-  </main>
+        <section class="member-information">
+          <div class="section-title"><h2>Member information</h2><p>Profile details available to the Ogbia Connect community</p></div>
+          <div class="member-info-row"><span class="info-icon"><ion-icon name="person-outline"></ion-icon></span><span class="info-copy"><small>Full name</small><strong>{{ currentMember.name || 'Not provided' }}</strong></span></div>
+          <div class="member-info-row"><span class="info-icon"><ion-icon name="location-outline"></ion-icon></span><span class="info-copy"><small>Hometown / community</small><strong>{{ currentMember.hometown || 'Not provided' }}</strong></span></div>
+          <div class="member-info-row"><span class="info-icon"><ion-icon name="shield-checkmark-outline"></ion-icon></span><span class="info-copy"><small>Community role</small><strong>{{ roleLabel }}</strong></span></div>
+          <div class="member-info-row"><span class="info-icon"><ion-icon name="finger-print-outline"></ion-icon></span><span class="info-copy"><small>Member ID</small><strong>#{{ currentMember.id }}</strong></span></div>
+          <div class="member-info-row"><span class="info-icon"><ion-icon name="calendar-outline"></ion-icon></span><span class="info-copy"><small>Joined Ogbia Connect</small><strong>{{ currentMember.created_at ? (currentMember.created_at | date:'longDate') : 'Date not available' }}</strong></span></div>
+          <div class="member-info-row"><span class="info-icon"><ion-icon name="image-outline"></ion-icon></span><span class="info-copy"><small>Profile picture</small><strong>{{ currentMember.profile_photo_url ? 'Added' : 'Not added yet' }}</strong></span></div>
+        </section>
+      </ng-container>
+    </div>
+  </div>
 </ion-content>
