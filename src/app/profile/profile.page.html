@@ -12,8 +12,7 @@
           <span class="photo-edit-icon"><ion-icon name="create-outline"></ion-icon></span>
         </button>
         <input #photoInput class="visually-hidden-file" type="file" accept="image/jpeg,image/png,image/webp" (change)="onPhotoSelected($event)">
-        <h1>{{ displayName }}</h1>
-        <p class="profile-hometown" *ngIf="currentUser.hometown">{{ displayName }} - {{ currentUser.hometown }}</p>
+        <h1>{{ displayName }}<ng-container *ngIf="currentUser.hometown"> - {{ currentUser.hometown }}</ng-container></h1>
         <p *ngIf="currentUser.email">{{ currentUser.email }}</p>
         <p *ngIf="currentUser.phone">{{ currentUser.phone }}</p>
         <small class="member-status"><i></i> Ogbia Connect member</small>
