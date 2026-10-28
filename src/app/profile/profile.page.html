@@ -24,6 +24,20 @@
         <p class="profile-feedback success" role="status" *ngIf="photoSuccess">{{ photoSuccess }}</p>
       </section>
 
+      <section class="profile-information" *ngIf="user as currentUser">
+        <div class="section-title">
+          <h2>My information</h2>
+          <p>Your profile details on Ogbia Connect</p>
+        </div>
+        <div class="profile-info-row"><span class="info-icon"><ion-icon name="person-outline"></ion-icon></span><span class="info-copy"><small>Full name</small><strong>{{ currentUser.name || 'Not provided' }}</strong></span></div>
+        <div class="profile-info-row"><span class="info-icon"><ion-icon name="location-outline"></ion-icon></span><span class="info-copy"><small>Hometown / community</small><strong>{{ currentUser.hometown || 'Not provided' }}</strong></span></div>
+        <div class="profile-info-row"><span class="info-icon"><ion-icon name="mail-outline"></ion-icon></span><span class="info-copy"><small>Email address</small><strong>{{ currentUser.email || 'Not provided' }}</strong></span></div>
+        <div class="profile-info-row"><span class="info-icon"><ion-icon name="call-outline"></ion-icon></span><span class="info-copy"><small>Phone number</small><strong>{{ currentUser.phone || 'Not provided' }}</strong></span></div>
+        <div class="profile-info-row"><span class="info-icon"><ion-icon name="finger-print-outline"></ion-icon></span><span class="info-copy"><small>Member ID</small><strong>#{{ currentUser.id }}</strong></span></div>
+        <div class="profile-info-row"><span class="info-icon"><ion-icon name="calendar-outline"></ion-icon></span><span class="info-copy"><small>Joined Ogbia Connect</small><strong>{{ currentUser.created_at ? (currentUser.created_at | date:'longDate') : 'Date not available' }}</strong></span></div>
+        <div class="profile-info-row"><span class="info-icon"><ion-icon name="image-outline"></ion-icon></span><span class="info-copy"><small>Profile picture</small><strong>{{ currentUser.profile_photo_url || photoPreview ? 'Added' : 'Not available' }}</strong></span></div>
+      </section>
+
       <section class="referral-card" *ngIf="referralCode">
         <div class="referral-copy"><span class="referral-eyebrow">INVITE A MEMBER</span><strong>Your Referral ID</strong><p>Share this code with people you invite to Ogbia Connect.</p><code>{{ referralCode }}</code></div>
         <button type="button" class="copy-referral" (click)="copyReferralId()"><ion-icon name="copy-outline"></ion-icon> Copy ID</button>
