@@ -1,8 +1,10 @@
 .member-view-page{min-height:100%;padding-bottom:100px;background:linear-gradient(180deg,#bfe2ff 0,#fff 30%,#f7f8fb 100%)}
 .member-view-page .profile-top{align-items:center}.member-view-page .profile-label{margin-right:auto;font-size:10px;font-weight:800;letter-spacing:1.4px;color:#667085}
-.member-view-page .profile-hero{margin-top:12px;text-align:center}.member-view-page .member-photo{display:grid;place-items:center;overflow:hidden;cursor:default;background:#e8def8;color:#6941a5}
-.member-view-page .member-photo img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}.member-view-page .profile-initials{position:static;width:100%;height:100%;border-radius:50%;font-size:27px}
-.member-view-page .profile-hero h1{font-size:17px;margin:10px 0 7px;overflow-wrap:anywhere}.member-view-page .profile-hero .member-role{display:flex;align-items:center;justify-content:center;gap:5px;margin:0 0 7px;color:#6f7782;font-size:11px}.member-role ion-icon{font-size:15px;color:#393185}
+.member-view-page .profile-hero{margin-top:12px;text-align:center}
+.member-view-page .member-photo{display:grid;place-items:center;overflow:hidden;cursor:default;background:#e8def8;color:#6941a5;box-sizing:border-box;padding:3px}
+.member-view-page .member-photo img{display:block;width:100%;height:100%;min-width:0;min-height:0;border-radius:50%;object-fit:cover;object-position:center;aspect-ratio:1/1}
+.member-view-page .member-photo .profile-initials{position:static;display:grid;place-items:center;width:100%;height:100%;border-radius:50%;font-size:27px;font-weight:800}
+.member-view-page .profile-hero h1{font-size:17px;margin:10px 0 7px;overflow-wrap:anywhere}.member-view-page .profile-hero .member-role{display:flex;align-items:center;justify-content:center;gap:5px;margin:0 0 7px;color:#6f7782;font-size:11px}.member-view-page .member-role ion-icon{font-size:15px;color:#393185}
 .member-view-page .profile-hero .member-status{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:#2b9362}.member-view-page .member-information{margin-top:26px}
 .member-view-page .member-information .section-title{display:block;margin:0 0 10px}.member-view-page .member-information .section-title h2{margin:0;color:#302347;font-size:17px;font-weight:800}.member-view-page .member-information .section-title p{margin:5px 0 0;color:#83768f;font-size:11px;line-height:1.5}
 .member-view-page .member-info-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #e9eaf0}
