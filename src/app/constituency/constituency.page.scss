@@ -120,3 +120,12 @@
 .stat-card>div{min-width:0;text-align:center}
 .stat-card strong,.stat-card small{text-align:center}
 @media(max-width:480px){.resource-shortcuts{gap:7px}.resource-shortcut{min-height:104px;padding:10px 5px;border-radius:13px;gap:6px}.resource-icon{width:37px;height:37px;border-radius:11px}.resource-icon ion-icon{font-size:21px}.resource-shortcut strong{font-size:12px}.resource-shortcut span:not(.resource-icon){font-size:9px}.stat-card{min-height:104px;padding:10px 5px}.stat-card strong{font-size:17px}.stat-card small{font-size:9px;line-height:1.35}}
+
+/* Consistent type scale across Ogbia Connect pages. */
+.page-heading h1{font-size:clamp(24px,5vw,30px);line-height:1.15;letter-spacing:-.7px}
+.intro-copy h2{font-size:clamp(18px,3.5vw,23px);letter-spacing:-.35px}
+.section-heading h2{font-size:18px;letter-spacing:-.25px}
+.community-hero h2{font-size:20px;letter-spacing:-.35px}
+.detail-intro h3{font-size:16px}
+.stat-card strong{font-size:18px}
+.resource-shortcut strong{font-size:13px}
