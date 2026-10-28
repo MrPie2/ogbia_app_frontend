@@ -20,6 +20,7 @@ export class HomePage implements OnInit, OnDestroy {
   loadingUser = true;
   userError = '';
   posts: CommunityPost[] = [];
+  private expandedPostIds = new Set<number>();
   events: CommunityPost[] = [];
   loadingEvents = true;
   eventsError = '';
@@ -322,6 +323,18 @@ export class HomePage implements OnInit, OnDestroy {
 
   storyInitials(group: StoryGroup): string {
     return (group.user.name || 'Ogbia member').split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+  }
+
+  isPostExpanded(postId: number): boolean {
+    return this.expandedPostIds.has(postId);
+  }
+
+  togglePostContent(postId: number): void {
+    if (this.expandedPostIds.has(postId)) {
+      this.expandedPostIds.delete(postId);
+    } else {
+      this.expandedPostIds.add(postId);
+    }
   }
 
   postInitials(post: CommunityPost): string {
