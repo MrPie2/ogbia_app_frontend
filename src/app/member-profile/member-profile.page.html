@@ -14,8 +14,8 @@
       <ng-container *ngIf="!loading && member as currentMember">
         <section class="profile-hero member-profile-hero fade-up">
           <div class="profile-photo member-photo">
-            <img *ngIf="currentMember.profile_photo_url" [src]="currentMember.profile_photo_url" [alt]="currentMember.name || 'Member photo'">
-            <span *ngIf="!currentMember.profile_photo_url" class="profile-initials">{{ initials }}</span>
+            <img *ngIf="profilePhotoUrl && !photoFailed" [src]="profilePhotoUrl" (error)="onPhotoError()" [alt]="currentMember.name || 'Member photo'">
+            <span *ngIf="!profilePhotoUrl || photoFailed" class="profile-initials">{{ initials }}</span>
           </div>
           <h1>{{ currentMember.name || 'Ogbia Member' }}<ng-container *ngIf="currentMember.hometown"> - {{ currentMember.hometown }}</ng-container></h1>
           <p class="member-role"><ion-icon name="ribbon-outline"></ion-icon>{{ roleLabel }}</p>
@@ -29,7 +29,7 @@
           <div class="member-info-row"><span class="info-icon"><ion-icon name="shield-checkmark-outline"></ion-icon></span><span class="info-copy"><small>Community role</small><strong>{{ roleLabel }}</strong></span></div>
           <div class="member-info-row"><span class="info-icon"><ion-icon name="finger-print-outline"></ion-icon></span><span class="info-copy"><small>Member ID</small><strong>#{{ currentMember.id }}</strong></span></div>
           <div class="member-info-row"><span class="info-icon"><ion-icon name="calendar-outline"></ion-icon></span><span class="info-copy"><small>Joined Ogbia Connect</small><strong>{{ currentMember.created_at ? (currentMember.created_at | date:'longDate') : 'Date not available' }}</strong></span></div>
-          <div class="member-info-row"><span class="info-icon"><ion-icon name="image-outline"></ion-icon></span><span class="info-copy"><small>Profile picture</small><strong>{{ currentMember.profile_photo_url ? 'Added' : 'Not added yet' }}</strong></span></div>
+          <div class="member-info-row"><span class="info-icon"><ion-icon name="image-outline"></ion-icon></span><span class="info-copy"><small>Profile picture</small><strong>{{ profilePhotoUrl && !photoFailed ? 'Added' : 'Not available' }}</strong></span></div>
         </section>
       </ng-container>
     </div>
