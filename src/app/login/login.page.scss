@@ -48,3 +48,7 @@ h1 { margin: 0; color: #302347; font-size: clamp(28px,7vw,36px); font-weight: 85
   .input-wrap { min-height: 42px; }
   .signup-prompt { margin-top: 10px; }
 }
+.login-page h1,.login-page .auth-title{font-size:clamp(24px,7vw,28px);line-height:1.15;letter-spacing:-.5px}
+
+
+/* Match shared page-title and supporting-text sizes. */
