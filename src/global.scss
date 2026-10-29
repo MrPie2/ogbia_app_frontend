@@ -176,3 +176,37 @@ app-shared-navbar { position: relative; z-index: 1000; }
 @media (max-width: 760px) {
   ion-router-outlet.app-router-outlet { inset: 62px 0 calc(68px + env(safe-area-inset-bottom)); }
 }
+
+
+/* Consistent, left-aligned, transparent back navigation across pages. */
+.page-back-button,
+a.back,
+a.back-button,
+button.back-button {
+  box-sizing: border-box;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 40px;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 10px;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #393185 !important;
+  font-size: 22px;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+}
+.page-back-button ion-icon,
+a.back ion-icon,
+a.back-button ion-icon,
+button.back-button ion-icon { font-size: 22px; }
+.page-back-button:focus-visible,
+a.back:focus-visible,
+a.back-button:focus-visible,
+button.back-button:focus-visible { outline: 2px solid #393185; outline-offset: 2px; }
