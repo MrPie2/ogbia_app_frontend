@@ -51,22 +51,76 @@
 .profile-page .profile-top .profile-label { margin-right: auto; }
 
 
-/* Rounded card around the authenticated member summary. */
+/* Match the prominent purple gradient card used on My Ogbia. */
 .profile-page .profile-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
   margin: 12px 0 24px;
-  padding: 24px 18px 20px;
-  border: 1px solid #e8e2f5;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 12px 30px rgba(57, 49, 133, 0.08);
+  padding: 24px 26px;
+  border: 0;
+  border-radius: 22px;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(115deg, #30296f 0%, #393185 58%, #50499b 100%);
+  box-shadow: 0 14px 30px rgba(57, 49, 133, .18);
+}
+
+.profile-page .profile-hero::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  width: 220px;
+  height: 220px;
+  right: -75px;
+  top: -145px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 50%;
+  box-shadow: 0 0 0 25px rgba(255,255,255,.035), 0 0 0 50px rgba(255,255,255,.025);
+  pointer-events: none;
+}
+
+.profile-page .profile-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-page .profile-photo {
+  border-color: rgba(255,255,255,.9);
+  box-shadow: 0 8px 24px rgba(19, 16, 62, .24);
 }
 
 .profile-page .profile-hero h1 {
-  margin-top: 14px;
+  margin: 14px 0 5px;
+  color: #fff;
+}
+
+.profile-page .profile-hero p {
+  color: rgba(255,255,255,.78);
 }
 
 .profile-page .profile-hero .member-status {
   margin-top: 4px;
+  color: #e3ffeF;
+}
+
+.profile-page .profile-hero .photo-actions span {
+  color: rgba(255,255,255,.82);
+}
+
+.profile-page .profile-hero .photo-actions button {
+  background: #fff;
+  color: #393185;
+}
+
+.profile-page .profile-hero .profile-feedback.error {
+  color: #ffe0e4;
+}
+
+.profile-page .profile-hero .profile-feedback.success {
+  color: #d8ffe8;
 }
 
 @media (max-width: 360px) {
