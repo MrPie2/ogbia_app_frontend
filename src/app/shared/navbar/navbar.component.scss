@@ -15,6 +15,9 @@
   box-shadow: 0 5px 22px rgba(57, 49, 133, .08);
   backdrop-filter: blur(18px);
 }
+.top-nav-back { display:grid; place-items:center; flex:0 0 38px; width:38px; height:38px; padding:0; border:0; border-radius:11px; background:transparent; color:#393185; font-size:23px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.top-nav-back:hover,.top-nav-back:focus-visible { background:#f1efff; outline-offset:2px; }
+.top-nav-back ion-icon { display:block; font-size:23px; }
 .brand { display:flex; align-items:center; gap:10px; min-width:0; color:inherit; text-decoration:none; flex-shrink:0; }
 .brand-mark { display:grid; place-items:center; width:38px; height:38px; border-radius:13px; color:#fff; font-size:21px; background:linear-gradient(145deg,#50499b,#393185); box-shadow:0 6px 16px rgba(57,49,133,.2); }
 .brand-copy { display:flex; flex-direction:column; gap:2px; }
@@ -79,7 +82,8 @@
 .app-bottom-nav .create-nav span:last-child { font-size:9px; }
 
 @media (max-width: 760px) {
-  .app-navbar { height:62px; gap:12px; padding:0 14px; }
+  .app-navbar { height:62px; gap:8px; padding:0 12px; }
+  .top-nav-back { flex-basis:34px; width:34px; height:36px; }
   .brand-mark { width:35px; height:35px; }
   .brand-copy strong { font-size:14px; }
   .brand-copy small { font-size:8px; }
