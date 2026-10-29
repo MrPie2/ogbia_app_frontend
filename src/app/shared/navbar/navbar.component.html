@@ -12,6 +12,14 @@
   </nav>
 
   <div class="navbar-actions">
+    <button class="notification-action" type="button" (click)="refreshNotifications()" [attr.aria-label]="'Notifications, ' + ((notifications.unreadCount$ | async) || 0) + ' unread'" title="Unread notifications">
+      <ion-icon name="notifications-outline"></ion-icon>
+      @if ((notifications.unreadCount$ | async); as unreadCount) {
+        @if (unreadCount > 0) {
+          <span class="notification-badge" aria-hidden="true">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
+        }
+      }
+    </button>
     <a class="profile-action" routerLink="/profile" routerLinkActive="active" aria-label="Your profile">
       <ion-icon name="person-circle-outline"></ion-icon><span>Profile</span>
     </a>
