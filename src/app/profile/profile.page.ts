@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,7 @@ import { AuthService, AuthUser, CommunityLeader } from '../services/auth.service
   imports: [IonContent, IonIcon, RouterLink, CommonModule, FormsModule],
   templateUrl: './profile.page.html',
   styleUrl: './profile.page.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ProfilePage implements OnInit, OnDestroy {
   user: AuthUser | null = null;

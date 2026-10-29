@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -13,7 +13,8 @@ import { StoriesService, StoryGroup, StoryItem } from '../services/stories.servi
   standalone: true,
   imports: [CommonModule, DatePipe, IonContent, IonIcon, RouterLink],
   templateUrl: './home.page.html',
-  styleUrl: './home.page.scss'
+  styleUrl: './home.page.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit, OnDestroy {
   user: AuthUser | null = null;
