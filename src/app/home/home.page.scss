@@ -286,3 +286,24 @@
 .home-page .story-button small,
 .home-page .your-story small,
 .home-page .story-person-link { max-width: 62px; font-size: 9px; }
+
+/* Keep story initials avatars exactly inside the outer story ring. */
+.home-page .story-button .story-ring {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.home-page .story-button .story-ring .friend-story-avatar,
+.home-page .story-button .story-ring .account-story-avatar {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  flex: 0 0 100%;
+  margin: 0;
+}
+.home-page .story-button .story-ring .account-story-avatar {
+  border: 0;
+}
