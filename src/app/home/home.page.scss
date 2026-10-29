@@ -274,3 +274,15 @@
 .comments-empty { padding:18px 5px; text-align:center; color:#80758f; font-size:11px; }
 .comments-error { margin:7px 12px 0; color:#a7354a; font-size:10px; }
 @media(min-width:620px) { .comments-backdrop { padding-top:24px; } .comments-modal { border-radius:18px; max-height:75vh; } }
+
+/* Slightly more compact story strip */
+.home-page .stories-section { margin: 16px 0 19px; }
+.home-page .stories-heading { margin-bottom: 9px; }
+.home-page .stories-section .stories { gap: 11px; padding: 1px 2px 5px; }
+.home-page .story-button .story-ring { width: 50px; height: 50px; padding: 2px; }
+.home-page .story-add-button { flex-basis: 56px; min-width: 56px; gap: 5px; }
+.home-page .story-add-circle { width: 48px; height: 48px; }
+.home-page .story-add-circle ion-icon { font-size: 24px; }
+.home-page .story-button small,
+.home-page .your-story small,
+.home-page .story-person-link { max-width: 62px; font-size: 9px; }
