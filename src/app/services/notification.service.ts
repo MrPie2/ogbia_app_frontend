@@ -46,6 +46,8 @@ export class NotificationService {
     this.pollSubscription?.unsubscribe();
     this.pollSubscription = undefined;
     this.pushRegistrationStarted = false;
+    this.unreadCountSubject.next(0);
+    this.seenIds.clear();
   }
 
   private headers(): HttpHeaders {
