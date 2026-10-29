@@ -12,6 +12,9 @@
   </nav>
 
   <div class="navbar-actions">
+    <button class="theme-action" type="button" (click)="toggleTheme()" [attr.aria-label]="darkMode ? 'Switch to light mode' : 'Switch to dark mode'" [title]="darkMode ? 'Switch to light mode' : 'Switch to dark mode'">
+      <ion-icon [name]="darkMode ? 'sunny-outline' : 'moon-outline'"></ion-icon>
+    </button>
     <button class="notification-action" type="button" (click)="refreshNotifications()" [attr.aria-label]="'Notifications, ' + ((notifications.unreadCount$ | async) || 0) + ' unread'" title="Unread notifications">
       <ion-icon name="notifications-outline"></ion-icon>
       @if ((notifications.unreadCount$ | async); as unreadCount) {
