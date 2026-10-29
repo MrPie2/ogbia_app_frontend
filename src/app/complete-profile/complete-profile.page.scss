@@ -32,3 +32,5 @@ h1 { margin: 0; color: #302347; font-size: clamp(29px,7.5vw,37px); font-weight: 
 /* Match shared page-title and supporting-text sizes. */
 .complete-intro h1{font-size:clamp(24px,7vw,28px);line-height:1.15;letter-spacing:-.5px}
 .complete-intro .intro-copy{font-size:12px;line-height:1.55}
+
+.complete-shell > .page-back-button { margin: 0 0 10px -8px; }
