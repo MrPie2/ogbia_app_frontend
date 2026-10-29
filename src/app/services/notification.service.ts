@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications, Token, PushNotificationSchema, ActionPerformed } from '@capacitor/push-notifications';
-import { Subject, Subscription, timer } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription, timer } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface AppNotification {
@@ -27,6 +27,8 @@ export class NotificationService {
   private pollSubscription?: Subscription;
   private readonly toastSubject = new Subject<AppNotification>();
   readonly toast$ = this.toastSubject.asObservable();
+  private readonly unreadCountSubject = new BehaviorSubject<number>(0);
+  readonly unreadCount$ = this.unreadCountSubject.asObservable();
   private readonly seenIds = new Set<string>();
   private nativeListenersReady = false;
   private pushRegistrationStarted = false;
@@ -53,12 +55,17 @@ export class NotificationService {
     });
   }
 
+  refreshUnreadCount(): void {
+    this.poll();
+  }
+
   private poll(): void {
     if (!localStorage.getItem('token')) return;
     this.http.get<NotificationResponse>(`${this.apiUrl}/notifications`, { headers: this.headers() })
       .subscribe({
         next: response => {
           const unread = (response.data ?? []).filter(item => !item.read_at);
+          this.unreadCountSubject.next(Number.isFinite(response.unread_count) ? response.unread_count : unread.length);
           const latest = unread.find(item => !this.seenIds.has(item.id));
           if (!latest) return;
           this.seenIds.add(latest.id);
@@ -79,7 +86,7 @@ export class NotificationService {
 
   markRead(id: string): void {
     this.http.patch(`${this.apiUrl}/notifications/${encodeURIComponent(id)}/read`, {}, { headers: this.headers() })
-      .subscribe({ error: () => undefined });
+      .subscribe({ next: () => this.poll(), error: () => undefined });
   }
 
   private async setupNativePush(): Promise<void> {
