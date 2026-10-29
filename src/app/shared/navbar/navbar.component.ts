@@ -14,8 +14,6 @@ import { NotificationService } from '../../services/notification.service';
 })
 export class NavbarComponent implements OnDestroy {
   menuOpen = false;
-  private previousUrl = '';
-  private currentUrl = this.router.url;
   private readonly destroy$ = new Subject<void>();
 
   constructor(private readonly router: Router, public readonly notifications: NotificationService) {
@@ -25,21 +23,8 @@ export class NavbarComponent implements OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe((event) => {
-        this.previousUrl = this.currentUrl;
-        this.currentUrl = event.urlAfterRedirects;
         this.closeMenu();
       });
-  }
-
-  goBack(): void {
-    if (this.previousUrl && this.previousUrl !== '/' && this.previousUrl !== this.currentUrl) {
-      void this.router.navigateByUrl(this.previousUrl);
-      return;
-    }
-
-    if (this.currentUrl !== '/home') {
-      void this.router.navigateByUrl('/home');
-    }
   }
 
   toggleMenu(): void {
