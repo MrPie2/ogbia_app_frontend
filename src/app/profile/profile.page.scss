@@ -46,3 +46,6 @@
 .profile-hero p{font-size:11px}
 .profile-information .section-title h2,.leadership-heading h2{font-size:17px}
 .profile-information .section-title p,.leadership-heading p{font-size:11px}
+
+.profile-page .profile-top { display: flex; align-items: center; justify-content: flex-start; gap: 8px; }
+.profile-page .profile-top .profile-label { margin-right: auto; }
