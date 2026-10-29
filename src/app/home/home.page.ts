@@ -5,7 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { timeout } from 'rxjs';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService, AuthUser } from '../services/auth.service';
-import { CommunityPost, PostsService } from '../services/posts.service';
+import { CommunityPost, PostComment, PostsService } from '../services/posts.service';
 import { StoriesService, StoryGroup, StoryItem } from '../services/stories.service';
 
 @Component({
@@ -21,6 +21,13 @@ export class HomePage implements OnInit, OnDestroy {
   userError = '';
   posts: CommunityPost[] = [];
   private expandedPostIds = new Set<number>();
+  private likingPostIds = new Set<number>();
+  activeCommentPost: CommunityPost | null = null;
+  postComments: PostComment[] = [];
+  commentDraft = '';
+  commentsLoading = false;
+  commentSending = false;
+  commentsError = '';
   events: CommunityPost[] = [];
   loadingEvents = true;
   eventsError = '';
@@ -86,7 +93,8 @@ export class HomePage implements OnInit, OnDestroy {
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    if (this.activeStoryGroup) this.closeStory();
+    if (this.activeCommentPost) this.closeComments();
+    else if (this.activeStoryGroup) this.closeStory();
   }
 
   ionViewWillEnter(): void {
@@ -335,6 +343,98 @@ export class HomePage implements OnInit, OnDestroy {
     } else {
       this.expandedPostIds.add(postId);
     }
+  }
+
+  toggleLike(post: CommunityPost): void {
+    if (this.likingPostIds.has(post.id)) return;
+    this.likingPostIds.add(post.id);
+    this.postsService.toggleLike(post.id).subscribe({
+      next: (result) => {
+        this.posts = this.posts.map(item => item.id === post.id
+          ? { ...item, liked_by_me: result.liked, likes_count: result.likes_count }
+          : item);
+        this.likingPostIds.delete(post.id);
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.likingPostIds.delete(post.id);
+        this.commentsError = 'Could not update your like. Please try again.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  openComments(post: CommunityPost): void {
+    this.activeCommentPost = post;
+    this.postComments = [];
+    this.commentDraft = '';
+    this.commentsError = '';
+    this.commentsLoading = true;
+    this.postsService.getComments(post.id).subscribe({
+      next: (response) => {
+        this.postComments = response.data || [];
+        this.updateCommentCount(post.id, response.comments_count);
+        this.commentsLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.commentsLoading = false;
+        this.commentsError = 'Comments could not be loaded. Please try again.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  closeComments(): void {
+    this.activeCommentPost = null;
+    this.commentDraft = '';
+    this.commentsError = '';
+  }
+
+  onCommentInput(event: Event): void {
+    this.commentDraft = (event.target as HTMLTextAreaElement).value;
+  }
+
+  sendComment(): void {
+    const post = this.activeCommentPost;
+    const content = this.commentDraft.trim();
+    if (!post || !content || this.commentSending) return;
+
+    this.commentSending = true;
+    this.commentsError = '';
+    this.postsService.addComment(post.id, content).subscribe({
+      next: (response) => {
+        this.postComments = [response.data, ...this.postComments];
+        this.updateCommentCount(post.id, response.comments_count);
+        this.commentDraft = '';
+        this.commentSending = false;
+        this.cdr.markForCheck();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.commentSending = false;
+        this.commentsError = error.status === 422
+          ? 'Your comment must contain between 1 and 2,000 characters.'
+          : 'Your comment could not be sent. Please try again.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  private updateCommentCount(postId: number, count: number): void {
+    this.posts = this.posts.map(item => item.id === postId ? { ...item, comments_count: count } : item);
+    if (this.activeCommentPost?.id === postId) this.activeCommentPost = { ...this.activeCommentPost, comments_count: count };
+  }
+
+  sharePost(post: CommunityPost): void {
+    const url = `${window.location.origin}/home?post=${post.id}`;
+    if (navigator.share) {
+      navigator.share({ title: 'Ogbia Connect post', text: post.content || post.event_title || 'Community post', url }).catch(() => undefined);
+      return;
+    }
+    navigator.clipboard?.writeText(url).then(() => {
+      this.commentsError = 'Post link copied.';
+      this.cdr.markForCheck();
+    }).catch(() => undefined);
   }
 
   postInitials(post: CommunityPost): string {
