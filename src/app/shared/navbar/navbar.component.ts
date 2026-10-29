@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { IonIcon } from '@ionic/angular';
@@ -18,7 +18,7 @@ export class NavbarComponent implements OnDestroy {
   private previousPath = '';
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private readonly router: Router, private readonly location: Location, public readonly notifications: NotificationService) {
+  constructor(private readonly router: Router, public readonly notifications: NotificationService) {
     this.currentPath = this.normalizePath(this.router.url);
     this.router.events
       .pipe(
