@@ -14,9 +14,11 @@ import { NotificationService } from '../../services/notification.service';
 })
 export class NavbarComponent implements OnDestroy {
   menuOpen = false;
+  darkMode = typeof localStorage !== 'undefined' && localStorage.getItem('ogbia-theme') === 'dark';
   private readonly destroy$ = new Subject<void>();
 
   constructor(private readonly router: Router, public readonly notifications: NotificationService) {
+    this.applyTheme();
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -35,6 +37,21 @@ export class NavbarComponent implements OnDestroy {
 
   refreshNotifications(): void {
     this.notifications.refreshUnreadCount();
+  }
+
+  toggleTheme(): void {
+    this.darkMode = !this.darkMode;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('ogbia-theme', this.darkMode ? 'dark' : 'light');
+    }
+    this.applyTheme();
+  }
+
+  private applyTheme(): void {
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('dark-theme', this.darkMode);
+      document.documentElement.style.colorScheme = this.darkMode ? 'dark' : 'light';
+    }
   }
 
   ngOnDestroy(): void {
