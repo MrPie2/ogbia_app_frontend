@@ -176,3 +176,58 @@ app-shared-navbar { position: relative; z-index: 1000; }
 @media (max-width: 760px) {
   ion-router-outlet.app-router-outlet { inset: 62px 0 calc(68px + env(safe-area-inset-bottom)); }
 }
+
+
+/* User-selectable dark theme. The preference is stored by the navbar and applied to the root element. */
+html.dark-theme { color-scheme: dark; }
+html.dark-theme body,
+html.dark-theme ion-app,
+html.dark-theme ion-router-outlet,
+html.dark-theme .ion-page { background: #11101a !important; color: #eeeaf8; }
+html.dark-theme ion-content { --background: #11101a; --color: #eeeaf8; color: #eeeaf8; }
+html.dark-theme ion-content::part(background) { background: #11101a; }
+html.dark-theme .app-navbar,
+html.dark-theme .app-bottom-nav { background: rgba(25, 23, 39, .98); border-color: #343047; color: #eeeaf8; }
+html.dark-theme .brand-copy strong { color: #f2efff; }
+html.dark-theme .brand-copy small { color: #a7a0bd; }
+html.dark-theme .desktop-links a { color: #b9b2ce; }
+html.dark-theme .desktop-links a:hover,
+html.dark-theme .desktop-links a.active { color: #d8d2ff; background: #34304e; }
+html.dark-theme .theme-action,
+html.dark-theme .notification-action,
+html.dark-theme .profile-action,
+html.dark-theme .menu-toggle { background: #242136; border-color: #403a5b; color: #e1dcff; }
+html.dark-theme .notification-badge { border-color: #242136; }
+html.dark-theme .mobile-links { background: #201e30; border-color: #403a5b; }
+html.dark-theme .mobile-links a { color: #e1dced; }
+html.dark-theme .mobile-links a.active,
+html.dark-theme .mobile-links a:active { background: #34304e; color: #e1dcff; }
+html.dark-theme .app-bottom-nav a { color: #a39bb8; }
+html.dark-theme .app-bottom-nav a.active { background: #34304e; color: #e1dcff; }
+html.dark-theme .card,
+html.dark-theme .list-card,
+html.dark-theme .list-row,
+html.dark-theme .search,
+html.dark-theme .topbar .back,
+html.dark-theme .btn-ghost,
+html.dark-theme input,
+html.dark-theme textarea,
+html.dark-theme select,
+html.dark-theme .ogbia-notification-toast { background-color: #201e30; color: #eeeaf8; border-color: #39344f; }
+html.dark-theme .list-row,
+html.dark-theme .list-row .copy strong,
+html.dark-theme .topbar h1,
+html.dark-theme h1,
+html.dark-theme h2,
+html.dark-theme h3,
+html.dark-theme p,
+html.dark-theme label { color: #eeeaf8; }
+html.dark-theme .list-row .copy span,
+html.dark-theme .notification-toast-body { color: #b8b0c9; }
+html.dark-theme .blue-hero { color: #fff; }
+html.dark-theme .btn-primary,
+html.dark-theme .create-nav-icon { color: #fff; }
+html.dark-theme .ogbia-notification-toast { background: #201e30; color: #eeeaf8; }
+html.dark-theme .notification-toast-title { color: #f4f0ff; }
+html.dark-theme .notification-toast-close { color: #c4bdd5; }
+html.dark-theme .page { background: #11101a; color: #eeeaf8; }
