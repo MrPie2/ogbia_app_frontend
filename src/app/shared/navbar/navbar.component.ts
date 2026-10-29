@@ -32,7 +32,7 @@ export class NavbarComponent implements OnDestroy {
   }
 
   goBack(): void {
-    if (this.previousUrl && this.previousUrl !== this.currentUrl) {
+    if (this.previousUrl && this.previousUrl !== '/' && this.previousUrl !== this.currentUrl) {
       void this.router.navigateByUrl(this.previousUrl);
       return;
     }
