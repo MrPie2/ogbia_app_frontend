@@ -15,7 +15,6 @@
         <h1>{{ displayName }}<ng-container *ngIf="currentUser.hometown"> - {{ currentUser.hometown }}</ng-container></h1>
         <p *ngIf="currentUser.email">{{ currentUser.email }}</p>
         <p *ngIf="currentUser.phone">{{ currentUser.phone }}</p>
-        <small class="member-status"><i></i> Ogbia Connect member</small>
         <div class="photo-actions" *ngIf="selectedPhoto">
           <span>{{ selectedPhoto.name }}</span>
           <button type="button" (click)="uploadProfilePhoto()" [disabled]="savingPhoto">{{ savingPhoto ? 'Uploading…' : 'Save picture' }}</button>
