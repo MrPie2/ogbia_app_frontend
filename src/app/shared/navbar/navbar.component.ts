@@ -3,6 +3,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { IonIcon } from '@ionic/angular';
 import { Subject, filter, takeUntil } from 'rxjs';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-shared-navbar',
@@ -15,7 +16,7 @@ export class NavbarComponent implements OnDestroy {
   menuOpen = false;
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private readonly router: Router) {
+  constructor(private readonly router: Router, public readonly notifications: NotificationService) {
     this.router.events
       .pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -30,6 +31,10 @@ export class NavbarComponent implements OnDestroy {
 
   closeMenu(): void {
     this.menuOpen = false;
+  }
+
+  refreshNotifications(): void {
+    this.notifications.refreshUnreadCount();
   }
 
   ngOnDestroy(): void {
