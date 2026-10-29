@@ -1,1 +1,4 @@
 .explore-page{background:#f8f9fb}.mini-menu{width:34px;height:34px;border:0;background:#fff;border-radius:50%;font-size:17px;color:#222;box-shadow:0 2px 10px rgba(0,0,0,.04)}.explore-page .topbar h1{font-size:16px;flex:1;margin-left:4px}.explore-page .search{margin-bottom:18px}.explore-page .list-row{min-height:57px}
+
+.explore-page .topbar { display: flex; align-items: center; gap: 8px; }
+.explore-page .topbar h1 { margin-left: 0; }
