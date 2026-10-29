@@ -21,7 +21,7 @@ export class HomePage implements OnInit, OnDestroy {
   userError = '';
   posts: CommunityPost[] = [];
   private expandedPostIds = new Set<number>();
-  private likingPostIds = new Set<number>();
+  likingPostIds = new Set<number>();
   activeCommentPost: CommunityPost | null = null;
   postComments: PostComment[] = [];
   commentDraft = '';
@@ -435,6 +435,10 @@ export class HomePage implements OnInit, OnDestroy {
       this.commentsError = 'Post link copied.';
       this.cdr.markForCheck();
     }).catch(() => undefined);
+  }
+
+  commentInitials(comment: PostComment): string {
+    return (comment.user.name || 'Member').split(/\\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
   }
 
   postInitials(post: CommunityPost): string {
