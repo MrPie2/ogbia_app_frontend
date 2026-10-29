@@ -20,6 +20,16 @@ export interface CommunityPost {
   event_location: string | null;
   created_at: string;
   author: { id: number; name: string; hometown?: string | null; profile_photo_url?: string | null } | null;
+  likes_count?: number;
+  comments_count?: number;
+  liked_by_me?: boolean;
+}
+
+export interface PostComment {
+  id: number;
+  content: string;
+  created_at: string;
+  user: { id: number; name: string; profile_photo_url?: string | null };
 }
 
 export interface PostsPage {
@@ -68,6 +78,18 @@ export class PostsService {
     return this.http.post<{ message: string; data: CommunityPost }>(`${this.apiUrl}/posts`, form, {
       headers: this.authHeaders()
     });
+  }
+
+  toggleLike(postId: number): Observable<{ liked: boolean; likes_count: number }> {
+    return this.http.post<{ liked: boolean; likes_count: number }>(`${this.apiUrl}/posts/${postId}/like`, {}, { headers: this.authHeaders() });
+  }
+
+  getComments(postId: number): Observable<{ data: PostComment[]; comments_count: number }> {
+    return this.http.get<{ data: PostComment[]; comments_count: number }>(`${this.apiUrl}/posts/${postId}/comments`, { headers: this.authHeaders() });
+  }
+
+  addComment(postId: number, content: string): Observable<{ data: PostComment; comments_count: number; message: string }> {
+    return this.http.post<{ data: PostComment; comments_count: number; message: string }>(`${this.apiUrl}/posts/${postId}/comments`, { content }, { headers: this.authHeaders() });
   }
 
   private authHeaders(): HttpHeaders {
