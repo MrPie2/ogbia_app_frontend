@@ -103,3 +103,6 @@ ion-content {
 .friends-header h1{font-size:24px;line-height:1.2;letter-spacing:-.45px}
 .section-heading h2,.find-title h2{font-size:17px;line-height:1.3;letter-spacing:-.2px}
 .empty-state h3{font-size:15px}
+
+
+.friends-header{align-items:center;gap:6px}.friends-header>.page-back-button{flex:0 0 40px;margin-left:-8px}.friends-header>div{flex:1;min-width:0}
