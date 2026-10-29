@@ -3,13 +3,13 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent } from '@ionic/angular';
+import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-complete-profile',
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule],
+  imports: [IonContent, IonIcon, CommonModule, FormsModule],
   templateUrl: './complete-profile.page.html',
   styleUrls: ['./complete-profile.page.scss'],
 })
