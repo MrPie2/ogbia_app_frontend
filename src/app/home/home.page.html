@@ -63,18 +63,27 @@
             }
             @if (post.content) {
               <div class="post-text-block">
-                <p class="post-content" style="padding: 8px 10px 0px 10px; margin-top: -2px">{{ post.content.length > 100 && !isPostExpanded(post.id) ? (post.content | slice:0:100) + '…' : post.content }}
+                <p class="post-content" style="padding: 8px 10px 0px 10px; margin-top: -2px">{{ post.content.length > 100 && !isPostExpanded(post.id) ? (post.content | slice:0:100) + '…' : post.content }}</p>
                 @if (post.content.length > 100) {
                   <button class="post-read-toggle" type="button" (click)="togglePostContent(post.id)" [attr.aria-expanded]="isPostExpanded(post.id)">
                     {{ isPostExpanded(post.id) ? 'Show less' : 'Read more' }}
                   </button>
                 }
-                </p>
               </div>
             }
             @if (post.media_url && post.media_type === 'image') { <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy" style="margin-top: -3px;border-radius: 0px;"> }
             @if (post.media_url && post.media_type === 'video') { <video class="post-video" [src]="post.media_url" controls playsinline preload="metadata"></video> }
-            <div class="post-actions" style="padding: 8px; border: 0px;"><span><ion-icon name="heart-outline"></ion-icon> Like</span><span><ion-icon name="chatbubble-outline"></ion-icon> Comment</span><span><ion-icon name="share-social-outline"></ion-icon> Share</span></div>
+            <div class="post-actions" style="padding: 8px; border: 0px;">
+              <button type="button" class="post-action-button" [class.is-liked]="post.liked_by_me" [disabled]="likingPostIds.has(post.id)" (click)="toggleLike(post)" [attr.aria-pressed]="!!post.liked_by_me">
+                <ion-icon [name]="post.liked_by_me ? 'heart' : 'heart-outline'"></ion-icon><span>{{ post.liked_by_me ? 'Liked' : 'Like' }}</span><b>{{ post.likes_count || 0 }}</b>
+              </button>
+              <button type="button" class="post-action-button" (click)="openComments(post)">
+                <ion-icon name="chatbubble-outline"></ion-icon><span>Comment</span><b>{{ post.comments_count || 0 }}</b>
+              </button>
+              <button type="button" class="post-action-button" (click)="sharePost(post)">
+                <ion-icon name="share-social-outline"></ion-icon><span>Share</span>
+              </button>
+            </div>
           </article>
         }
       }
@@ -82,6 +91,34 @@
     </div>
 
   </div>
+
+  @if (activeCommentPost; as commentPost) {
+    <div class="comments-backdrop" role="presentation" (click)="closeComments()">
+      <section class="comments-modal" role="dialog" aria-modal="true" aria-label="Post comments" (click)="$event.stopPropagation()">
+        <div class="comments-modal-heading">
+          <div><h2>Comments</h2><p>{{ commentPost.comments_count || 0 }} comments</p></div>
+          <button type="button" class="comments-close" (click)="closeComments()" aria-label="Close comments"><ion-icon name="close"></ion-icon></button>
+        </div>
+        <form class="comment-compose" (submit)="$event.preventDefault(); sendComment()">
+          <textarea rows="2" maxlength="2000" [value]="commentDraft" (input)="onCommentInput($event)" placeholder="Write a comment…" aria-label="Write a comment"></textarea>
+          <button type="submit" [disabled]="!commentDraft.trim() || commentSending" aria-label="Send comment"><ion-icon [name]="commentSending ? 'hourglass-outline' : 'send'"></ion-icon><span>{{ commentSending ? 'Sending…' : 'Send' }}</span></button>
+        </form>
+        @if (commentsError) { <p class="comments-error" role="alert">{{ commentsError }}</p> }
+        <div class="comments-list">
+          @if (commentsLoading) { <p class="comments-empty">Loading comments…</p> }
+          @else if (!postComments.length) { <p class="comments-empty">No comments yet. Start the conversation.</p> }
+          @else {
+            @for (comment of postComments; track comment.id) {
+              <article class="comment-item">
+                <div class="comment-avatar">{{ (comment.user.name || 'Member').split(' ').slice(0, 2).map(part => part[0]).join('').toUpperCase() }}</div>
+                <div class="comment-copy"><div class="comment-meta"><b>{{ comment.user.name }}</b><small>{{ comment.created_at | date:'short' }}</small></div><p>{{ comment.content }}</p></div>
+              </article>
+            }
+          }
+        </div>
+      </section>
+    </div>
+  }
 
   @if (activeStoryGroup; as activeGroup) {
     @if (activeGroup.stories[activeStoryIndex]; as story) {
