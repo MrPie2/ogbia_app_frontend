@@ -56,3 +56,6 @@ h1 { margin: 0; color: #302347; font-size: clamp(27px,7vw,35px); font-weight: 85
 /* Match shared page-title and supporting-text sizes. */
 .signup-intro h1{font-size:clamp(24px,7vw,28px);line-height:1.15;letter-spacing:-.5px}
 .signup-intro .intro-copy{font-size:12px;line-height:1.55}
+
+
+.signup-intro .page-title-row{display:flex;align-items:center;gap:6px;min-width:0;margin:0 0 8px -8px}.signup-intro .page-title-row h1{min-width:0;flex:1;margin:0}
