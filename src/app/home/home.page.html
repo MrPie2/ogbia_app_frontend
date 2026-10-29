@@ -63,12 +63,13 @@
             }
             @if (post.content) {
               <div class="post-text-block">
-                <p class="post-content" style="padding: 8px 10px 0px 10px; margin-top: -2px">{{ post.content.length > 100 && !isPostExpanded(post.id) ? (post.content | slice:0:100) + '…' : post.content }}</p>
+                <p class="post-content" style="padding: 8px 10px 0px 10px; margin-top: -2px">{{ post.content.length > 100 && !isPostExpanded(post.id) ? (post.content | slice:0:100) + '…' : post.content }}
                 @if (post.content.length > 100) {
                   <button class="post-read-toggle" type="button" (click)="togglePostContent(post.id)" [attr.aria-expanded]="isPostExpanded(post.id)">
                     {{ isPostExpanded(post.id) ? 'Show less' : 'Read more' }}
                   </button>
                 }
+                </p>
               </div>
             }
             @if (post.media_url && post.media_type === 'image') { <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy" style="margin-top: -3px;border-radius: 0px;"> }
