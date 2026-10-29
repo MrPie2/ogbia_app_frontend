@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
   <div class="profile-page page" style="padding: 0px">
     <div class="container">
-      <div class="profile-top"><span class="profile-label">MY ACCOUNT</span><a class="settings" routerLink="/account-security" aria-label="Account and security settings"><ion-icon name="settings-outline"></ion-icon></a></div>
+      <div class="profile-top"><a class="page-back-button" routerLink="/home" aria-label="Back to community feed"><ion-icon name="arrow-back-outline"></ion-icon></a><span class="profile-label">MY ACCOUNT</span><a class="settings" routerLink="/account-security" aria-label="Account and security settings"><ion-icon name="settings-outline"></ion-icon></a></div>
 
       <div class="profile-loading" *ngIf="loading && !user">Loading your profile…</div>
 
