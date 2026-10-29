@@ -110,7 +110,7 @@
           @else {
             @for (comment of postComments; track comment.id) {
               <article class="comment-item">
-                <div class="comment-avatar">{{ (comment.user.name || 'Member').split(' ').slice(0, 2).map(part => part[0]).join('').toUpperCase() }}</div>
+                <div class="comment-avatar">{{ commentInitials(comment) }}</div>
                 <div class="comment-copy"><div class="comment-meta"><b>{{ comment.user.name }}</b><small>{{ comment.created_at | date:'short' }}</small></div><p>{{ comment.content }}</p></div>
               </article>
             }
