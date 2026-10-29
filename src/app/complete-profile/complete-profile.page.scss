@@ -33,4 +33,4 @@ h1 { margin: 0; color: #302347; font-size: clamp(29px,7.5vw,37px); font-weight: 
 .complete-intro h1{font-size:clamp(24px,7vw,28px);line-height:1.15;letter-spacing:-.5px}
 .complete-intro .intro-copy{font-size:12px;line-height:1.55}
 
-.complete-shell > .page-back-button { margin: 0 0 10px -8px; }
+.complete-intro .page-title-row{display:flex;align-items:center;gap:6px;margin:0 0 8px -8px}.complete-intro .page-title-row h1{flex:1;min-width:0}
