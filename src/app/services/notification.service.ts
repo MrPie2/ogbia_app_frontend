@@ -27,6 +27,8 @@ export class NotificationService {
   private pollSubscription?: Subscription;
   private readonly toastSubject = new Subject<AppNotification>();
   readonly toast$ = this.toastSubject.asObservable();
+  private readonly navigationSubject = new Subject<string>();
+  readonly navigation$ = this.navigationSubject.asObservable();
   private readonly unreadCountSubject = new BehaviorSubject<number>(0);
   readonly unreadCount$ = this.unreadCountSubject.asObservable();
   private readonly seenIds = new Set<string>();
@@ -116,7 +118,11 @@ export class NotificationService {
             body: notification.body || ''
           });
         });
-        await PushNotifications.addListener('pushNotificationActionPerformed', (_action: ActionPerformed) => {
+        await PushNotifications.addListener('pushNotificationActionPerformed', (action: ActionPerformed) => {
+          const url = action.notification.data?.['url'];
+          if (typeof url === 'string' && url.trim()) {
+            this.navigationSubject.next(url.trim());
+          }
           this.poll();
         });
       }
