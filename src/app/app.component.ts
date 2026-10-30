@@ -148,6 +148,9 @@ export class AppComponent implements OnDestroy {
     this.notifications.toast$.pipe(takeUntil(this.destroy$)).subscribe((notification) => {
       this.notificationToast = notification;
     });
+    this.notifications.navigation$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((url) => this.openNotificationUrl(url));
   }
 
   private updateNavbarInclusion(url: string): void {
@@ -155,6 +158,12 @@ export class AppComponent implements OnDestroy {
     const publicRoutes = ['/', '/welcome', '/login', '/get_started', '/complete-profile'];
     const hasSessionToken = typeof localStorage !== 'undefined' && !!localStorage.getItem('token');
     this.includeNavbar = hasSessionToken && !publicRoutes.includes(path);
+  }
+
+  private openNotificationUrl(url: string): void {
+    // Push payloads may only navigate to internal app routes.
+    if (!url.startsWith('/') || url.startsWith('//') || url.includes('\\')) return;
+    void this.router.navigateByUrl(url);
   }
 
   dismissNotification(): void {
