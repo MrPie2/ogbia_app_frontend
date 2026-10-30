@@ -1,5 +1,17 @@
 apply plugin: 'com.android.application'
 
+
+plugins {
+  id 'com.android.application'
+  id 'com.google.gms.google-services'
+}
+
+dependencies {
+  implementation platform('com.google.firebase:firebase-bom:35.1.0')
+  implementation 'com.google.firebase:firebase-analytics'
+}
+
+
 android {
     namespace = "com.myogbia.app"
     compileSdk = rootProject.ext.compileSdkVersion

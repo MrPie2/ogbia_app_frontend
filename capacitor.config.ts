@@ -5,5 +5,4 @@ const config: CapacitorConfig = {
   appName: 'My Ogbia',
   webDir: 'www'
 };
-
 export default config;
