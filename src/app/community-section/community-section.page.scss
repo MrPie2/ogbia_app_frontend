@@ -1,0 +1,46 @@
+:host { display:block; color:#302b50; }
+ion-content { --background:#f8f7fc; --color:#302b50; }
+.section-page { min-height:100%; padding:126px 16px 104px; background:#f8f7fc; }
+.section-container { width:min(100%,780px); margin:0 auto; }
+.section-heading { display:flex; align-items:center; gap:14px; margin:0 0 22px; padding:18px; border:1px solid #ebe8f6; border-radius:18px; background:#fff; box-shadow:0 7px 24px rgba(57,49,133,.045); }
+.section-icon { display:grid; place-items:center; flex:0 0 48px; width:48px; height:48px; border-radius:15px; background:#efeeff; color:#393185; }
+.section-icon ion-icon { font-size:25px; }
+.section-heading-copy { flex:1; min-width:0; }
+.section-eyebrow { margin:0 0 4px; color:#928da9; font-size:9px; font-weight:800; letter-spacing:1px; }
+.section-heading h1 { margin:0; color:#302b50; font-size:21px; font-weight:850; letter-spacing:-.5px; }
+.section-heading-copy > p:last-child { margin:5px 0 0; color:#827d98; font-size:11px; line-height:1.5; }
+.section-share { display:flex; align-items:center; gap:5px; padding:9px 12px; border-radius:11px; background:#393185; color:#fff; text-decoration:none; font-size:11px; font-weight:750; white-space:nowrap; }
+.section-share ion-icon { font-size:17px; }
+.section-state,.section-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:230px; padding:28px 18px; border:1px solid #ebe8f6; border-radius:18px; background:#fff; text-align:center; color:#817c96; font-size:12px; }
+.section-spin { margin-bottom:10px; color:#393185; font-size:23px; animation:section-rotate 1s linear infinite; }
+@keyframes section-rotate { to { transform:rotate(360deg); } }
+.section-error p { margin:0 0 12px; }
+.section-error button,.section-empty a { padding:9px 15px; border:0; border-radius:10px; background:#393185; color:#fff; text-decoration:none; font:inherit; font-size:11px; font-weight:750; cursor:pointer; }
+.section-empty-icon { display:grid; place-items:center; width:54px; height:54px; margin-bottom:13px; border-radius:17px; background:#efeeff; color:#393185; }
+.section-empty-icon ion-icon { font-size:27px; }
+.section-empty h2 { margin:0; color:#393185; font-size:15px; }
+.section-empty p { max-width:340px; margin:7px 0 15px; color:#8b869e; font-size:11px; line-height:1.6; }
+.section-feed { display:grid; gap:13px; }
+.section-post { overflow:hidden; padding:15px; border:1px solid #ebe8f6; border-radius:17px; background:#fff; box-shadow:0 5px 18px rgba(57,49,133,.035); }
+.section-post-author { display:flex; align-items:center; gap:9px; margin-bottom:12px; }
+.section-avatar { display:grid; place-items:center; width:36px; height:36px; border-radius:50%; background:#efeeff; color:#393185; font-size:13px; font-weight:800; }
+.section-post-author strong,.section-post-author small { display:block; }
+.section-post-author strong { color:#393185; font-size:11px; }
+.section-post-author small { margin-top:3px; color:#a09bb0; font-size:9px; }
+.section-event-label { display:flex; align-items:center; gap:5px; margin:4px 0 8px; color:#393185; font-size:9px; font-weight:850; letter-spacing:.6px; }
+.section-post-title { margin:0 0 8px; color:#302b50; font-size:15px; }
+.section-post-detail { display:flex; align-items:center; gap:6px; margin:5px 0; color:#77718d; font-size:10px; }
+.section-post-detail ion-icon { color:#393185; font-size:14px; }
+.section-post-content { margin:8px 0 12px; color:#514d68; font-size:12px; line-height:1.65; white-space:pre-wrap; overflow-wrap:anywhere; }
+.section-post-image,.section-post-video { display:block; width:calc(100% + 30px); max-height:480px; margin:10px -15px 0; object-fit:cover; }
+.section-post-footer { display:flex; gap:18px; padding-top:12px; margin-top:12px; border-top:1px solid #f0eef7; color:#8a859e; font-size:10px; }
+.section-post-footer span { display:flex; align-items:center; gap:5px; }
+.section-post-footer ion-icon { color:#77718d; font-size:15px; }
+@media(max-width:520px) {
+ .section-page { padding:116px 12px 96px; }
+ .section-heading { gap:10px; padding:14px; }
+ .section-icon { flex-basis:42px; width:42px; height:42px; }
+ .section-heading h1 { font-size:18px; }
+ .section-heading-copy > p:last-child { font-size:10px; }
+ .section-share { padding:8px 9px; }
+}
