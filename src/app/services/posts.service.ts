@@ -65,14 +65,12 @@ export class PostsService {
     content: string,
     media?: File | null,
     privacy: PostPrivacy = 'public',
-    event?: { title: string; startsAt: string; endsAt: string | null; location: string },
-    category: PostCategory = 'general'
+    event?: { title: string; startsAt: string; endsAt: string | null; location: string }
   ): Observable<{ message: string; data: CommunityPost }> {
     const form = new FormData();
     if (content.trim()) form.append('content', content.trim());
     if (media) form.append('media', media, media.name);
     form.append('privacy', privacy);
-    form.append('category', category);
     form.append('is_event', event ? '1' : '0');
     if (event) {
       form.append('event_title', event.title);
