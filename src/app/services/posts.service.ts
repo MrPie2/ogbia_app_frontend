@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export type PostPrivacy = 'only_me' | 'villagers' | 'public';
+export type PostCategory = 'general' | 'politics' | 'entertainment';
 
 export interface CommunityPost {
   id: number;
@@ -14,6 +15,7 @@ export interface CommunityPost {
   media_url: string | null;
   privacy: PostPrivacy;
   is_event: boolean;
+  category?: PostCategory;
   event_title: string | null;
   event_starts_at: string | null;
   event_ends_at: string | null;
@@ -45,9 +47,10 @@ export class PostsService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getPosts(page = 1, search = ''): Observable<PostsPage> {
+  getPosts(page = 1, search = '', category = ''): Observable<PostsPage> {
     const searchParam = search.trim() ? `&search=${encodeURIComponent(search.trim())}` : '';
-    return this.http.get<PostsPage>(`${this.apiUrl}/posts?page=${page}${searchParam}`, {
+    const categoryParam = category ? `&category=${encodeURIComponent(category)}` : '';
+    return this.http.get<PostsPage>(`${this.apiUrl}/posts?page=${page}${searchParam}${categoryParam}`, {
       headers: this.authHeaders()
     });
   }
@@ -62,12 +65,14 @@ export class PostsService {
     content: string,
     media?: File | null,
     privacy: PostPrivacy = 'public',
-    event?: { title: string; startsAt: string; endsAt: string | null; location: string }
+    event?: { title: string; startsAt: string; endsAt: string | null; location: string },
+    category: PostCategory = 'general'
   ): Observable<{ message: string; data: CommunityPost }> {
     const form = new FormData();
     if (content.trim()) form.append('content', content.trim());
     if (media) form.append('media', media, media.name);
     form.append('privacy', privacy);
+    form.append('category', category);
     form.append('is_event', event ? '1' : '0');
     if (event) {
       form.append('event_title', event.title);
