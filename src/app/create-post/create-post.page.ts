@@ -32,6 +32,8 @@ export class CreatePostPage implements OnDestroy {
 
   constructor(private readonly posts: PostsService, private readonly router: Router, private readonly route: ActivatedRoute) {
     this.postType = this.route.snapshot.queryParamMap.get('type') === 'event' ? 'event' : 'standard';
+    const requestedCategory = this.route.snapshot.queryParamMap.get('category');
+    if (requestedCategory === 'politics' || requestedCategory === 'entertainment') this.category = requestedCategory;
     if (!localStorage.getItem('token')) {
       this.router.navigate(['/login']);
       return;
@@ -123,7 +125,7 @@ export class CreatePostPage implements OnDestroy {
         this.category = 'general';
         this.clearPreview();
         this.selectedFile = null;
-        this.router.navigate(['/home']);
+        this.router.navigate(this.category === 'politics' || this.category === 'entertainment' ? ['/sections', this.category] : ['/home']);
       },
       error: (error: HttpErrorResponse) => {
         this.submitting = false;
