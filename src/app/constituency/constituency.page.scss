@@ -132,3 +132,34 @@
 
 
 .page-heading .page-title-row{display:flex;align-items:center;gap:6px;min-width:0}.page-heading .page-title-row h1{min-width:0;margin:0 0 7px;flex:1}
+
+
+/* Political representatives switcher */
+.political-representatives-card{margin-top:18px;padding:22px;border:1px solid #e7e5f5;border-radius:22px;background:#fff;box-shadow:0 8px 28px rgba(57,49,133,.045)}
+.political-card-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:17px}
+.political-card-heading h2{margin:5px 0 6px;color:#302347;font-size:19px;letter-spacing:-.35px}
+.political-card-heading p{max-width:520px;margin:0;color:#77758d;font-size:11px;line-height:1.55}
+.political-heading-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:15px;color:#fff;background:#393185;font-size:24px}
+.political-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:5px;margin-bottom:14px;border-radius:13px;background:#f4f3ff}
+.political-tabs button{min-width:0;min-height:40px;padding:7px 5px;border:0;border-radius:9px;color:#77758d;background:transparent;font-size:10px;font-weight:750;line-height:1.25;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s}
+.political-tabs button.active{color:#fff;background:#393185;box-shadow:0 4px 10px rgba(57,49,133,.18)}
+.political-representatives-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.political-representative{display:flex;align-items:center;gap:10px;min-width:0;padding:12px;border:1px solid #e9e7f7;border-radius:14px;background:#fff}
+.political-representative-photo,.political-representative-avatar{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border-radius:13px;object-fit:cover;color:#393185;background:#efeeff;font-size:21px}
+.political-representative-info{flex:1;min-width:0}
+.political-representative-info strong,.political-role,.political-location,.political-party{display:block}
+.political-representative-info strong{overflow:hidden;color:#30296f;font-size:12px;font-weight:800;text-overflow:ellipsis;white-space:nowrap}
+.political-role{margin-top:3px;color:#5d5797;font-size:10px;font-weight:700;line-height:1.4}
+.political-location{display:flex;align-items:flex-start;gap:4px;margin-top:6px;color:#8987a0;font-size:9px;line-height:1.4}
+.political-location ion-icon{flex:0 0 auto;color:#393185;font-size:12px}
+.political-party{margin-top:4px;color:#77758d;font-size:9px}
+.political-verification{display:flex;align-items:center;gap:3px;flex:0 0 auto;align-self:flex-start;padding:5px 6px;border-radius:7px;color:#8a6b2e;background:#fff8e9;font-size:8px;font-weight:750}
+.political-verification ion-icon{font-size:12px}
+.political-verification.verified{color:#237653;background:#eaf8f0}
+.political-empty-state{display:flex;flex-direction:column;align-items:center;gap:7px;padding:28px 12px;color:#8987a0;text-align:center}
+.political-empty-state>ion-icon{color:#716bc0;font-size:27px}
+.political-empty-state strong{color:#30296f;font-size:12px}
+.political-empty-state p{max-width:420px;margin:0;font-size:10px;line-height:1.55}
+.political-loading-icon{animation:political-spin 1s linear infinite}
+@keyframes political-spin{to{transform:rotate(360deg)}}
+@media(max-width:600px){.political-representatives-card{padding:15px 12px;border-radius:18px}.political-card-heading h2{font-size:17px}.political-heading-icon{flex-basis:41px;width:41px;height:41px;font-size:21px}.political-tabs{gap:3px;padding:4px}.political-tabs button{min-height:42px;font-size:9px}.political-representatives-list{grid-template-columns:1fr}.political-representative{padding:11px}.political-verification{font-size:8px}}
