@@ -24,7 +24,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-plugins {
-  id 'com.google.gms.google-services' version '4.5.0' apply false
-}
