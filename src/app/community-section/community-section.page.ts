@@ -24,7 +24,7 @@ export class CommunitySectionPage implements OnInit {
     politics: {
       title: 'Politics',
       subtitle: 'Civic conversations, public affairs and community leadership across Ogbia.',
-      icon: 'landmark-outline',
+      icon: 'business-outline',
       emptyTitle: 'No political posts yet',
       emptyText: 'When members share posts under Politics, they will appear here.'
     },
