@@ -1,4 +1,3 @@
-
 <header class="app-navbar">
   <a class="brand" routerLink="/home" (click)="closeMenu()" aria-label="Ogbia Connect home">
     <span class="brand-copy"><strong>My Ogbia</strong><small>Our people. One community.</small></span>
@@ -12,6 +11,9 @@
   </nav>
 
   <div class="navbar-actions">
+    <button class="search-action" type="button" (click)="openSearch()" aria-label="Search Ogbia" title="Search">
+      <ion-icon name="search-outline"></ion-icon>
+    </button>
     <button class="notification-action" type="button" (click)="refreshNotifications()" [attr.aria-label]="'Notifications, ' + ((notifications.unreadCount$ | async) || 0) + ' unread'" title="Unread notifications">
       <ion-icon name="notifications-outline"></ion-icon>
       @if ((notifications.unreadCount$ | async); as unreadCount) {
@@ -41,6 +43,77 @@
     </nav>
   }
 </header>
+
+@if (searchOpen) {
+  <div class="search-overlay" role="presentation" (click)="closeSearch()">
+    <section class="search-panel" role="dialog" aria-modal="true" aria-label="Search My Ogbia" (click)="$event.stopPropagation()">
+      <div class="search-input-wrap">
+        <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+        <input
+          type="search"
+          autofocus
+          autocomplete="off"
+          [value]="searchQuery"
+          (input)="onSearchInput($event)"
+          placeholder="Search posts, people and communities…"
+          aria-label="Search posts and people">
+        @if (searchQuery) {
+          <button type="button" class="search-clear" (click)="clearSearch()" aria-label="Clear search"><ion-icon name="close-circle"></ion-icon></button>
+        }
+        <button type="button" class="search-close" (click)="closeSearch()" aria-label="Close search"><ion-icon name="close"></ion-icon></button>
+      </div>
+
+      <div class="search-tabs" role="tablist" aria-label="Search categories">
+        <button type="button" role="tab" [attr.aria-selected]="searchTab === 'all'" [class.active]="searchTab === 'all'" (click)="setSearchTab('all')">All</button>
+        <button type="button" role="tab" [attr.aria-selected]="searchTab === 'posts'" [class.active]="searchTab === 'posts'" (click)="setSearchTab('posts')">Posts</button>
+        <button type="button" role="tab" [attr.aria-selected]="searchTab === 'people'" [class.active]="searchTab === 'people'" (click)="setSearchTab('people')">People</button>
+      </div>
+
+      <div class="search-results">
+        @if (searchQuery.trim().length < 2) {
+          <div class="search-prompt">
+            <span class="search-prompt-icon"><ion-icon name="search-outline"></ion-icon></span>
+            <strong>Find something in My Ogbia</strong>
+            <p>Search community posts or find people by name. Enter at least 2 characters.</p>
+          </div>
+        } @else if (searching) {
+          <div class="search-status"><ion-icon name="sync-outline" class="search-spin"></ion-icon><span>Searching My Ogbia…</span></div>
+        } @else if (searchError) {
+          <div class="search-status search-error" role="alert">{{ searchError }}</div>
+        } @else {
+          @if (searchTab !== 'people' && searchPosts.length) {
+            <div class="search-section-heading"><span>Posts</span><small>{{ searchPosts.length }} found</small></div>
+            @for (post of searchPosts.slice(0, searchTab === 'all' ? 5 : searchPosts.length); track post.id) {
+              <article class="search-post-result">
+                <div class="search-result-meta">
+                  <strong>{{ post.author?.name || 'Ogbia member' }}</strong>
+                  <time>{{ post.created_at | date:'mediumDate' }}</time>
+                </div>
+                <p>{{ post.is_event && post.event_title ? post.event_title : (post.content || (post.media_type === 'video' ? 'Shared a video' : 'Shared a photo')) }}</p>
+                @if (post.event_location) { <small class="search-result-context"><ion-icon name="location-outline"></ion-icon>{{ post.event_location }}</small> }
+              </article>
+            }
+          }
+
+          @if (searchTab !== 'posts' && searchUsers.length) {
+            <div class="search-section-heading"><span>People</span><small>{{ searchUsers.length }} found</small></div>
+            @for (person of searchUsers.slice(0, searchTab === 'all' ? 5 : searchUsers.length); track person.id) {
+              <button type="button" class="search-person-result" (click)="openMemberResult(person)">
+                <span class="search-person-avatar">{{ searchInitials(person.name) }}</span>
+                <span class="search-person-copy"><strong>{{ person.name }}</strong><small>{{ person.email }}</small></span>
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+              </button>
+            }
+          }
+
+          @if ((searchTab === 'all' && !searchPosts.length && !searchUsers.length) || (searchTab === 'posts' && !searchPosts.length) || (searchTab === 'people' && !searchUsers.length)) {
+            <div class="search-empty"><ion-icon name="search-outline"></ion-icon><strong>No results found</strong><p>Try another name or keyword.</p></div>
+          }
+        }
+      </div>
+    </section>
+  </div>
+}
 
 <nav class="app-bottom-nav" aria-label="Primary bottom navigation">
   <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
