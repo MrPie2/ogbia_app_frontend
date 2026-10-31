@@ -40,10 +40,6 @@ jobs:
         uses: android-actions/setup-android@v4
         with:
           packages: platform-tools
-      
-      - name: Inject Secrets into Environment File
-        run: |
-          sed -i "s|SECRET_API_URL|${{ secrets.API_URL }}|g" src/environments/environment.prod.ts
 
       - name: Install Android SDK platform and build tools
         run: |
