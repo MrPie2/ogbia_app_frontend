@@ -12,6 +12,10 @@ export const routes: Routes = [
     loadComponent: () => import('./home/home.page').then(m => m.HomePage)
   },
   {
+    path: 'sections/:category',
+    loadComponent: () => import('./community-section/community-section.page').then(m => m.CommunitySectionPage)
+  },
+  {
     path: 'welcome',
     loadComponent: () => import('./welcome/welcome.page').then(m => m.WelcomePage)
   },
