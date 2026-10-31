@@ -314,9 +314,9 @@
   justify-content: center;
   gap: clamp(24px, 7vw, 76px);
   padding: 4px 16px;
-  border-bottom: 1px solid #eeeaf7;
-  background: rgba(255,255,255,.97);
-  box-shadow: 0 4px 14px rgba(57,49,133,.045);
+  border-bottom: 1px solid #2e286f;
+  background: #393185;
+  box-shadow: 0 4px 16px rgba(57,49,133,.22);
   backdrop-filter: blur(16px);
 }
 .category-nav a {
@@ -325,14 +325,14 @@
   display: grid;
   place-items: center;
   border-radius: 11px;
-  color: #77738f;
+  color: #fff;
   text-decoration: none;
   transition: color .18s ease, background .18s ease, transform .18s ease;
 }
 .category-nav a ion-icon { font-size: 21px; }
 .category-nav a:hover, .category-nav a.active {
-  color: #393185;
-  background: #efeeff;
+  color: #fff;
+  background: rgba(255,255,255,.18);
 }
 .category-nav a:active { transform: scale(.94); }
 @media (max-width: 760px) {
