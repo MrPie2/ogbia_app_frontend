@@ -22,12 +22,17 @@ export class ConstituencyPage implements OnInit {
   detailLoading = false;
   errorMessage = '';
   detailError = '';
+  politicalTab: 'house_reps' | 'senators' | 'assembly' = 'house_reps';
+  politicalRepresentatives: KnowledgeRepresentative[] = [];
+  politicalLoading = false;
+  politicalError = '';
 
   constructor(private readonly knowledgeBase: KnowledgeBaseService) {}
 
   ngOnInit(): void {
     this.loadCommunities();
     this.loadWards();
+    this.loadPoliticalRepresentatives();
   }
 
   get filteredCommunities(): KnowledgeCommunity[] {
@@ -62,6 +67,35 @@ export class ConstituencyPage implements OnInit {
         this.wards = [];
       }
     });
+  }
+
+  selectPoliticalTab(tab: 'house_reps' | 'senators' | 'assembly'): void {
+    if (this.politicalTab === tab) return;
+    this.politicalTab = tab;
+    this.loadPoliticalRepresentatives();
+  }
+
+  loadPoliticalRepresentatives(): void {
+    this.politicalLoading = true;
+    this.politicalError = '';
+    this.knowledgeBase.getPoliticalRepresentatives(this.politicalTab).subscribe({
+      next: response => {
+        this.politicalRepresentatives = response.data ?? [];
+        this.politicalLoading = false;
+      },
+      error: () => {
+        this.politicalRepresentatives = [];
+        this.politicalLoading = false;
+        this.politicalError = 'Political representatives could not be loaded. Please try again.';
+      }
+    });
+  }
+
+  representativeLocation(person: KnowledgeRepresentative): string {
+    return [person.constituency, person.ward?.name, person.community?.name]
+      .filter((value): value is string => !!value?.trim())
+      .filter((value, index, values) => values.indexOf(value) === index)
+      .join(' · ') || 'Ogbia representation';
   }
 
   openCommunity(community: KnowledgeCommunity): void {
