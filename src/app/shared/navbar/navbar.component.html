@@ -35,6 +35,7 @@
       <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()"><ion-icon name="home-outline"></ion-icon>Home</a>
       <a routerLink="/friends" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="people-outline"></ion-icon>Friends</a>
       <a routerLink="/constituency" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="map-outline"></ion-icon>My Ogbia</a>
+      <a routerLink="/sections/politics" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="business-outline"></ion-icon>Politics</a>
       <a routerLink="/reps" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="people-circle-outline"></ion-icon>Representatives</a>
       <a routerLink="/services" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="briefcase-outline"></ion-icon>Services</a>
       <a routerLink="/account-security" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="settings-outline"></ion-icon>Account & Security</a>
@@ -44,12 +45,6 @@
   }
 </header>
 
-<nav class="category-nav" aria-label="Community sections">
-  <a routerLink="/sections/politics" routerLinkActive="active" aria-label="Politics" title="Politics"><ion-icon name="business-outline"></ion-icon></a>
-  <a routerLink="/sections/entertainment" routerLinkActive="active" aria-label="Entertainment" title="Entertainment"><ion-icon name="film-outline"></ion-icon></a>
-  <a routerLink="/sections/photos" routerLinkActive="active" aria-label="Photos" title="Photos"><ion-icon name="images-outline"></ion-icon></a>
-  <a routerLink="/sections/events" routerLinkActive="active" aria-label="Events" title="Events"><ion-icon name="calendar-outline"></ion-icon></a>
-</nav>
 
 @if (searchOpen) {
   <div class="search-overlay" role="presentation" (click)="closeSearch()">
