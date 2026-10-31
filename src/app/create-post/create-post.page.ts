@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { PostsService, PostPrivacy } from '../services/posts.service';
+import { PostsService, PostPrivacy, PostCategory } from '../services/posts.service';
 import { timeout } from 'rxjs';
 
 @Component({
@@ -20,6 +20,7 @@ export class CreatePostPage implements OnDestroy {
   selectedFile: File | null = null;
   previewUrl: string | null = null;
   privacy: PostPrivacy = 'public';
+  category: PostCategory = 'general';
   postType: 'standard' | 'event' = 'standard';
   eventTitle = '';
   eventStartsAt = '';
@@ -110,7 +111,7 @@ export class CreatePostPage implements OnDestroy {
       endsAt: this.eventEndsAt || null,
       location: this.eventLocation.trim()
     } : undefined;
-    this.posts.createPost(this.content, this.selectedFile, this.privacy, eventDetails).pipe(timeout(45000)).subscribe({
+    this.posts.createPost(this.content, this.selectedFile, this.privacy, eventDetails, this.category).pipe(timeout(45000)).subscribe({
       next: () => {
         this.submitting = false;
         this.content = '';
@@ -119,6 +120,7 @@ export class CreatePostPage implements OnDestroy {
         this.eventEndsAt = '';
         this.eventLocation = '';
         this.postType = 'standard';
+        this.category = 'general';
         this.clearPreview();
         this.selectedFile = null;
         this.router.navigate(['/home']);
