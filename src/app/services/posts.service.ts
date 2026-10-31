@@ -45,8 +45,9 @@ export class PostsService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getPosts(page = 1): Observable<PostsPage> {
-    return this.http.get<PostsPage>(`${this.apiUrl}/posts?page=${page}`, {
+  getPosts(page = 1, search = ''): Observable<PostsPage> {
+    const searchParam = search.trim() ? `&search=${encodeURIComponent(search.trim())}` : '';
+    return this.http.get<PostsPage>(`${this.apiUrl}/posts?page=${page}${searchParam}`, {
       headers: this.authHeaders()
     });
   }
