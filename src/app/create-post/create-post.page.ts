@@ -122,7 +122,6 @@ export class CreatePostPage implements OnDestroy {
         this.eventEndsAt = '';
         this.eventLocation = '';
         this.postType = 'standard';
-        this.category = 'general';
         this.clearPreview();
         this.selectedFile = null;
         this.router.navigate(this.category === 'politics' || this.category === 'entertainment' ? ['/sections', this.category] : ['/home']);
