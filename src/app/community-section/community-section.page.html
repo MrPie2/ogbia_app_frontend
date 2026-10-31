@@ -1,0 +1,54 @@
+<ion-content [fullscreen]="true">
+  <main class="section-page">
+    <div class="section-container">
+      <header class="section-heading">
+        <div class="section-icon"><ion-icon [name]="details.icon"></ion-icon></div>
+        <div class="section-heading-copy">
+          <p class="section-eyebrow">MY OGBIA COMMUNITY</p>
+          <h1>{{ details.title }}</h1>
+          <p>{{ details.subtitle }}</p>
+        </div>
+        <a class="section-share" [routerLink]="['/create-post']" [queryParams]="{ category: category }" aria-label="Create a post in this section">
+          <ion-icon name="add"></ion-icon><span>Share</span>
+        </a>
+      </header>
+
+      @if (loading) {
+        <div class="section-state"><ion-icon name="sync-outline" class="section-spin"></ion-icon><span>Loading {{ details.title.toLowerCase() }}…</span></div>
+      } @else if (error) {
+        <div class="section-state section-error" role="alert"><p>{{ error }}</p><button type="button" (click)="loadPosts()">Try again</button></div>
+      } @else if (!posts.length) {
+        <div class="section-empty">
+          <span class="section-empty-icon"><ion-icon [name]="details.icon"></ion-icon></span>
+          <h2>{{ details.emptyTitle }}</h2>
+          <p>{{ details.emptyText }}</p>
+          <a [routerLink]="['/create-post']" [queryParams]="{ category: category }">Create a post</a>
+        </div>
+      } @else {
+        <div class="section-feed">
+          @for (post of posts; track post.id) {
+            <article class="section-post">
+              <div class="section-post-author">
+                <span class="section-avatar">{{ (post.author?.name || 'Ogbia member').slice(0, 1).toUpperCase() }}</span>
+                <span><strong>{{ post.author?.name || 'Ogbia member' }}</strong><small>{{ post.created_at | date:'medium' }}</small></span>
+              </div>
+              @if (post.is_event) {
+                <div class="section-event-label"><ion-icon name="calendar-outline"></ion-icon> COMMUNITY EVENT</div>
+                <h2 class="section-post-title">{{ post.event_title }}</h2>
+                @if (post.event_starts_at) { <p class="section-post-detail"><ion-icon name="time-outline"></ion-icon>{{ post.event_starts_at | date:'EEE, d MMM yyyy · h:mm a' }}</p> }
+                @if (post.event_location) { <p class="section-post-detail"><ion-icon name="location-outline"></ion-icon>{{ post.event_location }}</p> }
+              }
+              @if (post.content) { <p class="section-post-content">{{ post.content }}</p> }
+              @if (post.media_url && post.media_type === 'image') { <img class="section-post-image" [src]="post.media_url" alt="Photo shared by a community member" loading="lazy"> }
+              @if (post.media_url && post.media_type === 'video') { <video class="section-post-video" [src]="post.media_url" controls playsinline preload="metadata"></video> }
+              <footer class="section-post-footer">
+                <span><ion-icon name="heart-outline"></ion-icon>{{ post.likes_count || 0 }} likes</span>
+                <span><ion-icon name="chatbubble-outline"></ion-icon>{{ post.comments_count || 0 }} comments</span>
+              </footer>
+            </article>
+          }
+        </div>
+      }
+    </div>
+  </main>
+</ion-content>
