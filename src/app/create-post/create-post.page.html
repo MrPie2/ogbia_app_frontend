@@ -15,6 +15,18 @@
           <div><b>{{ displayName }}</b><small>Share a thought, update or moment</small></div>
         </div>
 
+        @if (postType === 'standard') {
+          <section class="post-type-picker category-picker" aria-labelledby="post-category-title">
+            <label id="post-category-title" for="postCategory">Post category</label>
+            <select id="postCategory" name="postCategory" [(ngModel)]="category">
+              <option value="general">General community post</option>
+              <option value="politics">Politics</option>
+              <option value="entertainment">Entertainment</option>
+            </select>
+            <small>Choose where this post should appear in the community sections.</small>
+          </section>
+        }
+
         <section class="post-type-picker" aria-labelledby="post-type-title">
           <label id="post-type-title" for="postType">What are you sharing?</label>
           <select id="postType" name="postType" [(ngModel)]="postType">
