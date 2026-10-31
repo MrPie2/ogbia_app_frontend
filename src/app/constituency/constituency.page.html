@@ -113,6 +113,57 @@
       </section>
     }
 
+    <section class="political-representatives-card" aria-labelledby="political-representatives-title">
+      <div class="political-card-heading">
+        <div>
+          <span class="section-kicker">OGBIA IN GOVERNMENT</span>
+          <h2 id="political-representatives-title">Political representatives</h2>
+          <p>Meet the elected officials representing Ogbia at state and national levels.</p>
+        </div>
+        <span class="political-heading-icon"><ion-icon name="podium-outline"></ion-icon></span>
+      </div>
+
+      <div class="political-tabs" role="tablist" aria-label="Political representative categories">
+        <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'house_reps'" [class.active]="politicalTab === 'house_reps'" (click)="selectPoliticalTab('house_reps')">House of Reps</button>
+        <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'senators'" [class.active]="politicalTab === 'senators'" (click)="selectPoliticalTab('senators')">Senators</button>
+        <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'assembly'" [class.active]="politicalTab === 'assembly'" (click)="selectPoliticalTab('assembly')">Assembly Members</button>
+      </div>
+
+      @if (politicalLoading) {
+        <div class="political-empty-state"><ion-icon name="sync-outline" class="political-loading-icon"></ion-icon><strong>Loading representatives…</strong></div>
+      } @else if (politicalError) {
+        <div class="political-empty-state"><ion-icon name="cloud-offline-outline"></ion-icon><strong>{{ politicalError }}</strong><button type="button" class="retry-button" (click)="loadPoliticalRepresentatives()">Try again</button></div>
+      } @else if (politicalRepresentatives.length) {
+        <div class="political-representatives-list">
+          @for (person of politicalRepresentatives; track person.id) {
+            <article class="political-representative">
+              @if (person.photo_url) {
+                <img class="political-representative-photo" [src]="person.photo_url" [alt]="person.full_name || 'Representative'" loading="lazy">
+              } @else {
+                <span class="political-representative-avatar"><ion-icon name="person-outline"></ion-icon></span>
+              }
+              <div class="political-representative-info">
+                <strong>{{ person.full_name }}</strong>
+                <span class="political-role">{{ person.role }}</span>
+                <small class="political-location"><ion-icon name="location-outline"></ion-icon>{{ representativeLocation(person) }}</small>
+                @if (person.party) { <small class="political-party">{{ person.party }}</small> }
+              </div>
+              <span class="political-verification" [class.verified]="!!person.verified_at" [attr.title]="person.verified_at ? 'Verified record' : 'Not yet verified'">
+                <ion-icon [name]="person.verified_at ? 'checkmark-circle' : 'time-outline'"></ion-icon>
+                <span>{{ person.verified_at ? 'Verified' : 'Pending' }}</span>
+              </span>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="political-empty-state">
+          <ion-icon name="people-outline"></ion-icon>
+          <strong>No records available yet</strong>
+          <p>Verified political representatives will appear here when their details are added to the Ogbia knowledge base.</p>
+        </div>
+      }
+    </section>
+
     <footer class="page-footer"><ion-icon name="leaf-outline"></ion-icon><span>My Ogbia · Preserving our people, places and representation.</span></footer>
   </main>
 </ion-content>
