@@ -122,7 +122,7 @@ export class NavbarComponent implements OnDestroy {
 
   searchInitials(name: string | null | undefined): string {
     return (name || 'Ogbia member')
-      .split(/\\s+/)
+      .split(/\s+/)
       .filter(Boolean)
       .slice(0, 2)
       .map(part => part[0])
