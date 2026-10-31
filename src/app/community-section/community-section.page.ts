@@ -37,10 +37,10 @@ export class CommunitySectionPage implements OnInit {
     },
     photos: {
       title: 'Photos',
-      subtitle: 'A gallery of moments and pictures shared by the Ogbia community.',
+      subtitle: 'Your personal gallery of photos and videos. Only you can see this collection.',
       icon: 'images-outline',
       emptyTitle: 'No photos shared yet',
-      emptyText: 'Photos shared in the community will appear here.'
+      emptyText: 'Photos and videos you upload will appear here. This gallery is private to your account.'
     },
     events: {
       title: 'Events',
