@@ -15,6 +15,8 @@ export interface KnowledgeRepresentative {
   bio: string | null;
   source: string | null;
   verified_at: string | null;
+  community?: { id?: number; name: string; slug?: string } | null;
+  ward?: { id?: number; name: string; code?: string | null } | null;
 }
 
 export interface KnowledgeWard {
@@ -63,6 +65,13 @@ export class KnowledgeBaseService {
 
   getWards(): Observable<{ data: KnowledgeWard[] }> {
     return this.http.get<{ data: KnowledgeWard[] }>(`${this.apiUrl}/knowledge-base/wards`);
+  }
+
+  getPoliticalRepresentatives(type: 'house_reps' | 'senators' | 'assembly'): Observable<{ data: KnowledgeRepresentative[] }> {
+    const params = new HttpParams().set('type', type);
+    return this.http.get<{ data: KnowledgeRepresentative[] }>(
+      `${this.apiUrl}/knowledge-base/representatives`, { params }
+    );
   }
 
   getCommunity(slug: string): Observable<{ data: KnowledgeCommunity }> {
