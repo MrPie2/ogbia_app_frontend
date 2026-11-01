@@ -129,3 +129,12 @@
     border-radius: 20px;
   }
 }
+
+
+.about-link-card{display:flex;align-items:center;gap:12px;margin:20px 0 8px;padding:14px;border:1px solid #e8e3f3;border-radius:16px;background:#fff;color:#302b4c;text-decoration:none;box-shadow:0 7px 20px rgba(48,35,71,.04)}
+.about-link-icon{width:40px;height:40px;flex:0 0 40px;display:grid;place-items:center;border-radius:13px;background:#f1edfb;color:#393185;font-size:21px}
+.about-link-copy{display:flex;min-width:0;flex:1;flex-direction:column;gap:4px}
+.about-link-copy strong{font-size:12px;font-weight:800}
+.about-link-copy small{color:#89859a;font-size:10px;line-height:1.4}
+.about-link-arrow{color:#9389ad;font-size:17px}
+.about-link-card:active{background:#f8f6ff}
