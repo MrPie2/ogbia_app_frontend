@@ -57,9 +57,9 @@ jobs:
       - name: Create self-hosted live-update bundle
         shell: bash
         run: |
-          npx --yes @capgo/cli@latest bundle zip com.myogbia.app --path www --bundle "${{ inputs.bundle_version }}" --name ogbia-live-update-${{ inputs.bundle_version }} --json | tee bundle-info.json
-          BUNDLE_FILE=$(find . -maxdepth 2 -type f -name '*.zip' -not -path './node_modules/*' -print -quit)
-          test -n "$BUNDLE_FILE"
+          BUNDLE_FILE="ogbia-live-update-${{ inputs.bundle_version }}.zip"
+          npx --yes @capgo/cli@latest bundle zip com.myogbia.app --path www --bundle "${{ inputs.bundle_version }}" --name "$BUNDLE_FILE" --json | tee bundle-info.json
+          test -f "$BUNDLE_FILE"
           cp "$BUNDLE_FILE" ogbia-live-update.zip
 
       - name: Upload live-update bundle
