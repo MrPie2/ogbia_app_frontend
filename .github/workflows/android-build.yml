@@ -55,20 +55,9 @@ jobs:
         run: npm run build -- --configuration production
 
       - name: Create self-hosted live-update bundle
-        run: npx --yes @capgo/cli@latest bundle zip com.myogbia.app --path www --bundle "${{ inputs.bundle_version }}" --name ogbia-live-update --json
-
-      - name: Upload live-update bundle
-        uses: actions/upload-artifact@v4
-        with:
-          name: ogbia-live-update-${{ inputs.bundle_version }}
-          path: ogbia-live-update.zip
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Create self-hosted live-update bundle
         shell: bash
         run: |
-          npx --yes @capgo/cli@latest bundle zip com.myogbia.app --path www --bundle "${{ inputs.bundle_version }}" --name ogbia-live-update --json | tee bundle-info.json
+          npx --yes @capgo/cli@latest bundle zip com.myogbia.app --path www --bundle "${{ inputs.bundle_version }}" --name ogbia-live-update-${{ inputs.bundle_version }} --json | tee bundle-info.json
           BUNDLE_FILE=$(find . -maxdepth 2 -type f -name '*.zip' -not -path './node_modules/*' -print -quit)
           test -n "$BUNDLE_FILE"
           cp "$BUNDLE_FILE" ogbia-live-update.zip
