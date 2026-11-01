@@ -4,7 +4,8 @@
   position: fixed;
   z-index: 1000;
   inset: 0 0 auto;
-  height: 66px;
+  height: calc(66px + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top);
   display: flex;
   align-items: center;
   gap: 28px;
@@ -79,7 +80,7 @@
 .app-bottom-nav .create-nav span:last-child { font-size:9px; }
 
 @media (max-width: 760px) {
-  .app-navbar { height:62px; gap:12px; padding:0 14px; }
+  .app-navbar { height:calc(62px + env(safe-area-inset-top)); gap:12px; padding:env(safe-area-inset-top) 14px 0; }
   .brand-mark { width:35px; height:35px; }
   .brand-copy strong { font-size:14px; }
   .brand-copy small { font-size:8px; }
