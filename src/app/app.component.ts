@@ -1,4 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
+import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IonRouterOutlet, IonApp, IonIcon } from '@ionic/angular';
@@ -171,6 +173,11 @@ export class AppComponent implements OnDestroy {
       'videocam-outline': videocamOutline,
     });
     this.presence.start();
+    if (Capacitor.isNativePlatform()) {
+      void CapacitorUpdater.notifyAppReady().catch((error) => {
+        console.warn('[Ogbia Updates] Could not confirm app readiness:', error);
+      });
+    }
     this.notifications.start();
     this.notifications.toast$.pipe(takeUntil(this.destroy$)).subscribe((notification) => {
       this.notificationToast = notification;
