@@ -242,3 +242,10 @@ button.back-button:focus-visible { outline: 2px solid #393185; outline-offset: 2
   outline: 2px solid var(--primary, #393185);
   outline-offset: 2px;
 }
+
+
+/* The Welcome screen is a full-screen public landing page, with no shared bars. */
+ion-router-outlet.app-router-outlet.welcome-route {
+  inset: 0 !important;
+  background: #05070a;
+}
