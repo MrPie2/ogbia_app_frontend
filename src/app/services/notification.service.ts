@@ -115,7 +115,9 @@ export class NotificationService {
           this.toastSubject.next({
             id: notificationId,
             title: notification.title || 'My Ogbia notification',
-            body: notification.body || ''
+            body: notification.body || '',
+            url: typeof notification.data?.['url'] === 'string' ? notification.data['url'] : undefined,
+            data: notification.data as Record<string, unknown>
           });
         });
         await PushNotifications.addListener('pushNotificationActionPerformed', (action: ActionPerformed) => {
