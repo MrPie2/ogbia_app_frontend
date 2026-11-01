@@ -204,6 +204,13 @@ export class AppComponent implements OnDestroy {
     void this.router.navigateByUrl(url);
   }
 
+  openToastNotification(notification: AppNotification): void {
+    if (!notification.url) return;
+    if (notification.id) this.notifications.markRead(notification.id);
+    this.notificationToast = null;
+    this.openNotificationUrl(notification.url);
+  }
+
   dismissNotification(): void {
     const notification = this.notificationToast;
     this.notificationToast = null;
