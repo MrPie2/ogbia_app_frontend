@@ -34,7 +34,10 @@
                 </div>
                 <div class="friend-info">
                   <h3><a class="person-name-link" [routerLink]="['/members', friend.id]">{{ friend.name }}</a></h3>
-                  <p>@if (friend.hometown) { <span>{{ friend.hometown }}</span><span class="meta-separator">·</span> }<i></i> Online now</p>
+                  <div class="friend-meta">
+                    @if (friend.hometown) { <span class="hometown-label">Home Town: {{ friend.hometown }}</span> }
+                    <span class="activity-meta"><i></i> Online now</span>
+                  </div>
                 </div>
               </article>
             }
@@ -70,12 +73,14 @@
                 </div>
                 <div class="friend-info">
                   <h3><a class="person-name-link" [routerLink]="['/members', friend.id]">{{ friend.name }}</a></h3>
-                  <p>
-                    @if (friend.hometown) { <span>{{ friend.hometown }}</span><span class="meta-separator">·</span> }
-                    @if (friend.is_online) { <i></i> Online now }
-                    @else if (friend.last_seen_at) { Last active {{ friend.last_seen_at | date:'medium' }} }
-                    @else { Offline }
-                  </p>
+                  <div class="friend-meta">
+                    @if (friend.hometown) { <span class="hometown-label">Home Town: {{ friend.hometown }}</span> }
+                    <span class="activity-meta">
+                      @if (friend.is_online) { <i></i> Online now }
+                      @else if (friend.last_seen_at) { Last active {{ friend.last_seen_at | date:'medium' }} }
+                      @else { Offline }
+                    </span>
+                  </div>
                 </div>
                 <span class="friend-status">Friends</span>
               </article>
@@ -92,7 +97,10 @@
               <div class="avatar"><span>{{ initials(request.name) }}</span>@if (request.profile_photo_url) { <img [src]="request.profile_photo_url" [alt]="request.name + ' profile picture'" (error)="onAvatarError($event)"> }</div>
               <div class="friend-info">
                 <h3><a class="person-name-link" [routerLink]="['/members', request.id]">{{ request.name }}</a></h3>
-                <p>@if (request.hometown) { <span>{{ request.hometown }}</span><span class="meta-separator">·</span> }Wants to connect with you</p>
+                <div class="friend-meta">
+                  @if (request.hometown) { <span class="hometown-label">Home Town: {{ request.hometown }}</span> }
+                  <span class="activity-meta">Wants to connect with you</span>
+                </div>
               </div>
               <button class="small-primary" type="button" (click)="acceptRequest(request)">Accept</button>
             </article>
@@ -120,7 +128,10 @@
                 </div>
                 <div class="friend-info">
                   <h3><a class="person-name-link" [routerLink]="['/members', candidate.id]">{{ candidate.name }}</a></h3>
-                  <p>@if (candidate.hometown) { <span>{{ candidate.hometown }}</span><span class="meta-separator">·</span> }{{ candidate.is_online ? 'Online now' : candidate.email }}</p>
+                  <div class="friend-meta">
+                    @if (candidate.hometown) { <span class="hometown-label">Home Town: {{ candidate.hometown }}</span> }
+                    <span class="activity-meta">{{ candidate.is_online ? 'Online now' : candidate.email }}</span>
+                  </div>
                 </div>
                 <button class="small-primary" type="button" [disabled]="candidate.friendship_status === 'accepted' || (candidate.friendship_status === 'pending' && candidate.request_sent_by_me)" (click)="handleCandidateAction(candidate)">
                   {{ relationshipLabel(candidate) }}
