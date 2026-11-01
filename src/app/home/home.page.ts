@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { timeout } from 'rxjs';
 import { IonContent, IonIcon } from '@ionic/angular';
@@ -22,6 +22,7 @@ export class HomePage implements OnInit, OnDestroy {
   userError = '';
   posts: CommunityPost[] = [];
   private expandedPostIds = new Set<number>();
+  private requestedPostId: number | null = null;
   likingPostIds = new Set<number>();
   activeCommentPost: CommunityPost | null = null;
   postComments: PostComment[] = [];
@@ -55,6 +56,7 @@ export class HomePage implements OnInit, OnDestroy {
     private readonly auth: AuthService,
     private readonly postsService: PostsService,
     private readonly storiesService: StoriesService,
+    private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
   ) {}
@@ -67,6 +69,11 @@ export class HomePage implements OnInit, OnDestroy {
     }
 
     this.user = this.auth.getCachedUser();
+    this.route.queryParamMap.subscribe(params => {
+      const postId = Number(params.get('post'));
+      this.requestedPostId = Number.isInteger(postId) && postId > 0 ? postId : null;
+      if (!this.loadingPosts && this.requestedPostId) this.scrollToRequestedPost();
+    });
 
     // Load immediately when Home is first created (including immediately after login).
     // The Ionic view-enter hook below handles later returns to this cached page.
@@ -118,6 +125,7 @@ export class HomePage implements OnInit, OnDestroy {
       next: (response) => {
         this.posts = response.data || [];
         this.loadingPosts = false;
+        this.scrollToRequestedPost();
         this.feedError = '';
         this.cdr.markForCheck();
       },
@@ -136,6 +144,17 @@ export class HomePage implements OnInit, OnDestroy {
     });
   }
 
+
+  private scrollToRequestedPost(): void {
+    const postId = this.requestedPostId;
+    if (!postId || !this.posts.some(post => post.id === postId)) return;
+    setTimeout(() => {
+      const element = document.getElementById('post-' + postId);
+      element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element?.classList.add('notification-target-post');
+      this.requestedPostId = null;
+    }, 250);
+  }
 
   loadEvents(): void {
     this.loadingEvents = true;
