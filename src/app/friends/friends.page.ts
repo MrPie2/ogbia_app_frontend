@@ -181,7 +181,7 @@ export class FriendsPage implements OnInit, OnDestroy {
   }
 
   initials(name: string | null | undefined): string {
-    return (name || 'Ogbia Member').split(/\\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+    return (name || 'Ogbia Member').split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
   }
 
   onAvatarError(event: Event): void {
