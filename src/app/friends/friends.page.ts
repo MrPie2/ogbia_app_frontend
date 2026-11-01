@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { Subscription, debounceTime, distinctUntilChanged, Subject, timeout } from 'rxjs';
-import { FriendUser, FriendsService } from '../services/friends.service';
+import { FriendRequestUser, FriendUser, FriendsService } from '../services/friends.service';
 import { AuthService } from '../services/auth.service';
 import { PresenceService } from '../services/presence.service';
 
@@ -18,7 +18,7 @@ import { PresenceService } from '../services/presence.service';
 export class FriendsPage implements OnInit, OnDestroy {
   friends: FriendUser[] = [];
   candidates: FriendUser[] = [];
-  incomingRequests: Array<{ request_id: number; id: number; name: string; email: string }> = [];
+  incomingRequests: FriendRequestUser[] = [];
   loadingFriends = true;
   loadingUsers = false;
   findMode = false;
@@ -141,7 +141,7 @@ export class FriendsPage implements OnInit, OnDestroy {
     });
   }
 
-  acceptRequest(request: { request_id: number; id: number; name: string; email: string }): void {
+  acceptRequest(request: FriendRequestUser): void {
     this.friendsService.acceptRequest(request.request_id).subscribe({
       next: response => {
         this.incomingRequests = this.incomingRequests.filter(item => item.request_id !== request.request_id);
@@ -180,8 +180,13 @@ export class FriendsPage implements OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  initials(name: string): string {
-    return name.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+  initials(name: string | null | undefined): string {
+    return (name || 'Ogbia Member').split(/\\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+  }
+
+  onAvatarError(event: Event): void {
+    const image = event.target as HTMLImageElement | null;
+    image?.remove();
   }
 
   logout(): void {
