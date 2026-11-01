@@ -7,10 +7,22 @@ export interface FriendUser {
   id: number;
   name: string;
   email: string;
+  hometown?: string | null;
+  profile_photo_url?: string | null;
   last_seen_at: string | null;
   is_online: boolean;
   friendship_status?: 'pending' | 'accepted' | 'rejected' | null;
   request_sent_by_me?: boolean;
+}
+
+export interface FriendRequestUser {
+  request_id: number;
+  requested_at?: string;
+  id: number;
+  name: string;
+  email: string;
+  hometown?: string | null;
+  profile_photo_url?: string | null;
 }
 
 export interface FriendListResponse {
@@ -19,8 +31,8 @@ export interface FriendListResponse {
 }
 
 export interface FriendRequestsResponse {
-  incoming: Array<{ request_id: number; requested_at: string; id: number; name: string; email: string }>;
-  outgoing: Array<{ request_id: number; requested_at: string; id: number; name: string; email: string }>;
+  incoming: FriendRequestUser[];
+  outgoing: FriendRequestUser[];
 }
 
 @Injectable({ providedIn: 'root' })
