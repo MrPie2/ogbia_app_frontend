@@ -1,3 +1,4 @@
+/* Existing Friends page styles */
 :host { display: block; color: #302347; }
 
 ion-content {
@@ -106,3 +107,19 @@ ion-content {
 
 
 .friends-header{align-items:center;gap:6px}.friends-header>.page-back-button{flex:0 0 40px;margin-left:-8px}.friends-header>div{flex:1;min-width:0}
+
+/* Friend avatars use the account photo when present; initials remain underneath as fallback. */
+.avatar { position: relative; overflow: hidden; }
+.avatar > span { position: relative; z-index: 0; }
+.avatar > img {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  background: #f2eafd;
+}
+.friend-info p { flex-wrap: wrap; }
+.friend-info p .meta-separator { color: #b4a9c1; margin: 0 1px; }
