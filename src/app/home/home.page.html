@@ -42,7 +42,7 @@
         <div class="feed-state card"><div class="empty-feed-icon"><ion-icon name="chatbubbles-outline"></ion-icon></div><h3>Start the conversation</h3><p>No posts yet. Share an update, photo or video with the Ogbia community.</p><a routerLink="/create-post">Create the first post</a></div>
       } @else {
         @for (post of feedPosts; track post.id) {
-          <article class="post card fade-up" style="padding: 0px">
+          <article class="post card fade-up" [id]="'post-' + post.id" style="padding: 0px">
             <div class="post-head" style="padding: 10px 10px 0px 10px">
               <div class="feed-avatar">
                 @if (post.author?.profile_photo_url) {
