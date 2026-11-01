@@ -2,7 +2,7 @@
   @if (includeNavbar) {
     <app-shared-navbar></app-shared-navbar>
   }
-  <ion-router-outlet class="app-router-outlet"></ion-router-outlet>
+  <ion-router-outlet class="app-router-outlet" [class.welcome-route]="isWelcomeRoute"></ion-router-outlet>
   @if (notificationToast; as toast) {
     <div class="ogbia-notification-toast" role="status" aria-live="polite">
       <div class="notification-toast-icon"><ion-icon name="checkmark-circle-outline"></ion-icon></div>
