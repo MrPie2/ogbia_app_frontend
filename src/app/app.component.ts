@@ -85,6 +85,7 @@ import { NotificationService, AppNotification } from './services/notification.se
 })
 export class AppComponent implements OnDestroy {
   includeNavbar = false;
+  isWelcomeRoute = false;
   notificationToast: AppNotification | null = null;
   private readonly destroy$ = new Subject<void>();
 
@@ -193,6 +194,7 @@ export class AppComponent implements OnDestroy {
     const path = url.split('?')[0].split('#')[0].replace(/\/$/, '') || '/';
     const publicRoutes = ['/', '/welcome', '/login', '/get_started', '/complete-profile'];
     const hasSessionToken = typeof localStorage !== 'undefined' && !!localStorage.getItem('token');
+    this.isWelcomeRoute = path === '/welcome';
     this.includeNavbar = hasSessionToken && !publicRoutes.includes(path);
   }
 
