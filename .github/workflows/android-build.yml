@@ -3,6 +3,16 @@ name: Build Ogbia Android APK
 on:
   workflow_dispatch:
     inputs:
+      app_version:
+        description: 'Android APK versionName (for example 1.0.3)'
+        required: true
+        default: '1.0.3'
+        type: string
+      app_version_code:
+        description: 'Android APK versionCode; increase for every APK release'
+        required: true
+        default: '4'
+        type: string
       bundle_version:
         description: 'SemVer for the live-update bundle (for example 1.0.1)'
         required: true
@@ -51,6 +61,13 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
+      - name: Set Android APK version
+        shell: bash
+        run: |
+          sed -i 's/versionCode [0-9][0-9]*/versionCode ${{ inputs.app_version_code }}/' android/app/build.gradle
+          sed -i 's/versionName "[^"]*"/versionName "${{ inputs.app_version }}"/' android/app/build.gradle
+          grep -E 'versionCode|versionName' android/app/build.gradle
+
       - name: Build Ionic and Angular production app
         run: npm run build -- --configuration production
 
@@ -82,7 +99,7 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ogbia-android-debug-apk
+          name: ogbia-android-${{ inputs.app_version }}-code-${{ inputs.app_version_code }}
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
