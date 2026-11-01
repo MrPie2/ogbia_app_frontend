@@ -44,7 +44,7 @@ import { CapacitorUpdater } from '@capgo/capacitor-updater';
             <article class="document-row"><span class="document-icon"><ion-icon name="people-circle-outline"></ion-icon></span><span class="document-copy"><strong>Community Guidelines</strong><small>Respectful participation and community standards</small></span><span class="document-status">In preparation</span></article>
             <article class="document-row"><span class="document-icon"><ion-icon name="information-circle-outline"></ion-icon></span><span class="document-copy"><strong>Disclaimer</strong><small>Important information about community content and services</small></span><span class="document-status">In preparation</span></article>
             <article class="document-row"><span class="document-icon"><ion-icon name="document-text-outline"></ion-icon></span><span class="document-copy"><strong>Copyright &amp; Intellectual Property</strong><small>Ownership, permissions and reporting concerns</small></span><span class="document-status">In preparation</span></article>
-            <article class="document-row"><span class="document-icon"><ion-icon name="lock-closed-outline"></ion-icon></span><span class="document-copy"><strong>Data Requests &amp; Account Deletion</strong><small>How to request access, correction or deletion</small></span><span class="document-status">In preparation</span></article>
+            <article class="document-row"><span class="document-icon"><ion-icon name="finger-print-outline"></ion-icon></span><span class="document-copy"><strong>Data Requests &amp; Account Deletion</strong><small>How to request access, correction or deletion</small></span><span class="document-status">In preparation</span></article>
           </div>
           <p class="legal-note">These documents are being prepared for publication. The final policies should be reviewed and approved before being presented as binding terms.</p>
         </section>
@@ -121,12 +121,12 @@ export class AboutPage implements OnInit {
       const latest = await CapacitorUpdater.getLatest();
       this.lastChecked = new Date();
       if (latest.version) this.latestVersion = latest.version;
-      if (latest.error === 'no_new_version_available' || latest.kind === 'up_to_date') {
-        this.updateState = 'current';
-        this.updateMessage = 'This app is up to date.';
-      } else if (next?.version) {
+      if (next?.version) {
         this.updateState = 'available';
         this.updateMessage = 'An update is downloaded and waiting for the next app launch.';
+      } else if (latest.error === 'no_new_version_available' || latest.kind === 'up_to_date') {
+        this.updateState = 'current';
+        this.updateMessage = 'This app is up to date.';
       } else if (latest.version) {
         this.updateState = 'available';
         this.updateMessage = 'A newer version is available. Automatic download may still be in progress.';
