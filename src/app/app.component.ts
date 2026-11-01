@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { afterNextRender, Component, OnDestroy } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { FormsModule } from '@angular/forms';
@@ -174,8 +174,10 @@ export class AppComponent implements OnDestroy {
     });
     this.presence.start();
     if (Capacitor.isNativePlatform()) {
-      void CapacitorUpdater.notifyAppReady().catch((error) => {
-        console.warn('[Ogbia Updates] Could not confirm app readiness:', error);
+      afterNextRender(() => {
+        void CapacitorUpdater.notifyAppReady().catch((error) => {
+          console.warn('[Ogbia Updates] Could not confirm app readiness:', error);
+        });
       });
     }
     this.notifications.start();
