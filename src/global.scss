@@ -249,3 +249,50 @@ ion-router-outlet.app-router-outlet.welcome-route {
   inset: 0 !important;
   background: #05070a;
 }
+
+
+
+/* OGBIA SOFT-NEUMORPHIC DESIGN SYSTEM */
+:root {
+  --neo-canvas: #eeecf7;
+  --neo-surface: #eeecf7;
+  --neo-raised: 8px 8px 18px rgba(72, 64, 112, .12), -8px -8px 18px rgba(255,255,255,.92);
+  --neo-raised-sm: 4px 4px 10px rgba(72,64,112,.10), -4px -4px 10px rgba(255,255,255,.9);
+  --neo-inset: inset 4px 4px 9px rgba(72,64,112,.11), inset -4px -4px 9px rgba(255,255,255,.88);
+  --neo-purple: #393185;
+  --neo-text: #302b4d;
+  --neo-muted: #817c98;
+  --surface: var(--neo-canvas);
+  --line: rgba(112, 103, 153, .12);
+  --shadow: var(--neo-raised);
+}
+html, body, ion-app, .ion-page { background: var(--neo-canvas); color: var(--neo-text); }
+body, ion-content { background: var(--neo-canvas); }
+ion-content { --background: var(--neo-canvas); --color: var(--neo-text); }
+ion-content::part(background) { background: var(--neo-canvas); }
+.page, .page.dark { background: var(--neo-canvas); color: var(--neo-text); }
+.card, .list-card, .empty-state, .leaders-loading, .leader-group, .about-link-card {
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 20px;
+  background: var(--neo-surface);
+  box-shadow: var(--neo-raised);
+}
+.search, .search-box, .search-input, input:not([type=checkbox]):not([type=radio]), textarea, select {
+  border-color: rgba(112,103,153,.10);
+}
+.search, .search-box { background: var(--neo-canvas); box-shadow: var(--neo-inset); border: 1px solid rgba(255,255,255,.8); }
+.btn-ghost, .text-refresh, .header-icon, .back-button, .page-back-button {
+  background: var(--neo-canvas);
+  border: 1px solid rgba(255,255,255,.8);
+  box-shadow: var(--neo-raised-sm);
+}
+.btn-primary, .primary-button, .small-primary { box-shadow: 4px 4px 10px rgba(57,49,133,.22), -3px -3px 8px rgba(255,255,255,.24); }
+ion-button { --border-radius: 14px; }
+ion-item { --background: var(--neo-canvas); --border-color: rgba(112,103,153,.10); }
+.bottom-nav { background: var(--neo-canvas); box-shadow: var(--neo-raised); border: 1px solid rgba(255,255,255,.8); }
+.avatar, .icon-btn, .list-row .leading { box-shadow: var(--neo-raised-sm); }
+.list-row { border-bottom-color: rgba(112,103,153,.10); }
+.list-row:active, .rep-row:active, .youth-row:active, .group-row:active, .service-grid a:active, .ward:active { background: #e7e4f1; }
+@media (prefers-reduced-motion: no-preference) {
+  .card, .list-card, .empty-state, .leader-group, .about-link-card, .btn-primary, .primary-button { transition: box-shadow .2s ease, transform .2s ease; }
+}
