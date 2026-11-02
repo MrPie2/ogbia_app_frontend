@@ -364,3 +364,14 @@
 .app-bottom-nav a { gap: 2px; font-size: 9px; }
 .app-bottom-nav a .bottom-nav-label { font-size: 9px; }
 .app-bottom-nav .create-nav span:last-child { font-size: 9px; }
+
+
+/* Prevent the browser's focus ring/tap border from appearing around a
+   bottom navigation item after it is clicked. */
+.app-bottom-nav a,
+.app-bottom-nav a:focus,
+.app-bottom-nav a:focus-visible,
+.app-bottom-nav a:active {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
