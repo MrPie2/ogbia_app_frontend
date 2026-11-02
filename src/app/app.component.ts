@@ -3,7 +3,7 @@ import { Capacitor } from '@capacitor/core';
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { IonRouterOutlet, IonApp, IonIcon } from '@ionic/angular';
+import { IonRouterOutlet, IonApp, IonIcon, NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
   add,
@@ -90,10 +90,21 @@ export class AppComponent implements OnDestroy {
   isWelcomeRoute = false;
   notificationToast: AppNotification | null = null;
   private readonly destroy$ = new Subject<void>();
+  private swipeStartX = 0;
+  private swipeStartY = 0;
+  private swipeStartTarget: HTMLElement | null = null;
+
+  private readonly swipePages = [
+    { path: '/home', label: 'Home' },
+    { path: '/friends', label: 'Friends' },
+    { path: '/create-post', label: 'Create' },
+    { path: '/constituency', label: 'My Ogbia' },
+    { path: '/profile', label: 'Profile' },
+  ];
 
   constructor(
     private readonly presence: PresenceService,
-    private readonly router: Router,
+    private readonly router: Router,\n    private readonly navController: NavController,
     private readonly auth: AuthService,
     private readonly notifications: NotificationService
   ) {
@@ -192,6 +203,73 @@ export class AppComponent implements OnDestroy {
     this.notifications.navigation$
       .pipe(takeUntil(this.destroy$))
       .subscribe((url) => this.openNotificationUrl(url));
+  }
+
+  @HostListener('document:touchstart', ['$event'])
+  onPageSwipeStart(event: TouchEvent): void {
+    this.swipeStartTarget = null;
+    if (event.touches.length !== 1) return;
+
+    const target = event.target;
+    if (!(target instanceof HTMLElement) || !this.canStartPageSwipe(target)) return;
+
+    this.swipeStartX = event.touches[0].clientX;
+    this.swipeStartY = event.touches[0].clientY;
+    this.swipeStartTarget = target;
+  }
+
+  @HostListener('document:touchend', ['$event'])
+  onPageSwipeEnd(event: TouchEvent): void {
+    const target = this.swipeStartTarget;
+    this.swipeStartTarget = null;
+    if (!target || event.changedTouches.length !== 1 || !this.canStartPageSwipe(target)) return;
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - this.swipeStartX;
+    const deltaY = touch.clientY - this.swipeStartY;
+
+    // Require a deliberate horizontal gesture; normal vertical page scrolling wins.
+    if (Math.abs(deltaX) < 70 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) return;
+
+    const currentPath = this.router.url.split('?')[0].split('#')[0].replace(/\/$/, '') || '/';
+    const currentIndex = this.swipePages.findIndex(page => page.path === currentPath);
+    if (currentIndex < 0) return;
+
+    // Swipe left advances; swipe right returns. Ionic's navigation controller
+    // supplies the matching native-style page transition and keeps its page stack.
+    if (deltaX < 0 && currentIndex < this.swipePages.length - 1) {
+      void this.navController.navigateForward(this.swipePages[currentIndex + 1].path, { animated: true });
+    } else if (deltaX > 0 && currentIndex > 0) {
+      void this.navController.navigateBack(this.swipePages[currentIndex - 1].path, { animated: true });
+    }
+  }
+
+  @HostListener('document:touchcancel')
+  onPageSwipeCancel(): void {
+    this.swipeStartTarget = null;
+  }
+
+  private canStartPageSwipe(target: HTMLElement): boolean {
+    // Swipes belong to page content only, never the navbar or bottom navigation.
+    if (!target.closest('.app-router-outlet')) return false;
+    if (target.closest(
+      'input, textarea, select, button, a, [role="button"], [contenteditable="true"], ' +
+      'video, audio, canvas, ion-modal, ion-alert, ion-popover, .search-overlay, ' +
+      '.app-navbar, .app-bottom-nav, [data-no-page-swipe], [data-horizontal-scroll], ' +
+      '.swiper, .swiper-container, swiper-container, ion-slides, ion-segment, ' +
+      '.story-viewer, .story-strip, .stories-row, .horizontal-scroll'
+    )) return false;
+
+    // Do not steal gestures from horizontally scrollable containers/carousels.
+    let element: HTMLElement | null = target;
+    while (element && element !== document.body) {
+      const overflowX = window.getComputedStyle(element).overflowX;
+      if ((overflowX === 'auto' || overflowX === 'scroll') &&
+          element.scrollWidth > element.clientWidth + 8) return false;
+      element = element.parentElement;
+    }
+
+    return true;
   }
 
   private updateNavbarInclusion(url: string): void {
