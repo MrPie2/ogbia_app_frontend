@@ -145,3 +145,70 @@ ion-content {
     inset 4px 4px 9px rgba(72,64,112,.12),
     inset -4px -4px 9px rgba(255,255,255,.92);
 }
+
+/* Complete the extruded neumorphic treatment across every button. */
+.topbar .page-back-button,
+.remove-media {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.88);
+  background: #eeecf7;
+  color: #393185;
+  box-shadow:
+    5px 5px 11px rgba(72,64,112,.15),
+    -5px -5px 11px rgba(255,255,255,.96);
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.topbar .page-back-button {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  text-decoration: none;
+}
+.topbar .page-back-button ion-icon {
+  font-size: 19px;
+}
+.remove-media {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 21px;
+}
+.topbar .page-back-button:active,
+.remove-media:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 3px 3px 6px rgba(72,64,112,.15),
+    inset -3px -3px 6px rgba(255,255,255,.96);
+}
+.post-btn {
+  min-height: 50px;
+  border: 1px solid rgba(255,255,255,.42);
+  border-radius: 14px;
+  background: #393185;
+  box-shadow:
+    7px 7px 15px rgba(57,49,133,.25),
+    -6px -6px 14px rgba(255,255,255,.94);
+  transition: box-shadow .18s ease, transform .18s ease, opacity .18s ease;
+}
+.post-btn:not(:disabled):active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 4px 4px 8px rgba(20,16,75,.28),
+    inset -3px -3px 8px rgba(130,123,207,.24);
+}
+.post-btn:disabled {
+  opacity: .58;
+  box-shadow:
+    3px 3px 8px rgba(57,49,133,.12),
+    -3px -3px 8px rgba(255,255,255,.8);
+}
+@media (prefers-reduced-motion: reduce) {
+  .topbar .page-back-button,
+  .remove-media,
+  .tool-button,
+  .post-btn {
+    transition: none;
+  }
+}
+
