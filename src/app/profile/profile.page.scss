@@ -138,3 +138,25 @@
 .about-link-copy small{color:#89859a;font-size:10px;line-height:1.4}
 .about-link-arrow{color:#9389ad;font-size:17px}
 .about-link-card:active{background:#f8f6ff}
+
+
+
+/* Neumorphic member profile */
+.profile-page { background: #eeecf7; color: #302b4d; }
+.profile-page .profile-hero { box-shadow: 8px 8px 18px rgba(72,64,112,.16), -6px -6px 16px rgba(255,255,255,.9); }
+.profile-page .stats { padding: 15px 8px; border: 1px solid rgba(255,255,255,.82); border-radius: 18px; background: #eeecf7; box-shadow: var(--neo-raised); }
+.profile-page .stats b { color: #393185; }
+.profile-page .referral-card, .profile-page .leader-group, .profile-page .about-link-card, .profile-page .logout-button {
+  border: 1px solid rgba(255,255,255,.82);
+  background: #eeecf7;
+  box-shadow: var(--neo-raised);
+}
+.profile-page .referral-copy code { background: #eeecf7; box-shadow: var(--neo-inset); border: 0; }
+.profile-page .leader-group-heading { border-bottom-color: rgba(112,103,153,.12); }
+.profile-page .leader-role-icon, .profile-page .leader-count, .profile-page .profile-information .info-icon, .profile-page .about-link-icon {
+  background: #eeecf7;
+  box-shadow: var(--neo-raised-sm);
+}
+.profile-page .leader-member { border-bottom-color: rgba(112,103,153,.10); }
+.profile-page .leader-member:active, .profile-page .leader-member:hover { background: #e7e4f1; }
+.profile-page .profile-information .profile-info-row { border-bottom-color: rgba(112,103,153,.12); }
