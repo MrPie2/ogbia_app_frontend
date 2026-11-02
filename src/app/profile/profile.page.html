@@ -48,18 +48,14 @@
         <p class="memory-feedback error" *ngIf="memoryError" role="alert">{{ memoryError }}</p>
         <p class="memory-feedback success" *ngIf="memorySuccess" role="status">{{ memorySuccess }}</p>
 
-        <div class="memory-gallery" *ngIf="memories.length">
-          <article class="memory-item" *ngFor="let memory of memories">
-            <img *ngIf="memory.media_type === 'image'" [src]="memory.url" [alt]="memory.caption || 'Saved memory'" loading="lazy">
-            <video *ngIf="memory.media_type === 'video'" [src]="memory.url" controls playsinline preload="metadata"></video>
-            <p *ngIf="memory.caption">{{ memory.caption }}</p>
-            <small>{{ memory.created_at ? (memory.created_at | date:'mediumDate') : '' }}</small>
-          </article>
-        </div>
-        <div class="memory-empty" *ngIf="!memories.length && !loadingMemories">
-          <ion-icon name="images-outline"></ion-icon><strong>Your memories start here</strong><span>Take a photo or upload photos and videos to save moments on your profile.</span>
-        </div>
-        <p class="memory-feedback" *ngIf="loadingMemories">Loading your memories…</p>
+        <a class="memory-folder-card" routerLink="/my-memories" aria-label="Open all your saved memories">
+          <span class="memory-folder-icon"><ion-icon name="images-outline"></ion-icon></span>
+          <span class="memory-folder-copy">
+            <strong>My uploaded memories</strong>
+            <small>{{ loadingMemories ? 'Loading your collection…' : memories.length + ' saved ' + (memories.length === 1 ? 'item' : 'items') }}</small>
+          </span>
+          <span class="memory-folder-open">Open <ion-icon name="chevron-forward-outline"></ion-icon></span>
+        </a>
       </section>
 
       <section class="profile-information" *ngIf="user as currentUser">
