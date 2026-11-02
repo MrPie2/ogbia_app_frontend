@@ -301,3 +301,29 @@
   .search-results { padding: 6px 12px 14px; }
 }
 
+
+
+
+/* Soft-neumorphic navigation surfaces */
+.app-navbar {
+  background: rgba(238,236,247,.96);
+  border-bottom: 1px solid rgba(255,255,255,.9);
+  box-shadow: 0 5px 18px rgba(72,64,112,.10);
+}
+.brand-mark { box-shadow: 4px 4px 9px rgba(57,49,133,.22), -3px -3px 8px rgba(255,255,255,.75); }
+.notification-action, .profile-action, .menu-toggle, .search-action {
+  background: #eeecf7;
+  border: 1px solid rgba(255,255,255,.9);
+  box-shadow: 4px 4px 9px rgba(72,64,112,.10), -4px -4px 9px rgba(255,255,255,.95);
+}
+.desktop-links a:hover, .desktop-links a.active, .profile-action.active { background: #e7e4f1; box-shadow: inset 2px 2px 5px rgba(72,64,112,.10), inset -2px -2px 5px #fff; }
+.app-bottom-nav {
+  background: rgba(238,236,247,.98);
+  border: 1px solid rgba(255,255,255,.9);
+  border-bottom: 0;
+  box-shadow: 0 -6px 22px rgba(72,64,112,.10);
+}
+.app-bottom-nav a.active { background: #eeecf7; box-shadow: inset 3px 3px 7px rgba(72,64,112,.12), inset -3px -3px 7px rgba(255,255,255,.9); }
+.create-nav-icon { box-shadow: 4px 4px 9px rgba(57,49,133,.24), -3px -3px 7px rgba(255,255,255,.55); }
+.mobile-links { background: #eeecf7; border-color: rgba(255,255,255,.9); box-shadow: 8px 8px 20px rgba(72,64,112,.16), -6px -6px 16px rgba(255,255,255,.9); }
+.mobile-links a.active, .mobile-links a:active { background: #eeecf7; box-shadow: inset 3px 3px 6px rgba(72,64,112,.12), inset -3px -3px 6px #fff; }
