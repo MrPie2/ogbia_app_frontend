@@ -65,3 +65,83 @@ ion-content {
 .event-datetime-grid > div { display: grid; gap: 7px; min-width: 0; }
 .event-fields p { margin: 0; color: #80758f; font-size: 10px; line-height: 1.5; }
 @media (min-width: 520px) { .event-datetime-grid { grid-template-columns: 1fr 1fr; } }
+
+
+/* Extruded soft-neumorphic composer: lavender surface with raised controls. */
+ion-content {
+  --background: #eeecf7;
+}
+.create-page {
+  background: #eeecf7;
+}
+.topbar .page-back-button,
+.composer,
+.event-fields {
+  border: 1px solid rgba(255,255,255,.82);
+  background: #eeecf7;
+  box-shadow:
+    8px 8px 18px rgba(72,64,112,.16),
+    -8px -8px 18px rgba(255,255,255,.96);
+}
+.composer {
+  border-radius: 22px;
+}
+.composer-avatar {
+  border: 1px solid rgba(255,255,255,.75);
+  box-shadow:
+    4px 4px 9px rgba(57,49,133,.18),
+    -4px -4px 9px rgba(255,255,255,.8);
+}
+.post-type-picker select,
+.privacy-picker select,
+.event-fields input,
+.composer textarea {
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 12px;
+  background: #eeecf7;
+  box-shadow:
+    inset 4px 4px 8px rgba(72,64,112,.12),
+    inset -4px -4px 8px rgba(255,255,255,.92);
+}
+.composer textarea {
+  padding: 14px;
+}
+.post-type-picker select,
+.privacy-picker select,
+.event-fields input {
+  padding-inline: 13px;
+}
+.post-type-picker select:focus,
+.privacy-picker select:focus,
+.event-fields input:focus {
+  outline: 2px solid rgba(57,49,133,.22);
+  outline-offset: 2px;
+}
+.tool-button {
+  border: 1px solid rgba(255,255,255,.85);
+  background: #eeecf7;
+  box-shadow:
+    5px 5px 10px rgba(72,64,112,.14),
+    -5px -5px 10px rgba(255,255,255,.95);
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.tool-button:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 3px 3px 6px rgba(72,64,112,.14),
+    inset -3px -3px 6px rgba(255,255,255,.95);
+}
+.post-btn {
+  border: 1px solid rgba(255,255,255,.22);
+  background: #393185;
+  box-shadow:
+    6px 6px 13px rgba(57,49,133,.24),
+    -5px -5px 12px rgba(255,255,255,.9);
+}
+.media-preview {
+  border: 1px solid rgba(255,255,255,.85);
+  background: #eeecf7;
+  box-shadow:
+    inset 4px 4px 9px rgba(72,64,112,.12),
+    inset -4px -4px 9px rgba(255,255,255,.92);
+}
