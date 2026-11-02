@@ -434,3 +434,60 @@
   }
 }
 
+/* Stories: keep neumorphism only on Add Story and existing story avatars. */
+.home-page .stories-section {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.home-page .stories-section .stories {
+  padding: 2px 2px 5px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.home-page .story-button .story-ring {
+  border: 0;
+  border-radius: 50%;
+  background: #eeecf7;
+  box-shadow:
+    5px 5px 10px rgba(72,64,112,.16),
+    -5px -5px 10px rgba(255,255,255,.96);
+}
+.home-page .story-button .story-ring.has-story,
+.home-page .story-button .story-ring.has-unseen {
+  border: 0;
+  box-shadow:
+    5px 5px 10px rgba(72,64,112,.16),
+    -5px -5px 10px rgba(255,255,255,.96),
+    inset 0 0 0 2px #393185;
+}
+.home-page .story-button .story-ring.has-story:not(.has-unseen) {
+  box-shadow:
+    5px 5px 10px rgba(72,64,112,.16),
+    -5px -5px 10px rgba(255,255,255,.96),
+    inset 0 0 0 2px #aaa1c1;
+}
+.home-page .story-button:active .story-ring {
+  transform: scale(.97);
+  box-shadow:
+    inset 4px 4px 8px rgba(72,64,112,.15),
+    inset -4px -4px 8px rgba(255,255,255,.94);
+}
+.home-page .story-add-circle {
+  border: 0;
+  background: #eeecf7;
+  box-shadow:
+    5px 5px 10px rgba(72,64,112,.16),
+    -5px -5px 10px rgba(255,255,255,.96);
+}
+.home-page .story-add-button:active .story-add-circle {
+  transform: translateY(1px) scale(.98);
+  box-shadow:
+    inset 4px 4px 8px rgba(72,64,112,.15),
+    inset -4px -4px 8px rgba(255,255,255,.94);
+}
+
