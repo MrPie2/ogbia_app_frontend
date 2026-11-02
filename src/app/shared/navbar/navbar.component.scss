@@ -327,3 +327,28 @@
 .create-nav-icon { box-shadow: 4px 4px 9px rgba(57,49,133,.24), -3px -3px 7px rgba(255,255,255,.55); }
 .mobile-links { background: #eeecf7; border-color: rgba(255,255,255,.9); box-shadow: 8px 8px 20px rgba(72,64,112,.16), -6px -6px 16px rgba(255,255,255,.9); }
 .mobile-links a.active, .mobile-links a:active { background: #eeecf7; box-shadow: inset 3px 3px 6px rgba(72,64,112,.12), inset -3px -3px 6px #fff; }
+
+/* Give bottom navigation icons the same softly embossed button treatment
+   used by the search, notification and profile controls in the top bar. */
+.app-bottom-nav a:not(.create-nav) > ion-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  padding: 7px;
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 11px;
+  background: #eeecf7;
+  box-shadow: 4px 4px 9px rgba(72,64,112,.10), -4px -4px 9px rgba(255,255,255,.95);
+  font-size: 20px;
+  transition: box-shadow .18s ease, transform .18s ease, color .18s ease;
+}
+.app-bottom-nav a:not(.create-nav).active > ion-icon {
+  color: #393185;
+  box-shadow: inset 3px 3px 6px rgba(72,64,112,.13), inset -3px -3px 6px rgba(255,255,255,.95);
+}
+.app-bottom-nav a:not(.create-nav):active > ion-icon {
+  transform: scale(.94);
+  box-shadow: inset 3px 3px 6px rgba(72,64,112,.15), inset -3px -3px 6px rgba(255,255,255,.95);
+}
