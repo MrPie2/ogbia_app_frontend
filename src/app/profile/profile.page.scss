@@ -160,3 +160,7 @@
 .profile-page .leader-member { border-bottom-color: rgba(112,103,153,.10); }
 .profile-page .leader-member:active, .profile-page .leader-member:hover { background: #e7e4f1; }
 .profile-page .profile-information .profile-info-row { border-bottom-color: rgba(112,103,153,.12); }
+
+
+/* Align the profile page background with the shared neumorphic canvas. */
+.profile-page { background: linear-gradient(180deg, #e5e2f0 0%, #e5e2f0 100%); }
