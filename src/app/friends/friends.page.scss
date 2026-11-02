@@ -144,3 +144,18 @@ ion-content {
   font-size: 6pt;
   line-height: 1.3;
 }
+
+
+
+/* Neumorphic friends and discovery */
+.friends-page { background: #eeecf7; color: #302b4d; }
+.friends-header h1, .section-heading h2, .find-title h2, .empty-state h3, .friend-info h3 { color: #302b4d; }
+.back-button, .header-icon, .text-refresh { background: #eeecf7; border: 1px solid rgba(255,255,255,.82); box-shadow: var(--neo-raised-sm); }
+.empty-state { background: #eeecf7; border: 1px solid rgba(255,255,255,.82); box-shadow: var(--neo-raised); }
+.empty-icon { background: #eeecf7; border: 0; box-shadow: var(--neo-inset); }
+.friend-row { border-bottom-color: rgba(112,103,153,.12); }
+.avatar { background: #eeecf7; color: #393185; border: 1px solid rgba(255,255,255,.8); box-shadow: var(--neo-raised-sm); }
+.search-box { background: #eeecf7; border: 1px solid rgba(255,255,255,.82); box-shadow: var(--neo-inset); }
+.friend-status, .count { background: #eeecf7; box-shadow: var(--neo-inset); }
+.secondary-button { background: #eeecf7; border: 1px solid rgba(255,255,255,.82); box-shadow: var(--neo-raised-sm); }
+.small-primary, .primary-button { box-shadow: 4px 4px 10px rgba(57,49,133,.22), -3px -3px 8px rgba(255,255,255,.7); }
