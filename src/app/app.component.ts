@@ -1,4 +1,4 @@
-import { afterNextRender, Component, OnDestroy } from '@angular/core';
+import { afterNextRender, Component, HostListener, OnDestroy } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { CapacitorUpdater } from '@capgo/capacitor-updater';
 import { FormsModule } from '@angular/forms';
