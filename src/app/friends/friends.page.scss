@@ -159,7 +159,3 @@ ion-content {
 .friend-status, .count { background: #eeecf7; box-shadow: var(--neo-inset); }
 .secondary-button { background: #eeecf7; border: 1px solid rgba(255,255,255,.82); box-shadow: var(--neo-raised-sm); }
 .small-primary, .primary-button { box-shadow: 4px 4px 10px rgba(57,49,133,.22), -3px -3px 8px rgba(255,255,255,.7); }
-
-
-/* Use the shared deeper canvas behind the raised Friends surfaces. */
-.friends-page { background: #e5e2f0; }
