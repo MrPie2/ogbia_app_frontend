@@ -32,6 +32,10 @@ export const routes: Routes = [
     loadComponent: () => import('./profile/profile.page').then(m => m.ProfilePage)
   },
   {
+    path: 'my-memories',
+    loadComponent: () => import('./memories/memories.page').then(m => m.MemoriesPage)
+  },
+  {
     path: 'about',
     loadComponent: () => import('./about/about.page').then(m => m.AboutPage)
   },
