@@ -254,7 +254,7 @@ ion-router-outlet.app-router-outlet.welcome-route {
 
 /* OGBIA SOFT-NEUMORPHIC DESIGN SYSTEM */
 :root {
-  --neo-canvas: #e5e2f0;
+  --neo-canvas: #eeecf7;
   --neo-surface: #eeecf7;
   --neo-raised: 8px 8px 18px rgba(72, 64, 112, .12), -8px -8px 18px rgba(255,255,255,.92);
   --neo-raised-sm: 4px 4px 10px rgba(72,64,112,.10), -4px -4px 10px rgba(255,255,255,.9);
@@ -297,15 +297,3 @@ ion-item { --background: var(--neo-canvas); --border-color: rgba(112,103,153,.10
   .card, .list-card, .empty-state, .leader-group, .about-link-card, .btn-primary, .primary-button { transition: box-shadow .2s ease, transform .2s ease; }
 }
 
-
-/* Shared page canvas: slightly deeper than the raised component surface. */
-:root {
-  --neo-canvas: #e5e2f0;
-  --neo-surface: #eeecf7;
-  --surface: var(--neo-canvas);
-}
-html, body, ion-app, ion-router-outlet, .ion-page, ion-content {
-  background-color: var(--neo-canvas);
-}
-ion-content { --background: var(--neo-canvas); }
-ion-content::part(background) { background: var(--neo-canvas); }
