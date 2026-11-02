@@ -273,3 +273,14 @@
   font-size: 30px;
   color: #7569a8;
 }
+
+
+/* Compact folder card keeps the profile uncluttered; the full collection has its own page. */
+.profile-page .memory-folder-card{display:flex;align-items:center;gap:12px;margin:18px 0 4px;padding:13px;border:1px solid rgba(255,255,255,.88);border-radius:16px;background:#eeecf7;box-shadow:var(--neo-raised-sm);color:#302b4c;text-decoration:none}
+.profile-page .memory-folder-icon{width:45px;height:45px;flex:0 0 45px;display:grid;place-items:center;border-radius:13px;background:#f2effb;color:#393185;font-size:23px;box-shadow:var(--neo-inset)}
+.profile-page .memory-folder-copy{display:flex;min-width:0;flex:1;flex-direction:column;gap:5px}
+.profile-page .memory-folder-copy strong{color:#393185;font-size:12px;font-weight:850}
+.profile-page .memory-folder-copy small{color:#89839a;font-size:10px}
+.profile-page .memory-folder-open{display:flex;align-items:center;gap:3px;flex:0 0 auto;color:#7569a8;font-size:10px;font-weight:800}
+.profile-page .memory-folder-open ion-icon{font-size:16px}
+.profile-page .memory-folder-card:active{transform:scale(.99);background:#e9e6f4}
