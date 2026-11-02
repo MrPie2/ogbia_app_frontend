@@ -191,3 +191,85 @@
 .member-memories .section-title h2{margin:0;color:#302347;font-size:17px;font-weight:800}
 .member-memories .section-title p{margin:5px 0 0;color:#83768f;font-size:11px}
 @media(max-width:360px){.memory-gallery{gap:8px}.memory-item{border-radius:12px}}
+
+
+/* Clean, centered memory capture controls beneath the profile hero. */
+.profile-page .memories-section {
+  margin: 4px 0 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.profile-page .memories-heading {
+  margin: 0 0 16px;
+  align-items: flex-start;
+}
+.profile-page .memory-capture-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin: 8px auto 0;
+}
+.profile-page .memory-action {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 50%;
+  background: #eeecf7;
+  color: #393185;
+  box-shadow: 6px 6px 13px rgba(72,64,112,.13), -5px -5px 12px rgba(255,255,255,.95);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.profile-page .memory-action ion-icon {
+  font-size: 25px;
+}
+.profile-page .memory-action:active {
+  transform: scale(.95);
+  box-shadow: inset 4px 4px 9px rgba(72,64,112,.12), inset -4px -4px 9px rgba(255,255,255,.9);
+}
+.profile-page .memory-action:disabled {
+  opacity: .5;
+}
+.profile-page .memory-action-labels {
+  display: flex;
+  justify-content: center;
+  gap: 34px;
+  margin: 8px auto 0;
+  color: #756e8c;
+  font-size: 10px;
+  font-weight: 650;
+}
+.profile-page .memory-action-labels span {
+  width: 54px;
+  text-align: center;
+}
+.profile-page .memory-pending {
+  max-width: 420px;
+  margin: 14px auto 0;
+}
+.profile-page .memory-feedback {
+  text-align: center;
+}
+.profile-page .memory-gallery {
+  margin-top: 20px;
+}
+.profile-page .memory-empty {
+  gap: 6px;
+  margin-top: 20px;
+  padding: 18px 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.profile-page .memory-empty ion-icon {
+  font-size: 30px;
+  color: #7569a8;
+}
