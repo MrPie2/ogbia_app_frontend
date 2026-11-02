@@ -163,3 +163,29 @@
 .political-loading-icon{animation:political-spin 1s linear infinite}
 @keyframes political-spin{to{transform:rotate(360deg)}}
 @media(max-width:600px){.political-representatives-card{padding:15px 12px;border-radius:18px}.political-card-heading h2{font-size:17px}.political-heading-icon{flex-basis:41px;width:41px;height:41px;font-size:21px}.political-tabs{gap:3px;padding:4px}.political-tabs button{min-height:42px;font-size:9px}.political-representatives-list{grid-template-columns:1fr}.political-representative{padding:11px}.political-verification{font-size:8px}}
+
+
+/* Soft-purple neumorphism for the six My Ogbia overview cards. */
+.resource-shortcut,
+.stat-card {
+  border: 1px solid rgba(255,255,255,.78);
+  background: #eeecf7;
+  box-shadow:
+    7px 7px 16px rgba(72,64,112,.16),
+    -7px -7px 16px rgba(255,255,255,.96);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.resource-shortcut:active {
+  transform: translateY(1px) scale(.99);
+  box-shadow:
+    inset 5px 5px 10px rgba(72,64,112,.14),
+    inset -5px -5px 10px rgba(255,255,255,.96);
+}
+.resource-icon,
+.stat-icon {
+  border: 1px solid rgba(255,255,255,.75);
+  background: #eeecf7;
+  box-shadow:
+    4px 4px 8px rgba(72,64,112,.13),
+    -4px -4px 8px rgba(255,255,255,.96);
+}
