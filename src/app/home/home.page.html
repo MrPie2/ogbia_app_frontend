@@ -44,13 +44,21 @@
         @for (post of feedPosts; track post.id) {
           <article class="post card fade-up" [id]="'post-' + post.id" style="padding: 0px">
             <div class="post-head" style="padding: 10px 10px 0px 10px">
-              <div class="feed-avatar">
-                @if (post.author.profile_photo_url) {
-                  <img [src]="post.author.profile_photo_url" [alt]="post.author.name || 'User profile picture'" loading="lazy" (error)="onPostAvatarError($event)">
-                }
-                <span class="feed-avatar-fallback" [class.visible]="!post.author.profile_photo_url">{{ postInitials(post) }}</span>
-              </div>
-              <div class="post-author"><a class="person-name-link" [routerLink]="post.author.id === user?.id ? ['/profile'] : ['/members', post.author.id]" *ngIf="post.author?.id; else unnamedPostAuthor"><b>{{ post.author.name || 'Ogbia member' }}</b></a><ng-template #unnamedPostAuthor><b>{{ post.author?.name || 'Ogbia member' }}</b></ng-template><small>{{ post.created_at | date:'medium' }}</small></div>
+              @if (post.author; as author) {
+                <div class="feed-avatar">
+                  @if (author.profile_photo_url) {
+                    <img [src]="author.profile_photo_url" [alt]="author.name || 'User profile picture'" loading="lazy" (error)="onPostAvatarError($event)">
+                  }
+                  <span class="feed-avatar-fallback" [class.visible]="!author.profile_photo_url">{{ postInitials(post) }}</span>
+                </div>
+                <div class="post-author">
+                  <a class="person-name-link" [routerLink]="author.id === user?.id ? ['/profile'] : ['/members', author.id]"><b>{{ author.name || 'Ogbia member' }}</b></a>
+                  <small>{{ post.created_at | date:'medium' }}</small>
+                </div>
+              } @else {
+                <div class="feed-avatar"><span class="feed-avatar-fallback visible">{{ postInitials(post) }}</span></div>
+                <div class="post-author"><b>Ogbia member</b><small>{{ post.created_at | date:'medium' }}</small></div>
+              }
               <ion-icon name="ellipsis-horizontal"></ion-icon>
             </div>
             @if (post.is_event) {
