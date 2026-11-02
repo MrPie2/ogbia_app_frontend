@@ -339,3 +339,98 @@
 .home-page .logout-button { background: #eeecf7; color: #a23e55; border-color: rgba(255,255,255,.8); box-shadow: var(--neo-raised-sm); }
 .home-page .event-card button { border-color: #393185; color: #393185; }
 .home-page .date { background: #eeecf7; color: #302b4d; box-shadow: var(--neo-inset); }
+
+/* Soft-purple extruded neumorphism for the Stories section and its controls. */
+.home-page .stories-section {
+  padding: 14px 12px 12px;
+  border: 1px solid rgba(255,255,255,.84);
+  border-radius: 20px;
+  background: #eeecf7;
+  box-shadow:
+    7px 7px 16px rgba(72,64,112,.13),
+    -7px -7px 16px rgba(255,255,255,.94);
+}
+.home-page .stories-heading {
+  margin: 0 2px 11px;
+}
+.home-page .stories-heading h2 {
+  color: #302b4d;
+}
+.home-page .stories-heading > span {
+  color: #817c98;
+}
+.home-page .stories-section .stories {
+  padding: 5px 3px 8px;
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 15px;
+  background: #eeecf7;
+  box-shadow:
+    inset 4px 4px 9px rgba(72,64,112,.09),
+    inset -4px -4px 9px rgba(255,255,255,.88);
+}
+.home-page .story-button .story-ring {
+  border: 2px solid #393185;
+  background: #eeecf7;
+  box-shadow:
+    3px 3px 7px rgba(72,64,112,.16),
+    -3px -3px 7px rgba(255,255,255,.96);
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.home-page .story-button .story-ring.has-story,
+.home-page .story-button .story-ring.has-unseen {
+  border-color: #393185;
+}
+.home-page .story-button .story-ring.has-story:not(.has-unseen) {
+  border-color: #aaa1c1;
+}
+.home-page .story-button:active .story-ring {
+  transform: scale(.97);
+  box-shadow:
+    inset 3px 3px 6px rgba(72,64,112,.14),
+    inset -3px -3px 6px rgba(255,255,255,.94);
+}
+.home-page .story-add-circle {
+  border: 1px solid rgba(255,255,255,.9);
+  background: #eeecf7;
+  color: #393185;
+  box-shadow:
+    5px 5px 10px rgba(72,64,112,.16),
+    -5px -5px 10px rgba(255,255,255,.96);
+  transition: box-shadow .18s ease, transform .18s ease, background .18s ease;
+}
+.home-page .story-add-button:active .story-add-circle {
+  transform: translateY(1px) scale(.98);
+  box-shadow:
+    inset 4px 4px 8px rgba(72,64,112,.15),
+    inset -4px -4px 8px rgba(255,255,255,.94);
+}
+.home-page .story-add-button small,
+.home-page .story-person-link,
+.home-page .story-button small {
+  color: #716b88;
+}
+.home-page .story-loading {
+  color: #817c98;
+}
+.home-page .stories-retry {
+  padding: 8px 11px;
+  border: 1px solid rgba(255,255,255,.86);
+  border-radius: 10px;
+  background: #eeecf7;
+  color: #393185;
+  box-shadow:
+    4px 4px 8px rgba(72,64,112,.13),
+    -4px -4px 8px rgba(255,255,255,.94);
+}
+.home-page .stories-retry:active {
+  box-shadow:
+    inset 3px 3px 6px rgba(72,64,112,.13),
+    inset -3px -3px 6px rgba(255,255,255,.94);
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-page .story-button .story-ring,
+  .home-page .story-add-circle {
+    transition: none;
+  }
+}
+
