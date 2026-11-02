@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonIcon } from '@ionic/angular';
+import { IonContent } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-welcome',
   standalone: true,
-  imports: [IonContent, IonIcon, RouterLink, CommonModule, FormsModule],
+  imports: [IonContent, RouterLink, CommonModule, FormsModule],
   templateUrl: './welcome.page.html',
   styleUrl: './welcome.page.scss'
 })
