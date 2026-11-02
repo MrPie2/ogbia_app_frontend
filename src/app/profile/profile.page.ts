@@ -4,7 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { AuthService, AuthUser, CommunityLeader } from '../services/auth.service';
+import { AuthService, AuthUser, CommunityLeader, UserMemory } from '../services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +23,12 @@ export class ProfilePage implements OnInit, OnDestroy {
   photoSuccess = '';
   photoPreview: string | null = null;
   selectedPhoto: File | null = null;
+  memories: UserMemory[] = [];
+  selectedMemory: File | null = null;
+  loadingMemories = true;
+  uploadingMemory = false;
+  memoryError = '';
+  memorySuccess = '';
   leadersLoading = true;
   leadersError = '';
   leadershipGroups: { key: string; title: string; subtitle: string; icon: string; members: CommunityLeader[] }[] = [];
@@ -36,6 +42,7 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadCommunityLeaders();
+    this.loadMemories();
     this.user = this.auth.getCachedUser();
     this.referralCode = this.user?.referral_code || '';
     this.auth.getAuthenticatedUser().subscribe({
@@ -131,6 +138,63 @@ export class ProfilePage implements OnInit, OnDestroy {
         this.savingPhoto = false;
         this.photoError = error.error?.errors?.profile_photo?.[0] ||
           error.error?.message || 'Could not upload your profile picture. Please try again.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  loadMemories(): void {
+    this.loadingMemories = true;
+    this.auth.getMyMemories().subscribe({
+      next: response => {
+        this.memories = response.data ?? [];
+        this.loadingMemories = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.loadingMemories = false;
+        this.memoryError = 'Your memories could not be loaded. Please try again.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  onMemorySelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    this.memoryError = '';
+    this.memorySuccess = '';
+    if (!file) return;
+    if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+      this.memoryError = 'Choose an image or video file.';
+      input.value = '';
+      return;
+    }
+    if (file.size > 100 * 1024 * 1024) {
+      this.memoryError = 'Each photo or video must be 100 MB or smaller.';
+      input.value = '';
+      return;
+    }
+    this.selectedMemory = file;
+    this.cdr.markForCheck();
+  }
+
+  uploadSelectedMemory(): void {
+    if (!this.selectedMemory || this.uploadingMemory) return;
+    this.uploadingMemory = true;
+    this.memoryError = '';
+    this.memorySuccess = '';
+    this.auth.uploadMemory(this.selectedMemory).subscribe({
+      next: response => {
+        this.memories = [response.data, ...this.memories];
+        this.selectedMemory = null;
+        this.uploadingMemory = false;
+        this.memorySuccess = response.message || 'Memory uploaded successfully.';
+        this.cdr.markForCheck();
+      },
+      error: error => {
+        this.uploadingMemory = false;
+        this.memoryError = error.error?.errors?.media?.[0] || error.error?.message || 'Could not upload this memory. Please try again.';
         this.cdr.markForCheck();
       }
     });
