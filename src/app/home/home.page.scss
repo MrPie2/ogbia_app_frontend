@@ -307,3 +307,35 @@
 .home-page .story-button .story-ring .account-story-avatar {
   border: 0;
 }
+
+
+
+/* Neumorphic community feed */
+.home-page { background: #eeecf7; color: #302b4d; }
+.home-page .feed-heading, .home-page .stories-heading { color: #302b4d; }
+.home-page .feed-heading p, .home-page .stories-heading > span { color: #817c98; }
+.home-page .story small { color: #77718f; }
+.home-page .story-ring { border-color: #393185; box-shadow: 2px 2px 6px rgba(57,49,133,.14), -2px -2px 6px #fff; }
+.home-page .story-ring.own { background: #eeecf7; }
+.home-page .story-ring em { border-color: #eeecf7; }
+.home-page .post, .home-page .feed-state, .home-page .event-card, .home-page .account-card {
+  color: #302b4d;
+  background: #eeecf7;
+  border: 1px solid rgba(255,255,255,.82);
+  border-radius: 20px;
+  box-shadow: 7px 7px 16px rgba(72,64,112,.12), -7px -7px 16px rgba(255,255,255,.92);
+}
+.home-page .post { padding: 15px; }
+.home-page .post-author b, .home-page .feed-heading h2, .home-page .event-copy > b { color: #302b4d; }
+.home-page .post-author small, .home-page .post-actions, .home-page .event-copy small { color: #817c98; }
+.home-page .post-content { color: #49445f; }
+.home-page .post-actions { border-top-color: rgba(112,103,153,.13); }
+.home-page .feed-state p { color: #817c98; }
+.home-page .feed-state button, .home-page .feed-state a { background: #393185; box-shadow: 4px 4px 9px rgba(57,49,133,.22), -3px -3px 8px rgba(255,255,255,.6); }
+.home-page .empty-feed-icon { background: #eeecf7; color: #393185; box-shadow: var(--neo-inset); }
+.home-page .write-post { background: #393185; border-radius: 13px; box-shadow: 4px 4px 9px rgba(57,49,133,.2), -3px -3px 8px #fff; }
+.home-page .account-card { background: linear-gradient(145deg,#eeecf7,#e9e6f3); color: #302b4d; }
+.home-page .account-copy > small, .home-page .account-copy p, .home-page .account-copy .account-phone { color: #817c98; }
+.home-page .logout-button { background: #eeecf7; color: #a23e55; border-color: rgba(255,255,255,.8); box-shadow: var(--neo-raised-sm); }
+.home-page .event-card button { border-color: #393185; color: #393185; }
+.home-page .date { background: #eeecf7; color: #302b4d; box-shadow: var(--neo-inset); }
