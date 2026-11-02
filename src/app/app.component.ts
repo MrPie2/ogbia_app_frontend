@@ -104,7 +104,8 @@ export class AppComponent implements OnDestroy {
 
   constructor(
     private readonly presence: PresenceService,
-    private readonly router: Router,\n    private readonly navController: NavController,
+    private readonly router: Router,
+    private readonly navController: NavController,
     private readonly auth: AuthService,
     private readonly notifications: NotificationService
   ) {
