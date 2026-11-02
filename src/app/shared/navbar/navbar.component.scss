@@ -332,10 +332,12 @@
    used by the search, notification and profile controls in the top bar. */
 .app-bottom-nav a:not(.create-nav) > ion-icon,
 .app-bottom-nav .create-nav-icon {
+  box-sizing: border-box;
   display: grid;
   place-items: center;
   flex: 0 0 28px;
   width: 28px;
+  min-width: 28px;
   height: 28px;
   padding: 5px;
   border: 1px solid rgba(255,255,255,.9);
@@ -351,7 +353,7 @@
   background: #eeecf7;
   box-shadow: 3px 3px 7px rgba(72,64,112,.10), -3px -3px 7px rgba(255,255,255,.95);
 }
-.app-bottom-nav .create-nav-icon ion-icon { font-size: 24px; width: 24px; height: 24px; }
+.app-bottom-nav .create-nav-icon ion-icon { font-size: 15px; width: auto; height: auto; }
 .app-bottom-nav a:not(.create-nav).active > ion-icon,
 .app-bottom-nav .create-nav:active .create-nav-icon {
   color: #393185;
