@@ -46,6 +46,18 @@ export interface MemberProfile {
 }
 export interface MemberProfileResponse { success: boolean; data: MemberProfile; }
 
+export interface UserMemory {
+  id: number;
+  media_type: 'image' | 'video';
+  url: string;
+  mime_type: string;
+  file_size: number;
+  caption: string | null;
+  created_at: string | null;
+}
+export interface UserMemoriesResponse { success: boolean; data: UserMemory[]; }
+export interface UserMemoryUploadResponse { success: boolean; message: string; data: UserMemory; }
+
 export interface ProfileCompletionResponse {
   success: boolean;
   message: string;
@@ -127,6 +139,21 @@ export class AuthService {
     const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
     return this.http.get<MemberProfileResponse>(`${this.apiUrl}/members/${id}`, { headers });
   }
+  getMyMemories(): Observable<UserMemoriesResponse> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.get<UserMemoriesResponse>(`${this.apiUrl}/profile/memories`, { headers });
+  }
+
+  uploadMemory(file: File, caption = ''): Observable<UserMemoryUploadResponse> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    const form = new FormData();
+    form.append('media', file, file.name);
+    if (caption.trim()) form.append('caption', caption.trim());
+    return this.http.post<UserMemoryUploadResponse>(`${this.apiUrl}/profile/memories`, form, { headers });
+  }
+
   getAuthenticatedUser(): Observable<AuthUser> {
     const token = localStorage.getItem('token');
     const headers = token
