@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { timeout } from 'rxjs';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { AuthService, MemberProfile } from '../services/auth.service';
+import { AuthService, MemberProfile, UserMemory } from '../services/auth.service';
 
 @Component({
   selector: 'app-member-profile',
