@@ -43,6 +43,7 @@ export interface CommunityLeadersResponse {
 export interface MemberProfile {
   id: number; name: string | null; hometown: string | null; community_role: string | null;
   profile_photo_url: string | null; created_at: string | null;
+  memories?: UserMemory[]; memories_visible?: boolean;
 }
 export interface MemberProfileResponse { success: boolean; data: MemberProfile; }
 
