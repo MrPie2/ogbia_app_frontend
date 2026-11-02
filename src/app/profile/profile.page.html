@@ -23,6 +23,45 @@
         <p class="profile-feedback success" role="status" *ngIf="photoSuccess">{{ photoSuccess }}</p>
       </section>
 
+      <section class="memories-section" *ngIf="user as currentUser">
+        <div class="memories-heading">
+          <div><h2>My Memories</h2><p>Keep your favourite moments close</p></div>
+          <span class="memory-count">{{ memories.length }}</span>
+        </div>
+
+        <div class="memory-capture-actions" aria-label="Add a memory">
+          <button type="button" class="memory-action memory-camera-action" (click)="cameraInput.click()" [disabled]="uploadingMemory" aria-label="Take a photo">
+            <ion-icon name="camera-outline"></ion-icon>
+          </button>
+          <input #cameraInput class="visually-hidden-file" type="file" accept="image/*" capture="environment" (change)="onMemorySelected($event)">
+          <button type="button" class="memory-action memory-upload-action" (click)="memoryInput.click()" [disabled]="uploadingMemory" aria-label="Upload a photo or video">
+            <ion-icon name="cloud-upload-outline"></ion-icon>
+          </button>
+          <input #memoryInput class="visually-hidden-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime,video/webm,video/x-m4v" (change)="onMemorySelected($event)">
+        </div>
+        <div class="memory-action-labels"><span>Take photo</span><span>Upload</span></div>
+
+        <div class="memory-pending" *ngIf="selectedMemory">
+          <span>{{ selectedMemory.name }}</span>
+          <button type="button" (click)="uploadSelectedMemory()" [disabled]="uploadingMemory">{{ uploadingMemory ? 'Saving…' : 'Save memory' }}</button>
+        </div>
+        <p class="memory-feedback error" *ngIf="memoryError" role="alert">{{ memoryError }}</p>
+        <p class="memory-feedback success" *ngIf="memorySuccess" role="status">{{ memorySuccess }}</p>
+
+        <div class="memory-gallery" *ngIf="memories.length">
+          <article class="memory-item" *ngFor="let memory of memories">
+            <img *ngIf="memory.media_type === 'image'" [src]="memory.url" [alt]="memory.caption || 'Saved memory'" loading="lazy">
+            <video *ngIf="memory.media_type === 'video'" [src]="memory.url" controls playsinline preload="metadata"></video>
+            <p *ngIf="memory.caption">{{ memory.caption }}</p>
+            <small>{{ memory.created_at ? (memory.created_at | date:'mediumDate') : '' }}</small>
+          </article>
+        </div>
+        <div class="memory-empty" *ngIf="!memories.length && !loadingMemories">
+          <ion-icon name="images-outline"></ion-icon><strong>Your memories start here</strong><span>Take a photo or upload photos and videos to save moments on your profile.</span>
+        </div>
+        <p class="memory-feedback" *ngIf="loadingMemories">Loading your memories…</p>
+      </section>
+
       <section class="profile-information" *ngIf="user as currentUser">
         <div class="section-title">
           <h2>My information</h2>
@@ -36,36 +75,7 @@
       </section>
 
       
-      <section class="memories-section" *ngIf="user as currentUser">
-        <div class="memories-heading">
-          <div><h2>My Memories</h2><p>Your photos and videos, kept together</p></div>
-          <span class="memory-count">{{ memories.length }}</span>
-        </div>
-        <div class="memory-upload-actions">
-          <button type="button" class="memory-upload-button" (click)="memoryInput.click()" [disabled]="uploadingMemory">
-            <ion-icon name="cloud-upload-outline"></ion-icon><span>Add photo or video</span>
-          </button>
-          <input #memoryInput class="visually-hidden-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime,video/webm,video/x-m4v" (change)="onMemorySelected($event)">
-        </div>
-        <div class="memory-pending" *ngIf="selectedMemory">
-          <span>{{ selectedMemory.name }}</span>
-          <button type="button" (click)="uploadSelectedMemory()" [disabled]="uploadingMemory">{{ uploadingMemory ? 'Uploading…' : 'Upload memory' }}</button>
-        </div>
-        <p class="memory-feedback error" *ngIf="memoryError" role="alert">{{ memoryError }}</p>
-        <p class="memory-feedback success" *ngIf="memorySuccess" role="status">{{ memorySuccess }}</p>
-        <div class="memory-gallery" *ngIf="memories.length">
-          <article class="memory-item" *ngFor="let memory of memories">
-            <img *ngIf="memory.media_type === 'image'" [src]="memory.url" [alt]="memory.caption || 'Saved memory'" loading="lazy">
-            <video *ngIf="memory.media_type === 'video'" [src]="memory.url" controls playsinline preload="metadata"></video>
-            <p *ngIf="memory.caption">{{ memory.caption }}</p>
-            <small>{{ memory.created_at ? (memory.created_at | date:'mediumDate') : '' }}</small>
-          </article>
-        </div>
-        <div class="memory-empty" *ngIf="!memories.length && !loadingMemories">
-          <ion-icon name="images-outline"></ion-icon><strong>Your memories start here</strong><span>Upload photos and videos to keep special moments on your profile.</span>
-        </div>
-        <p class="memory-feedback" *ngIf="loadingMemories">Loading your memories…</p>
-      </section>
+
 
       <section class="referral-card" *ngIf="referralCode">
         <div class="referral-copy"><span class="referral-eyebrow">INVITE A MEMBER</span><strong>Your Referral ID</strong><p>Share this code with people you invite to Ogbia Connect.</p><code>{{ referralCode }}</code></div>
