@@ -160,3 +160,34 @@
 .profile-page .leader-member { border-bottom-color: rgba(112,103,153,.10); }
 .profile-page .leader-member:active, .profile-page .leader-member:hover { background: #e7e4f1; }
 .profile-page .profile-information .profile-info-row { border-bottom-color: rgba(112,103,153,.12); }
+
+/* Personal memories gallery */
+.memories-section,.member-memories{margin:26px 0 20px}
+.memories-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
+.memories-heading h2{margin:0;color:#302347;font-size:17px;font-weight:800}
+.memories-heading p{margin:5px 0 0;color:#83768f;font-size:11px}
+.memory-count{min-width:28px;padding:5px 9px;border-radius:999px;background:#eeecf7;color:#393185;font-size:11px;font-weight:800;box-shadow:var(--neo-raised-sm)}
+.memory-upload-actions{display:flex;gap:10px}
+.memory-upload-button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:45px;padding:10px 14px;border:1px solid rgba(255,255,255,.85);border-radius:13px;background:#393185;color:#fff;font-size:12px;font-weight:750;box-shadow:0 6px 14px rgba(57,49,133,.18)}
+.memory-upload-button ion-icon{font-size:18px}
+.memory-upload-button:disabled{opacity:.55}
+.memory-pending{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:10px 12px;border-radius:12px;background:#eeecf7;box-shadow:var(--neo-inset)}
+.memory-pending span{min-width:0;overflow:hidden;color:#625b78;font-size:11px;text-overflow:ellipsis;white-space:nowrap}
+.memory-pending button{flex:0 0 auto;padding:8px 11px;border:0;border-radius:9px;background:#393185;color:#fff;font-size:11px;font-weight:750}
+.memory-pending button:disabled{opacity:.55}
+.memory-feedback{margin:9px 0;color:#7c748e;font-size:11px}
+.memory-feedback.error{color:#b42318}.memory-feedback.success{color:#16794b}
+.memory-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:14px}
+.memory-item{min-width:0;overflow:hidden;border:1px solid rgba(255,255,255,.85);border-radius:15px;background:#eeecf7;box-shadow:var(--neo-raised-sm)}
+.memory-item img,.memory-item video{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;background:#dedbea}
+.memory-item video{object-fit:contain}
+.memory-item p{margin:8px 9px 3px;color:#49435e;font-size:11px;line-height:1.4}
+.memory-item small{display:block;margin:5px 9px 9px;color:#8a829c;font-size:9px}
+.memory-empty,.memory-private{display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:14px;padding:24px 18px;border:1px solid rgba(255,255,255,.8);border-radius:16px;background:#eeecf7;text-align:center;box-shadow:var(--neo-inset)}
+.memory-empty ion-icon,.memory-private ion-icon{font-size:27px;color:#7569a8}
+.memory-empty strong{color:#49435e;font-size:12px}
+.memory-empty span,.memory-private span{max-width:270px;color:#89829a;font-size:10px;line-height:1.5}
+.member-memories .section-title{margin:0 0 12px}
+.member-memories .section-title h2{margin:0;color:#302347;font-size:17px;font-weight:800}
+.member-memories .section-title p{margin:5px 0 0;color:#83768f;font-size:11px}
+@media(max-width:360px){.memory-gallery{gap:8px}.memory-item{border-radius:12px}}
