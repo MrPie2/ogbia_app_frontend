@@ -4,19 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       app_version:
-        description: 'Android APK versionName (for example 1.0.3)'
+        description: 'Android APK versionName (for example 1.0.4)'
         required: true
-        default: '1.0.3'
+        default: '1.0.4'
         type: string
       app_version_code:
         description: 'Android APK versionCode; increase for every APK release'
         required: true
-        default: '4'
+        default: '5'
         type: string
       bundle_version:
-        description: 'SemVer for the live-update bundle (for example 1.0.1)'
+        description: 'SemVer for the live-update bundle (for example 1.0.4)'
         required: true
-        default: '1.0.1'
+        default: '1.0.4'
         type: string
 
 permissions:
@@ -63,9 +63,17 @@ jobs:
 
       - name: Set Android APK version
         shell: bash
+        env:
+          APP_VERSION: ${{ inputs.app_version }}
+          APP_VERSION_CODE: ${{ inputs.app_version_code }}
         run: |
-          sed -i 's/versionCode [0-9][0-9]*/versionCode ${{ inputs.app_version_code }}/' android/app/build.gradle
-          sed -i 's/versionName "[^"]*"/versionName "${{ inputs.app_version }}"/' android/app/build.gradle
+          if ! [[ "$APP_VERSION_CODE" =~ ^[1-9][0-9]*$ ]]; then
+            echo "app_version_code must be a positive integer" >&2
+            exit 1
+          fi
+          sed -i "s/versionCode [0-9][0-9]*/versionCode $APP_VERSION_CODE/" android/app/build.gradle
+          VERSION_ESCAPED=$(printf '%s' "$APP_VERSION" | sed 's/[&/]/\\\\&/g')
+          sed -i "s/versionName \"[^\"]*\"/versionName \"$VERSION_ESCAPED\"/" android/app/build.gradle
           grep -E 'versionCode|versionName' android/app/build.gradle
 
       - name: Build Ionic and Angular production app
@@ -73,9 +81,11 @@ jobs:
 
       - name: Create self-hosted live-update bundle
         shell: bash
+        env:
+          BUNDLE_VERSION: ${{ inputs.bundle_version }}
         run: |
-          BUNDLE_FILE="ogbia-live-update-${{ inputs.bundle_version }}.zip"
-          npx --yes @capgo/cli@latest bundle zip com.myogbia.app --path www --bundle "${{ inputs.bundle_version }}" --name "$BUNDLE_FILE" --json | tee bundle-info.json
+          BUNDLE_FILE="ogbia-live-update-$BUNDLE_VERSION.zip"
+          npx --yes @capgo/cli@latest bundle zip com.myogbia.app --path www --bundle "$BUNDLE_VERSION" --name "$BUNDLE_FILE" --json | tee bundle-info.json
           test -f "$BUNDLE_FILE"
           cp "$BUNDLE_FILE" ogbia-live-update.zip
 
@@ -92,14 +102,39 @@ jobs:
       - name: Sync Capacitor Android project
         run: npx cap sync android
 
-      - name: Build debug APK
-        working-directory: android
-        run: bash ./gradlew assembleDebug --no-daemon
+      - name: Restore Android release keystore
+        shell: bash
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          test -n "$ANDROID_KEYSTORE_BASE64" || { echo "Missing ANDROID_KEYSTORE_BASE64 repository secret" >&2; exit 1; }
+          mkdir -p "$RUNNER_TEMP/ogbia-signing"
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/ogbia-signing/ogbia-release-secure.jks"
+          test -s "$RUNNER_TEMP/ogbia-signing/ogbia-release-secure.jks"
 
-      - name: Upload APK artifact
+      - name: Build signed release APK
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/ogbia-signing/ogbia-release-secure.jks
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          test -n "$ANDROID_KEYSTORE_PASSWORD" || { echo "Missing ANDROID_KEYSTORE_PASSWORD repository secret" >&2; exit 1; }
+          test -n "$ANDROID_KEY_ALIAS" || { echo "Missing ANDROID_KEY_ALIAS repository secret" >&2; exit 1; }
+          test -n "$ANDROID_KEY_PASSWORD" || { echo "Missing ANDROID_KEY_PASSWORD repository secret" >&2; exit 1; }
+          bash ./gradlew assembleRelease --no-daemon
+
+      - name: Verify APK signature
+        run: |
+          APK="android/app/build/outputs/apk/release/app-release.apk"
+          test -s "$APK"
+          apksigner verify --verbose "$APK"
+
+      - name: Upload signed APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ogbia-android-${{ inputs.app_version }}-code-${{ inputs.app_version_code }}
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: ogbia-android-signed-${{ inputs.app_version }}-code-${{ inputs.app_version_code }}
+          path: android/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 30
