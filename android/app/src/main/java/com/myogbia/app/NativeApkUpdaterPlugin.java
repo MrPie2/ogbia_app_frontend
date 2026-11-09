@@ -5,7 +5,6 @@ import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.webkit.URLUtil;
 
 import androidx.core.content.FileProvider;
 
