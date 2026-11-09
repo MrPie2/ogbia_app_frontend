@@ -1,4 +1,4 @@
-<ion-app class="ogbia-app-shell">
+<ion-app class="ogbia-app-shell" [class.welcome-screen]="isWelcomeRoute">
   @if (includeNavbar) {
     <app-shared-navbar></app-shared-navbar>
   }
