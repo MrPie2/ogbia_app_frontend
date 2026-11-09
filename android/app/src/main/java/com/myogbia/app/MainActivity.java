@@ -7,10 +7,12 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.getcapacitor.BridgeActivity;
+import com.getcapacitor.PluginHandle;
 
 public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        registerPlugin(NativeApkUpdaterPlugin.class);
         // Android 15+ enforces edge-to-edge for apps targeting SDK 35+.
         // Draw the app surface behind the transparent status bar so the
         // status bar takes the same #eeecf7 background as the Ionic app.
