@@ -244,19 +244,43 @@ button.back-button:focus-visible { outline: 2px solid #393185; outline-offset: 2
 }
 
 
-/* Welcome is a true edge-to-edge screen: remove both shared navigation bars
-   and reclaim the space normally reserved for them. */
-ion-app.ogbia-app-shell.welcome-screen app-shared-navbar {
-  display: none !important;
+/* Welcome route: force the entire Ionic app shell and routed page to the
+   viewport. This overrides the shared top/bottom navigation layout. */
+ion-app.ogbia-app-shell.welcome-screen {
+  position: fixed !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #393185 !important;
 }
 
-ion-router-outlet.app-router-outlet.welcome-route {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100dvh !important;
-  min-height: 100% !important;
+ion-app.ogbia-app-shell.welcome-screen > app-shared-navbar,
+ion-app.ogbia-app-shell.welcome-screen app-shared-navbar {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
   overflow: hidden !important;
+}
+
+ion-app.ogbia-app-shell.welcome-screen ion-router-outlet.app-router-outlet,
+ion-router-outlet.app-router-outlet.welcome-route {
+  position: fixed !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  transform: none !important;
   background: #393185 !important;
 }
 
@@ -266,15 +290,21 @@ ion-router-outlet.app-router-outlet.welcome-route ion-content.welcome-content,
 ion-router-outlet.app-router-outlet.welcome-route ion-content.welcome-content::part(background),
 ion-router-outlet.app-router-outlet.welcome-route .welcome-shell {
   --background: #393185 !important;
+  --offset-top: 0px !important;
+  --offset-bottom: 0px !important;
   background: #393185 !important;
 }
 
 ion-router-outlet.app-router-outlet.welcome-route app-welcome,
 ion-router-outlet.app-router-outlet.welcome-route ion-content.welcome-content {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 
