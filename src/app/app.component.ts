@@ -92,7 +92,7 @@ export class AppComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
   private swipeStartX = 0;
   private swipeStartY = 0;
-  private swipeStartTarget: HTMLElement | null = null;
+  private swipeStartAllowed = false;
 
   private readonly swipePages = [
     { path: '/home', label: 'Home' },
@@ -208,36 +208,37 @@ export class AppComponent implements OnDestroy {
 
   @HostListener('document:touchstart', ['$event'])
   onPageSwipeStart(event: TouchEvent): void {
-    this.swipeStartTarget = null;
-    if (event.touches.length !== 1) return;
+    this.swipeStartAllowed = false;
+    if (event.touches.length !== 1 || !this.includeNavbar) return;
 
-    const target = event.target;
-    if (!(target instanceof HTMLElement) || !this.canStartPageSwipe(target)) return;
+    // Use the composed event path so gestures work across Ionic/Web Component
+    // shadow boundaries and can begin anywhere in the app, including the top
+    // and bottom navigation bars.
+    this.swipeStartAllowed = this.canStartPageSwipe(event);
+    if (!this.swipeStartAllowed) return;
 
     this.swipeStartX = event.touches[0].clientX;
     this.swipeStartY = event.touches[0].clientY;
-    this.swipeStartTarget = target;
   }
 
   @HostListener('document:touchend', ['$event'])
   onPageSwipeEnd(event: TouchEvent): void {
-    const target = this.swipeStartTarget;
-    this.swipeStartTarget = null;
-    if (!target || event.changedTouches.length !== 1 || !this.canStartPageSwipe(target)) return;
+    const allowed = this.swipeStartAllowed;
+    this.swipeStartAllowed = false;
+    if (!allowed || event.changedTouches.length !== 1) return;
 
     const touch = event.changedTouches[0];
     const deltaX = touch.clientX - this.swipeStartX;
     const deltaY = touch.clientY - this.swipeStartY;
 
     // Require a deliberate horizontal gesture; normal vertical page scrolling wins.
-    if (Math.abs(deltaX) < 70 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) return;
+    if (Math.abs(deltaX) < 55 || Math.abs(deltaX) < Math.abs(deltaY) * 1.2) return;
 
-    const currentPath = this.router.url.split('?')[0].split('#')[0].replace(/\/$/, '') || '/';
+    const currentPath = this.router.url.split('?')[0].split('#')[0].replace(/\\/$/, '') || '/';
     const currentIndex = this.swipePages.findIndex(page => page.path === currentPath);
     if (currentIndex < 0) return;
 
-    // Swipe left advances; swipe right returns. Ionic's navigation controller
-    // supplies the matching native-style page transition and keeps its page stack.
+    // Swipe left advances; swipe right returns.
     if (deltaX < 0 && currentIndex < this.swipePages.length - 1) {
       void this.navController.navigateForward(this.swipePages[currentIndex + 1].path, { animated: true });
     } else if (deltaX > 0 && currentIndex > 0) {
@@ -247,27 +248,28 @@ export class AppComponent implements OnDestroy {
 
   @HostListener('document:touchcancel')
   onPageSwipeCancel(): void {
-    this.swipeStartTarget = null;
+    this.swipeStartAllowed = false;
   }
 
-  private canStartPageSwipe(target: HTMLElement): boolean {
-    // Swipes belong to page content only, never the navbar or bottom navigation.
-    if (!target.closest('.app-router-outlet')) return false;
-    if (target.closest(
-      'input, textarea, select, button, a, [role="button"], [contenteditable="true"], ' +
-      'video, audio, canvas, ion-modal, ion-alert, ion-popover, .search-overlay, ' +
-      '.app-navbar, .app-bottom-nav, [data-no-page-swipe], [data-horizontal-scroll], ' +
-      '.swiper, .swiper-container, swiper-container, ion-slides, ion-segment, ' +
-      '.story-viewer, .story-strip, .stories-row, .horizontal-scroll'
-    )) return false;
+  private canStartPageSwipe(event: TouchEvent): boolean {
+    const path = event.composedPath();
+    const blockedSelectors = [
+      'input', 'textarea', 'select', '[contenteditable="true"]',
+      'video', 'audio', 'canvas', 'ion-modal', 'ion-alert', 'ion-popover',
+      '.search-overlay', '[data-no-page-swipe]', '[data-horizontal-scroll]',
+      '.swiper', '.swiper-container', 'swiper-container', 'ion-slides',
+      'ion-segment', '.story-viewer', '.story-strip', '.stories-row',
+      '.horizontal-scroll'
+    ];
 
-    // Do not steal gestures from horizontally scrollable containers/carousels.
-    let element: HTMLElement | null = target;
-    while (element && element !== document.body) {
-      const overflowX = window.getComputedStyle(element).overflowX;
+    // Don't hijack typing, dialogs, media controls, or horizontal carousels.
+    for (const item of path) {
+      if (!(item instanceof HTMLElement)) continue;
+      if (blockedSelectors.some(selector => item.matches(selector))) return false;
+
+      const overflowX = window.getComputedStyle(item).overflowX;
       if ((overflowX === 'auto' || overflowX === 'scroll') &&
-          element.scrollWidth > element.clientWidth + 8) return false;
-      element = element.parentElement;
+          item.scrollWidth > item.clientWidth + 8) return false;
     }
 
     return true;
