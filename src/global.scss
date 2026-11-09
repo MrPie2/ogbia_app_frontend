@@ -244,20 +244,38 @@ button.back-button:focus-visible { outline: 2px solid #393185; outline-offset: 2
 }
 
 
-/* The Welcome screen is a full-screen public landing page, with no shared bars. */
+/* Welcome is a true edge-to-edge screen: remove both shared navigation bars
+   and reclaim the space normally reserved for them. */
+ion-app.ogbia-app-shell.welcome-screen app-shared-navbar {
+  display: none !important;
+}
+
 ion-router-outlet.app-router-outlet.welcome-route {
+  position: absolute !important;
   inset: 0 !important;
+  width: 100% !important;
+  height: 100dvh !important;
+  min-height: 100% !important;
+  overflow: hidden !important;
   background: #393185 !important;
 }
+
 ion-router-outlet.app-router-outlet.welcome-route > .ion-page,
 ion-router-outlet.app-router-outlet.welcome-route app-welcome,
-ion-content.welcome-content,
-ion-content.welcome-content::part(background),
-.welcome-shell {
+ion-router-outlet.app-router-outlet.welcome-route ion-content.welcome-content,
+ion-router-outlet.app-router-outlet.welcome-route ion-content.welcome-content::part(background),
+ion-router-outlet.app-router-outlet.welcome-route .welcome-shell {
   --background: #393185 !important;
   background: #393185 !important;
 }
 
+ion-router-outlet.app-router-outlet.welcome-route app-welcome,
+ion-router-outlet.app-router-outlet.welcome-route ion-content.welcome-content {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+}
 
 
 /* OGBIA SOFT-NEUMORPHIC DESIGN SYSTEM */
