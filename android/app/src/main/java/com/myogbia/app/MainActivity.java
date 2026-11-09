@@ -7,7 +7,6 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.getcapacitor.BridgeActivity;
-import com.getcapacitor.PluginHandle;
 
 public class MainActivity extends BridgeActivity {
     @Override
