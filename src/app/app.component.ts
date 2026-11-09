@@ -77,6 +77,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subject, filter, takeUntil } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { NotificationService, AppNotification } from './services/notification.service';
+import { NativeAppUpdateService } from './services/native-app-update.service';
 
 @Component({
   selector: 'app-root',
@@ -107,7 +108,8 @@ export class AppComponent implements OnDestroy {
     private readonly router: Router,
     private readonly navController: NavController,
     private readonly auth: AuthService,
-    private readonly notifications: NotificationService
+    private readonly notifications: NotificationService,
+    private readonly nativeAppUpdates: NativeAppUpdateService
   ) {
     this.updateNavbarInclusion(this.router.url);
     this.router.events
@@ -195,6 +197,7 @@ export class AppComponent implements OnDestroy {
         void CapacitorUpdater.notifyAppReady().catch((error) => {
           console.warn('[Ogbia Updates] Could not confirm app readiness:', error);
         });
+        void this.nativeAppUpdates.checkAndPrompt();
       });
     }
     this.notifications.start();
