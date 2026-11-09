@@ -234,7 +234,7 @@ export class AppComponent implements OnDestroy {
     // Require a deliberate horizontal gesture; normal vertical page scrolling wins.
     if (Math.abs(deltaX) < 55 || Math.abs(deltaX) < Math.abs(deltaY) * 1.2) return;
 
-    const currentPath = this.router.url.split('?')[0].split('#')[0].replace(/\\/$/, '') || '/';
+    const currentPath = this.router.url.split('?')[0].split('#')[0].replace(/\/$/, '') || '/';
     const currentIndex = this.swipePages.findIndex(page => page.path === currentPath);
     if (currentIndex < 0) return;
 
