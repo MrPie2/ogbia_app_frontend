@@ -304,129 +304,165 @@
 
 
 
-/* Soft-neumorphic navigation surfaces */
-.app-navbar {
-  background: rgba(238,236,247,.96);
-  border-bottom: 1px solid rgba(255,255,255,.9);
-  box-shadow: 0 5px 18px rgba(72,64,112,.10);
-}
-.brand-mark { box-shadow: 4px 4px 9px rgba(57,49,133,.22), -3px -3px 8px rgba(255,255,255,.75); }
-.notification-action, .profile-action, .menu-toggle, .search-action {
-  background: #eeecf7;
-  border: 1px solid rgba(255,255,255,.9);
-  box-shadow: 4px 4px 9px rgba(72,64,112,.10), -4px -4px 9px rgba(255,255,255,.95);
-}
-.desktop-links a:hover, .desktop-links a.active, .profile-action.active { background: #e7e4f1; box-shadow: inset 2px 2px 5px rgba(72,64,112,.10), inset -2px -2px 5px #fff; }
+/* Modern, minimal bottom navigation */
 .app-bottom-nav {
-  background: rgba(238,236,247,.98);
-  border: 1px solid rgba(255,255,255,.9);
-  border-bottom: 0;
-  box-shadow: 0 -6px 22px rgba(72,64,112,.10);
+  position: fixed;
+  z-index: 1100;
+  left: 12px;
+  right: 12px;
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  width: auto;
+  min-height: 70px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: center;
+  padding: 7px 8px;
+  border: 1px solid rgba(255,255,255,.92);
+  border-radius: 24px;
+  background: rgba(255,255,255,.94);
+  box-shadow: 0 10px 34px rgba(39, 32, 91, .13), 0 2px 8px rgba(39, 32, 91, .05);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
 }
-.app-bottom-nav a.active { background: #eeecf7; box-shadow: inset 3px 3px 7px rgba(72,64,112,.12), inset -3px -3px 7px rgba(255,255,255,.9); }
-.create-nav-icon { box-shadow: 4px 4px 9px rgba(57,49,133,.24), -3px -3px 7px rgba(255,255,255,.55); }
-.mobile-links { background: #eeecf7; border-color: rgba(255,255,255,.9); box-shadow: 8px 8px 20px rgba(72,64,112,.16), -6px -6px 16px rgba(255,255,255,.9); }
-.mobile-links a.active, .mobile-links a:active { background: #eeecf7; box-shadow: inset 3px 3px 6px rgba(72,64,112,.12), inset -3px -3px 6px #fff; }
 
-/* Give bottom navigation icons the same softly embossed button treatment
-   used by the search, notification and profile controls in the top bar. */
-.app-bottom-nav a:not(.create-nav) > ion-icon,
-.app-bottom-nav .create-nav-icon {
-  box-sizing: border-box;
-  display: grid;
-  place-items: center;
-  flex: 0 0 28px;
-  width: 28px;
-  min-width: 28px;
-  height: 28px;
-  padding: 5px;
-  border: 1px solid rgba(255,255,255,.9);
-  border-radius: 9px;
-  background: #eeecf7;
-  color: #77738f;
-  box-shadow: 3px 3px 7px rgba(72,64,112,.10), -3px -3px 7px rgba(255,255,255,.95);
-  transition: box-shadow .18s ease, transform .18s ease, color .18s ease;
-}
-.app-bottom-nav a:not(.create-nav) > ion-icon { font-size: 20px; }
-.app-bottom-nav .create-nav-icon {
-  color: #393185;
-  background: #eeecf7;
-  box-shadow: 3px 3px 7px rgba(72,64,112,.10), -3px -3px 7px rgba(255,255,255,.95);
-}
-.app-bottom-nav .create-nav-icon ion-icon { font-size: 23px; width: auto; height: auto; flex: 0 0 auto; }
-.app-bottom-nav a:not(.create-nav).active > ion-icon,
-.app-bottom-nav .create-nav:active .create-nav-icon {
-  color: #393185;
-  box-shadow: inset 3px 3px 6px rgba(72,64,112,.13), inset -3px -3px 6px rgba(255,255,255,.95);
-}
-.app-bottom-nav a:not(.create-nav):active > ion-icon {
-  transform: scale(.94);
-  box-shadow: inset 3px 3px 6px rgba(72,64,112,.15), inset -3px -3px 6px rgba(255,255,255,.95);
-}
-.app-bottom-nav a { gap: 2px; font-size: 9px; }
-.app-bottom-nav a .bottom-nav-label { font-size: 9px; }
-.app-bottom-nav .create-nav span:last-child { font-size: 9px; }
-
-
-/* Prevent the browser's focus ring/tap border from appearing around a
-   bottom navigation item after it is clicked. */
-.app-bottom-nav a,
-.app-bottom-nav a:focus,
-.app-bottom-nav a:focus-visible,
-.app-bottom-nav a:active {
-  outline: none !important;
+.app-bottom-nav a {
+  position: relative;
+  min-width: 0;
+  min-height: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 2px;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: #9693a9;
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: -.1px;
+  transition: color .2s ease, transform .2s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-
-/* Make the central Create action visibly larger than the other nav controls. */
-.app-bottom-nav .create-nav-icon {
-  box-sizing: border-box;
-  flex: 0 0 40px;
-  width: 40px;
-  min-width: 40px;
-  height: 40px;
-  padding: 7px;
-  border-radius: 13px;
-}
-.app-bottom-nav .create-nav-icon ion-icon {
-  font-size: 27px;
-}
-
-/* Clear, tab-style selection for the active bottom navigation destination. */
-.app-bottom-nav a.active {
-  color: #fff;
-  background: #393185;
-  border: 1px solid rgba(57, 49, 133, .95);
-  border-radius: 14px;
-  box-shadow: 0 5px 12px rgba(57, 49, 133, .22);
-}
-
-.app-bottom-nav a.active > ion-icon {
-  color: #fff;
+.app-bottom-nav a:not(.create-nav) > ion-icon {
+  display: block;
+  width: auto;
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
   background: transparent;
-  border-color: transparent;
+  color: currentColor;
   box-shadow: none;
+  font-size: 22px;
+  transition: transform .2s ease, color .2s ease;
+}
+
+.app-bottom-nav a .bottom-nav-label {
+  display: inline-block;
+  max-width: 100%;
+  color: inherit;
+  white-space: nowrap;
+  font-size: 9px;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.app-bottom-nav a.active {
+  color: #393185;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.app-bottom-nav a.active:not(.create-nav)::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 3px;
+  left: 50%;
+  width: 48px;
+  height: 29px;
+  border-radius: 12px;
+  background: #efedfb;
+  transform: translateX(-50%);
+}
+
+.app-bottom-nav a.active:not(.create-nav) > ion-icon {
+  color: #393185;
+  transform: translateY(-1px);
 }
 
 .app-bottom-nav a.active .bottom-nav-label,
 .app-bottom-nav a.active > span:last-child {
+  color: #393185;
+  font-weight: 750;
+}
+
+.app-bottom-nav .create-nav {
+  color: #77738f;
+  gap: 3px;
+}
+
+.app-bottom-nav .create-nav-icon {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  flex: 0 0 46px;
+  width: 46px;
+  min-width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
   color: #fff;
-  font-weight: 800;
+  background: linear-gradient(145deg, #5149a4 0%, #393185 100%);
+  box-shadow: 0 6px 14px rgba(57,49,133,.24), inset 0 1px 0 rgba(255,255,255,.22);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.app-bottom-nav .create-nav-icon ion-icon {
+  display: block;
+  width: auto;
+  height: auto;
+  flex: 0 0 auto;
+  font-size: 27px;
+  color: #fff;
+}
+
+.app-bottom-nav .create-nav span:last-child {
+  color: inherit;
+  font-size: 9px;
+  font-weight: 650;
+}
+
+.app-bottom-nav .create-nav.active {
+  color: #393185;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .app-bottom-nav .create-nav.active .create-nav-icon {
-  color: #393185;
-  background: #fff;
-  border: 0;
-  box-shadow: 0 2px 6px rgba(20, 15, 65, .16);
+  color: #fff;
+  background: linear-gradient(145deg, #5149a4 0%, #393185 100%);
+  box-shadow: 0 7px 16px rgba(57,49,133,.28), inset 0 1px 0 rgba(255,255,255,.22);
 }
 
-.app-bottom-nav a.active:active {
-  background: #30286f;
-  box-shadow: inset 2px 2px 5px rgba(20, 15, 65, .2);
+.app-bottom-nav a:active { transform: scale(.96); }
+.app-bottom-nav a:focus,
+.app-bottom-nav a:focus-visible { outline: none; }
+
+@media (max-width: 380px) {
+  .app-bottom-nav { left: 8px; right: 8px; padding-left: 5px; padding-right: 5px; }
+  .app-bottom-nav a { font-size: 9px; }
+  .app-bottom-nav a:not(.create-nav) > ion-icon { font-size: 21px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .app-bottom-nav a { transition: none; }
+  .app-bottom-nav a,
+  .app-bottom-nav a > ion-icon,
+  .app-bottom-nav .create-nav-icon { transition: none; }
 }
