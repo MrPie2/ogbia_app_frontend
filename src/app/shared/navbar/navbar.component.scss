@@ -392,3 +392,41 @@
 .app-bottom-nav .create-nav-icon ion-icon {
   font-size: 27px;
 }
+
+/* Clear, tab-style selection for the active bottom navigation destination. */
+.app-bottom-nav a.active {
+  color: #fff;
+  background: #393185;
+  border: 1px solid rgba(57, 49, 133, .95);
+  border-radius: 14px;
+  box-shadow: 0 5px 12px rgba(57, 49, 133, .22);
+}
+
+.app-bottom-nav a.active > ion-icon {
+  color: #fff;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.app-bottom-nav a.active .bottom-nav-label,
+.app-bottom-nav a.active > span:last-child {
+  color: #fff;
+  font-weight: 800;
+}
+
+.app-bottom-nav .create-nav.active .create-nav-icon {
+  color: #393185;
+  background: #fff;
+  border: 0;
+  box-shadow: 0 2px 6px rgba(20, 15, 65, .16);
+}
+
+.app-bottom-nav a.active:active {
+  background: #30286f;
+  box-shadow: inset 2px 2px 5px rgba(20, 15, 65, .2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-bottom-nav a { transition: none; }
+}
