@@ -10,6 +10,7 @@ import { StoriesService, StoryGroup, StoryItem } from '../services/stories.servi
 
 @Component({
   selector: 'app-home',
+  host: { class: 'home-route' },
   standalone: true,
   imports: [CommonModule, DatePipe, IonContent, IonIcon, RouterLink],
   templateUrl: './home.page.html',
