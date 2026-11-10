@@ -462,15 +462,20 @@
   background: #e7e2f0;
   isolation: isolate;
 }
-.home-page .post-image-frame::before {
-  content: "";
+.home-page .post-image-frame .post-image-backdrop {
   position: absolute;
   z-index: 0;
   inset: -18px;
-  background-image: inherit;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  display: block;
+  width: calc(100% + 36px);
+  height: calc(100% + 36px);
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+  object-position: center;
   filter: blur(18px);
   opacity: .58;
   transform: scale(1.04);
