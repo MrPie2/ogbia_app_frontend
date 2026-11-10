@@ -85,23 +85,20 @@
       <div class="section-title leadership-heading"><h2>My Community Leaders</h2><p>People serving your hometown</p></div>
       <div class="leaders-loading" *ngIf="leadersLoading"><span class="loading-dot"></span> Finding leaders in your hometown…</div>
       <div class="leaders-error" *ngIf="leadersError" role="alert"><span>{{ leadersError }}</span><button type="button" (click)="loadCommunityLeaders()">Retry</button></div>
-      <section class="leadership-groups fade-up delay-2" *ngIf="!leadersLoading && !leadersError">
-        <article class="leader-group card" *ngFor="let group of leadershipGroups">
-          <div class="leader-group-heading">
-            <span class="leader-role-icon"><ion-icon [name]="group.icon"></ion-icon></span>
-            <span class="leader-role-copy"><strong>{{ group.title }}</strong><small>{{ group.subtitle }}</small></span>
-            <span class="leader-count">{{ group.members.length }}</span>
-          </div>
-          <a class="leader-member" *ngFor="let leader of group.members" [routerLink]="leader.id === user?.id ? ['/profile'] : ['/members', leader.id]">
-            <span class="leader-avatar">
+      <section class="community-leaders-list fade-up delay-2" *ngIf="!leadersLoading && !leadersError">
+        <ng-container *ngFor="let group of leadershipGroups">
+          <a class="community-leader-row" *ngFor="let leader of group.members" [routerLink]="leader.id === user?.id ? ['/profile'] : ['/members', leader.id]">
+            <span class="community-leader-photo">
               <img *ngIf="leader.profile_photo_url" [src]="leader.profile_photo_url" [alt]="leader.name">
-              <span *ngIf="!leader.profile_photo_url">{{ leader.name || "O" }}</span>
+              <span *ngIf="!leader.profile_photo_url">{{ initialsForLeader(leader.name) }}</span>
             </span>
-            <span class="leader-member-copy"><strong>{{ leader.name || "Ogbia Member" }}</strong><small>{{ leader.hometown }}</small></span>
-            <ion-icon class="leader-open-icon" name="chevron-forward"></ion-icon>
+            <span class="community-leader-copy">
+              <strong>{{ leader.name || "Ogbia Member" }}</strong>
+              <small>{{ group.title }} - {{ leader.hometown || 'Community not specified' }}</small>
+            </span>
           </a>
-          <p class="leader-empty" *ngIf="group.members.length === 0">No {{ group.title.toLowerCase() }} from your hometown has been assigned yet.</p>
-        </article>
+        </ng-container>
+        <p class="community-leaders-empty" *ngIf="!hasCommunityLeaders">No community leaders have been assigned to your hometown yet.</p>
       </section>
 
       <a class="about-link-card" routerLink="/about"><span class="about-link-icon"><ion-icon name="information-circle-outline"></ion-icon></span><span class="about-link-copy"><strong>About &amp; Legal</strong><small>App version, updates, policies and documentation</small></span><ion-icon class="about-link-arrow" name="chevron-forward-outline"></ion-icon></a>
