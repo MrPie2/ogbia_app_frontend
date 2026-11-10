@@ -180,16 +180,16 @@ app-shared-navbar { position: relative; z-index: 1000; }
 /* Keep ordinary routed content clear of the fixed shared navigation while
    preserving a full-viewport page for fixed media viewers and overlays. */
 /* Messages owns its full-height layout and applies its own navigation insets. */
-ion-router-outlet.app-router-outlet > .ion-page:has(app-messages) {
+ion-router-outlet.app-router-outlet > .ion-page.messages-route {
   padding: 0 !important;
 }
-ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route) {
+ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route):not(.messages-route) {
   box-sizing: border-box;
   padding-top: calc(66px + env(safe-area-inset-top));
   padding-bottom: calc(68px + env(safe-area-inset-bottom));
 }
 @media (max-width: 760px) {
-  ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route) {
+  ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route):not(.messages-route) {
     padding-top: calc(62px + env(safe-area-inset-top));
     padding-bottom: calc(68px + env(safe-area-inset-bottom));
   }
@@ -454,11 +454,11 @@ ion-app.ogbia-app-shell:has(.friend-photo-viewer) app-shared-navbar {
 @media (min-width: 761px) {
   :root { --ogbia-navbar-height: 66px; }
 }
-ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route):not(:has(app-messages)) {
+ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route):not(.messages-route) {
   padding-top: var(--ogbia-navbar-clearance) !important;
 }
 @media (max-width: 760px) {
-  ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route):not(:has(app-messages)) {
+  ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route):not(.messages-route) {
     padding-top: var(--ogbia-navbar-clearance) !important;
   }
 }
