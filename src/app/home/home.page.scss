@@ -699,3 +699,28 @@
 @media (prefers-reduced-motion: reduce) {
   .home-page .story-preview-card { transition: none; }
 }
+
+
+/* Pin the media-preview close control above the image and device navigation. */
+.media-preview-dialog { overflow: visible; }
+.media-preview-close {
+  position: fixed;
+  z-index: 20002;
+  top: max(14px, calc(env(safe-area-inset-top) + 8px));
+  right: max(14px, calc(env(safe-area-inset-right) + 8px));
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.78);
+  border-radius: 50%;
+  background: #393185;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 3px 14px rgba(0,0,0,.4);
+}
+.media-preview-close span { display: block; transform: translateY(-1px); }
