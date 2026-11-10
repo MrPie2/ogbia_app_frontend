@@ -161,22 +161,35 @@ ion-content::part(background) {
   background: #fbf9fe;
 }
 
-/* Shared shell spacing: every routed page stays between the fixed top and bottom bars. */
+/* Keep Ionic's routed pages at the full device viewport size.
+   The fixed app navigation overlays the page; page content is inset separately.
+   This prevents route transitions, media previews and chat layouts from using
+   the shortened router outlet as their positioning reference. */
 ion-app.ogbia-app-shell { position: relative; }
 ion-router-outlet.app-router-outlet {
   position: absolute;
-  inset: calc(66px + env(safe-area-inset-top)) 0 calc(68px + env(safe-area-inset-bottom));
+  inset: 0;
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   overflow: hidden;
   z-index: 1;
 }
 app-shared-navbar { position: relative; z-index: 1000; }
-@media (max-width: 760px) {
-  ion-router-outlet.app-router-outlet { inset: calc(62px + env(safe-area-inset-top)) 0 calc(68px + env(safe-area-inset-bottom)); }
-}
 
+/* Keep ordinary routed content clear of the fixed shared navigation while
+   preserving a full-viewport page for fixed media viewers and overlays. */
+ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route) {
+  box-sizing: border-box;
+  padding-top: calc(66px + env(safe-area-inset-top));
+  padding-bottom: calc(68px + env(safe-area-inset-bottom));
+}
+@media (max-width: 760px) {
+  ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route) {
+    padding-top: calc(62px + env(safe-area-inset-top));
+    padding-bottom: calc(68px + env(safe-area-inset-bottom));
+  }
+}
 
 /* Consistent, left-aligned, transparent back navigation across pages. */
 .page-back-button,
