@@ -15,8 +15,8 @@
         <section class="conversation-list" aria-label="Your conversations">
           @for (conversation of conversations; track conversation.id) {
             <button class="conversation-row" type="button" (click)="openConversation(conversation)">
-              <span class="avatar"><span>{{ initials(conversation.friend?.name) }}</span>@if (conversation.friend?.profile_photo_url) { <img [src]="conversation.friend.profile_photo_url" [alt]="conversation.friend.name" (error)="onAvatarError($event)"> }</span>
-              <span class="conversation-copy"><strong>{{ conversation.friend?.name || 'Ogbia member' }}</strong><small>{{ conversation.last_message?.body || 'Start chatting' }}</small></span>
+              <span class="avatar"><span>{{ initials(conversation.friend.name) }}</span>@if (conversation.friend.profile_photo_url) { <img [src]="conversation.friend.profile_photo_url" [alt]="conversation.friend.name" (error)="onAvatarError($event)"> }</span>
+              <span class="conversation-copy"><strong>{{ conversation.friend.name || 'Ogbia member' }}</strong><small>{{ conversation.last_message?.body || 'Start chatting' }}</small></span>
               <span class="conversation-meta"><time>{{ conversation.updated_at | date:'shortTime' }}</time>@if (conversation.unread_count > 0) { <b>{{ conversation.unread_count > 99 ? '99+' : conversation.unread_count }}</b> }</span>
             </button>
           }
