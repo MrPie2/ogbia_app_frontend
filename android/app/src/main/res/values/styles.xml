@@ -18,7 +18,10 @@
     </style>
 
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
-        <item name="android:background">@drawable/splash</item>
+        <!-- Use a plain canvas during launch; do not display the old My Ogbia splash artwork. -->
+        <item name="android:background">#eeecf7</item>
+        <item name="android:windowSplashScreenBackground">#eeecf7</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@android:color/transparent</item>
         <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
         <item name="android:statusBarColor">#eeecf7</item>
         <item name="android:windowLightStatusBar">true</item>
