@@ -104,6 +104,14 @@ export class MessagesPage implements OnInit, OnDestroy {
     });
   }
 
+  goToList(): void {
+    this.router.navigate(['/messages']);
+  }
+
+  onAvatarError(event: Event): void {
+    (event.target as HTMLImageElement | null)?.remove();
+  }
+
   openConversation(conversation: ChatConversation): void {
     this.router.navigate(['/messages', conversation.id]);
   }
