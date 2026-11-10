@@ -47,7 +47,7 @@
               @if (post.author; as author) {
                 <div class="feed-avatar">
                   @if (author.profile_photo_url) {
-                    <img [src]="author.profile_photo_url" [alt]="author.name || 'User profile picture'" loading="lazy" (error)="onPostAvatarError($event)">
+                    <img [src]="author.profile_photo_url" [alt]="author.name || 'User profile picture'" loading="lazy" decoding="async" fetchpriority="low" (error)="onPostAvatarError($event)">
                   }
                   <span class="feed-avatar-fallback" [class.visible]="!author.profile_photo_url">{{ postInitials(post) }}</span>
                 </div>
@@ -80,8 +80,8 @@
                 </p>
               </div>
             }
-            @if (post.media_url && post.media_type === 'image') { <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy" style="margin-top: -3px;border-radius: 0px;"> }
-            @if (post.media_url && post.media_type === 'video') { <video class="post-video" [src]="post.media_url" controls playsinline preload="metadata"></video> }
+            @if (post.media_url && post.media_type === 'image') { <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy" decoding="async" fetchpriority="low" style="margin-top: -3px;border-radius: 0px;"> }
+            @if (post.media_url && post.media_type === 'video') { <video class="post-video" [src]="post.media_url" controls playsinline preload="none"></video> }
             <div class="post-actions" style="padding: 8px; border: 0px;">
               <button type="button" class="post-action-button" [class.is-liked]="post.liked_by_me" [disabled]="likingPostIds.has(post.id)" (click)="toggleLike(post)" [attr.aria-pressed]="!!post.liked_by_me">
                 <ion-icon [name]="post.liked_by_me ? 'heart' : 'heart-outline'"></ion-icon><span>{{ post.liked_by_me ? 'Liked' : 'Like' }}</span><b>{{ post.likes_count || 0 }}</b>
