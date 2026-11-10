@@ -364,3 +364,72 @@
   border: 2px solid #fff;
   cursor: pointer;
 }
+
+
+/* Community leaders: one clean, compact row per person (no nested group cards). */
+.profile-page .community-leaders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 18px;
+}
+.profile-page .community-leader-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 66px;
+  padding: 9px 4px;
+  border: 0;
+  border-bottom: 1px solid rgba(112,103,153,.12);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+}
+.profile-page .community-leader-photo {
+  display: grid;
+  place-items: center;
+  flex: 0 0 50px;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #e5e1f1;
+  color: #393185;
+  font-size: 14px;
+  font-weight: 800;
+}
+.profile-page .community-leader-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.profile-page .community-leader-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+}
+.profile-page .community-leader-copy strong {
+  overflow: hidden;
+  color: #302b4d;
+  font-size: 13px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile-page .community-leader-copy small {
+  color: #817c98;
+  font-size: 10px;
+  line-height: 1.4;
+}
+.profile-page .community-leader-row:active {
+  background: rgba(255,255,255,.28);
+}
+.profile-page .community-leaders-empty {
+  margin: 0;
+  padding: 14px 2px;
+  color: #817c98;
+  font-size: 11px;
+}
