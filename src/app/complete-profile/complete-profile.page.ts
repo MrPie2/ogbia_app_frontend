@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
+import { KnowledgeBaseService, KnowledgeCommunity } from '../services/knowledge-base.service';
 
 @Component({
   selector: 'app-complete-profile',
@@ -17,7 +18,11 @@ export class CompleteProfilePage {
   fullName = '';
   email = '';
   hometown = '';
+  inheritedHometown = '';
   hasReferrer = false;
+  communities: KnowledgeCommunity[] = [];
+  communitiesLoading = false;
+  communitiesError = '';
   password = '';
   confirmPassword = '';
   selectedPhoto: File | null = null;
@@ -25,12 +30,32 @@ export class CompleteProfilePage {
   submitting = false;
   errorMessage = '';
 
-  constructor(private readonly auth: AuthService, private readonly router: Router, private readonly cdr: ChangeDetectorRef) {
+  constructor(private readonly auth: AuthService, private readonly router: Router, private readonly cdr: ChangeDetectorRef, private readonly knowledgeBase: KnowledgeBaseService) {
     const user = this.auth.getCachedUser();
     if (user?.name && user.name !== 'Ogbia Member') this.fullName = user.name;
     if (user?.email) this.email = user.email;
-    if (typeof user?.hometown === 'string') this.hometown = user.hometown;
     this.hasReferrer = !!user?.referred_by;
+    if (typeof user?.hometown === 'string') {
+      if (this.hasReferrer) this.inheritedHometown = user.hometown;
+      else this.hometown = user.hometown;
+    }
+    if (this.hasReferrer) this.loadCommunities();
+  }
+
+  private loadCommunities(): void {
+    this.communitiesLoading = true;
+    this.knowledgeBase.getCommunities().subscribe({
+      next: response => {
+        this.communities = response.data || [];
+        this.communitiesLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.communitiesLoading = false;
+        this.communitiesError = 'The community list could not be loaded. You can continue with your inherited community.';
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   onPhotoSelected(event: Event): void {
@@ -59,6 +84,10 @@ export class CompleteProfilePage {
     if (this.fullName.trim().length < 2) { this.errorMessage = 'Enter your full name to continue.'; return; }
     if (!this.email.trim()) { this.errorMessage = 'Enter your email address.'; return; }
     if (!this.hasReferrer && !this.hometown.trim()) { this.errorMessage = 'Enter your hometown to continue.'; return; }
+    if (this.hasReferrer && this.hometown.trim() && !this.communities.some(community => community.name === this.hometown.trim())) {
+      this.errorMessage = 'Choose a community from the list, or keep your inherited community.';
+      return;
+    }
     if (this.password.length < 8) { this.errorMessage = 'Choose a password with at least 8 characters.'; return; }
     if (this.password !== this.confirmPassword) { this.errorMessage = 'Your passwords do not match.'; return; }
 
