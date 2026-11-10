@@ -86,7 +86,7 @@ export class MessagesPage implements OnInit, OnDestroy {
     });
   }
 
-  send(): void {
+  onComposerEnter(event: KeyboardEvent): void {\n    if (!event.shiftKey) {\n      event.preventDefault();\n      this.send();\n    }\n  }\n\n  send(): void {
     const body = this.draft.trim();
     if (!body || !this.conversationId || this.sending) return;
     this.sending = true;
