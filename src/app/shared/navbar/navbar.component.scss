@@ -396,3 +396,16 @@
 @media (prefers-reduced-motion: reduce) {
   .app-bottom-nav a { transition: none; }
 }
+
+
+/* Mobile: keep the shared app navbar as the only top navigation surface.
+   It uses the same canvas as the routed page, with no divider or elevation. */
+@media (max-width: 760px) {
+  .app-navbar {
+    background: #eeecf7 !important;
+    border: 0 !important;
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none;
+  }
+}
