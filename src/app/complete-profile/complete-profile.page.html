@@ -29,13 +29,23 @@
           placeholder="Enter your first and last name" required minlength="2" maxlength="255">
       </div>
 
-      <div class="field">
-        <label for="hometown">Hometown <span>{{ hasReferrer ? 'Inherited from your referrer' : 'Required' }}</span></label>
+      <div class="field" *ngIf="hasReferrer">
+        <label for="hometown">Choose a community <span>Optional</span></label>
+        <select id="hometown" name="hometown" [(ngModel)]="hometown">
+          <option value="">Keep inherited community{{ inheritedHometown ? ' - ' + inheritedHometown : '' }}</option>
+          <option *ngFor="let community of communities" [value]="community.name">{{ community.name }}</option>
+        </select>
+        <small *ngIf="inheritedHometown">Your invited-by community is <strong>{{ inheritedHometown }}</strong>. Leave this unchanged to keep it, or choose another community.</small>
+        <small *ngIf="!inheritedHometown">Your referrer's community will be assigned automatically unless you choose one below.</small>
+        <small *ngIf="communitiesLoading">Loading the community directory…</small>
+        <small class="community-load-error" *ngIf="communitiesError">{{ communitiesError }}</small>
+      </div>
+
+      <div class="field" *ngIf="!hasReferrer">
+        <label for="hometown">Hometown <span>Required</span></label>
         <input id="hometown" name="hometown" type="text" [(ngModel)]="hometown"
-          [readonly]="hasReferrer" [required]="!hasReferrer" maxlength="120"
-          [placeholder]="hasReferrer ? 'Your referrer’s hometown' : 'Enter your hometown'">
-        <small *ngIf="hasReferrer">Your hometown is automatically set to match the person who invited you.</small>
-        <small *ngIf="!hasReferrer">This hometown will be inherited by people you invite to Ogbia Connect.</small>
+          required maxlength="120" placeholder="Enter your hometown">
+        <small>This hometown will be inherited by people you invite to Ogbia Connect.</small>
       </div>
 
       <div class="field">
