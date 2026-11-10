@@ -45,12 +45,12 @@
           <article class="post card fade-up" [id]="'post-' + post.id" style="padding: 0px">
             <div class="post-head" style="padding: 10px 10px 0px 10px">
               @if (post.author; as author) {
-                <div class="feed-avatar">
+                <a class="feed-avatar feed-avatar-profile-link" [routerLink]="author.id === user?.id ? ['/profile'] : ['/members', author.id]" [attr.aria-label]="'View ' + (author.name || 'member') + ' profile and photos'">
                   @if (author.profile_photo_url) {
                     <img [src]="author.profile_photo_url" [alt]="author.name || 'User profile picture'" loading="lazy" decoding="async" fetchpriority="low" (error)="onPostAvatarError($event)">
                   }
                   <span class="feed-avatar-fallback" [class.visible]="!author.profile_photo_url">{{ postInitials(post) }}</span>
-                </div>
+                </a>
                 <div class="post-author">
                   <a class="person-name-link" [routerLink]="author.id === user?.id ? ['/profile'] : ['/members', author.id]"><b>{{ author.name || 'Ogbia member' }}</b></a>
                   <small>{{ post.created_at | date:'medium' }}</small>
