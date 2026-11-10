@@ -6,16 +6,15 @@
       <div class="profile-loading" *ngIf="loading && !user">Loading your profile…</div>
 
       <section class="profile-hero fade-up" *ngIf="user as currentUser">
-        <button class="profile-photo photo-button" type="button"
-          (click)="currentUser.profile_photo_url ? openProfilePhotoPreview() : photoInput.click()"
-          [attr.aria-label]="currentUser.profile_photo_url ? 'View your profile picture' : 'Choose a profile picture'">
-          <img *ngIf="photoPreview || currentUser.profile_photo_url" [src]="photoPreview || currentUser.profile_photo_url" alt="Your profile picture">
-          <span *ngIf="!photoPreview && !currentUser.profile_photo_url" class="profile-initials">{{ initials }}</span>
-          <span class="photo-edit-icon" role="button" tabindex="0" aria-label="Change profile picture"
-            (click)="$event.stopPropagation(); photoInput.click()"
-            (keydown.enter)="$event.stopPropagation(); photoInput.click()"
-            (keydown.space)="$event.preventDefault(); $event.stopPropagation(); photoInput.click()"><ion-icon name="create-outline"></ion-icon></span>
-        </button>
+        <div class="profile-photo photo-button">
+          <button class="profile-photo-view-trigger" type="button"
+            (click)="currentUser.profile_photo_url ? openProfilePhotoPreview() : photoInput.click()"
+            [attr.aria-label]="currentUser.profile_photo_url ? 'View your profile picture' : 'Choose a profile picture'">
+            <img *ngIf="photoPreview || currentUser.profile_photo_url" [src]="photoPreview || currentUser.profile_photo_url" alt="Your profile picture">
+            <span *ngIf="!photoPreview && !currentUser.profile_photo_url" class="profile-initials">{{ initials }}</span>
+          </button>
+          <button class="photo-edit-icon" type="button" (click)="photoInput.click()" aria-label="Change profile picture"><ion-icon name="create-outline"></ion-icon></button>
+        </div>
         <input #photoInput class="visually-hidden-file" type="file" accept="image/jpeg,image/png,image/webp" (change)="onPhotoSelected($event)">
         <h1>{{ displayName }}<ng-container *ngIf="currentUser.hometown"> - {{ currentUser.hometown }}</ng-container></h1>
         <p *ngIf="currentUser.email">{{ currentUser.email }}</p>
