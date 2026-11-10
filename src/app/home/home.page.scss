@@ -155,7 +155,9 @@
 /* Retain the few visual-consistency rules not supplied by the shared theme. */
 .home-page .menu { background: #393185; color: #fff; }
 .home-page .home-pill { border-color: #e4d7f4; background: #fff; color: #393185; }
-.home-page .story-person-link { color: #625b78; }
+.home-page .story-person-link,
+.home-page .your-story small { color: #625b78; }
+.home-page .viewer-avatar { background: linear-gradient(135deg, #393185, #756fc0); color: #fff; }
 .home-page .feed-event-details { background: #faf7ff; border-color: #e5d7f6; }
 .home-page .story-viewer { background: #171327; color: #fff; }
 .home-page .viewer-content { background: #211b32; }
