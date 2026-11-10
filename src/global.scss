@@ -433,3 +433,10 @@ ion-item { --background: var(--neo-canvas); --border-color: rgba(112,103,153,.10
 ion-app.ogbia-app-shell:has(.media-preview-backdrop) app-shared-navbar {
   z-index: 0 !important;
 }
+
+
+/* Full-screen photo and media viewers must sit above the app's shared navigation. */
+ion-app.ogbia-app-shell:has(.media-preview-backdrop) app-shared-navbar,
+ion-app.ogbia-app-shell:has(.friend-photo-viewer) app-shared-navbar {
+  z-index: 0 !important;
+}
