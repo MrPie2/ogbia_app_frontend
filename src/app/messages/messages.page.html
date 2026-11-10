@@ -42,7 +42,7 @@
         }
       </section>
       <form class="message-composer" (ngSubmit)="send()">
-        <textarea name="message" [(ngModel)]="draft" rows="1" maxlength="5000" placeholder="Write a message…" aria-label="Write a message" (keydown.enter)="!$event.shiftKey && ($event.preventDefault(), send())"></textarea>
+        <textarea name="message" [(ngModel)]="draft" rows="1" maxlength="5000" placeholder="Write a message…" aria-label="Write a message" (keydown.enter)="onComposerEnter($event)"></textarea>
         <button type="submit" [disabled]="!draft.trim() || sending" aria-label="Send message"><ion-icon name="paper-plane-outline"></ion-icon></button>
       </form>
     }
