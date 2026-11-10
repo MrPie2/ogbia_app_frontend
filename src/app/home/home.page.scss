@@ -855,3 +855,29 @@
   pointer-events: auto;
   cursor: pointer;
 }
+
+/* Keep post cards content-sized so engagement actions sit directly below the text. */
+.home-page article.post {
+  display: block;
+  height: auto;
+  min-height: 0;
+  justify-content: initial;
+}
+.home-page .post-text-block {
+  height: auto;
+  min-height: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.home-page .post-content {
+  margin-bottom: 0;
+}
+.home-page .post-read-toggle {
+  margin-bottom: 0;
+}
+.home-page .post-actions {
+  height: auto;
+  min-height: 0;
+  margin-top: 4px;
+  padding-top: 4px;
+}
