@@ -29,7 +29,7 @@
             @for (friend of onlineFriends; track friend.id) {
               <article class="friend-row">
                 <div class="avatar-wrap">
-                  <div class="avatar"><span>{{ initials(friend.name) }}</span>@if (friend.profile_photo_url) { <img [src]="friend.profile_photo_url" [alt]="friend.name + ' profile picture'" (error)="onAvatarError($event)"> }</div>
+                  <button class="avatar avatar-view-button" type="button" [disabled]="!friend.profile_photo_url" (click)="openProfilePhotoPreview(friend.profile_photo_url, friend.name)" [attr.aria-label]="'View ' + friend.name + ' profile picture'"><span>{{ initials(friend.name) }}</span>@if (friend.profile_photo_url) { <img [src]="friend.profile_photo_url" [alt]="friend.name + ' profile picture'" (error)="onAvatarError($event)"> }</button>
                   <span class="online-dot"></span>
                 </div>
                 <div class="friend-info">
@@ -94,7 +94,7 @@
           <div class="section-heading"><div><span class="eyebrow">CONNECTIONS</span><h2>Friend requests <span class="count">{{ incomingRequests.length }}</span></h2></div></div>
           @for (request of incomingRequests; track request.request_id) {
             <article class="friend-row request-row">
-              <div class="avatar"><span>{{ initials(request.name) }}</span>@if (request.profile_photo_url) { <img [src]="request.profile_photo_url" [alt]="request.name + ' profile picture'" (error)="onAvatarError($event)"> }</div>
+              <button class="avatar avatar-view-button" type="button" [disabled]="!request.profile_photo_url" (click)="openProfilePhotoPreview(request.profile_photo_url, request.name)" [attr.aria-label]="'View ' + request.name + ' profile picture'"><span>{{ initials(request.name) }}</span>@if (request.profile_photo_url) { <img [src]="request.profile_photo_url" [alt]="request.name + ' profile picture'" (error)="onAvatarError($event)"> }</button>
               <div class="friend-info">
                 <h3><a class="person-name-link" [routerLink]="['/members', request.id]">{{ request.name }}</a></h3>
                 <div class="friend-meta">
@@ -123,7 +123,7 @@
             @for (candidate of candidates; track candidate.id) {
               <article class="friend-row candidate-row">
                 <div class="avatar-wrap">
-                  <div class="avatar"><span>{{ initials(candidate.name) }}</span>@if (candidate.profile_photo_url) { <img [src]="candidate.profile_photo_url" [alt]="candidate.name + ' profile picture'" (error)="onAvatarError($event)"> }</div>
+                  <button class="avatar avatar-view-button" type="button" [disabled]="!candidate.profile_photo_url" (click)="openProfilePhotoPreview(candidate.profile_photo_url, candidate.name)" [attr.aria-label]="'View ' + candidate.name + ' profile picture'"><span>{{ initials(candidate.name) }}</span>@if (candidate.profile_photo_url) { <img [src]="candidate.profile_photo_url" [alt]="candidate.name + ' profile picture'" (error)="onAvatarError($event)"> }</button>
                   @if (candidate.is_online) { <span class="online-dot"></span> }
                 </div>
                 <div class="friend-info">
@@ -143,5 +143,14 @@
       </section>
     }
     <div style="padding: 20px; display: flex; justify-content: center;"><button class="primary-button" type="button" (click)="openFindFriends()"><ion-icon name="person-add-outline"></ion-icon> Find Friend</button></div>
+    @if (previewPhotoUrl) {
+      <div class="friend-photo-viewer" role="presentation" (click)="closeProfilePhotoPreview()">
+        <section class="friend-photo-viewer-dialog" role="dialog" aria-modal="true" aria-label="Profile picture preview" (click)="$event.stopPropagation()">
+          <button class="friend-photo-viewer-close" type="button" (click)="closeProfilePhotoPreview()" aria-label="Close photo preview"><ion-icon name="close"></ion-icon></button>
+          <img [src]="previewPhotoUrl" [alt]="previewPhotoName + ' profile picture'">
+          <p>{{ previewPhotoName }}</p>
+        </section>
+      </div>
+    }
   </main>
 </ion-content>
