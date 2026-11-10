@@ -403,3 +403,12 @@ ion-item { --background: var(--neo-canvas); --border-color: rgba(112,103,153,.10
 .comments-error { margin:7px 12px 0; color:#a7354a; font-size:10px; }
 @media(min-width:620px) { .comments-backdrop { padding-top:24px; } .comments-modal { border-radius:18px; max-height:75vh; } }
 
+
+
+/* The shared navbar is the single mobile top navigation. Prevent nested
+   Ionic page headers from creating a second bar beneath it. */
+@media (max-width: 760px) {
+  ion-router-outlet.app-router-outlet ion-header {
+    display: none !important;
+  }
+}
