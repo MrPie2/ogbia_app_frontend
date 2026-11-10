@@ -87,7 +87,7 @@
   .community-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
 }
 @media (max-width:600px) {
-  .my-ogbia-page { padding:78px 13px 105px; }
+  .my-ogbia-page { padding:0 13px 105px; }
   .intro-card { padding:21px 17px; border-radius:19px; }
   .intro-art { flex-basis:51px; width:51px; height:51px; border-radius:17px; font-size:29px; }
   .intro-copy p { font-size:11px; }
