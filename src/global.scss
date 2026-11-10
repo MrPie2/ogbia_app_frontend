@@ -444,3 +444,51 @@ ion-app.ogbia-app-shell:has(.media-preview-backdrop) app-shared-navbar,
 ion-app.ogbia-app-shell:has(.friend-photo-viewer) app-shared-navbar {
   z-index: 0 !important;
 }
+
+
+/* Shared navbar clearance: routed pages begin 20px below the fixed top bar. */
+:root {
+  --ogbia-navbar-height: 62px;
+  --ogbia-navbar-clearance: calc(var(--ogbia-navbar-height) + env(safe-area-inset-top) + 20px);
+}
+@media (min-width: 761px) {
+  :root { --ogbia-navbar-height: 66px; }
+}
+ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route) {
+  padding-top: var(--ogbia-navbar-clearance) !important;
+}
+@media (max-width: 760px) {
+  ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route) {
+    padding-top: var(--ogbia-navbar-clearance) !important;
+  }
+}
+
+/* Preview layers stay above the shared navbar. Keep every close control
+   below the navbar plus the requested 20px breathing space. */
+.media-preview-backdrop,
+.friend-photo-viewer,
+.member-media-backdrop,
+.profile-photo-viewer {
+  z-index: 20000 !important;
+}
+.media-preview-close,
+.friend-photo-viewer-close,
+.member-media-close,
+.profile-photo-viewer-close {
+  top: var(--ogbia-navbar-clearance) !important;
+  right: 16px !important;
+}
+.media-preview-dialog,
+.friend-photo-viewer-dialog,
+.member-media-dialog,
+.profile-photo-viewer-dialog {
+  overflow: visible;
+}
+.story-viewer {
+  z-index: 20000 !important;
+  padding-top: var(--ogbia-navbar-clearance) !important;
+}
+.comments-backdrop {
+  z-index: 20000 !important;
+  padding-top: var(--ogbia-navbar-clearance) !important;
+}
