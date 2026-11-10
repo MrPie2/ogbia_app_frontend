@@ -104,9 +104,8 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter(): void {
-    // Keep the feed and stories current whenever Home becomes visible.
-    // ngOnInit also loads both immediately on first creation; this refresh
-    // handles Ionic's cached-page navigation and returning from Create Post.
+    // Load the feed and stories once when Home first becomes visible, then
+    // refresh them when returning to this Ionic-cached page.
     if (!localStorage.getItem('token')) {
       this.router.navigate(['/login']);
       return;
