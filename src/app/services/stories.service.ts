@@ -17,7 +17,7 @@ export interface StoryItem {
 }
 
 export interface StoryGroup {
-  user: { id: number; name: string };
+  user: { id: number; name: string; profile_photo_path?: string | null; profile_photo_url?: string | null };
   is_mine: boolean;
   has_unseen: boolean;
   stories: StoryItem[];
