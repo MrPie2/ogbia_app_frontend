@@ -91,6 +91,14 @@ export class ProfilePage implements OnInit, OnDestroy {
     if (this.photoPreview) URL.revokeObjectURL(this.photoPreview);
   }
 
+  get hasCommunityLeaders(): boolean {
+    return this.leadershipGroups.some(group => group.members.length > 0);
+  }
+
+  initialsForLeader(name: string | null | undefined): string {
+    return (name || 'Ogbia Member').split(/\\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+  }
+
   get displayName(): string {
     return this.user?.name?.trim() || 'Ogbia Member';
   }
