@@ -31,7 +31,7 @@ ion-content{--background:#eeecf7;--color:#302347}
 .message-bubble{max-width:min(82%,420px);padding:10px 12px;border:1px solid rgba(255,255,255,.9);border-radius:16px 16px 16px 4px;background:#fff;box-shadow:2px 3px 8px rgba(72,64,112,.06)}
 .message-line.mine .message-bubble{border-color:#393185;border-radius:16px 16px 4px 16px;background:#393185;color:#fff}
 .message-bubble p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.5}
-.message-bubble time{display:block;margin-top:5px;color:#a19aae;font-size:9px;text-align:right}
+.message-meta{display:flex;justify-content:flex-end;align-items:center;gap:6px;margin-top:5px}.message-bubble time{display:block;color:#a19aae;font-size:9px;text-align:right}.message-status{color:#a19aae;font-size:9px}.message-line.mine .message-bubble time,.message-line.mine .message-status{color:rgba(255,255,255,.72)}
 .message-line.mine .message-bubble time{color:rgba(255,255,255,.7)}
 .message-composer{position:sticky;bottom:calc(66px + env(safe-area-inset-bottom));display:flex;align-items:flex-end;gap:9px;padding:9px;border:1px solid rgba(255,255,255,.95);border-radius:17px;background:#eeecf7;box-shadow:4px 4px 9px rgba(72,64,112,.1),-4px -4px 9px #fff}
 .message-composer textarea{flex:1;min-width:0;max-height:120px;resize:none;border:0;outline:0;background:transparent;color:#302347;font:inherit;font-size:13px;line-height:1.5}
