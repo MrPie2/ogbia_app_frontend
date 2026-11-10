@@ -425,3 +425,11 @@ ion-item { --background: var(--neo-canvas); --border-color: rgba(112,103,153,.10
     display: none !important;
   }
 }
+
+
+/* Full-screen media previews must sit above the shared navigation. The preview
+   lives inside the routed page, so temporarily lower the navbar host's layer
+   while that preview exists; normal navigation layering remains unchanged. */
+ion-app.ogbia-app-shell:has(.media-preview-backdrop) app-shared-navbar {
+  z-index: 0 !important;
+}
