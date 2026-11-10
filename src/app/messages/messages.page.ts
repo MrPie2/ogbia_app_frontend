@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-messages',
+  host: { class: 'messages-route' },
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, IonContent, IonIcon],
   templateUrl: './messages.page.html',
