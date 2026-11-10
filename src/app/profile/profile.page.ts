@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
+import { HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonIcon } from '@ionic/angular';
@@ -22,6 +23,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   photoError = '';
   photoSuccess = '';
   photoPreview: string | null = null;
+  profilePhotoViewerOpen = false;
   selectedPhoto: File | null = null;
   memories: UserMemory[] = [];
   selectedMemory: File | null = null;
@@ -95,6 +97,19 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   get initials(): string {
     return this.displayName.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+  }
+
+  openProfilePhotoPreview(): void {
+    if (this.user?.profile_photo_url) this.profilePhotoViewerOpen = true;
+  }
+
+  closeProfilePhotoPreview(): void {
+    this.profilePhotoViewerOpen = false;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.closeProfilePhotoPreview();
   }
 
   onPhotoSelected(event: Event): void {
