@@ -115,7 +115,7 @@
   <div class="profile-photo-viewer" *ngIf="profilePhotoViewerOpen && user?.profile_photo_url" role="presentation" (click)="closeProfilePhotoPreview()">
     <section class="profile-photo-viewer-dialog" role="dialog" aria-modal="true" aria-label="Your profile picture" (click)="$event.stopPropagation()">
       <button type="button" class="profile-photo-viewer-close" (click)="closeProfilePhotoPreview()" aria-label="Close photo preview"><ion-icon name="close"></ion-icon></button>
-      <img [src]="user?.profile_photo_url" alt="Your profile picture">
+      <img [src]="user.profile_photo_url" alt="Your profile picture">
     </section>
   </div>
 </ion-content>
