@@ -25,6 +25,8 @@ export class FriendsPage implements OnInit, OnDestroy {
   search = '';
   errorMessage = '';
   successMessage = '';
+  previewPhotoUrl = '';
+  previewPhotoName = '';
   private readonly searchInput = new Subject<string>();
   private readonly subscriptions = new Subscription();
 
@@ -139,6 +141,17 @@ export class FriendsPage implements OnInit, OnDestroy {
         this.handleError(error, 'Unable to send friend request.');
       }
     });
+  }
+
+  openProfilePhotoPreview(url: string | null | undefined, name: string): void {
+    if (!url) return;
+    this.previewPhotoUrl = url;
+    this.previewPhotoName = name;
+  }
+
+  closeProfilePhotoPreview(): void {
+    this.previewPhotoUrl = '';
+    this.previewPhotoName = '';
   }
 
   messageFriend(friend: FriendUser): void {
