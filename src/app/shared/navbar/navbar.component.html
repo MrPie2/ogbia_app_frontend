@@ -6,6 +6,7 @@
   <nav class="desktop-links" aria-label="Main navigation">
     <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
     <a routerLink="/friends" routerLinkActive="active">Friends</a>
+    <a routerLink="/messages" routerLinkActive="active">Messages</a>
     <a routerLink="/constituency" routerLinkActive="active">My Ogbia</a>
     <a routerLink="/reps" routerLinkActive="active">Representatives</a>
   </nav>
@@ -34,6 +35,7 @@
     <nav id="mobile-navigation" class="mobile-links" aria-label="Mobile navigation">
       <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()"><ion-icon name="home-outline"></ion-icon>Home</a>
       <a routerLink="/friends" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="people-outline"></ion-icon>Friends</a>
+      <a routerLink="/messages" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="chatbubbles-outline"></ion-icon>Messages</a>
       <a routerLink="/constituency" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="map-outline"></ion-icon>My Ogbia</a>
       <a routerLink="/sections/politics" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="business-outline"></ion-icon>Politics</a>
       <a routerLink="/services" routerLinkActive="active" (click)="closeMenu()"><ion-icon name="briefcase-outline"></ion-icon>Services</a>
