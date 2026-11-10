@@ -462,22 +462,19 @@
   background: #e7e2f0;
   isolation: isolate;
 }
-.home-page .post-image-frame .post-image-backdrop {
-  display: none;
-}
-.home-page .post-image-frame.is-portrait .post-image-backdrop {
+.home-page .post-image-frame::before {
+  content: "";
   position: absolute;
   z-index: 0;
   inset: -18px;
-  display: block;
-  width: calc(100% + 36px);
-  height: calc(100% + 36px);
-  max-width: none;
-  max-height: none;
-  object-fit: cover;
+  background-image: inherit;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   filter: blur(18px);
   opacity: .58;
   transform: scale(1.04);
+  pointer-events: none;
 }
 .home-page .post-image-frame .post-image {
   position: relative;
