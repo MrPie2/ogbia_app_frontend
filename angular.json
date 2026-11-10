@@ -34,8 +34,15 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss", "node_modules/bootstrap/dist/css/bootstrap.min.css", "node_modules/@fortawesome/fontawesome-free/css/all.min.css"],
-            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -97,7 +104,9 @@
           "options": {
             "tsConfig": "tsconfig.spec.json",
             "buildTarget": "::development",
-            "setupFiles": ["src/test-setup.ts"]
+            "setupFiles": [
+              "src/test-setup.ts"
+            ]
           },
           "configurations": {
             "ci": {
@@ -121,7 +130,10 @@
     "schematicCollections": [
       "@ionic/angular-toolkit"
     ],
-    "analytics": false
+    "analytics": false,
+    "cache": {
+      "enabled": false
+    }
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {
