@@ -34,3 +34,24 @@ h1 { margin: 0; color: #302347; font-size: clamp(29px,7.5vw,37px); font-weight: 
 .complete-intro .intro-copy{font-size:12px;line-height:1.55}
 
 .complete-intro .page-title-row{display:flex;align-items:center;gap:6px;margin:0 0 8px -8px}.complete-intro .page-title-row h1{flex:1;min-width:0}
+
+
+/* Optional community override for referred members. */
+.field select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 14px;
+  border: 1px solid #e9e1f1;
+  border-radius: 14px;
+  outline: 0;
+  background: #fcfbfe;
+  color: #302347;
+  font: inherit;
+  font-size: 14px;
+}
+.field select:focus {
+  border-color: #9870d1;
+  box-shadow: 0 0 0 3px #39318518;
+}
+.field .community-load-error { color: #a7354a; }
