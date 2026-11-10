@@ -75,11 +75,9 @@ export class HomePage implements OnInit, OnDestroy {
       if (!this.loadingPosts && this.requestedPostId) this.scrollToRequestedPost();
     });
 
-    // Load immediately when Home is first created (including immediately after login).
-    // The Ionic view-enter hook below handles later returns to this cached page.
-    this.loadFeed();
-    this.loadEvents();
-    this.loadStories();
+    // Ionic calls ionViewWillEnter on the first visit and whenever this cached
+    // page becomes visible again. Keep network loading in one lifecycle hook
+    // so the first visit does not issue duplicate feed/story requests.
     this.auth.getAuthenticatedUser().subscribe({
       next: (user) => { this.user = user; this.loadingUser = false; this.cdr.markForCheck(); },
       error: (error: HttpErrorResponse) => {
@@ -115,12 +113,12 @@ export class HomePage implements OnInit, OnDestroy {
     }
 
     this.loadFeed();
-    this.loadEvents();
     this.loadStories();
   }
 
   loadFeed(): void {
-    this.loadingPosts = true;
+    // Keep already-rendered posts visible while refreshing a cached page.
+    this.loadingPosts = this.posts.length === 0;
     this.postsService.getPosts().pipe(timeout(15000)).subscribe({
       next: (response) => {
         this.posts = response.data || [];
@@ -176,7 +174,8 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   loadStories(): void {
-    this.loadingStories = true;
+    // Keep existing stories visible while refreshing in the background.
+    this.loadingStories = this.storyGroups.length === 0;
     this.storiesService.getStories().pipe(timeout(15000)).subscribe({
       next: (response) => {
         this.storyGroups = response.data || [];
