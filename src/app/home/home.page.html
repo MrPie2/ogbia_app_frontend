@@ -149,7 +149,7 @@
   @if (activeMediaPreview; as preview) {
     <div class="media-preview-backdrop" role="presentation" (click)="closeMediaPreview()">
       <section class="media-preview-dialog" role="dialog" aria-modal="true" aria-label="Media preview" (click)="$event.stopPropagation()">
-        <button type="button" class="media-preview-close" (click)="closeMediaPreview()" aria-label="Close media preview"><ion-icon name="close"></ion-icon></button>
+        <button type="button" class="media-preview-close" (click)="closeMediaPreview()" aria-label="Close media preview"><span aria-hidden="true">×</span></button>
         @if (preview.type === 'image') {
           <img [src]="preview.url" alt="Full-size post image">
         } @else {
