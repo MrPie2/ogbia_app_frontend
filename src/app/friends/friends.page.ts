@@ -141,7 +141,7 @@ export class FriendsPage implements OnInit, OnDestroy {
     });
   }
 
-  acceptRequest(request: FriendRequestUser): void {
+  messageFriend(friend: FriendUser): void {\n    this.friendsService.startConversation(friend.id).subscribe({\n      next: response => this.router.navigate(['/messages', response.data.id]),\n      error: error => this.handleError(error, 'Could not start a conversation with this friend.')\n    });\n  }\n\n  acceptRequest(request: FriendRequestUser): void {
     this.friendsService.acceptRequest(request.request_id).subscribe({
       next: response => {
         this.incomingRequests = this.incomingRequests.filter(item => item.request_id !== request.request_id);
