@@ -72,7 +72,13 @@ export class FriendsService {
     );
   }
 
-  startConversation(friendId: number): Observable<{ data: { id: number }; message: string }> {\n    return this.http.post<{ data: { id: number }; message: string }>(\n      `${this.apiUrl}/messages/conversations`, { friend_id: friendId }, this.authOptions()\n    );\n  }\n\n  acceptRequest(requestId: number): Observable<{ message: string }> {
+  startConversation(friendId: number): Observable<{ data: { id: number }; message: string }> {
+    return this.http.post<{ data: { id: number }; message: string }>(
+      `${this.apiUrl}/messages/conversations`, { friend_id: friendId }, this.authOptions()
+    );
+  }
+
+  acceptRequest(requestId: number): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(
       `${this.apiUrl}/friends/requests/${requestId}/accept`, {}, this.authOptions()
     );
