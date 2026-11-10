@@ -465,20 +465,14 @@
 .home-page .post-image-frame .post-image-backdrop {
   position: absolute;
   z-index: 0;
-  inset: -18px;
+  inset: -24px;
   display: block;
-  width: calc(100% + 36px);
-  height: calc(100% + 36px);
-  max-width: none;
-  max-height: none;
-  margin: 0;
-  border: 0;
-  border-radius: 0;
-  object-fit: cover;
-  object-position: center;
-  filter: blur(18px);
-  opacity: .58;
-  transform: scale(1.04);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(24px);
+  opacity: .72;
+  transform: scale(1.08);
   pointer-events: none;
 }
 .home-page .post-image-frame .post-image {
