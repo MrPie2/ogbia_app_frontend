@@ -25,7 +25,16 @@
                         <span class="story-preview-quote">{{ latestStory.content || 'A story from the community' }}</span>
                       }
                       <span class="story-preview-shade"></span>
-                      <span class="story-preview-author">{{ group.is_mine ? 'You' : group.user.name }}</span>
+                      <span class="story-preview-author">
+                        <span class="story-preview-avatar">
+                          @if (group.user.profile_photo_url) {
+                            <img [src]="group.user.profile_photo_url" [alt]="group.user.name + ' profile picture'" loading="lazy" decoding="async">
+                          } @else {
+                            <span>{{ storyInitials(group) }}</span>
+                          }
+                        </span>
+                        <span class="story-preview-author-name">{{ group.is_mine ? 'You' : group.user.name }}</span>
+                      </span>
                     </span>
                   </button>
                 }
