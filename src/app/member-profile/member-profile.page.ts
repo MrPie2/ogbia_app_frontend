@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { timeout } from 'rxjs';
 import { IonContent, IonIcon } from '@ionic/angular';
@@ -17,6 +17,7 @@ export class MemberProfilePage implements OnInit {
   loading = true;
   errorMessage = '';
   photoFailed = false;
+  activeMediaPreview: { url: string; alt: string } | null = null;
 
   constructor(private readonly route: ActivatedRoute, private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef) {}
 
@@ -65,6 +66,20 @@ export class MemberProfilePage implements OnInit {
     if (raw.startsWith('storage/')) return `https://api.parcellsend.com/${raw}`;
     if (raw.startsWith('/api/storage/')) return `https://api.parcellsend.com${raw.replace(/^\/api/i, '')}`;
     return raw;
+  }
+
+  openMediaPreview(url: string, alt: string): void {
+    if (!url) return;
+    this.activeMediaPreview = { url, alt };
+  }
+
+  closeMediaPreview(): void {
+    this.activeMediaPreview = null;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.closeMediaPreview();
   }
 
   onPhotoError(): void {
