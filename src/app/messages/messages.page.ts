@@ -86,9 +86,10 @@ export class MessagesPage implements OnInit, OnDestroy {
     });
   }
 
-  onComposerEnter(event: KeyboardEvent): void {
-    if (!event.shiftKey) {
-      event.preventDefault();
+  onComposerEnter(event: Event): void {
+    const keyboardEvent = event as KeyboardEvent;
+    if (!keyboardEvent.shiftKey) {
+      keyboardEvent.preventDefault();
       this.send();
     }
   }
