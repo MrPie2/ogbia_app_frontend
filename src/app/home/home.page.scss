@@ -723,4 +723,21 @@
   cursor: pointer;
   box-shadow: 0 3px 14px rgba(0,0,0,.4);
 }
-.media-preview-close span { display: block; transform: translateY(-1px); }
+.media-preview-close span {
+  display: block;
+  transform: translateY(-1px);
+  pointer-events: none;
+}
+.media-preview-close {
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+.media-preview-backdrop {
+  isolation: isolate;
+}
+.media-preview-dialog {
+  z-index: 1;
+}
+.media-preview-close {
+  z-index: 10002;
+}
