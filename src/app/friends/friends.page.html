@@ -68,7 +68,7 @@
             @for (friend of friends; track friend.id) {
               <article class="friend-row">
                 <div class="avatar-wrap">
-                  <div class="avatar"><span>{{ initials(friend.name) }}</span>@if (friend.profile_photo_url) { <img [src]="friend.profile_photo_url" [alt]="friend.name + ' profile picture'" (error)="onAvatarError($event)"> }</div>
+                  <button class="avatar avatar-view-button" type="button" [disabled]="!friend.profile_photo_url" (click)="openProfilePhotoPreview(friend.profile_photo_url, friend.name)" [attr.aria-label]="'View ' + friend.name + ' profile picture'"><span>{{ initials(friend.name) }}</span>@if (friend.profile_photo_url) { <img [src]="friend.profile_photo_url" [alt]="friend.name + ' profile picture'" (error)="onAvatarError($event)"> }</button>
                   @if (friend.is_online) { <span class="online-dot"></span> }
                 </div>
                 <div class="friend-info">
