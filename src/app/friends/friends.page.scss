@@ -172,3 +172,89 @@ ion-content {
 .friend-photo-viewer-dialog img { display:block; max-width:100%; max-height:78vh; object-fit:contain; border-radius:16px; box-shadow:0 18px 60px rgba(0,0,0,.35); }
 .friend-photo-viewer-dialog p { margin:12px 0 0; color:#fff; font-size:13px; font-weight:700; }
 .friend-photo-viewer-close { position:absolute; z-index:1; top:-14px; right:-14px; display:grid; place-items:center; width:38px; height:38px; border:1px solid rgba(255,255,255,.5); border-radius:50%; background:#393185; color:#fff; font-size:22px; cursor:pointer; }
+
+
+/* Make every profile photo in the friends list a real, tappable image target. */
+.avatar-view-button {
+  position: relative;
+  display: block;
+  width: 45px;
+  height: 45px;
+  min-width: 45px;
+  flex: 0 0 45px;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.82);
+  background: #eeecf7;
+  color: #393185;
+  box-shadow: var(--neo-raised-sm);
+}
+.avatar-view-button > span {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+}
+.avatar-view-button > img {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  object-position: center;
+}
+.avatar-view-button:disabled { cursor: default; }
+.avatar-view-button:focus-visible { outline: 3px solid #756fc0; outline-offset: 3px; }
+
+/* Keep the profile-photo viewer above the shared navigation and give it a visible close control. */
+.friend-photo-viewer {
+  position: fixed;
+  z-index: 20000;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 20px;
+  background: rgba(20,15,35,.94);
+}
+.friend-photo-viewer-dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: min(92vw,720px);
+  max-height: 90vh;
+}
+.friend-photo-viewer-dialog img {
+  display: block;
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+}
+.friend-photo-viewer-close {
+  position: fixed;
+  z-index: 20002;
+  top: max(14px, calc(env(safe-area-inset-top) + 8px));
+  right: max(14px, calc(env(safe-area-inset-right) + 8px));
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: 50%;
+  background: #393185;
+  color: #fff;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 3px 14px rgba(0,0,0,.35);
+}
