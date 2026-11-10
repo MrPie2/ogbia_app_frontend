@@ -394,6 +394,14 @@ export class HomePage implements OnInit, OnDestroy {
     this.activeMediaPreview = null;
   }
 
+  onPostImageLoad(event: Event): void {
+    const image = event.target as HTMLImageElement | null;
+    const frame = image?.closest('.post-image-frame');
+    if (!image || !frame || !image.naturalWidth || !image.naturalHeight) return;
+    frame.classList.toggle('is-portrait', image.naturalHeight > image.naturalWidth);
+    frame.classList.toggle('is-landscape', image.naturalWidth >= image.naturalHeight);
+  }
+
   openComments(post: CommunityPost): void {
     this.activeCommentPost = post;
     this.postComments = [];
