@@ -25,6 +25,7 @@ export class HomePage implements OnInit, OnDestroy {
   private requestedPostId: number | null = null;
   likingPostIds = new Set<number>();
   activeCommentPost: CommunityPost | null = null;
+  activeMediaPreview: { type: 'image' | 'video'; url: string } | null = null;
   postComments: PostComment[] = [];
   commentDraft = '';
   commentsLoading = false;
@@ -99,7 +100,8 @@ export class HomePage implements OnInit, OnDestroy {
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    if (this.activeCommentPost) this.closeComments();
+    if (this.activeMediaPreview) this.closeMediaPreview();
+    else if (this.activeCommentPost) this.closeComments();
     else if (this.activeStoryGroup) this.closeStory();
   }
 
@@ -380,6 +382,15 @@ export class HomePage implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  openMediaPreview(type: 'image' | 'video', url: string): void {
+    if (!url) return;
+    this.activeMediaPreview = { type, url };
+  }
+
+  closeMediaPreview(): void {
+    this.activeMediaPreview = null;
   }
 
   openComments(post: CommunityPost): void {
