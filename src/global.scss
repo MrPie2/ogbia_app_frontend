@@ -454,11 +454,11 @@ ion-app.ogbia-app-shell:has(.friend-photo-viewer) app-shared-navbar {
 @media (min-width: 761px) {
   :root { --ogbia-navbar-height: 66px; }
 }
-ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route) {
+ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route):not(:has(app-messages)) {
   padding-top: var(--ogbia-navbar-clearance) !important;
 }
 @media (max-width: 760px) {
-  ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route) {
+  ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route):not(:has(app-messages)) {
     padding-top: var(--ogbia-navbar-clearance) !important;
   }
 }
