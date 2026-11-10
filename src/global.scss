@@ -179,6 +179,10 @@ app-shared-navbar { position: relative; z-index: 1000; }
 
 /* Keep ordinary routed content clear of the fixed shared navigation while
    preserving a full-viewport page for fixed media viewers and overlays. */
+/* Messages owns its full-height layout and applies its own navigation insets. */
+ion-router-outlet.app-router-outlet > .ion-page:has(app-messages) {
+  padding: 0 !important;
+}
 ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route) {
   box-sizing: border-box;
   padding-top: calc(66px + env(safe-area-inset-top));
