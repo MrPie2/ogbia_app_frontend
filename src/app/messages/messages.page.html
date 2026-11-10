@@ -36,7 +36,12 @@
           <article class="message-line" [class.mine]="message.sender_id !== friend?.id">
             <div class="message-bubble">
               <p>{{ message.body }}</p>
-              <time>{{ message.created_at | date:'shortTime' }}</time>
+              <div class="message-meta">
+                <time>{{ message.created_at | date:'shortTime' }}</time>
+                @if (message.sender_id !== friend?.id) {
+                  <span class="message-status">{{ message.read_at ? 'Seen' : 'Sent' }}</span>
+                }
+              </div>
             </div>
           </article>
         }
