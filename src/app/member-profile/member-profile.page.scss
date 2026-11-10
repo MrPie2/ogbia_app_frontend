@@ -54,3 +54,90 @@
 .member-memories .section-title h2{margin:0;color:#302347;font-size:17px;font-weight:800}
 .member-memories .section-title p{margin:5px 0 0;color:#83768f;font-size:11px}
 @media(max-width:360px){.memory-gallery{gap:8px}.memory-item{border-radius:12px}}
+
+
+/* Tappable member profile photo and memories. */
+.member-view-page .member-photo-preview {
+  cursor: zoom-in;
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+}
+.member-view-page .memory-image-preview {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+.member-view-page .memory-image-preview img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+.member-view-page .memory-preview-hint {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(25, 20, 48, .65);
+}
+.member-media-backdrop {
+  position: fixed;
+  z-index: 10050;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  background: rgba(8, 7, 16, .95);
+  backdrop-filter: blur(8px);
+}
+.member-media-dialog {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 1100px);
+  height: 100%;
+  max-height: 100%;
+  margin: auto;
+}
+.member-media-dialog img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+.member-media-close {
+  position: absolute;
+  z-index: 1;
+  top: max(8px, env(safe-area-inset-top));
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(30,28,42,.75);
+  font-size: 23px;
+}
