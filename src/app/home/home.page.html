@@ -98,8 +98,7 @@
             }
             @if (post.media_url && post.media_type === 'image') {
               <button type="button" class="post-image-preview" (click)="openMediaPreview('image', post.media_url)" aria-label="Preview post image">
-                <span class="post-image-frame">
-                  <img class="post-image-backdrop" [src]="post.media_url" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                <span class="post-image-frame" [style.background-image]="'url(' + post.media_url + ')'">
                   <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy" decoding="async" fetchpriority="low" (load)="onPostImageLoad($event)">
                 </span>
                 <span class="media-preview-hint"><ion-icon name="expand-outline"></ion-icon> Tap to preview</span>
