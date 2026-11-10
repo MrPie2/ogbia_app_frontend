@@ -337,3 +337,30 @@
   background: rgba(30,28,42,.75);
   font-size: 23px;
 }
+
+
+.profile-page .profile-photo-view-trigger {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: transparent;
+  cursor: zoom-in;
+}
+.profile-page .profile-photo-view-trigger img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.profile-page .profile-photo-view-trigger .profile-initials {
+  position: static;
+}
+.profile-page .photo-edit-icon {
+  padding: 0;
+  border: 2px solid #fff;
+  cursor: pointer;
+}
