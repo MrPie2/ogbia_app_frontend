@@ -881,3 +881,83 @@
   margin-top: 4px;
   padding-top: 4px;
 }
+
+
+/* Home stories: show roughly four-and-a-half tiles on a phone, then scroll horizontally. */
+.home-page .stories-section {
+  margin: 4px 0 14px;
+}
+.home-page .stories-heading {
+  margin-bottom: 7px;
+}
+.home-page .stories-section .stories {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 2px 7px;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  scrollbar-width: none;
+}
+.home-page .stories-section .stories::-webkit-scrollbar {
+  display: none;
+}
+.home-page .story-add-button {
+  flex: 0 0 48px;
+  min-width: 48px;
+  width: 48px;
+  gap: 4px;
+  scroll-snap-align: start;
+}
+.home-page .story-add-circle {
+  width: 44px;
+  height: 44px;
+}
+.home-page .story-add-circle ion-icon {
+  font-size: 23px;
+}
+.home-page .story-add-button small {
+  max-width: 48px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 8px;
+}
+.home-page .story-preview-card {
+  flex: 0 0 56px;
+  width: 56px;
+  min-width: 56px;
+  height: 104px;
+  border-radius: 11px;
+  scroll-snap-align: start;
+}
+.home-page .story-preview-author {
+  top: 6px;
+  left: 5px;
+  gap: 3px;
+  max-width: calc(100% - 10px);
+  font-size: 7px;
+}
+.home-page .story-preview-avatar {
+  flex-basis: 19px;
+  width: 19px;
+  height: 19px;
+  font-size: 7px;
+}
+.home-page .story-preview-quote {
+  font-size: 8px;
+  line-height: 1.3;
+}
+@media (min-width: 600px) {
+  .home-page .stories-section .stories { gap: 9px; }
+  .home-page .story-add-button { flex-basis: 58px; min-width: 58px; width: 58px; }
+  .home-page .story-add-circle { width: 50px; height: 50px; }
+  .home-page .story-preview-card { flex-basis: 72px; width: 72px; min-width: 72px; height: 112px; }
+  .home-page .story-preview-author { font-size: 8px; }
+}
