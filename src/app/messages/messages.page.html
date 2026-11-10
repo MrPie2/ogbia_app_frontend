@@ -1,0 +1,50 @@
+<ion-content [fullscreen]="true">
+  <main class="messages-page">
+    @if (!conversationId) {
+      <header class="messages-header">
+        <a routerLink="/friends" class="back-link" aria-label="Back to friends"><ion-icon name="arrow-back-outline"></ion-icon></a>
+        <div><span class="eyebrow">OGBIA CONNECT</span><h1>Messages</h1></div>
+        <button type="button" class="refresh-button" (click)="loadList()" aria-label="Refresh messages"><ion-icon name="refresh-outline"></ion-icon></button>
+      </header>
+      @if (errorMessage) { <p class="error-message" role="alert">{{ errorMessage }}</p> }
+      @if (loading && !conversations.length) {
+        <div class="empty-chat"><ion-icon name="chatbubbles-outline"></ion-icon><p>Loading conversations…</p></div>
+      } @else if (!conversations.length) {
+        <div class="empty-chat"><ion-icon name="chatbubbles-outline"></ion-icon><h2>No messages yet</h2><p>Start a conversation with one of your Ogbia friends.</p><a routerLink="/friends">Find a friend</a></div>
+      } @else {
+        <section class="conversation-list" aria-label="Your conversations">
+          @for (conversation of conversations; track conversation.id) {
+            <button class="conversation-row" type="button" (click)="openConversation(conversation)">
+              <span class="avatar"><span>{{ initials(conversation.friend?.name) }}</span>@if (conversation.friend?.profile_photo_url) { <img [src]="conversation.friend.profile_photo_url" [alt]="conversation.friend.name" (error)="$event.target && ($event.target as HTMLImageElement).remove()"> }</span>
+              <span class="conversation-copy"><strong>{{ conversation.friend?.name || 'Ogbia member' }}</strong><small>{{ conversation.last_message?.body || 'Start chatting' }}</small></span>
+              <span class="conversation-meta"><time>{{ conversation.updated_at | date:'shortTime' }}</time>@if (conversation.unread_count > 0) { <b>{{ conversation.unread_count > 99 ? '99+' : conversation.unread_count }}</b> }</span>
+            </button>
+          }
+        </section>
+      }
+    } @else {
+      <header class="chat-header">
+        <button type="button" class="back-link" (click)="router.navigate(['/messages'])" aria-label="Back to messages"><ion-icon name="arrow-back-outline"></ion-icon></button>
+        <span class="avatar small-avatar">{{ initials(friend?.name) }}</span>
+        <div class="chat-person"><strong>{{ friend?.name || 'Conversation' }}</strong><small>Private chat</small></div>
+      </header>
+      @if (errorMessage) { <p class="error-message" role="alert">{{ errorMessage }}</p> }
+      <section class="chat-thread" aria-live="polite">
+        @if (loading && !messages.length) { <div class="thread-empty">Loading messages…</div> }
+        @else if (!messages.length) { <div class="thread-empty">Say hello and start the conversation.</div> }
+        @for (message of messages; track message.id) {
+          <article class="message-line" [class.mine]="message.sender_id !== friend?.id">
+            <div class="message-bubble">
+              <p>{{ message.body }}</p>
+              <time>{{ message.created_at | date:'shortTime' }}</time>
+            </div>
+          </article>
+        }
+      </section>
+      <form class="message-composer" (ngSubmit)="send()">
+        <textarea name="message" [(ngModel)]="draft" rows="1" maxlength="5000" placeholder="Write a message…" aria-label="Write a message" (keydown.enter)="!$event.shiftKey && ($event.preventDefault(), send())"></textarea>
+        <button type="submit" [disabled]="!draft.trim() || sending" aria-label="Send message"><ion-icon name="paper-plane-outline"></ion-icon></button>
+      </form>
+    }
+  </main>
+</ion-content>
