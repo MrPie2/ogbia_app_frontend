@@ -13,9 +13,11 @@
 
       <ng-container *ngIf="!loading && member as currentMember">
         <section class="profile-hero member-profile-hero fade-up">
-          <div class="profile-photo member-photo">
-            <img *ngIf="profilePhotoUrl && !photoFailed" [src]="profilePhotoUrl" (error)="onPhotoError()" [alt]="currentMember.name || 'Member photo'">
-            <span *ngIf="!profilePhotoUrl || photoFailed" class="profile-initials">{{ initials }}</span>
+          <button type="button" class="profile-photo member-photo member-photo-preview" *ngIf="profilePhotoUrl && !photoFailed" (click)="openMediaPreview(profilePhotoUrl, currentMember.name || 'Member photo')" [attr.aria-label]="'View ' + (currentMember.name || 'member') + ' profile photo'">
+            <img [src]="profilePhotoUrl" (error)="onPhotoError()" [alt]="currentMember.name || 'Member photo'">
+          </button>
+          <div class="profile-photo member-photo" *ngIf="!profilePhotoUrl || photoFailed">
+            <span class="profile-initials">{{ initials }}</span>
           </div>
           <h1>{{ currentMember.name || 'Ogbia Member' }}<ng-container *ngIf="currentMember.hometown"> - {{ currentMember.hometown }}</ng-container></h1>
           <p class="member-role"><ion-icon name="ribbon-outline"></ion-icon>{{ roleLabel }}</p>
@@ -33,7 +35,10 @@
           <div class="section-title"><h2>Photos &amp; Videos</h2><p>Memories shared on this member's profile</p></div>
           <div class="memory-gallery" *ngIf="currentMember.memories_visible && currentMember.memories?.length">
             <article class="memory-item" *ngFor="let memory of currentMember.memories">
-              <img *ngIf="memory.media_type === 'image'" [src]="memory.url" [alt]="memory.caption || 'Member memory'" loading="lazy">
+              <button *ngIf="memory.media_type === 'image'" type="button" class="memory-image-preview" (click)="openMediaPreview(memory.url, memory.caption || 'Member memory')" [attr.aria-label]="'View ' + (memory.caption || 'member photo')">
+                <img [src]="memory.url" [alt]="memory.caption || 'Member memory'" loading="lazy">
+                <span class="memory-preview-hint"><ion-icon name="expand-outline"></ion-icon></span>
+              </button>
               <video *ngIf="memory.media_type === 'video'" [src]="memory.url" controls playsinline preload="metadata"></video>
               <p *ngIf="memory.caption">{{ memory.caption }}</p>
               <small>{{ memory.created_at ? (memory.created_at | date:'mediumDate') : '' }}</small>
@@ -48,5 +53,13 @@
         </section>
       </ng-container>
     </div>
+  </div>
+
+  <div class="member-media-backdrop" *ngIf="activeMediaPreview as preview" role="presentation" (click)="closeMediaPreview()">
+    <section class="member-media-dialog" role="dialog" aria-modal="true" aria-label="Photo preview" (click)="$event.stopPropagation()">
+      <button type="button" class="member-media-close" (click)="closeMediaPreview()" aria-label="Close photo preview"><ion-icon name="close"></ion-icon></button>
+      <img [src]="preview.url" [alt]="preview.alt">
+    </section>
+  </div>
   </div>
 </ion-content>
