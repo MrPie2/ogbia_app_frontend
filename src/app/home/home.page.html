@@ -80,8 +80,18 @@
                 </p>
               </div>
             }
-            @if (post.media_url && post.media_type === 'image') { <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy" decoding="async" fetchpriority="low" style="margin-top: -3px;border-radius: 0px;"> }
-            @if (post.media_url && post.media_type === 'video') { <video class="post-video" [src]="post.media_url" controls playsinline preload="none"></video> }
+            @if (post.media_url && post.media_type === 'image') {
+              <button type="button" class="post-image-preview" (click)="openMediaPreview('image', post.media_url)" aria-label="Preview post image">
+                <img class="post-image" [src]="post.media_url" alt="Image attached to post" loading="lazy" decoding="async" fetchpriority="low" style="margin-top: -3px;border-radius: 0px;">
+                <span class="media-preview-hint"><ion-icon name="expand-outline"></ion-icon> Tap to preview</span>
+              </button>
+            }
+            @if (post.media_url && post.media_type === 'video') {
+              <div class="post-video-wrap">
+                <video class="post-video" [src]="post.media_url" controls playsinline preload="none"></video>
+                <button type="button" class="post-video-preview" (click)="openMediaPreview('video', post.media_url)" aria-label="Open video preview"><ion-icon name="expand-outline"></ion-icon><span>Preview</span></button>
+              </div>
+            }
             <div class="post-actions" style="padding: 8px; border: 0px;">
               <button type="button" class="post-action-button" [class.is-liked]="post.liked_by_me" [disabled]="likingPostIds.has(post.id)" (click)="toggleLike(post)" [attr.aria-pressed]="!!post.liked_by_me">
                 <ion-icon [name]="post.liked_by_me ? 'heart' : 'heart-outline'"></ion-icon><span>{{ post.liked_by_me ? 'Liked' : 'Like' }}</span><b>{{ post.likes_count || 0 }}</b>
@@ -125,6 +135,19 @@
             }
           }
         </div>
+      </section>
+    </div>
+  }
+
+  @if (activeMediaPreview; as preview) {
+    <div class="media-preview-backdrop" role="presentation" (click)="closeMediaPreview()">
+      <section class="media-preview-dialog" role="dialog" aria-modal="true" aria-label="Media preview" (click)="$event.stopPropagation()">
+        <button type="button" class="media-preview-close" (click)="closeMediaPreview()" aria-label="Close media preview"><ion-icon name="close"></ion-icon></button>
+        @if (preview.type === 'image') {
+          <img [src]="preview.url" alt="Full-size post image">
+        } @else {
+          <video [src]="preview.url" controls autoplay playsinline preload="metadata"></video>
+        }
       </section>
     </div>
   }
