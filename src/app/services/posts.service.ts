@@ -27,6 +27,15 @@ export interface CommunityPost {
   liked_by_me?: boolean;
 }
 
+export interface FeedBroadcast {
+  id: number;
+  title: string;
+  message: string | null;
+  image_url: string | null;
+  action_label: string | null;
+  action_url: string | null;
+}
+
 export interface PostComment {
   id: number;
   content: string;
@@ -51,6 +60,12 @@ export class PostsService {
     const searchParam = search.trim() ? `&search=${encodeURIComponent(search.trim())}` : '';
     const categoryParam = category ? `&category=${encodeURIComponent(category)}` : '';
     return this.http.get<PostsPage>(`${this.apiUrl}/posts?page=${page}${searchParam}${categoryParam}`, {
+      headers: this.authHeaders()
+    });
+  }
+
+  getBroadcasts(): Observable<{ data: FeedBroadcast[] }> {
+    return this.http.get<{ data: FeedBroadcast[] }>(`${this.apiUrl}/broadcasts`, {
       headers: this.authHeaders()
     });
   }
