@@ -9,7 +9,7 @@ import { KnowledgeBaseService, KnowledgeCommunity, KnowledgeRepresentative } fro
   standalone: true,
   imports: [CommonModule, IonContent, IonIcon, RouterLink],
   templateUrl: './community-detail.page.html',
-  styleUrl: '../constituency/constituency.page.scss'
+  styleUrl: './community-detail.page.scss'
 })
 export class CommunityDetailPage implements OnInit {
   community: KnowledgeCommunity | null = null;
