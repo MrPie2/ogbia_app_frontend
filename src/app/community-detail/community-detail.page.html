@@ -1,96 +1,150 @@
 <ion-content [fullscreen]="true">
-  <main class="my-ogbia-page">
-    <a class="page-back-button my-ogbia-back" routerLink="/constituency" aria-label="Back to My Ogbia directory">
+  <main class="my-ogbia-page community-page">
+    <a class="page-back-button my-ogbia-back community-back" routerLink="/constituency" aria-label="Back to My Ogbia directory">
       <ion-icon name="arrow-back-outline"></ion-icon>
     </a>
 
-    <section class="community-detail">
-      @if (loading) {
-        <div class="empty-state">
-          <ion-icon name="sync-outline"></ion-icon>
-          <strong>Loading community details…</strong>
-          <p>Getting the latest information from the Ogbia knowledge base.</p>
-        </div>
-      } @else if (errorMessage) {
-        <div class="empty-state">
-          <ion-icon name="cloud-offline-outline"></ion-icon>
-          <strong>Unable to load community</strong>
-          <p>{{ errorMessage }}</p>
-          <button type="button" class="retry-button" (click)="retry()">Try again</button>
-          <a class="back-link" routerLink="/constituency">Back to community directory</a>
-        </div>
-      } @else if (community) {
-        <div class="community-hero">
-          <div class="large-community-symbol"><ion-icon name="location-outline"></ion-icon></div>
-          <div>
-            <span class="section-kicker">COMMUNITY PROFILE</span>
-            <h2>{{ community.name }}</h2>
-            <p>Ogbia Local Government Area · Bayelsa State</p>
-          </div>
-          <span class="verification-tag" [class.verified-tag]="community.is_verified">
-            <ion-icon [name]="community.is_verified ? 'checkmark-circle-outline' : 'time-outline'"></ion-icon>
-            {{ community.is_verified ? 'Verified profile' : 'Profile in progress' }}
-          </span>
-        </div>
-
-        @if (community.description || community.clan_name) {
-          <section class="detail-intro">
-            <h3>About {{ community.name }}</h3>
-            @if (community.description) { <p>{{ community.description }}</p> }
-            @if (community.clan_name) { <p><strong>Clan:</strong> {{ community.clan_name }}</p> }
-          </section>
-        }
-
-        @if (community.wards?.length) {
-          <section class="detail-intro">
-            <h3>Electoral wards</h3>
-            <div class="ward-grid">
-              @for (ward of community.wards; track ward.id) {
-                <article class="ward-card">
-                  <span class="ward-number">{{ ward.code || ward.id.toString().padStart(2, '0') }}</span>
-                  <div><strong>{{ ward.name }}</strong><small>{{ ward.is_verified ? 'Verified ward' : 'Ward record pending verification' }}</small></div>
-                </article>
-              }
-            </div>
-          </section>
-        }
-
-        <section class="detail-intro">
-          <h3>Leadership & representation</h3>
-          <p>Find the people serving this community, from traditional leadership to elected representatives.</p>
-        </section>
-
-        <div class="officials-grid">
-          @if (community.representatives?.length) {
-            @for (person of community.representatives; track person.id) {
-              <article class="official-card">
-                <span class="official-icon"><ion-icon [name]="roleIcon(person.role)"></ion-icon></span>
-                <div class="official-info">
-                  <strong>{{ person.role }}</strong>
-                  <small>{{ roleSubtitle(person.role) }}</small>
-                  <span class="pending-info">{{ representativeLabel(person) }}</span>
-                  @if (person.constituency) { <small>{{ person.constituency }}</small> }
-                  <span class="verification-tag" [class.verified-tag]="!!person.verified_at">
-                    <ion-icon [name]="person.verified_at ? 'checkmark-circle-outline' : 'time-outline'"></ion-icon>
-                    {{ person.verified_at ? 'Verified' : 'Unverified' }}
-                  </span>
-                </div>
-              </article>
-            }
+    @if (loading) {
+      <section class="community-loading community-panel">
+        <ion-icon name="sync-outline"></ion-icon>
+        <strong>Loading community details…</strong>
+        <p>Getting the latest information from the Ogbia knowledge base.</p>
+      </section>
+    } @else if (errorMessage) {
+      <section class="community-loading community-panel">
+        <ion-icon name="cloud-offline-outline"></ion-icon>
+        <strong>Unable to load community</strong>
+        <p>{{ errorMessage }}</p>
+        <button type="button" class="community-retry" (click)="retry()">Try again</button>
+        <a class="community-back-link" routerLink="/constituency">Back to community directory</a>
+      </section>
+    } @else if (community) {
+      <article class="community-profile">
+        <header class="community-cover">
+          @if (community.cover_photo_url && !coverPhotoFailed) {
+            <img class="community-cover-image" [src]="community.cover_photo_url" [alt]="community.name + ' community cover photo'" (error)="onCoverPhotoError()">
           } @else {
-            <div class="empty-state">
-              <ion-icon name="people-outline"></ion-icon>
-              <strong>No representatives published yet</strong>
-              <p>Leadership records will appear after they are entered and verified by the knowledge base administrators.</p>
+            <div class="community-cover-fallback">
+              <span class="cover-fallback-orbit orbit-one"></span>
+              <span class="cover-fallback-orbit orbit-two"></span>
+              <ion-icon name="people-circle-outline"></ion-icon>
+              <span>WELCOME TO</span>
+              <strong>{{ community.name }}</strong>
             </div>
           }
-        </div>
+          <div class="community-cover-shade"></div>
+          <div class="community-cover-content">
+            <span class="community-cover-kicker">MY OGBIA · COMMUNITY SQUARE</span>
+            <h1>{{ community.name }}</h1>
+            <p><ion-icon name="location-outline"></ion-icon> Ogbia Local Government Area, Bayelsa State</p>
+          </div>
+          <span class="community-cover-status" [class.is-verified]="community.is_verified">
+            <ion-icon [name]="community.is_verified ? 'checkmark-circle' : 'time-outline'"></ion-icon>
+            {{ community.is_verified ? 'Verified community' : 'Awaiting verification' }}
+          </span>
+        </header>
 
-        <div class="verification-notice">
-          <ion-icon name="shield-checkmark-outline"></ion-icon>
-          <div><strong>Accuracy matters</strong><p>Names and contact details will only be published after verification. This avoids displaying incorrect or outdated leadership information.</p></div>
+        <div class="community-profile-body">
+          <div class="community-facts">
+            <div class="community-fact">
+              <span class="community-fact-icon"><ion-icon name="people-outline"></ion-icon></span>
+              <span><small>Electoral wards</small><strong>{{ community.wards_count ?? community.wards?.length ?? 0 }}</strong></span>
+            </div>
+            <div class="community-fact">
+              <span class="community-fact-icon"><ion-icon name="ribbon-outline"></ion-icon></span>
+              <span><small>Clan</small><strong>{{ community.clan_name || 'Not provided' }}</strong></span>
+            </div>
+            <div class="community-fact">
+              <span class="community-fact-icon"><ion-icon name="business-outline"></ion-icon></span>
+              <span><small>Constituency</small><strong>{{ community.constituency || 'Ogbia Federal Constituency' }}</strong></span>
+            </div>
+          </div>
+
+          @if (community.description) {
+            <section class="community-info-section">
+              <div class="community-section-heading">
+                <span class="community-section-icon"><ion-icon name="information-circle-outline"></ion-icon></span>
+                <div><span>GET TO KNOW US</span><h2>About {{ community.name }}</h2></div>
+              </div>
+              <p class="community-description">{{ community.description }}</p>
+            </section>
+          }
+
+          @if (community.history) {
+            <section class="community-info-section community-history-section">
+              <div class="community-section-heading">
+                <span class="community-section-icon"><ion-icon name="book-outline"></ion-icon></span>
+                <div><span>OUR ROOTS & HERITAGE</span><h2>Community history</h2></div>
+              </div>
+              <p class="community-description community-history">{{ community.history }}</p>
+            </section>
+          }
+
+          @if (community.wards?.length) {
+            <section class="community-info-section">
+              <div class="community-section-heading">
+                <span class="community-section-icon"><ion-icon name="map-outline"></ion-icon></span>
+                <div><span>LOCAL REPRESENTATION</span><h2>Electoral wards</h2></div>
+              </div>
+              <div class="community-ward-list">
+                @for (ward of community.wards; track ward.id) {
+                  <div class="community-ward-item">
+                    <span class="community-ward-number">{{ ward.code || ward.id.toString().padStart(2, '0') }}</span>
+                    <div><strong>{{ ward.name }}</strong><small>{{ ward.is_verified ? 'Verified ward' : 'Awaiting verification' }}</small></div>
+                    <ion-icon [name]="ward.is_verified ? 'checkmark-circle' : 'time-outline'" [class.ward-verified]="ward.is_verified"></ion-icon>
+                  </div>
+                }
+              </div>
+            </section>
+          }
+
+          <section class="community-info-section">
+            <div class="community-section-heading">
+              <span class="community-section-icon"><ion-icon name="people-circle-outline"></ion-icon></span>
+              <div><span>PEOPLE WHO SERVE</span><h2>Leadership & representation</h2></div>
+            </div>
+            <p class="community-section-description">Community leaders and public representatives connected to {{ community.name }}.</p>
+            @if (community.representatives?.length) {
+              <div class="community-leaders-list">
+                @for (person of community.representatives; track person.id) {
+                  <article class="community-leader-card">
+                    @if (person.photo_url) {
+                      <img class="community-leader-photo" [src]="person.photo_url" [alt]="representativeLabel(person)" loading="lazy">
+                    } @else {
+                      <span class="community-leader-avatar"><ion-icon [name]="roleIcon(person.role)"></ion-icon></span>
+                    }
+                    <div class="community-leader-copy">
+                      <strong>{{ representativeLabel(person) }}</strong>
+                      <span>{{ person.role }}</span>
+                      @if (person.constituency) { <small>{{ person.constituency }}</small> }
+                    </div>
+                    <span class="community-leader-verification" [class.leader-verified]="!!person.verified_at" [attr.aria-label]="person.verified_at ? 'Verified representative' : 'Unverified representative'">
+                      <ion-icon [name]="person.verified_at ? 'checkmark-circle' : 'time-outline'"></ion-icon>
+                    </span>
+                  </article>
+                }
+              </div>
+            } @else {
+              <div class="community-empty">
+                <ion-icon name="people-outline"></ion-icon>
+                <strong>Leadership records coming soon</strong>
+                <p>Verified community leadership information will appear here when it is added to the knowledge base.</p>
+              </div>
+            }
+          </section>
+
+          @if (community.source) {
+            <footer class="community-source">
+              <ion-icon name="document-text-outline"></ion-icon>
+              <span>Information source: {{ community.source }}</span>
+            </footer>
+          }
+          <div class="community-accuracy-note">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+            <p>Community information is managed through the Ogbia knowledge base. Verified details are identified where available.</p>
+          </div>
         </div>
-      }
-    </section>
+      </article>
+    }
   </main>
 </ion-content>
