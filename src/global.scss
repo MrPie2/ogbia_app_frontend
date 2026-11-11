@@ -525,3 +525,10 @@ ion-router-outlet.app-router-outlet > .ion-page.home-route:not(.welcome-route) {
   .home-page .story-add-circle{width:44px;height:44px}
   .home-page .story-add-button small{max-width:100%}
 }
+
+
+/* Community detail uses a fullscreen cover behind the fixed shared navbar.
+   Override the generic routed-page top inset so the cover meets the navbar edge. */
+ion-router-outlet.app-router-outlet > .ion-page:has(app-community-detail) {
+  padding-top: 0 !important;
+}
