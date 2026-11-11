@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IonContent, IonIcon } from '@ionic/angular';
@@ -27,7 +27,10 @@ export class ConstituencyPage implements OnInit {
   politicalLoading = false;
   politicalError = '';
 
-  constructor(private readonly knowledgeBase: KnowledgeBaseService) {}
+  constructor(
+    private readonly knowledgeBase: KnowledgeBaseService,
+    private readonly changeDetector: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadCommunities();
@@ -45,26 +48,34 @@ export class ConstituencyPage implements OnInit {
   loadCommunities(): void {
     this.loading = true;
     this.errorMessage = '';
+    this.changeDetector.markForCheck();
+
     this.knowledgeBase.getCommunities().subscribe({
       next: response => {
         this.communities = response.data ?? [];
         this.loading = false;
+        this.changeDetector.markForCheck();
       },
       error: (error: HttpErrorResponse) => {
         this.loading = false;
         this.errorMessage = error.status === 0
           ? 'Could not connect to the knowledge base. Check your internet connection and try again.'
           : 'The community directory could not be loaded. Please try again later.';
+        this.changeDetector.markForCheck();
       }
     });
   }
 
   loadWards(): void {
     this.knowledgeBase.getWards().subscribe({
-      next: response => this.wards = response.data ?? [],
+      next: response => {
+        this.wards = response.data ?? [];
+        this.changeDetector.markForCheck();
+      },
       error: () => {
         // Keep the directory usable if wards have not been loaded into the database yet.
         this.wards = [];
+        this.changeDetector.markForCheck();
       }
     });
   }
@@ -78,15 +89,19 @@ export class ConstituencyPage implements OnInit {
   loadPoliticalRepresentatives(): void {
     this.politicalLoading = true;
     this.politicalError = '';
+    this.changeDetector.markForCheck();
+
     this.knowledgeBase.getPoliticalRepresentatives(this.politicalTab).subscribe({
       next: response => {
         this.politicalRepresentatives = response.data ?? [];
         this.politicalLoading = false;
+        this.changeDetector.markForCheck();
       },
       error: () => {
         this.politicalRepresentatives = [];
         this.politicalLoading = false;
         this.politicalError = 'Political representatives could not be loaded. Please try again.';
+        this.changeDetector.markForCheck();
       }
     });
   }
@@ -106,10 +121,12 @@ export class ConstituencyPage implements OnInit {
       next: response => {
         this.selectedCommunity = response.data;
         this.detailLoading = false;
+        this.changeDetector.markForCheck();
       },
       error: () => {
         this.detailLoading = false;
         this.detailError = 'Community details are temporarily unavailable. Please try again.';
+        this.changeDetector.markForCheck();
       }
     });
   }
