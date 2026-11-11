@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { timeout } from 'rxjs';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService, MemberProfile, UserMemory } from '../services/auth.service';
+import { KnowledgeBaseService } from '../services/knowledge-base.service';
 
 @Component({
   selector: 'app-member-profile',
@@ -18,8 +19,12 @@ export class MemberProfilePage implements OnInit {
   errorMessage = '';
   photoFailed = false;
   activeMediaPreview: { url: string; alt: string } | null = null;
+  hometownWards: string[] = [];
+  wardLookupLoading = false;
+  wardLookupFailed = false;
+  readonly constituencyName = 'Ogbia Federal Constituency';
 
-  constructor(private readonly route: ActivatedRoute, private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef) {}
+  constructor(private readonly route: ActivatedRoute, private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef, private readonly knowledgeBase: KnowledgeBaseService) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -32,11 +37,15 @@ export class MemberProfilePage implements OnInit {
       this.loading = true;
       this.errorMessage = '';
       this.photoFailed = false;
+      this.hometownWards = [];
+      this.wardLookupLoading = false;
+      this.wardLookupFailed = false;
       this.auth.getMemberProfile(id).pipe(timeout(15000)).subscribe({
         next: response => {
           this.member = response?.data ?? null;
           this.loading = false;
           if (!this.member) this.errorMessage = 'This member profile could not be found.';
+          else this.loadHometownWards(this.member.hometown);
           this.cdr.markForCheck();
         },
         error: error => {
@@ -51,6 +60,47 @@ export class MemberProfilePage implements OnInit {
                 : 'Unable to load this member profile. Please try again.';
         }
       });
+    });
+  }
+
+  private loadHometownWards(hometown: string | null | undefined): void {
+    this.hometownWards = [];
+    this.wardLookupFailed = false;
+    const communityName = hometown?.trim();
+    if (!communityName) {
+      this.wardLookupLoading = false;
+      return;
+    }
+
+    this.wardLookupLoading = true;
+    const normalize = (value: string) => value.trim().toLocaleLowerCase().replace(/\\s+/g, ' ');
+    this.knowledgeBase.getCommunities().subscribe({
+      next: response => {
+        const community = (response.data || []).find(item => normalize(item.name) === normalize(communityName));
+        if (!community) {
+          this.wardLookupLoading = false;
+          this.cdr.markForCheck();
+          return;
+        }
+
+        this.knowledgeBase.getCommunity(community.slug).subscribe({
+          next: detail => {
+            this.hometownWards = (detail.data?.wards || []).map(ward => ward.name).filter(Boolean);
+            this.wardLookupLoading = false;
+            this.cdr.markForCheck();
+          },
+          error: () => {
+            this.wardLookupLoading = false;
+            this.wardLookupFailed = true;
+            this.cdr.markForCheck();
+          }
+        });
+      },
+      error: () => {
+        this.wardLookupLoading = false;
+        this.wardLookupFailed = true;
+        this.cdr.markForCheck();
+      }
     });
   }
 
