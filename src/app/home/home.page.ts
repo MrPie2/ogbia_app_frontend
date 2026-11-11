@@ -5,7 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { timeout } from 'rxjs';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService, AuthUser } from '../services/auth.service';
-import { CommunityPost, PostComment, PostsService } from '../services/posts.service';
+import { CommunityPost, FeedBroadcast, PostComment, PostsService } from '../services/posts.service';
 import { StoriesService, StoryGroup, StoryItem } from '../services/stories.service';
 
 @Component({
@@ -22,6 +22,9 @@ export class HomePage implements OnInit, OnDestroy {
   loadingUser = true;
   userError = '';
   posts: CommunityPost[] = [];
+  broadcasts: FeedBroadcast[] = [];
+  activeBroadcastIndex = 0;
+  private broadcastTimer: ReturnType<typeof setInterval> | null = null;
   private expandedPostIds = new Set<number>();
   private requestedPostId: number | null = null;
   likingPostIds = new Set<number>();
@@ -97,6 +100,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopStoryTimer();
+    this.stopBroadcastTimer();
   }
 
   @HostListener('document:keydown.escape')
@@ -116,6 +120,7 @@ export class HomePage implements OnInit, OnDestroy {
 
     this.loadFeed();
     this.loadStories();
+    this.loadBroadcasts();
   }
 
   loadFeed(): void {
@@ -154,6 +159,49 @@ export class HomePage implements OnInit, OnDestroy {
       element?.classList.add('notification-target-post');
       this.requestedPostId = null;
     }, 250);
+  }
+
+  loadBroadcasts(): void {
+    this.postsService.getBroadcasts().pipe(timeout(15000)).subscribe({
+      next: (response) => {
+        this.broadcasts = response.data || [];
+        this.activeBroadcastIndex = 0;
+        this.startBroadcastTimer();
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        // Broadcasts are optional feed content; a failed request must not block posts.
+        this.broadcasts = [];
+        this.stopBroadcastTimer();
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  nextBroadcast(): void {
+    if (this.broadcasts.length < 2) return;
+    this.activeBroadcastIndex = (this.activeBroadcastIndex + 1) % this.broadcasts.length;
+  }
+
+  previousBroadcast(): void {
+    if (this.broadcasts.length < 2) return;
+    this.activeBroadcastIndex = (this.activeBroadcastIndex - 1 + this.broadcasts.length) % this.broadcasts.length;
+  }
+
+  private startBroadcastTimer(): void {
+    this.stopBroadcastTimer();
+    if (this.broadcasts.length < 2) return;
+    this.broadcastTimer = setInterval(() => {
+      this.nextBroadcast();
+      this.cdr.markForCheck();
+    }, 6000);
+  }
+
+  private stopBroadcastTimer(): void {
+    if (this.broadcastTimer) {
+      clearInterval(this.broadcastTimer);
+      this.broadcastTimer = null;
+    }
   }
 
   loadEvents(): void {
