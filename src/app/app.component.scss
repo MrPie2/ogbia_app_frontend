@@ -39,10 +39,13 @@
 .notification-toast-copy.clickable { cursor: pointer; }
 
 
-/* Compact native APK update banner — sits in normal layout above the navbar. */
+/* Native APK update banner — fixed above Ionic pages and navigation. */
 .app-update-banner {
-  position: relative;
-  z-index: 20;
+  position: fixed;
+  z-index: 30000;
+  top: max(0px, env(safe-area-inset-top));
+  left: 0;
+  right: 0;
   width: 100%;
   box-sizing: border-box;
   padding: 8px 12px 7px;
