@@ -182,6 +182,10 @@ export class HomePage implements OnInit, OnDestroy {
     });
   }
 
+  isInternalBroadcastUrl(url: string | null | undefined): boolean {
+    return typeof url === 'string' && /^\/(?![\/\\])/.test(url);
+  }
+
   nextBroadcast(): void {
     if (this.broadcasts.length < 2) return;
     this.activeBroadcastIndex = (this.activeBroadcastIndex + 1) % this.broadcasts.length;
