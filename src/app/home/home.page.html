@@ -57,7 +57,7 @@
       } @else if (!feedPosts.length) {
         <div class="feed-state card"><div class="empty-feed-icon"><ion-icon name="chatbubbles-outline"></ion-icon></div><h3>Start the conversation</h3><p>No posts yet. Share an update, photo or video with the Ogbia community.</p><a routerLink="/create-post">Create the first post</a></div>
       } @else {
-        @for (post of feedPosts; track post.id) {
+        @for (post of feedPosts; track post.id; let i = $index) {
           <article class="post card fade-up" [id]="'post-' + post.id" style="padding: 0px">
             <div class="post-head" style="padding: 10px 10px 0px 10px">
               @if (post.author; as author) {
@@ -123,6 +123,35 @@
               </button>
             </div>
           </article>
+          @if ((i + 1) % 4 === 0 && broadcasts.length) {
+            <section class="feed-broadcast" aria-label="Community announcements">
+              @for (broadcast of [broadcasts[activeBroadcastIndex]]; track broadcast.id) {
+                <div class="feed-broadcast-slide" [class.has-image]="!!broadcast.image_url">
+                  @if (broadcast.image_url) {
+                    <img class="feed-broadcast-image" [src]="broadcast.image_url" [alt]="broadcast.title" loading="lazy" decoding="async">
+                  }
+                  <div class="feed-broadcast-shade"></div>
+                  <div class="feed-broadcast-copy">
+                    <span class="feed-broadcast-label"><ion-icon name="megaphone-outline"></ion-icon> OGBIA CONNECT</span>
+                    <h3>{{ broadcast.title }}</h3>
+                    @if (broadcast.message) { <p>{{ broadcast.message }}</p> }
+                    @if (broadcast.action_url && broadcast.action_label) {
+                      <a class="feed-broadcast-action" [href]="broadcast.action_url" target="_blank" rel="noopener noreferrer">{{ broadcast.action_label }} <ion-icon name="arrow-forward"></ion-icon></a>
+                    }
+                  </div>
+                </div>
+              }
+              @if (broadcasts.length > 1) {
+                <button type="button" class="feed-broadcast-arrow previous" (click)="previousBroadcast()" aria-label="Previous announcement"><ion-icon name="chevron-back"></ion-icon></button>
+                <button type="button" class="feed-broadcast-arrow next" (click)="nextBroadcast()" aria-label="Next announcement"><ion-icon name="chevron-forward"></ion-icon></button>
+                <div class="feed-broadcast-dots" aria-label="Announcement slides">
+                  @for (item of broadcasts; track item.id; let slideIndex = $index) {
+                    <button type="button" [class.active]="slideIndex === activeBroadcastIndex" (click)="activeBroadcastIndex = slideIndex" [attr.aria-label]="'Show announcement ' + (slideIndex + 1)"></button>
+                  }
+                </div>
+              }
+            </section>
+          }
         }
       }
       
