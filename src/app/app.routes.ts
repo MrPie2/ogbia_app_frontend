@@ -61,6 +61,10 @@ export const routes: Routes = [
   { path: 'services', loadComponent: () => import('./services-page/services.page').then(m => m.ServicesPage) },
   { path: 'account-security', loadComponent: () => import('./account-security/account-security.page').then(m => m.AccountSecurityPage) },
   {
+    path: 'community/:slug',
+    loadComponent: () => import('./community-detail/community-detail.page').then(m => m.CommunityDetailPage)
+  },
+  {
     path: 'constituency',
     loadComponent: () => import('./constituency/constituency.page').then(m => m.ConstituencyPage)
   },
