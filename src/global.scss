@@ -490,7 +490,9 @@ ion-router-outlet.app-router-outlet > .ion-page:not(.welcome-route):not(.message
 }
 .comments-backdrop {
   z-index: 20000 !important;
-  padding-top: var(--ogbia-navbar-clearance) !important;
+  /* Start the comments sheet immediately below the shared navbar.
+     Unlike page content, this overlay should not inherit the extra 20px gap. */
+  padding-top: calc(var(--ogbia-navbar-height) + env(safe-area-inset-top)) !important;
 }
 
 
