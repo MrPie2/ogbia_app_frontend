@@ -424,9 +424,14 @@
   overflow: hidden;
   box-sizing: border-box;
   border: 0;
+  border-radius: 0;
   background: transparent;
+  color: inherit;
+  line-height: 0;
   text-align: inherit;
   cursor: zoom-in;
+  appearance: none;
+  -webkit-appearance: none;
 }
 .home-page .post-image-frame {
   position: relative;
@@ -436,33 +441,23 @@
   height: 250px;
   overflow: hidden;
   box-sizing: border-box;
-  background: #e7e2f0;
   isolation: isolate;
+  background: #e7e2f0;
 }
-.home-page .post-image-frame > img.post-image-backdrop {
-  position: absolute !important;
-  z-index: 0 !important;
-  top: -24px !important;
-  right: -24px !important;
-  bottom: -24px !important;
-  left: -24px !important;
-  display: block !important;
-  width: calc(100% + 48px) !important;
-  height: calc(100% + 48px) !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  filter: blur(22px) !important;
-  transform: scale(1.04) !important;
-  opacity: .9 !important;
-  pointer-events: none !important;
+.home-page .post-image-frame > .post-image-backdrop {
+  position: absolute;
+  z-index: 0;
+  inset: -22px;
+  display: block;
+  width: auto;
+  height: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(22px);
+  transform: scale(1.06);
+  opacity: .9;
+  pointer-events: none;
 }
 .home-page .post-image-frame > img.post-image {
   position: absolute !important;
@@ -479,6 +474,7 @@
   padding: 0 !important;
   border: 0 !important;
   border-radius: 0 !important;
+  background: transparent !important;
   object-fit: contain !important;
   object-position: center !important;
 }
