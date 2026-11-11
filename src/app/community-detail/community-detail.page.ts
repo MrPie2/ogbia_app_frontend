@@ -15,6 +15,7 @@ export class CommunityDetailPage implements OnInit {
   community: KnowledgeCommunity | null = null;
   loading = true;
   errorMessage = '';
+  coverPhotoFailed = false;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -38,6 +39,7 @@ export class CommunityDetailPage implements OnInit {
   loadCommunity(slug: string): void {
     this.loading = true;
     this.errorMessage = '';
+    this.coverPhotoFailed = false;
     this.knowledgeBase.getCommunity(slug).subscribe({
       next: response => {
         this.community = response.data;
@@ -75,6 +77,11 @@ export class CommunityDetailPage implements OnInit {
 
   representativeLabel(person: KnowledgeRepresentative): string {
     return person.full_name?.trim() || 'Representative not yet listed';
+  }
+
+  onCoverPhotoError(): void {
+    this.coverPhotoFailed = true;
+    this.changeDetector.markForCheck();
   }
 
   retry(): void {
