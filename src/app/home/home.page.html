@@ -136,7 +136,11 @@
                     <h3>{{ broadcast.title }}</h3>
                     @if (broadcast.message) { <p>{{ broadcast.message }}</p> }
                     @if (broadcast.action_url && broadcast.action_label) {
-                      <a class="feed-broadcast-action" [href]="broadcast.action_url" target="_blank" rel="noopener noreferrer">{{ broadcast.action_label }} <ion-icon name="arrow-forward"></ion-icon></a>
+                      @if (isInternalBroadcastUrl(broadcast.action_url)) {
+                        <a class="feed-broadcast-action" [routerLink]="broadcast.action_url">{{ broadcast.action_label }} <ion-icon name="arrow-forward"></ion-icon></a>
+                      } @else {
+                        <a class="feed-broadcast-action" [href]="broadcast.action_url" target="_blank" rel="noopener noreferrer">{{ broadcast.action_label }} <ion-icon name="arrow-forward"></ion-icon></a>
+                      }
                     }
                   </div>
                 </div>
