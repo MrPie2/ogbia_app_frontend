@@ -1,4 +1,23 @@
 <ion-app class="ogbia-app-shell" [class.welcome-screen]="isWelcomeRoute">
+  @if (updatePrompt; as update) {
+    <section class="app-update-banner" role="status" aria-live="polite">
+      <div class="app-update-banner-main">
+        <div class="app-update-banner-title">
+          <ion-icon name="cloud-download-outline"></ion-icon>
+          <span>My Ogbia {{ update.version_name }} is available</span>
+        </div>
+        <div class="app-update-banner-actions">
+          @if (!update.mandatory) {
+            <button type="button" class="app-update-later" (click)="dismissAppUpdate()">Later</button>
+          }
+          <button type="button" class="app-update-now" (click)="installAppUpdate()">Update now</button>
+        </div>
+      </div>
+      <div class="app-update-banner-note">
+        {{ update.release_notes || 'A new version is ready with the latest improvements.' }}
+      </div>
+    </section>
+  }
   @if (includeNavbar) {
     <app-shared-navbar></app-shared-navbar>
   }
