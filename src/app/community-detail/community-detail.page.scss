@@ -4,7 +4,7 @@ ion-content{--background:#eae8f5}
 .community-back{position:absolute;z-index:4;top:16px;left:18px;display:grid;place-items:center;margin:0;border:1px solid rgba(255,255,255,.32);color:#fff;background:rgba(24,20,58,.42);box-shadow:0 4px 16px rgba(0,0,0,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 /* Let the page sit directly on the soft purple surface; no enclosing white card. */
 .community-profile{overflow:visible;border:0;border-radius:0;background:transparent;box-shadow:none}
-.community-cover{position:relative;display:flex;align-items:flex-end;min-height:300px;overflow:hidden;border-radius:0 0 25px 25px;background:linear-gradient(135deg,#26205f,#393185 55%,#756ac1);box-shadow:8px 9px 20px rgba(178,174,205,.42),-7px -7px 18px rgba(255,255,255,.8)}
+.community-cover{position:relative;display:flex;align-items:flex-end;min-height:300px;overflow:hidden;border-radius:0;background:linear-gradient(135deg,#26205f,#393185 55%,#756ac1);box-shadow:8px 9px 20px rgba(178,174,205,.42),-7px -7px 18px rgba(255,255,255,.8)}
 .community-cover-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
 .community-cover-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,15,43,.78),rgba(25,20,59,.35) 65%,rgba(25,20,59,.12)),linear-gradient(0deg,rgba(18,15,43,.78),transparent 75%)}
 .community-cover-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;overflow:hidden;color:rgba(255,255,255,.9);background:radial-gradient(circle at 75% 25%,rgba(255,255,255,.17),transparent 28%),linear-gradient(135deg,#26205f,#393185 55%,#756ac1)}
@@ -74,7 +74,7 @@ ion-content{--background:#eae8f5}
 @media(max-width:650px){
  .my-ogbia-page.community-page{padding:0 0 calc(105px + env(safe-area-inset-bottom))}
  .community-profile{border-radius:0}
- .community-cover{min-height:255px;border-radius:0 0 20px 20px}
+ .community-cover{min-height:255px;border-radius:0}
  .community-back{top:13px;left:13px}
  .community-cover-content{padding:23px 17px 20px}
  .community-cover-content h1{font-size:32px;letter-spacing:-1px}
