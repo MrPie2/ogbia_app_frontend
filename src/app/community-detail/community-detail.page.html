@@ -1,9 +1,5 @@
 <ion-content [fullscreen]="true">
   <main class="my-ogbia-page community-page">
-    <a class="page-back-button my-ogbia-back community-back" routerLink="/constituency" aria-label="Back to My Ogbia directory">
-      <ion-icon name="arrow-back-outline"></ion-icon>
-    </a>
-
     @if (loading) {
       <section class="community-loading community-panel">
         <ion-icon name="sync-outline"></ion-icon>
@@ -21,6 +17,9 @@
     } @else if (community) {
       <article class="community-profile">
         <header class="community-cover">
+          <a class="page-back-button my-ogbia-back community-back" routerLink="/constituency" aria-label="Back to My Ogbia directory">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </a>
           @if (community.cover_photo_url && !coverPhotoFailed) {
             <img class="community-cover-image" [src]="community.cover_photo_url" [alt]="community.name + ' community cover photo'" (error)="onCoverPhotoError()">
           } @else {
