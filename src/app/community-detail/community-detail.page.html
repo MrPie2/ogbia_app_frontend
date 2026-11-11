@@ -1,0 +1,96 @@
+<ion-content [fullscreen]="true">
+  <main class="my-ogbia-page">
+    <a class="page-back-button my-ogbia-back" routerLink="/constituency" aria-label="Back to My Ogbia directory">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </a>
+
+    <section class="community-detail">
+      @if (loading) {
+        <div class="empty-state">
+          <ion-icon name="sync-outline"></ion-icon>
+          <strong>Loading community details…</strong>
+          <p>Getting the latest information from the Ogbia knowledge base.</p>
+        </div>
+      } @else if (errorMessage) {
+        <div class="empty-state">
+          <ion-icon name="cloud-offline-outline"></ion-icon>
+          <strong>Unable to load community</strong>
+          <p>{{ errorMessage }}</p>
+          <button type="button" class="retry-button" (click)="retry()">Try again</button>
+          <a class="back-link" routerLink="/constituency">Back to community directory</a>
+        </div>
+      } @else if (community) {
+        <div class="community-hero">
+          <div class="large-community-symbol"><ion-icon name="location-outline"></ion-icon></div>
+          <div>
+            <span class="section-kicker">COMMUNITY PROFILE</span>
+            <h2>{{ community.name }}</h2>
+            <p>Ogbia Local Government Area · Bayelsa State</p>
+          </div>
+          <span class="verification-tag" [class.verified-tag]="community.is_verified">
+            <ion-icon [name]="community.is_verified ? 'checkmark-circle-outline' : 'time-outline'"></ion-icon>
+            {{ community.is_verified ? 'Verified profile' : 'Profile in progress' }}
+          </span>
+        </div>
+
+        @if (community.description || community.clan_name) {
+          <section class="detail-intro">
+            <h3>About {{ community.name }}</h3>
+            @if (community.description) { <p>{{ community.description }}</p> }
+            @if (community.clan_name) { <p><strong>Clan:</strong> {{ community.clan_name }}</p> }
+          </section>
+        }
+
+        @if (community.wards?.length) {
+          <section class="detail-intro">
+            <h3>Electoral wards</h3>
+            <div class="ward-grid">
+              @for (ward of community.wards; track ward.id) {
+                <article class="ward-card">
+                  <span class="ward-number">{{ ward.code || ward.id.toString().padStart(2, '0') }}</span>
+                  <div><strong>{{ ward.name }}</strong><small>{{ ward.is_verified ? 'Verified ward' : 'Ward record pending verification' }}</small></div>
+                </article>
+              }
+            </div>
+          </section>
+        }
+
+        <section class="detail-intro">
+          <h3>Leadership & representation</h3>
+          <p>Find the people serving this community, from traditional leadership to elected representatives.</p>
+        </section>
+
+        <div class="officials-grid">
+          @if (community.representatives?.length) {
+            @for (person of community.representatives; track person.id) {
+              <article class="official-card">
+                <span class="official-icon"><ion-icon [name]="roleIcon(person.role)"></ion-icon></span>
+                <div class="official-info">
+                  <strong>{{ person.role }}</strong>
+                  <small>{{ roleSubtitle(person.role) }}</small>
+                  <span class="pending-info">{{ representativeLabel(person) }}</span>
+                  @if (person.constituency) { <small>{{ person.constituency }}</small> }
+                  <span class="verification-tag" [class.verified-tag]="!!person.verified_at">
+                    <ion-icon [name]="person.verified_at ? 'checkmark-circle-outline' : 'time-outline'"></ion-icon>
+                    {{ person.verified_at ? 'Verified' : 'Unverified' }}
+                  </span>
+                </div>
+              </article>
+            }
+          } @else {
+            <div class="empty-state">
+              <ion-icon name="people-outline"></ion-icon>
+              <strong>No representatives published yet</strong>
+              <p>Leadership records will appear after they are entered and verified by the knowledge base administrators.</p>
+            </div>
+          }
+        </div>
+
+        <div class="verification-notice">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <div><strong>Accuracy matters</strong><p>Names and contact details will only be published after verification. This avoids displaying incorrect or outdated leadership information.</p></div>
+        </div>
+      }
+    </section>
+  </main>
+</ion-content>
