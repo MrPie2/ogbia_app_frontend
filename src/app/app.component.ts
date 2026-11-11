@@ -77,7 +77,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subject, filter, takeUntil } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { NotificationService, AppNotification } from './services/notification.service';
-import { NativeAppUpdateService } from './services/native-app-update.service';
+import { NativeAppUpdateService, NativeApkUpdate } from './services/native-app-update.service';
 
 @Component({
   selector: 'app-root',
@@ -90,6 +90,7 @@ export class AppComponent implements OnDestroy {
   includeNavbar = false;
   isWelcomeRoute = false;
   notificationToast: AppNotification | null = null;
+  updatePrompt: NativeApkUpdate | null = null;
   private readonly destroy$ = new Subject<void>();
   private swipeStartX = 0;
   private swipeStartY = 0;
@@ -192,6 +193,9 @@ export class AppComponent implements OnDestroy {
       'videocam-outline': videocamOutline,
     });
     this.presence.start();
+    this.nativeAppUpdates.availableUpdate$.pipe(takeUntil(this.destroy$)).subscribe((update) => {
+      this.updatePrompt = update;
+    });
     if (Capacitor.isNativePlatform()) {
       afterNextRender(() => {
         void CapacitorUpdater.notifyAppReady().catch((error) => {
@@ -303,6 +307,14 @@ export class AppComponent implements OnDestroy {
     const notification = this.notificationToast;
     this.notificationToast = null;
     if (notification?.id) this.notifications.markRead(notification.id);
+  }
+
+  dismissAppUpdate(): void {
+    this.nativeAppUpdates.dismissPrompt();
+  }
+
+  installAppUpdate(): void {
+    void this.nativeAppUpdates.installUpdate();
   }
 
   ngOnDestroy(): void {
