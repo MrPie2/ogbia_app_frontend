@@ -123,6 +123,10 @@ export class HomePage implements OnInit, OnDestroy {
     this.loadBroadcasts();
   }
 
+  ionViewWillLeave(): void {
+    this.stopBroadcastTimer();
+  }
+
   loadFeed(): void {
     // Keep already-rendered posts visible while refreshing a cached page.
     this.loadingPosts = this.posts.length === 0;
