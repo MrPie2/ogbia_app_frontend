@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { KnowledgeBaseService, KnowledgeCommunity, KnowledgeWard, KnowledgeRepresentative } from '../services/knowledge-base.service';
@@ -29,6 +29,7 @@ export class ConstituencyPage implements OnInit {
 
   constructor(
     private readonly knowledgeBase: KnowledgeBaseService,
+    private readonly router: Router,
     private readonly changeDetector: ChangeDetectorRef
   ) {}
 
@@ -114,21 +115,7 @@ export class ConstituencyPage implements OnInit {
   }
 
   openCommunity(community: KnowledgeCommunity): void {
-    this.selectedCommunity = community;
-    this.detailLoading = true;
-    this.detailError = '';
-    this.knowledgeBase.getCommunity(community.slug).subscribe({
-      next: response => {
-        this.selectedCommunity = response.data;
-        this.detailLoading = false;
-        this.changeDetector.markForCheck();
-      },
-      error: () => {
-        this.detailLoading = false;
-        this.detailError = 'Community details are temporarily unavailable. Please try again.';
-        this.changeDetector.markForCheck();
-      }
-    });
+    void this.router.navigate(['/community', community.slug]);
   }
 
   closeCommunity(): void {
