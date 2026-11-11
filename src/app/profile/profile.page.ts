@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService, AuthUser, CommunityLeader, UserMemory } from '../services/auth.service';
+import { KnowledgeBaseService } from '../services/knowledge-base.service';
 
 @Component({
   selector: 'app-profile',
@@ -34,8 +35,12 @@ export class ProfilePage implements OnInit, OnDestroy {
   leadersLoading = true;
   leadersError = '';
   leadershipGroups: { key: string; title: string; subtitle: string; icon: string; members: CommunityLeader[] }[] = [];
+  hometownWards: string[] = [];
+  wardLookupLoading = false;
+  wardLookupFailed = false;
+  readonly constituencyName = 'Ogbia Federal Constituency';
 
-  constructor(private readonly auth: AuthService, private readonly router: Router, private readonly cdr: ChangeDetectorRef) {}
+  constructor(private readonly auth: AuthService, private readonly router: Router, private readonly cdr: ChangeDetectorRef, private readonly knowledgeBase: KnowledgeBaseService) {}
 
   logout(): void {
     this.auth.logout();
@@ -47,10 +52,12 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.loadMemories();
     this.user = this.auth.getCachedUser();
     this.referralCode = this.user?.referral_code || '';
+    this.loadHometownWards(this.user?.hometown);
     this.auth.getAuthenticatedUser().subscribe({
       next: (user) => {
         this.user = user;
         this.referralCode = user.referral_code || '';
+        this.loadHometownWards(user.hometown);
         this.loading = false;
         this.cdr.markForCheck();
       },
@@ -61,6 +68,47 @@ export class ProfilePage implements OnInit, OnDestroy {
           : 'Could not refresh your profile. Showing saved details if available.';
         this.cdr.markForCheck();
       },
+    });
+  }
+
+  private loadHometownWards(hometown: string | null | undefined): void {
+    this.hometownWards = [];
+    this.wardLookupFailed = false;
+    const communityName = hometown?.trim();
+    if (!communityName) {
+      this.wardLookupLoading = false;
+      return;
+    }
+
+    this.wardLookupLoading = true;
+    const normalize = (value: string) => value.trim().toLocaleLowerCase().replace(/\\s+/g, ' ');
+    this.knowledgeBase.getCommunities().subscribe({
+      next: response => {
+        const community = (response.data || []).find(item => normalize(item.name) === normalize(communityName));
+        if (!community) {
+          this.wardLookupLoading = false;
+          this.cdr.markForCheck();
+          return;
+        }
+
+        this.knowledgeBase.getCommunity(community.slug).subscribe({
+          next: detail => {
+            this.hometownWards = (detail.data?.wards || []).map(ward => ward.name).filter(Boolean);
+            this.wardLookupLoading = false;
+            this.cdr.markForCheck();
+          },
+          error: () => {
+            this.wardLookupLoading = false;
+            this.wardLookupFailed = true;
+            this.cdr.markForCheck();
+          }
+        });
+      },
+      error: () => {
+        this.wardLookupLoading = false;
+        this.wardLookupFailed = true;
+        this.cdr.markForCheck();
+      }
     });
   }
 
