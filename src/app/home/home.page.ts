@@ -462,6 +462,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.activeCommentPost = post;
     this.postComments = [];
     this.commentDraft = '';
+    this.replyToComment = null;
     this.commentsError = '';
     this.commentsLoading = true;
     this.postsService.getComments(post.id).subscribe({
@@ -482,6 +483,7 @@ export class HomePage implements OnInit, OnDestroy {
   closeComments(): void {
     this.activeCommentPost = null;
     this.commentDraft = '';
+    this.replyToComment = null;
     this.commentsError = '';
   }
 
@@ -496,11 +498,19 @@ export class HomePage implements OnInit, OnDestroy {
 
     this.commentSending = true;
     this.commentsError = '';
-    this.postsService.addComment(post.id, content).subscribe({
+    const parentCommentId = this.replyToComment?.id ?? null;
+    this.postsService.addComment(post.id, content, parentCommentId).subscribe({
       next: (response) => {
-        this.postComments = [response.data, ...this.postComments];
+        if (parentCommentId) {
+          this.postComments = this.postComments.map(comment => comment.id === parentCommentId
+            ? { ...comment, replies: [...(comment.replies || []), response.data] }
+            : comment);
+        } else {
+          this.postComments = [response.data, ...this.postComments];
+        }
         this.updateCommentCount(post.id, response.comments_count);
         this.commentDraft = '';
+        this.replyToComment = null;
         this.commentSending = false;
         this.cdr.markForCheck();
       },
