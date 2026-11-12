@@ -423,3 +423,36 @@
     backdrop-filter: none;
   }
 }
+
+
+/* Unread-message indicator anchored to the Friends icon in bottom navigation. */
+.app-bottom-nav .bottom-nav-icon-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+}
+.app-bottom-nav .bottom-nav-icon-wrap > ion-icon {
+  width: 28px;
+  height: 28px;
+}
+.app-bottom-nav .message-nav-badge {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border: 2px solid #eeecf7;
+  border-radius: 999px;
+  background: #e54865;
+  color: #fff;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 800;
+  box-shadow: 0 2px 5px rgba(229,72,101,.25);
+}
