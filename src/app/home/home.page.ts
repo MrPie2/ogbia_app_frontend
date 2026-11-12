@@ -27,11 +27,14 @@ export class HomePage implements OnInit, OnDestroy {
   private broadcastTimer: ReturnType<typeof setInterval> | null = null;
   private expandedPostIds = new Set<number>();
   private requestedPostId: number | null = null;
+  private loadingRequestedPostId: number | null = null;
   likingPostIds = new Set<number>();
   activeCommentPost: CommunityPost | null = null;
   activeMediaPreview: { type: 'image' | 'video'; url: string } | null = null;
   postComments: PostComment[] = [];
-  commentDraft = '';\n  replyToComment: PostComment | null = null;\n  likingCommentIds = new Set<number>();
+  commentDraft = '';
+  replyToComment: PostComment | null = null;
+  likingCommentIds = new Set<number>();
   commentsLoading = false;
   commentSending = false;
   commentsError = '';
@@ -156,13 +159,40 @@ export class HomePage implements OnInit, OnDestroy {
 
   private scrollToRequestedPost(): void {
     const postId = this.requestedPostId;
-    if (!postId || !this.posts.some(post => post.id === postId)) return;
-    setTimeout(() => {
-      const element = document.getElementById('post-' + postId);
-      element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      element?.classList.add('notification-target-post');
-      this.requestedPostId = null;
-    }, 250);
+    if (!postId || this.loadingPosts) return;
+
+    const revealPost = (): void => {
+      setTimeout(() => {
+        const element = document.getElementById('post-' + postId);
+        if (!element) return;
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.classList.add('notification-target-post');
+        this.requestedPostId = null;
+      }, 250);
+    };
+
+    if (this.posts.some(post => post.id === postId)) {
+      revealPost();
+      return;
+    }
+
+    if (this.loadingRequestedPostId === postId) return;
+    this.loadingRequestedPostId = postId;
+    this.postsService.getPost(postId).subscribe({
+      next: response => {
+        if (!this.posts.some(post => post.id === response.data.id)) {
+          this.posts = [response.data, ...this.posts];
+        }
+        this.loadingRequestedPostId = null;
+        this.cdr.markForCheck();
+        revealPost();
+      },
+      error: () => {
+        this.loadingRequestedPostId = null;
+        this.feedError = 'This post is unavailable or you do not have permission to view it.';
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   loadBroadcasts(): void {
