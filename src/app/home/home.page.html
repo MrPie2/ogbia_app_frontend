@@ -170,9 +170,12 @@
           <div><h2>Comments</h2><p>{{ commentPost.comments_count || 0 }} comments</p></div>
           <button type="button" class="comments-close" (click)="closeComments()" aria-label="Close comments"><ion-icon name="close"></ion-icon></button>
         </div>
+        @if (replyToComment) {
+          <div class="replying-to"><span>Replying to <b>{{ replyToComment.user.name }}</b></span><button type="button" (click)="replyToComment = null; commentDraft = ''" aria-label="Cancel reply"><ion-icon name="close"></ion-icon></button></div>
+        }
         <form class="comment-compose" (submit)="$event.preventDefault(); sendComment()">
-          <textarea rows="2" maxlength="2000" [value]="commentDraft" (input)="onCommentInput($event)" placeholder="Write a comment…" aria-label="Write a comment"></textarea>
-          <button type="submit" [disabled]="!commentDraft.trim() || commentSending" aria-label="Send comment"><ion-icon [name]="commentSending ? 'hourglass-outline' : 'send'"></ion-icon><span>{{ commentSending ? 'Sending…' : 'Send' }}</span></button>
+          <textarea rows="2" maxlength="2000" [value]="commentDraft" (input)="onCommentInput($event)" [placeholder]="replyToComment ? 'Write a reply…' : 'Write a comment…'" [attr.aria-label]="replyToComment ? 'Write a reply' : 'Write a comment'"></textarea>
+          <button type="submit" [disabled]="!commentDraft.trim() || commentSending" aria-label="Send comment or reply"><ion-icon [name]="commentSending ? 'hourglass-outline' : 'send'"></ion-icon><span>{{ commentSending ? 'Sending…' : (replyToComment ? 'Reply' : 'Send') }}</span></button>
         </form>
         @if (commentsError) { <p class="comments-error" role="alert">{{ commentsError }}</p> }
         <div class="comments-list">
@@ -182,7 +185,29 @@
             @for (comment of postComments; track comment.id) {
               <article class="comment-item">
                 <div class="comment-avatar">{{ commentInitials(comment) }}</div>
-                <div class="comment-copy"><div class="comment-meta"><b>{{ comment.user.name }}</b><small>{{ comment.created_at | date:'short' }}</small></div><p>{{ comment.content }}</p></div>
+                <div class="comment-body">
+                  <div class="comment-copy"><div class="comment-meta"><b>{{ comment.user.name }}</b><small>{{ comment.created_at | date:'short' }}</small></div><p>{{ comment.content }}</p></div>
+                  <div class="comment-actions">
+                    <button type="button" [class.is-liked]="comment.liked_by_me" [disabled]="likingCommentIds.has(comment.id)" (click)="toggleCommentLike(comment)" [attr.aria-pressed]="!!comment.liked_by_me"><ion-icon [name]="comment.liked_by_me ? 'heart' : 'heart-outline'"></ion-icon> Like <b>{{ comment.likes_count || 0 }}</b></button>
+                    <button type="button" (click)="replyTo(comment)"><ion-icon name="chatbubble-outline"></ion-icon> Reply</button>
+                  </div>
+                  @if (comment.replies?.length) {
+                    <div class="comment-replies">
+                      @for (reply of comment.replies; track reply.id) {
+                        <div class="comment-reply">
+                          <div class="comment-avatar reply-avatar">{{ commentInitials(reply) }}</div>
+                          <div class="comment-body">
+                            <div class="comment-copy"><div class="comment-meta"><b>{{ reply.user.name }}</b><small>{{ reply.created_at | date:'short' }}</small></div><p>{{ reply.content }}</p></div>
+                            <div class="comment-actions">
+                              <button type="button" [class.is-liked]="reply.liked_by_me" [disabled]="likingCommentIds.has(reply.id)" (click)="toggleCommentLike(reply)" [attr.aria-pressed]="!!reply.liked_by_me"><ion-icon [name]="reply.liked_by_me ? 'heart' : 'heart-outline'"></ion-icon> Like <b>{{ reply.likes_count || 0 }}</b></button>
+                              <button type="button" (click)="replyTo(comment)"><ion-icon name="chatbubble-outline"></ion-icon> Reply</button>
+                            </div>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
               </article>
             }
           }
