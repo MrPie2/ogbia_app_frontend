@@ -4,11 +4,12 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { IonIcon } from '@ionic/angular';
 import {
   Subject, debounceTime, distinctUntilChanged, filter, takeUntil,
-  switchMap, forkJoin, of, catchError, finalize
+  switchMap, forkJoin, of, catchError, finalize, timer, merge
 } from 'rxjs';
 import { NotificationService } from '../../services/notification.service';
 import { PostsService, CommunityPost } from '../../services/posts.service';
 import { FriendsService, FriendUser } from '../../services/friends.service';
+import { MessagingService } from '../../services/messaging.service';
 
 @Component({
   selector: 'app-shared-navbar',
@@ -26,6 +27,7 @@ export class NavbarComponent implements OnDestroy {
   searchError = '';
   searchPosts: CommunityPost[] = [];
   searchUsers: FriendUser[] = [];
+  unreadMessagesCount = 0;
 
   private readonly destroy$ = new Subject<void>();
   private readonly searchTerms$ = new Subject<string>();
@@ -34,7 +36,8 @@ export class NavbarComponent implements OnDestroy {
     private readonly router: Router,
     public readonly notifications: NotificationService,
     private readonly postsService: PostsService,
-    private readonly friendsService: FriendsService
+    private readonly friendsService: FriendsService,
+    private readonly messaging: MessagingService
   ) {
     this.router.events
       .pipe(
@@ -45,6 +48,18 @@ export class NavbarComponent implements OnDestroy {
         this.closeMenu();
         this.closeSearch();
       });
+
+    merge(
+      timer(0, 15000),
+      this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+    ).pipe(
+      switchMap(() => this.messaging.getConversations().pipe(catchError(() => of({ data: [] })))),
+      takeUntil(this.destroy$)
+    ).subscribe(response => {
+      this.unreadMessagesCount = (response.data || []).reduce(
+        (total, conversation) => total + Math.max(0, Number(conversation.unread_count) || 0), 0
+      );
+    });
 
     this.searchTerms$
       .pipe(
