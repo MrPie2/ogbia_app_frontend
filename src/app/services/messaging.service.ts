@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface ChatFriend {
@@ -31,6 +31,12 @@ export interface ChatConversation {
 @Injectable({ providedIn: 'root' })
 export class MessagingService {
   private readonly apiUrl = environment.apiUrl;
+  private readonly conversationOpenedSubject = new Subject<number>();
+  readonly conversationOpened$ = this.conversationOpenedSubject.asObservable();
+
+  notifyConversationOpened(id: number): void {
+    this.conversationOpenedSubject.next(id);
+  }
 
   constructor(private readonly http: HttpClient) {}
 
@@ -69,6 +75,6 @@ export class MessagingService {
   markRead(id: number): Observable<{ success: boolean }> {
     return this.http.patch<{ success: boolean }>(
       `${this.apiUrl}/messages/conversations/${id}/read`, {}, this.options()
-    );
+    ).pipe(tap(() => this.notifyConversationOpened(id)));
   }
 }
