@@ -41,6 +41,10 @@ export interface PostComment {
   content: string;
   created_at: string;
   user: { id: number; name: string; profile_photo_url?: string | null };
+  parent_comment_id?: number | null;
+  likes_count?: number;
+  liked_by_me?: boolean;
+  replies?: PostComment[];
 }
 
 export interface PostsPage {
@@ -107,8 +111,12 @@ export class PostsService {
     return this.http.get<{ data: PostComment[]; comments_count: number }>(`${this.apiUrl}/posts/${postId}/comments`, { headers: this.authHeaders() });
   }
 
-  addComment(postId: number, content: string): Observable<{ data: PostComment; comments_count: number; message: string }> {
-    return this.http.post<{ data: PostComment; comments_count: number; message: string }>(`${this.apiUrl}/posts/${postId}/comments`, { content }, { headers: this.authHeaders() });
+  addComment(postId: number, content: string, parentCommentId?: number | null): Observable<{ data: PostComment; comments_count: number; message: string }> {
+    return this.http.post<{ data: PostComment; comments_count: number; message: string }>(`${this.apiUrl}/posts/${postId}/comments`, { content, ...(parentCommentId ? { parent_comment_id: parentCommentId } : {}) }, { headers: this.authHeaders() });
+  }
+
+  toggleCommentLike(commentId: number): Observable<{ liked: boolean; likes_count: number }> {
+    return this.http.post<{ liked: boolean; likes_count: number }>(`${this.apiUrl}/comments/${commentId}/like`, {}, { headers: this.authHeaders() });
   }
 
   private authHeaders(): HttpHeaders {
