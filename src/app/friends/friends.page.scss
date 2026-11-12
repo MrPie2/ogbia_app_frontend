@@ -277,3 +277,20 @@ ion-content {
   line-height: 1.2;
   box-shadow: 0 2px 7px rgba(217,47,85,.2);
 }
+
+
+/* Keep the unread count on the same line as the friend's name. */
+.friend-info h3 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.friend-unread-badge {
+  display: inline-flex;
+  width: auto;
+  margin: 0;
+  padding: 3px 7px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
