@@ -248,12 +248,25 @@
 }
 .search-section-heading small { color: #9895a9; font-size: 10px; font-weight: 600; }
 .search-post-result {
+  display: block;
+  width: 100%;
   padding: 12px 13px;
   margin-bottom: 7px;
   border: 1px solid #eeecf6;
   border-radius: 13px;
   background: #fff;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .18s ease, background .18s ease, transform .18s ease;
 }
+.search-post-result:hover, .search-post-result:focus-visible {
+  border-color: #c9c3e8;
+  background: #faf9ff;
+  outline: none;
+}
+.search-post-result:active { transform: scale(.99); }
 .search-result-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .search-result-meta strong { color: #393185; font-size: 11px; }
 .search-result-meta time { flex-shrink: 0; color: #a09caf; font-size: 10px; }
