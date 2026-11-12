@@ -50,7 +50,7 @@ export class FriendsPage implements OnInit, OnDestroy {
     this.presence.heartbeat();
     this.loadFriends();
     this.loadRequests();
-    this.subscriptions.add(timer(0, 15000).subscribe(() => this.loadUnreadMessages()));
+    this.subscriptions.add(timer(0, 2500).subscribe(() => this.loadUnreadMessages()));
     this.subscriptions.add(
       this.searchInput.pipe(debounceTime(250), distinctUntilChanged())
         .subscribe(value => this.loadCandidates(value))
