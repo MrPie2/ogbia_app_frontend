@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { Subscription, debounceTime, distinctUntilChanged, Subject, timeout } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged, Subject, timeout, timer } from 'rxjs';
 import { FriendRequestUser, FriendUser, FriendsService } from '../services/friends.service';
 import { AuthService } from '../services/auth.service';
 import { PresenceService } from '../services/presence.service';
+import { ChatConversation, MessagingService } from '../services/messaging.service';
 
 @Component({
   selector: 'app-friends',
@@ -19,6 +20,7 @@ export class FriendsPage implements OnInit, OnDestroy {
   friends: FriendUser[] = [];
   candidates: FriendUser[] = [];
   incomingRequests: FriendRequestUser[] = [];
+  unreadMessagesByFriend: Record<number, number> = {};
   loadingFriends = true;
   loadingUsers = false;
   findMode = false;
@@ -34,6 +36,7 @@ export class FriendsPage implements OnInit, OnDestroy {
     private readonly friendsService: FriendsService,
     private readonly auth: AuthService,
     private readonly presence: PresenceService,
+    private readonly messaging: MessagingService,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
   ) {}
@@ -47,6 +50,7 @@ export class FriendsPage implements OnInit, OnDestroy {
     this.presence.heartbeat();
     this.loadFriends();
     this.loadRequests();
+    this.subscriptions.add(timer(0, 15000).subscribe(() => this.loadUnreadMessages()));
     this.subscriptions.add(
       this.searchInput.pipe(debounceTime(250), distinctUntilChanged())
         .subscribe(value => this.loadCandidates(value))
@@ -77,6 +81,24 @@ export class FriendsPage implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  loadUnreadMessages(): void {
+    this.messaging.getConversations().subscribe({
+      next: response => {
+        const counts: Record<number, number> = {};
+        (response.data || []).forEach((conversation: ChatConversation) => {
+          if (conversation.unread_count > 0) counts[conversation.friend.id] = conversation.unread_count;
+        });
+        this.unreadMessagesByFriend = counts;
+        this.cdr.markForCheck();
+      },
+      error: () => { /* Keep the friends list usable if messaging is temporarily unavailable. */ }
+    });
+  }
+
+  unreadCount(friendId: number): number {
+    return this.unreadMessagesByFriend[friendId] || 0;
   }
 
   loadRequests(): void {
