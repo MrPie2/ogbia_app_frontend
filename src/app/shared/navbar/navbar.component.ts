@@ -135,6 +135,11 @@ export class NavbarComponent implements OnDestroy {
     this.router.navigate(['/members', user.id]);
   }
 
+  openPostResult(post: CommunityPost): void {
+    this.closeSearch();
+    this.router.navigate(['/home'], { queryParams: { post: post.id } });
+  }
+
   refreshNotifications(): void {
     this.notifications.refreshUnreadCount();
   }
