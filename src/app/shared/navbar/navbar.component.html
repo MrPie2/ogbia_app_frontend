@@ -87,14 +87,14 @@
           @if (searchTab !== 'people' && searchPosts.length) {
             <div class="search-section-heading"><span>Posts</span><small>{{ searchPosts.length }} found</small></div>
             @for (post of searchPosts.slice(0, searchTab === 'all' ? 5 : searchPosts.length); track post.id) {
-              <article class="search-post-result">
+              <button type="button" class="search-post-result" (click)="openPostResult(post)" [attr.aria-label]="'Preview post by ' + (post.author?.name || 'Ogbia member')">
                 <div class="search-result-meta">
                   <strong>{{ post.author?.name || 'Ogbia member' }}</strong>
                   <time>{{ post.created_at | date:'mediumDate' }}</time>
                 </div>
                 <p>{{ post.is_event && post.event_title ? post.event_title : (post.content || (post.media_type === 'video' ? 'Shared a video' : 'Shared a photo')) }}</p>
                 @if (post.event_location) { <small class="search-result-context"><ion-icon name="location-outline"></ion-icon>{{ post.event_location }}</small> }
-              </article>
+              </button>
             }
           }
 
