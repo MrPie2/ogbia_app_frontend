@@ -21,6 +21,8 @@ export class FriendsPage implements OnInit, OnDestroy {
   candidates: FriendUser[] = [];
   incomingRequests: FriendRequestUser[] = [];
   unreadMessagesByFriend: Record<number, number> = {};
+  private readonly conversationFriendIds: Record<number, number> = {};
+  private readonly locallyReadConversations = new Set<number>();
   loadingFriends = true;
   loadingUsers = false;
   findMode = false;
@@ -46,6 +48,13 @@ export class FriendsPage implements OnInit, OnDestroy {
       this.router.navigate(['/login']);
       return;
     }
+
+    this.subscriptions.add(this.messaging.conversationOpened$.subscribe(conversationId => {
+      this.locallyReadConversations.add(conversationId);
+      const friendId = this.conversationFriendIds[conversationId];
+      if (friendId) delete this.unreadMessagesByFriend[friendId];
+      this.cdr.markForCheck();
+    }));
 
     this.presence.heartbeat();
     this.loadFriends();
@@ -88,7 +97,11 @@ export class FriendsPage implements OnInit, OnDestroy {
       next: response => {
         const counts: Record<number, number> = {};
         (response.data || []).forEach((conversation: ChatConversation) => {
-          if (conversation.unread_count > 0) counts[conversation.friend.id] = conversation.unread_count;
+          this.conversationFriendIds[conversation.id] = conversation.friend.id;
+          if (conversation.unread_count === 0) this.locallyReadConversations.delete(conversation.id);
+          if (conversation.unread_count > 0 && !this.locallyReadConversations.has(conversation.id)) {
+            counts[conversation.friend.id] = conversation.unread_count;
+          }
         });
         this.unreadMessagesByFriend = counts;
         this.cdr.markForCheck();
