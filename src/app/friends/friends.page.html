@@ -34,6 +34,12 @@
                 </div>
                 <div class="friend-info">
                   <h3><a class="person-name-link" [routerLink]="['/members', friend.id]">{{ friend.name }}</a></h3>
+                  @if (unreadCount(friend.id) > 0) {
+                    <span class="friend-unread-badge" [attr.aria-label]="unreadCount(friend.id) + ' unread messages'">{{ unreadCount(friend.id) > 99 ? '99+' : unreadCount(friend.id) + ' new' }}</span>
+                  }
+                  @if (unreadCount(friend.id) > 0) {
+                    <span class="friend-unread-badge" [attr.aria-label]="unreadCount(friend.id) + ' unread messages'">{{ unreadCount(friend.id) > 99 ? '99+' : unreadCount(friend.id) + ' new' }}</span>
+                  }
                   <div class="friend-meta">
                     @if (friend.hometown) { <span class="hometown-label">Home Town: {{ friend.hometown }}</span> }
                     <span class="activity-meta"><i></i> Online now</span>
