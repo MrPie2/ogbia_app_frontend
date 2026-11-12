@@ -258,3 +258,22 @@ ion-content {
   cursor: pointer;
   box-shadow: 0 3px 14px rgba(0,0,0,.35);
 }
+
+
+/* Unread message indicator beside the friend who sent the messages. */
+.friend-unread-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 5px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #d92f55;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.2;
+  box-shadow: 0 2px 7px rgba(217,47,85,.2);
+}
