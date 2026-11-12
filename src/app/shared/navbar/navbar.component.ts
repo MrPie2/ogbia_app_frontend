@@ -28,6 +28,8 @@ export class NavbarComponent implements OnDestroy {
   searchPosts: CommunityPost[] = [];
   searchUsers: FriendUser[] = [];
   unreadMessagesCount = 0;
+  private readonly conversationUnreadCounts: Record<number, number> = {};
+  private readonly locallyReadConversations = new Set<number>();
 
   private readonly destroy$ = new Subject<void>();
   private readonly searchTerms$ = new Subject<string>();
@@ -49,6 +51,12 @@ export class NavbarComponent implements OnDestroy {
         this.closeSearch();
       });
 
+    this.messaging.conversationOpened$.pipe(takeUntil(this.destroy$)).subscribe(conversationId => {
+      this.locallyReadConversations.add(conversationId);
+      this.conversationUnreadCounts[conversationId] = 0;
+      this.recalculateUnreadMessages();
+    });
+
     merge(
       timer(0, 15000),
       this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
@@ -56,9 +64,12 @@ export class NavbarComponent implements OnDestroy {
       switchMap(() => this.messaging.getConversations().pipe(catchError(() => of({ data: [] })))),
       takeUntil(this.destroy$)
     ).subscribe(response => {
-      this.unreadMessagesCount = (response.data || []).reduce(
-        (total, conversation) => total + Math.max(0, Number(conversation.unread_count) || 0), 0
-      );
+      (response.data || []).forEach(conversation => {
+        const count = Math.max(0, Number(conversation.unread_count) || 0);
+        if (count === 0) this.locallyReadConversations.delete(conversation.id);
+        this.conversationUnreadCounts[conversation.id] = this.locallyReadConversations.has(conversation.id) ? 0 : count;
+      });
+      this.recalculateUnreadMessages();
     });
 
     this.searchTerms$
@@ -91,6 +102,10 @@ export class NavbarComponent implements OnDestroy {
           this.searchError = 'Search is temporarily unavailable. Please try again.';
         }
       });
+  }
+
+  private recalculateUnreadMessages(): void {
+    this.unreadMessagesCount = Object.values(this.conversationUnreadCounts).reduce((total, count) => total + count, 0);
   }
 
   toggleMenu(): void {
