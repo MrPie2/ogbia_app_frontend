@@ -74,6 +74,7 @@ export class MessagesPage implements OnInit, OnDestroy {
 
   loadThread(silent = false): void {
     if (!this.conversationId) return;
+    this.messaging.notifyConversationOpened(this.conversationId);
     if (!silent) this.loading = true;
     this.messaging.getConversation(this.conversationId).subscribe({
       next: response => {
