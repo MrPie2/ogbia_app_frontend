@@ -31,7 +31,7 @@ export class HomePage implements OnInit, OnDestroy {
   activeCommentPost: CommunityPost | null = null;
   activeMediaPreview: { type: 'image' | 'video'; url: string } | null = null;
   postComments: PostComment[] = [];
-  commentDraft = '';
+  commentDraft = '';\n  replyToComment: PostComment | null = null;\n  likingCommentIds = new Set<number>();
   commentsLoading = false;
   commentSending = false;
   commentsError = '';
@@ -511,6 +511,42 @@ export class HomePage implements OnInit, OnDestroy {
           : 'Your comment could not be sent. Please try again.';
         this.cdr.markForCheck();
       }
+    });
+  }
+
+  replyTo(comment: PostComment): void {
+    this.replyToComment = comment;
+    this.commentDraft = '';
+  }
+
+  toggleCommentLike(comment: PostComment): void {
+    if (this.likingCommentIds.has(comment.id)) return;
+    this.likingCommentIds.add(comment.id);
+    this.postsService.toggleCommentLike(comment.id).subscribe({
+      next: result => {
+        this.updateCommentInTree(comment.id, item => ({
+          ...item,
+          liked_by_me: result.liked,
+          likes_count: result.likes_count
+        }));
+        this.likingCommentIds.delete(comment.id);
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.likingCommentIds.delete(comment.id);
+        this.commentsError = 'Could not update the comment like. Please try again.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  private updateCommentInTree(commentId: number, update: (comment: PostComment) => PostComment): void {
+    this.postComments = this.postComments.map(comment => {
+      if (comment.id === commentId) return update(comment);
+      return {
+        ...comment,
+        replies: (comment.replies || []).map(reply => reply.id === commentId ? update(reply) : reply)
+      };
     });
   }
 
