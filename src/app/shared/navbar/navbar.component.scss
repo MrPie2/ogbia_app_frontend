@@ -430,9 +430,20 @@
   position: relative;
   display: grid;
   place-items: center;
+  box-sizing: border-box;
   width: 28px;
   height: 28px;
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 9px;
+  background: #eeecf7;
+  box-shadow: 3px 3px 7px rgba(72,64,112,.10), -3px -3px 7px rgba(255,255,255,.95);
+  transition: box-shadow .18s ease, transform .18s ease, color .18s ease;
 }
+.app-bottom-nav a.active .bottom-nav-icon-wrap,
+.app-bottom-nav a:active .bottom-nav-icon-wrap {
+  box-shadow: inset 3px 3px 6px rgba(72,64,112,.13), inset -3px -3px 6px rgba(255,255,255,.95);
+}
+.app-bottom-nav a:active .bottom-nav-icon-wrap { transform: scale(.94); }
 .app-bottom-nav .bottom-nav-icon-wrap > ion-icon {
   width: 28px;
   height: 28px;
