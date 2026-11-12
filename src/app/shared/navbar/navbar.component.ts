@@ -57,6 +57,12 @@ export class NavbarComponent implements OnDestroy {
       this.recalculateUnreadMessages();
     });
 
+    this.messaging.conversationOpened$.pipe(takeUntil(this.destroy$)).subscribe(conversationId => {
+      this.locallyReadConversations.add(conversationId);
+      this.conversationUnreadCounts[conversationId] = 0;
+      this.recalculateUnreadMessages();
+    });
+
     merge(
       timer(0, 15000),
       this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
@@ -102,6 +108,10 @@ export class NavbarComponent implements OnDestroy {
           this.searchError = 'Search is temporarily unavailable. Please try again.';
         }
       });
+  }
+
+  private recalculateUnreadMessages(): void {
+    this.unreadMessagesCount = Object.values(this.conversationUnreadCounts).reduce((total, count) => total + count, 0);
   }
 
   private recalculateUnreadMessages(): void {
