@@ -27,6 +27,7 @@ export class HomePage implements OnInit, OnDestroy {
   private broadcastTimer: ReturnType<typeof setInterval> | null = null;
   private expandedPostIds = new Set<number>();
   private requestedPostId: number | null = null;
+  postPreviewError = '';
   private loadingRequestedPostId: number | null = null;
   likingPostIds = new Set<number>();
   activeCommentPost: CommunityPost | null = null;
@@ -80,6 +81,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.route.queryParamMap.subscribe(params => {
       const postId = Number(params.get('post'));
       this.requestedPostId = Number.isInteger(postId) && postId > 0 ? postId : null;
+      this.postPreviewError = '';
       if (!this.loadingPosts && this.requestedPostId) this.scrollToRequestedPost();
     });
 
@@ -189,7 +191,7 @@ export class HomePage implements OnInit, OnDestroy {
       },
       error: () => {
         this.loadingRequestedPostId = null;
-        this.feedError = 'This post is unavailable or you do not have permission to view it.';
+        this.postPreviewError = 'This post is no longer available or you do not have permission to view it.';
         this.cdr.markForCheck();
       }
     });
