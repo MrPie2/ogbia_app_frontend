@@ -68,7 +68,11 @@ export class PostsService {
     });
   }
 
-  getPost(postId: number): Observable<{ data: CommunityPost }> {\n    return this.http.get<{ data: CommunityPost }>(`${this.apiUrl}/posts/${postId}`, { headers: this.authHeaders() });\n  }\n\n  getBroadcasts(): Observable<{ data: FeedBroadcast[] }> {
+  getPost(postId: number): Observable<{ data: CommunityPost }> {
+    return this.http.get<{ data: CommunityPost }>(`${this.apiUrl}/posts/${postId}`, { headers: this.authHeaders() });
+  }
+
+  getBroadcasts(): Observable<{ data: FeedBroadcast[] }> {
     return this.http.get<{ data: FeedBroadcast[] }>(`${this.apiUrl}/broadcasts`, {
       headers: this.authHeaders()
     });
