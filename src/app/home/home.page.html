@@ -49,6 +49,7 @@
         <div><h2>Community Feed</h2><p>What's happening around Ogbia</p></div>
         <a routerLink="/create-post" class="write-post"><ion-icon name="create-outline"></ion-icon> Write post</a>
       </div>
+      @if (postPreviewError) { <p class="post-preview-error" role="status">{{ postPreviewError }}</p> }
 
       @if (loadingPosts) {
         <div class="feed-state card"><ion-icon name="sync-outline" class="spin"></ion-icon><span>Loading community posts…</span></div>
