@@ -33,7 +33,7 @@
                   <span class="online-dot"></span>
                 </div>
                 <div class="friend-info">
-                  <h3><a class="person-name-link" [routerLink]="['/members', friend.id]">{{ friend.name }}</a></a>
+                  <h3><a class="person-name-link" [routerLink]="['/members', friend.id]">{{ friend.name }}</a>
                     @if (unreadCount(friend.id) > 0) {
                       <span class="friend-unread-badge" [attr.aria-label]="unreadCount(friend.id) + ' unread messages'">{{ unreadCount(friend.id) > 99 ? '99+' : unreadCount(friend.id) + ' new' }}</span>
                     }</h3>
@@ -76,7 +76,7 @@
                   @if (friend.is_online) { <span class="online-dot"></span> }
                 </div>
                 <div class="friend-info">
-                  <h3><a class="person-name-link" [routerLink]="['/members', friend.id]">{{ friend.name }}</a></a>
+                  <h3><a class="person-name-link" [routerLink]="['/members', friend.id]">{{ friend.name }}</a>
                     @if (unreadCount(friend.id) > 0) {
                       <span class="friend-unread-badge" [attr.aria-label]="unreadCount(friend.id) + ' unread messages'">{{ unreadCount(friend.id) > 99 ? '99+' : unreadCount(friend.id) + ' new' }}</span>
                     }</h3>
