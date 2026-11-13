@@ -8,9 +8,16 @@
         </div>
         <div class="app-update-banner-actions">
           @if (!update.mandatory) {
-            <button type="button" class="app-update-later" (click)="dismissAppUpdate()">Later</button>
+            <button type="button" class="app-update-later" [disabled]="updateInstalling" (click)="dismissAppUpdate()">Later</button>
           }
-          <button type="button" class="app-update-now" (click)="installAppUpdate()">Update now</button>
+          <button type="button" class="app-update-now" [disabled]="updateInstalling" [attr.aria-busy]="updateInstalling" (click)="installAppUpdate()">
+            @if (updateInstalling) {
+              <span class="app-update-spinner" aria-hidden="true"></span>
+              <span>Starting...</span>
+            } @else {
+              <span>Update now</span>
+            }
+          </button>
         </div>
       </div>
       <div class="app-update-banner-note">
