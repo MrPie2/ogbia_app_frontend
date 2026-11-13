@@ -122,8 +122,12 @@
   <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
     <ion-icon name="home-outline"></ion-icon><span>Home</span>
   </a>
-  <a routerLink="/friends" routerLinkActive="active" aria-label="Friends">
-    <span class="bottom-nav-icon-wrap"><ion-icon name="people-outline"></ion-icon>@if (unreadMessagesCount > 0) { <b class="message-nav-badge" [attr.aria-label]="unreadMessagesCount + ' unread messages'">{{ unreadMessagesCount > 99 ? '99+' : unreadMessagesCount }}</b> }</span><span>Friends</span>
+  <a class="friends-nav" routerLink="/friends" routerLinkActive="active" aria-label="Friends">
+    <ion-icon name="people-outline"></ion-icon>
+    @if (unreadMessagesCount > 0) {
+      <b class="message-nav-badge" [attr.aria-label]="unreadMessagesCount + ' unread messages'">{{ unreadMessagesCount > 99 ? '99+' : unreadMessagesCount }}</b>
+    }
+    <span>Friends</span>
   </a>
   <a class="create-nav" routerLink="/create-post" routerLinkActive="active" aria-label="Create a post">
     <span class="create-nav-icon"><ion-icon name="add"></ion-icon></span><span>Create</span>
