@@ -939,7 +939,8 @@
   position: absolute;
   /* Reserve a dedicated lower band for the author card so media never sits
      behind or visually collides with the user's details. */
-  inset: 0 0 calc(160px + env(safe-area-inset-bottom)) 0;
+  /* Start below the fixed app header so the top of the photo/video stays visible. */
+  inset: calc(64px + env(safe-area-inset-top)) 0 calc(160px + env(safe-area-inset-bottom)) 0;
   display: flex;
   align-items: center;
   justify-content: center;
