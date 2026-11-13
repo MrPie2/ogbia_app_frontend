@@ -966,7 +966,8 @@
 .media-preview-author {
   position: absolute;
   left: 16px;
-  bottom: max(22px, env(safe-area-inset-bottom));
+  /* Keep the author card above the fixed bottom navigation and device safe area. */
+  bottom: calc(84px + env(safe-area-inset-bottom));
   width: calc(100% - 92px);
   max-width: 360px;
   padding: 10px 12px;
