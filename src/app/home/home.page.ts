@@ -31,7 +31,7 @@ export class HomePage implements OnInit, OnDestroy {
   private loadingRequestedPostId: number | null = null;
   likingPostIds = new Set<number>();
   activeCommentPost: CommunityPost | null = null;
-  activeMediaPreview: { type: 'image' | 'video'; url: string } | null = null;
+  activeMediaPreview: { type: 'image' | 'video'; url: string; post: CommunityPost } | null = null;
   postComments: PostComment[] = [];
   commentDraft = '';
   replyToComment: PostComment | null = null;
@@ -473,9 +473,9 @@ export class HomePage implements OnInit, OnDestroy {
     });
   }
 
-  openMediaPreview(type: 'image' | 'video', url: string): void {
+  openMediaPreview(post: CommunityPost, type: 'image' | 'video', url: string): void {
     if (!url) return;
-    this.activeMediaPreview = { type, url };
+    this.activeMediaPreview = { type, url, post };
   }
 
   closeMediaPreview(): void {
