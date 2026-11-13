@@ -425,52 +425,13 @@
 }
 
 
-/* Unread-message indicator anchored to the Friends icon in bottom navigation. */
-.app-bottom-nav .bottom-nav-icon-wrap {
-  position: relative;
-  display: grid;
-  place-items: center;
-  box-sizing: border-box;
-  flex: 0 0 28px;
-  width: 28px;
-  min-width: 28px;
-  height: 28px;
-  margin: 0;
-  padding: 0;
-  border: 1px solid rgba(255,255,255,.9);
-  border-radius: 9px;
-  background: #eeecf7;
-  box-shadow: 3px 3px 7px rgba(72,64,112,.10), -3px -3px 7px rgba(255,255,255,.95);
-  transition: box-shadow .18s ease, transform .18s ease, color .18s ease;
-}
-.app-bottom-nav a.active .bottom-nav-icon-wrap,
-.app-bottom-nav a:active .bottom-nav-icon-wrap {
-  box-shadow: inset 3px 3px 6px rgba(72,64,112,.13), inset -3px -3px 6px rgba(255,255,255,.95);
-}
-.app-bottom-nav a:active .bottom-nav-icon-wrap { transform: scale(.94); }
-.app-bottom-nav .bottom-nav-icon-wrap > ion-icon {
-  display: block;
-  box-sizing: border-box;
-  flex: 0 0 28px;
-  width: 28px;
-  height: 28px;
-  padding: 5px;
-  font-size: 20px;
-  line-height: 1;
-}
-.app-bottom-nav .bottom-nav-icon-wrap + span {
-  display: block;
-  margin: 0;
-  padding: 0;
-  font-size: 9px;
-  font-weight: 600;
-  line-height: 1.2;
-  text-align: center;
-}
-.app-bottom-nav .message-nav-badge {
+/* Friends uses the same direct icon element and 28px embossed surface
+   as the other bottom navigation items; the badge is anchored to the nav item. */
+.app-bottom-nav .friends-nav { position: relative; }
+.app-bottom-nav .friends-nav .message-nav-badge {
   position: absolute;
-  top: -7px;
-  right: -9px;
+  top: 2px;
+  left: calc(50% + 7px);
   z-index: 2;
   display: grid;
   place-items: center;
