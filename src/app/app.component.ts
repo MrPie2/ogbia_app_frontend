@@ -91,6 +91,7 @@ export class AppComponent implements OnDestroy {
   isWelcomeRoute = false;
   notificationToast: AppNotification | null = null;
   updatePrompt: NativeApkUpdate | null = null;
+  updateInstalling = false;
   private readonly destroy$ = new Subject<void>();
   private swipeStartX = 0;
   private swipeStartY = 0;
@@ -313,8 +314,13 @@ export class AppComponent implements OnDestroy {
     this.nativeAppUpdates.dismissPrompt();
   }
 
-  installAppUpdate(): void {
-    void this.nativeAppUpdates.installUpdate();
+  async installAppUpdate(): Promise<void> {
+    if (this.updateInstalling || !this.updatePrompt) return;
+    this.updateInstalling = true;
+    const started = await this.nativeAppUpdates.installUpdate();
+    // Keep the button locked once the native updater has accepted the request.
+    // If it could not start, restore the button so the user can retry.
+    if (!started) this.updateInstalling = false;
   }
 
   ngOnDestroy(): void {
