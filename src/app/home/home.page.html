@@ -60,24 +60,6 @@
       } @else {
         @for (post of feedPosts; track post.id; let i = $index) {
           <article class="post card fade-up" [id]="'post-' + post.id" style="padding: 0px">
-            <div class="post-head" style="padding: 10px 10px 0px 10px">
-              @if (post.author; as author) {
-                <a class="feed-avatar feed-avatar-profile-link" [routerLink]="author.id === user?.id ? ['/profile'] : ['/members', author.id]" [attr.aria-label]="'View ' + (author.name || 'member') + ' profile and photos'">
-                  @if (author.profile_photo_url) {
-                    <img [src]="author.profile_photo_url" [alt]="author.name || 'User profile picture'" loading="lazy" decoding="async" fetchpriority="low" (error)="onPostAvatarError($event)">
-                  }
-                  <span class="feed-avatar-fallback" [class.visible]="!author.profile_photo_url">{{ postInitials(post) }}</span>
-                </a>
-                <div class="post-author">
-                  <a class="person-name-link" [routerLink]="author.id === user?.id ? ['/profile'] : ['/members', author.id]"><b>{{ author.name || 'Ogbia member' }}</b></a>
-                  <small>{{ post.created_at | date:'medium' }}</small>
-                </div>
-              } @else {
-                <div class="feed-avatar"><span class="feed-avatar-fallback visible">{{ postInitials(post) }}</span></div>
-                <div class="post-author"><b>Ogbia member</b><small>{{ post.created_at | date:'medium' }}</small></div>
-              }
-              <ion-icon name="ellipsis-horizontal"></ion-icon>
-            </div>
             @if (post.is_event) {
               <div class="feed-event-details">
                 <div class="feed-event-label"><ion-icon name="calendar-outline"></ion-icon><span>COMMUNITY EVENT</span></div>
@@ -112,16 +94,37 @@
                 <button type="button" class="post-video-preview" (click)="openMediaPreview('video', post.media_url)" aria-label="Open video preview"><ion-icon name="expand-outline"></ion-icon><span>Preview</span></button>
               </div>
             }
-            <div class="post-actions" style="padding: 8px; border: 0px;">
-              <button type="button" class="post-action-button" [class.is-liked]="post.liked_by_me" [disabled]="likingPostIds.has(post.id)" (click)="toggleLike(post)" [attr.aria-pressed]="!!post.liked_by_me">
-                <ion-icon [name]="post.liked_by_me ? 'heart' : 'heart-outline'"></ion-icon><span>{{ post.liked_by_me ? 'Liked' : 'Like' }}</span><b>{{ post.likes_count || 0 }}</b>
-              </button>
-              <button type="button" class="post-action-button" (click)="openComments(post)">
-                <ion-icon name="chatbubble-outline"></ion-icon><span>Comment</span><b>{{ post.comments_count || 0 }}</b>
-              </button>
-              <button type="button" class="post-action-button" (click)="sharePost(post)">
-                <ion-icon name="share-social-outline"></ion-icon><span>Share</span>
-              </button>
+            <div class="post-preview-footer">
+            <div class="post-preview-author">
+              @if (post.author; as author) {
+                <a class="feed-avatar feed-avatar-profile-link" [routerLink]="author.id === user?.id ? ['/profile'] : ['/members', author.id]" [attr.aria-label]="'View ' + (author.name || 'member') + ' profile and photos'">
+                  @if (author.profile_photo_url) {
+                    <img [src]="author.profile_photo_url" [alt]="author.name || 'User profile picture'" loading="lazy" decoding="async" fetchpriority="low" (error)="onPostAvatarError($event)">
+                  }
+                  <span class="feed-avatar-fallback" [class.visible]="!author.profile_photo_url">{{ postInitials(post) }}</span>
+                </a>
+                <div class="post-author">
+                  <a class="person-name-link" [routerLink]="author.id === user?.id ? ['/profile'] : ['/members', author.id]"><b>{{ author.name || 'Ogbia member' }}</b></a>
+                  <small>{{ post.created_at | date:'medium' }}</small>
+                </div>
+              } @else {
+                <div class="feed-avatar"><span class="feed-avatar-fallback visible">{{ postInitials(post) }}</span></div>
+                <div class="post-author"><b>Ogbia member</b><small>{{ post.created_at | date:'medium' }}</small></div>
+              }
+            </div>
+              <div class="post-actions post-preview-actions" aria-label="Post actions">
+                <button type="button" class="post-action-button" [class.is-liked]="post.liked_by_me" [disabled]="likingPostIds.has(post.id)" (click)="toggleLike(post)" [attr.aria-pressed]="!!post.liked_by_me" [attr.aria-label]="post.liked_by_me ? 'Unlike post' : 'Like post'">
+                  <ion-icon [name]="post.liked_by_me ? 'heart' : 'heart-outline'"></ion-icon>
+                  <b>{{ post.likes_count || 0 }}</b>
+                </button>
+                <button type="button" class="post-action-button" (click)="openComments(post)" [attr.aria-label]="'View ' + (post.comments_count || 0) + ' comments'">
+                  <ion-icon name="chatbubble-outline"></ion-icon>
+                  <b>{{ post.comments_count || 0 }}</b>
+                </button>
+                <button type="button" class="post-action-button" (click)="sharePost(post)" aria-label="Share post">
+                  <ion-icon name="share-social-outline"></ion-icon>
+                </button>
+              </div>
             </div>
           </article>
           @if ((i + 1) % 4 === 0 && broadcasts.length) {
