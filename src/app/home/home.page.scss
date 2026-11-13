@@ -918,6 +918,19 @@
 .media-preview-actions { display:flex; flex:0 0 42px; flex-direction:column; align-items:center; justify-content:center; gap:8px; }
 .media-preview-actions button { display:flex; width:38px; min-height:34px; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:3px; border:0; border-radius:9px; background:transparent; color:#77718f; cursor:pointer; }
 .media-preview-actions button ion-icon { font-size:19px; }
+/* Keep the like/heart glyph visible consistently in every media preview. */
+.media-preview-actions button:first-child ion-icon[name="heart"],
+.media-preview-actions button:first-child ion-icon[name="heart-outline"] {
+  display: block;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  min-height: 22px;
+  visibility: visible;
+  opacity: 1;
+  color: currentColor;
+}
 .media-preview-actions button b { color:inherit; font-size:9px; line-height:1; }
 .media-preview-actions button.is-liked { color:#d64270; }
 .media-preview-actions button:disabled { opacity:.55; }
