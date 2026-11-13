@@ -1011,7 +1011,7 @@
 }
 @media (max-width: 360px) {
   .media-preview-media {
-    inset-bottom: calc(154px + env(safe-area-inset-bottom));
+    bottom: calc(154px + env(safe-area-inset-bottom));
   }
   .media-preview-author {
     left: 10px;
