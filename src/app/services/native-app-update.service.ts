@@ -69,17 +69,19 @@ export class NativeAppUpdateService {
     this.updateSubject.next(null);
   }
 
-  async installUpdate(): Promise<void> {
+  async installUpdate(): Promise<boolean> {
     const update = this.updateSubject.value;
-    if (!update?.download_url || !update.sha256) return;
+    if (!update?.download_url || !update.sha256) return false;
 
     try {
-      await NativeApkUpdater.downloadAndInstall({
+      const result = await NativeApkUpdater.downloadAndInstall({
         url: update.download_url,
         sha256: update.sha256
       });
+      return result.started === true;
     } catch (error) {
       console.error('[Ogbia APK Update] Installation could not start:', error);
+      return false;
     }
   }
 }
