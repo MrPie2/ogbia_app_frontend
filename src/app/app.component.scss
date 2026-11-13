@@ -132,3 +132,38 @@
   .app-update-banner-actions button { padding-inline: 7px; font-size: 10px; }
   .app-update-banner-note { margin-left: 21px; }
 }
+
+
+/* Prevent repeated taps while the native APK updater is starting. */
+.app-update-now:disabled,
+.app-update-later:disabled {
+  opacity: .72;
+  cursor: wait;
+}
+
+.app-update-now {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.app-update-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  box-sizing: border-box;
+  border: 2px solid rgba(255, 255, 255, .4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: app-update-spin .7s linear infinite;
+}
+
+@keyframes app-update-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-update-spinner { animation-duration: 1.4s; }
+}
