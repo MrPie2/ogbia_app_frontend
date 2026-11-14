@@ -28,7 +28,7 @@ export class FamilyClaimPage implements OnInit {
 
   ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token') || '';
-    if (!this.token) this.error = 'This family invitation link is incomplete.';
+
   }
 
   requestCode(): void {
