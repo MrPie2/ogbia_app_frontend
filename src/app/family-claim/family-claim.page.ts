@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { IonContent } from '@ionic/angular';
+import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-family-claim',
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule],
+  imports: [IonContent, IonIcon, CommonModule, FormsModule],
   templateUrl: './family-claim.page.html',
   styleUrl: './family-claim.page.scss',
 })
@@ -49,7 +49,7 @@ export class FamilyClaimPage implements OnInit {
       next: response => {
         this.claiming = false;
         this.message = response.message || 'Family profile claimed successfully.';
-        void this.router.navigateByUrl('/home', { replaceUrl: true });
+        void this.router.navigateByUrl(response.user?.email ? '/home' : '/complete-profile', { replaceUrl: true });
       },
       error: error => {
         this.claiming = false;
