@@ -1,0 +1,41 @@
+<ion-content [fullscreen]="true">
+  <main class="admin-family-claims">
+    <header class="admin-family-header">
+      <div>
+        <p>OGBIA CONNECT · ADMINISTRATION</p>
+        <h1>Family claim reviews</h1>
+        <span>Review disputed identities and verified claims requiring administrator attention.</span>
+      </div>
+      <button type="button" (click)="load()" [disabled]="loading" aria-label="Refresh claims"><ion-icon name="refresh-outline"></ion-icon></button>
+    </header>
+
+    <p class="admin-family-feedback error" *ngIf="error" role="alert">{{ error }}</p>
+    <p class="admin-family-feedback success" *ngIf="message" role="status">{{ message }}</p>
+    <div class="admin-family-loading" *ngIf="loading">Loading claim requests…</div>
+
+    <section class="admin-family-empty" *ngIf="!loading && !claims.length && !error">
+      <ion-icon name="shield-checkmark-outline"></ion-icon>
+      <h2>No claims awaiting review</h2>
+      <p>Disputed claims and claims escalated for administrator review will appear here.</p>
+    </section>
+
+    <article class="admin-family-claim" *ngFor="let claim of claims">
+      <div class="admin-family-claim-top">
+        <div>
+          <span class="admin-family-status" [class.disputed]="claim.status === 'disputed'">{{ claim.status === 'disputed' ? 'Disputed' : 'Verified · awaiting review' }}</span>
+          <h2>{{ claim.profile_name || 'Family profile' }}</h2>
+          <p>{{ claim.relationship || 'Family member' }} · claimant {{ claim.claimant_name || 'Ogbia member' }}</p>
+          <small>Verified phone ending {{ claim.phone_last_four }}</small>
+        </div>
+        <span class="admin-family-id">#{{ claim.id }}</span>
+      </div>
+      <p class="admin-family-existing-note" *ngIf="claim.review_notes"><strong>Creator's concern:</strong> {{ claim.review_notes }}</p>
+      <label [for]="'admin-claim-note-' + claim.id">Administrator review note</label>
+      <textarea [id]="'admin-claim-note-' + claim.id" [(ngModel)]="notes[claim.id]" rows="2" placeholder="Record the reason for your decision"></textarea>
+      <div class="admin-family-actions">
+        <button type="button" class="approve" (click)="decide(claim, 'approved')" [disabled]="savingId === claim.id">{{ savingId === claim.id ? 'Saving…' : 'Approve claim' }}</button>
+        <button type="button" class="reject" (click)="decide(claim, 'rejected')" [disabled]="savingId === claim.id">Reject claim</button>
+      </div>
+    </article>
+  </main>
+</ion-content>
