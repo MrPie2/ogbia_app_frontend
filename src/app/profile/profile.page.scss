@@ -523,3 +523,71 @@
 /* Keep family avatars visually integrated with the main profile card. */
 .profile-hero .family-layout{margin:18px 0 8px;padding-top:14px;border-top:1px solid rgba(112,103,153,.14)}
 .profile-hero .admin-family-link{margin:14px 2px 0;text-align:left}
+
+
+/* Keep children, the account holder, and both parents on one horizontal line. */
+.profile-page .family-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+.profile-page .family-avatar-stack {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+}
+.profile-page .family-child-avatar,
+.profile-page .family-eye-button {
+  margin: 0 0 0 -9px;
+  flex: 0 0 34px;
+}
+.profile-page .family-child-avatar:first-child { margin-left: 0; }
+.profile-page .family-parents {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.profile-page .family-parent,
+.profile-page .family-parent-empty {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+.profile-page .family-parent > a {
+  flex-direction: column;
+  gap: 3px;
+}
+.profile-page .family-parent-invite { width: 20px; height: 20px; }
+.profile-page .family-self .profile-photo {
+  width: 66px;
+  height: 66px;
+  margin: 0;
+}
+.profile-page .profile-identity-under-photo {
+  margin: 12px 0 4px;
+  text-align: center;
+}
+.profile-page .profile-identity-under-photo h1 {
+  margin: 0;
+}
+.profile-page .profile-identity-under-photo p {
+  margin: 5px 0 0;
+}
+@media (max-width: 360px) {
+  .profile-page .family-layout { grid-template-columns: minmax(0, 1fr) 58px minmax(0, 1fr); gap: 3px; }
+  .profile-page .family-child-avatar,
+  .profile-page .family-eye-button { flex-basis: 29px; width: 29px; height: 29px; margin-left: -8px; }
+  .profile-page .family-child-avatar:first-child { margin-left: 0; }
+  .profile-page .family-parents { gap: 4px; }
+  .profile-page .family-parent-avatar { width: 27px; height: 27px; }
+  .profile-page .family-self .profile-photo { width: 58px; height: 58px; }
+}
