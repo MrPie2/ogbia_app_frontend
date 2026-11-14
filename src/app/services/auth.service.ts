@@ -52,6 +52,9 @@ export interface FamilyMember {
   name: string | null;
   relationship: 'child' | 'father' | 'mother';
   profile_photo_url: string | null;
+  claimed_user_id: number | null;
+  claim_status: 'managed' | 'pending' | 'claimed';
+  claim_token: string;
 }
 
 export interface FamilyProfileResponse {
@@ -60,6 +63,7 @@ export interface FamilyProfileResponse {
     children: FamilyMember[];
     father: FamilyMember | null;
     mother: FamilyMember | null;
+    all: FamilyMember[];
   };
 }
 
@@ -160,6 +164,29 @@ export class AuthService {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
     return this.http.get<FamilyProfileResponse>(`${this.apiUrl}/profile/family`, { headers });
+  }
+
+  createFamilyProfile(name: string, relationship: 'child' | 'father' | 'mother', phone = ''): Observable<{ success: boolean; message: string; data: FamilyMember }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.post<{ success: boolean; message: string; data: FamilyMember }>(`${this.apiUrl}/profile/family`, { name, relationship, phone: phone.trim() || null }, { headers });
+  }
+
+  deleteFamilyProfile(id: number): Observable<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.delete<{ success: boolean; message: string }>(`${this.apiUrl}/profile/family/${id}`, { headers });
+  }
+
+  requestFamilyClaimOtp(claimToken: string, phone: string): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(`${this.apiUrl}/family/claim/request-otp`, { claim_token: claimToken, phone });
+  }
+
+  verifyFamilyClaim(claimToken: string, phone: string, code: string, password = '', passwordConfirmation = ''): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/family/claim/verify`, {
+      claim_token: claimToken, phone, code,
+      ...(password ? { password, password_confirmation: passwordConfirmation } : {}),
+    }).pipe(tap(response => this.storeSession(response)));
   }
 
   getMyMemories(): Observable<UserMemoriesResponse> {
