@@ -334,11 +334,21 @@ export class AuthService {
   addFamilyRelationship(payload: {
     relationship: string; name?: string; date_of_birth?: string; gender?: string;
     hometown?: string; privacy?: 'private' | 'family' | 'public'; match_reference?: string;
+    photo?: File;
   }): Observable<{ success: boolean; message: string; data: { person: FamilyTreePerson; relationship: string } }> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    const form = new FormData();
+    form.append('relationship', payload.relationship);
+    if (payload.name) form.append('name', payload.name);
+    if (payload.date_of_birth) form.append('date_of_birth', payload.date_of_birth);
+    if (payload.gender) form.append('gender', payload.gender);
+    if (payload.hometown) form.append('hometown', payload.hometown);
+    if (payload.privacy) form.append('privacy', payload.privacy);
+    if (payload.match_reference) form.append('match_reference', payload.match_reference);
+    if (payload.photo) form.append('profile_photo', payload.photo, payload.photo.name);
     return this.http.post<{ success: boolean; message: string; data: { person: FamilyTreePerson; relationship: string } }>(
-      `${this.apiUrl}/family/tree/relationships`, payload, { headers }
+      `${this.apiUrl}/family/tree/relationships`, form, { headers }
     ).pipe(timeout(20000));
   }
 
