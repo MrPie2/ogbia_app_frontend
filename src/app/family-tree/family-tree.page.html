@@ -1,0 +1,88 @@
+<ion-content [fullscreen]="true">
+  <main class="family-tree-page">
+    <header class="tree-header">
+      <a routerLink="/profile" class="tree-back" aria-label="Back to profile"><ion-icon name="arrow-back-outline"></ion-icon></a>
+      <div><span class="tree-eyebrow">OGBIA CONNECT</span><h1>My family tree</h1><p>Explore the people and relationships that connect your family.</p></div>
+      <button type="button" class="tree-add-top" (click)="openAdd()" aria-label="Add family member"><ion-icon name="add"></ion-icon></button>
+    </header>
+
+    <section class="tree-intro">
+      <div class="tree-intro-icon"><ion-icon name="git-network-outline"></ion-icon></div>
+      <div><strong>Your family, connected</strong><span>Build your family history one relationship at a time. Managed profiles can be claimed by their rightful owners.</span></div>
+    </section>
+
+    <div class="tree-state" *ngIf="loading"><span class="tree-loader"></span>Loading your family tree…</div>
+    <div class="tree-error" *ngIf="!loading && error"><ion-icon name="alert-circle-outline"></ion-icon><span>{{ error }}</span><button type="button" (click)="loadTree()">Retry</button></div>
+
+    <ng-container *ngIf="!loading && !error">
+      <section class="tree-root" *ngFor="let person of people">
+        <ng-container *ngIf="person.id === rootId">
+          <span class="tree-root-avatar">
+            <img *ngIf="person.profile_photo_url" [src]="person.profile_photo_url" alt="">
+            <span *ngIf="!person.profile_photo_url">{{ initials(person.name) }}</span>
+          </span>
+          <div><small>THIS IS YOU</small><strong>{{ person.name }}</strong><span>Your family connection starts here</span></div>
+        </ng-container>
+      </section>
+
+      <div class="tree-section-heading"><div><h2>Family connections</h2><p>{{ relatives.length }} linked {{ relatives.length === 1 ? 'person' : 'people' }}</p></div><button type="button" (click)="openAdd()"><ion-icon name="person-add-outline"></ion-icon> Add relative</button></div>
+
+      <section class="tree-people" *ngIf="relatives.length; else noRelatives">
+        <button type="button" class="tree-person" *ngFor="let person of relatives" (click)="openPerson(person)">
+          <span class="tree-person-avatar">
+            <img *ngIf="person.profile_photo_url" [src]="person.profile_photo_url" [alt]="person.name">
+            <span *ngIf="!person.profile_photo_url">{{ initials(person.name) }}</span>
+          </span>
+          <span class="tree-person-copy"><strong>{{ person.name }}</strong><small>{{ relationshipLabel(person.id) }}</small><em>{{ person.is_claimed ? 'Ogbia account linked' : person.is_managed ? 'Family-managed profile' : 'Ogbia member' }}</em></span>
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
+      </section>
+      <ng-template #noRelatives>
+        <section class="tree-empty"><span><ion-icon name="people-outline"></ion-icon></span><strong>Your family tree starts with one connection</strong><p>Add your parents, children, grandparents or another relative to begin building your family history.</p><button type="button" (click)="openAdd()">Add your first relative</button></section>
+      </ng-template>
+      <p class="tree-privacy-note"><ion-icon name="lock-closed-outline"></ion-icon> Family profile visibility follows each member's privacy settings.</p>
+    </ng-container>
+  </main>
+
+  <div class="tree-overlay" *ngIf="addOpen" (click)="closeAdd()">
+    <section class="tree-dialog" role="dialog" aria-modal="true" aria-label="Add a family member" (click)="$event.stopPropagation()">
+      <div class="tree-dialog-heading"><div><small>GROW YOUR FAMILY TREE</small><h2>Add a relative</h2><p>Start with the details you know. You can add more later.</p></div><button type="button" (click)="closeAdd()" aria-label="Close"><ion-icon name="close"></ion-icon></button></div>
+      <label>Relationship to you</label>
+      <select [(ngModel)]="relationship" class="tree-input">
+        <option *ngFor="let option of relationshipOptions" [value]="option.value">{{ option.label }}</option>
+      </select>
+      <label>Full name</label><input class="tree-input" [(ngModel)]="name" placeholder="Enter full name" maxlength="160">
+      <div class="tree-form-grid">
+        <div><label>Date of birth <small>(optional)</small></label><input class="tree-input" [(ngModel)]="dateOfBirth" type="date"></div>
+        <div><label>Gender <small>(optional)</small></label><select class="tree-input" [(ngModel)]="gender"><option value="">Not specified</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select></div>
+      </div>
+      <label>Hometown / community <small>(optional)</small></label><input class="tree-input" [(ngModel)]="hometown" placeholder="e.g. Otuokpoti" maxlength="160>
+      <label>Profile privacy</label><select class="tree-input" [(ngModel)]="privacy"><option value="private">Only me</option><option value="family">Family</option><option value="public">Public</option></select>
+      <button type="button" class="tree-search-button" (click)="searchMatches()" [disabled]="searching"><ion-icon name="search-outline"></ion-icon>{{ searching ? 'Searching…' : 'Check for an existing profile' }}</button>
+      <div class="tree-matches" *ngIf="matches.length">
+        <p>Possible existing profiles</p>
+        <button type="button" *ngFor="let match of matches" [class.selected]="selectedMatch?.match_reference === match.match_reference" (click)="chooseMatch(match)">
+          <span class="match-initials">{{ match.display_hint }}</span><span><strong>{{ match.confidence === 'strong' ? 'Strong possible match' : 'Possible match' }}</strong><small>Private details are hidden until identity is verified</small></span><ion-icon [name]="selectedMatch?.match_reference === match.match_reference ? 'checkmark-circle' : 'ellipse-outline'"></ion-icon>
+        </button>
+      </div>
+      <p class="tree-form-error" *ngIf="formError" role="alert">{{ formError }}</p>
+      <button type="button" class="tree-save-button" (click)="saveRelationship()" [disabled]="saving">{{ saving ? 'Saving…' : selectedMatch ? 'Connect selected profile' : 'Create managed profile' }}</button>
+      <p class="tree-dialog-footnote">A name or phone verification alone does not establish legal identity. Profile ownership is handled through a separate claim review.</p>
+    </section>
+  </div>
+
+  <div class="tree-overlay" *ngIf="selectedPerson" (click)="closePerson()">
+    <section class="tree-person-dialog" role="dialog" aria-modal="true" aria-label="Family member details" (click)="$event.stopPropagation()">
+      <button type="button" class="tree-person-close" (click)="closePerson()" aria-label="Close"><ion-icon name="close"></ion-icon></button>
+      <span class="tree-detail-avatar">
+        <img *ngIf="selectedPerson.profile_photo_url" [src]="selectedPerson.profile_photo_url" [alt]="selectedPerson.name">
+        <span *ngIf="!selectedPerson.profile_photo_url">{{ initials(selectedPerson.name) }}</span>
+      </span>
+      <h2>{{ selectedPerson.name }}</h2><p>{{ relationshipLabel(selectedPerson.id) }}</p>
+      <div class="tree-detail-row" *ngIf="selectedPerson.hometown"><small>Hometown</small><strong>{{ selectedPerson.hometown }}</strong></div>
+      <div class="tree-detail-row" *ngIf="selectedPerson.date_of_birth"><small>Date of birth</small><strong>{{ selectedPerson.date_of_birth | date:'longDate' }}</strong></div>
+      <span class="tree-status">{{ selectedPerson.is_claimed ? 'Personal account linked' : 'Family-managed profile' }}</span>
+      <button type="button" class="tree-save-button" (click)="closePerson()">Close</button>
+    </section>
+  </div>
+</ion-content>
