@@ -734,7 +734,11 @@
 }
 
 
-/* Raise the complete children / profile / parents row together. */
+/* Raise the relatives' controls while keeping the account holder's photo in place. */
 .profile-page .family-layout {
+  transform: none;
+}
+.profile-page .family-layout > .family-children,
+.profile-page .family-layout > .family-parents {
   transform: translateY(-30px);
 }
