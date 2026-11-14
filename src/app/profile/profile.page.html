@@ -34,7 +34,7 @@
         </div>
         <div class="family-layout" *ngIf="!familyLoading; else familyLoadingState">
           <div class="family-side family-children" aria-label="Children">
-            <div class="family-avatar-stack" *ngIf="family.children.length">
+            <div class="family-avatar-stack">
               <a class="family-avatar family-child-avatar"
                 *ngFor="let child of visibleChildren; let i = index"
                 [routerLink]="child.claimed_user_id ? ['/members', child.claimed_user_id] : null"
@@ -48,6 +48,10 @@
                 class="family-avatar family-eye-button" type="button"
                 (click)="openChildrenList()" aria-label="View all children">
                 <ion-icon name="eye-outline"></ion-icon>
+              </button>
+              <button *ngIf="!family.children.length" class="family-avatar family-empty-avatar"
+                type="button" (click)="openFamilyFormFor('child')" aria-label="Add a child">
+                <ion-icon name="add"></ion-icon>
               </button>
             </div>
             <span class="family-side-label">Children</span><a class="family-claim-entry" routerLink="/family/claim">Claim an invitation</a>
@@ -86,7 +90,18 @@
                 <button type="button" class="family-parent-invite family-remove-action" (click)="removeFamilyProfile(mother)" aria-label="Remove mother profile"><ion-icon name="trash-outline"></ion-icon></button>
               </ng-container>
             </div>
-            <span class="family-no-parents" *ngIf="!family.father && !family.mother">Parents</span>
+            <div class="family-parent family-parent-empty" *ngIf="!family.father">
+              <button class="family-avatar family-parent-avatar family-empty-avatar" type="button"
+                (click)="openFamilyFormFor('father')" aria-label="Add father">
+                <ion-icon name="add"></ion-icon>
+              </button><small>Father</small>
+            </div>
+            <div class="family-parent family-parent-empty" *ngIf="!family.mother">
+              <button class="family-avatar family-parent-avatar family-empty-avatar" type="button"
+                (click)="openFamilyFormFor('mother')" aria-label="Add mother">
+                <ion-icon name="add"></ion-icon>
+              </button><small>Mother</small>
+            </div>
           </div>
         </div>
         <ng-template #familyLoadingState><div class="family-loading">Loading family profile…</div></ng-template>
