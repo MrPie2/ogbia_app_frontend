@@ -682,3 +682,53 @@
   background: #eeecf7;
   color: #393185;
 }
+
+
+/* Final sizing alignment for the family row. */
+.profile-page .family-self .profile-photo {
+  width: 69.3px;
+  height: 69.3px;
+}
+.profile-page .family-child-avatar,
+.profile-page .family-eye-button,
+.profile-page .family-children .family-empty-avatar,
+.profile-page .family-parent-avatar,
+.profile-page .family-parent-empty .family-parent-avatar {
+  box-sizing: border-box;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+}
+.profile-page .family-eye-button,
+.profile-page .family-children .family-empty-avatar,
+.profile-page .family-parent-empty .family-parent-avatar {
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+.profile-page .family-eye-button ion-icon,
+.profile-page .family-children .family-empty-avatar ion-icon,
+.profile-page .family-parent-empty .family-parent-avatar ion-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+@media (max-width: 360px) {
+  .profile-page .family-self .profile-photo {
+    width: 60.9px;
+    height: 60.9px;
+  }
+  .profile-page .family-child-avatar,
+  .profile-page .family-eye-button,
+  .profile-page .family-children .family-empty-avatar,
+  .profile-page .family-parent-avatar,
+  .profile-page .family-parent-empty .family-parent-avatar {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
+  }
+  .profile-page .family-eye-button ion-icon,
+  .profile-page .family-children .family-empty-avatar ion-icon,
+  .profile-page .family-parent-empty .family-parent-avatar ion-icon {
+    font-size: 13px;
+  }
+}
