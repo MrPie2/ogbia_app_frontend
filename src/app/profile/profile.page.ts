@@ -33,6 +33,9 @@ export class ProfilePage implements OnInit, OnDestroy {
   familyClaimsLoading = false;
   familyClaimActionId: number | null = null;
   familyClaimsError = '';
+  hasPendingFamilyClaim = false;
+  checkingFamilyClaim = false;
+  familyClaimStatusMessage = '';
   childrenListOpen = false;
   familyFormOpen = false;
   familySaving = false;
@@ -67,6 +70,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadFamilyProfile();
     this.loadPendingFamilyClaims();
+    this.hasPendingFamilyClaim = !!localStorage.getItem('ogbia_pending_family_claim_id');
     this.resumeFamilyClaimOwnership();
     this.loadCommunityLeaders();
     this.loadMemories();
@@ -112,6 +116,55 @@ export class ProfilePage implements OnInit, OnDestroy {
       error: () => {
         this.familyLoading = false;
         this.familyError = 'Your family connections could not be loaded.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  checkAndFinishFamilyClaim(): void {
+    const claimId = Number(localStorage.getItem('ogbia_pending_family_claim_id'));
+    if (!claimId) { this.hasPendingFamilyClaim = false; return; }
+    this.checkingFamilyClaim = true;
+    this.familyClaimStatusMessage = '';
+    this.auth.getFamilyClaimStatus(claimId).subscribe({
+      next: response => {
+        if (response.data.completed) {
+          localStorage.removeItem('ogbia_pending_family_claim_id');
+          this.hasPendingFamilyClaim = false;
+          this.familyClaimStatusMessage = 'This family profile is already linked to your account.';
+          this.loadFamilyProfile();
+          this.checkingFamilyClaim = false;
+          this.cdr.markForCheck();
+          return;
+        }
+        if (!response.data.can_complete) {
+          this.familyClaimStatusMessage = response.data.status === 'disputed'
+            ? 'This request is under administrator review.'
+            : response.data.status === 'rejected'
+              ? 'This request was not approved. Contact Ogbia Connect support if you believe this is incorrect.'
+              : 'Your phone is verified. The profile creator has not approved the request yet.';
+          this.checkingFamilyClaim = false;
+          this.cdr.markForCheck();
+          return;
+        }
+        this.auth.resumePendingFamilyClaim().subscribe({
+          next: () => {
+            this.hasPendingFamilyClaim = false;
+            this.familyClaimStatusMessage = 'Your family profile is now linked to your account.';
+            this.loadFamilyProfile();
+            this.checkingFamilyClaim = false;
+            this.cdr.markForCheck();
+          },
+          error: error => {
+            this.familyClaimStatusMessage = error.error?.message || 'Approval is recorded, but account linking could not finish. Please retry.';
+            this.checkingFamilyClaim = false;
+            this.cdr.markForCheck();
+          }
+        });
+      },
+      error: error => {
+        this.familyClaimStatusMessage = error.error?.message || 'Could not check your claim status.';
+        this.checkingFamilyClaim = false;
         this.cdr.markForCheck();
       }
     });
