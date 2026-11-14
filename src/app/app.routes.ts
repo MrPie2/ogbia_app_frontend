@@ -36,6 +36,10 @@ export const routes: Routes = [
     loadComponent: () => import('./friends/friends.page').then(m => m.FriendsPage)
   },
   {
+    path: 'family/claim/:token',
+    loadComponent: () => import('./family-claim/family-claim.page').then(m => m.FamilyClaimPage)
+  },
+  {
     path: 'profile',
     loadComponent: () => import('./profile/profile.page').then(m => m.ProfilePage)
   },
