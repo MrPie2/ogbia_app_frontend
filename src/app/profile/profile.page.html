@@ -129,15 +129,17 @@
           <div class="family-list-heading"><div><h2>Children</h2><p>{{ family.children.length }} {{ family.children.length === 1 ? 'child' : 'children' }}</p></div>
             <button type="button" (click)="closeChildrenList()" aria-label="Close children list"><ion-icon name="close"></ion-icon></button>
           </div>
-          <a class="family-list-item" *ngFor="let child of family.children" [routerLink]="child.claimed_user_id ? ['/members', child.claimed_user_id] : null" (click)="closeChildrenList()">
-            <span class="family-avatar family-list-avatar">
-              <img *ngIf="child.profile_photo_url" [src]="child.profile_photo_url" [alt]="child.name || 'Child'">
-              <span *ngIf="!child.profile_photo_url">{{ familyInitials(child.name) }}</span>
-            </span>
-            <div class="family-list-copy"><strong>{{ child.name || 'Ogbia Member' }}</strong><small>{{ child.claim_status === 'claimed' ? 'Personal account linked' : 'Family-managed profile' }}</small></div>
-            <button *ngIf="child.claim_status !== 'claimed'" type="button" class="family-invite-button" (click)="shareFamilyClaim(child); $event.preventDefault(); $event.stopPropagation()">Invite</button>
-            <ion-icon name="chevron-forward-outline" *ngIf="child.claimed_user_id"></ion-icon>
-          </a>
+          <div class="family-list-item" *ngFor="let child of family.children">
+            <a class="family-list-person" [routerLink]="child.claimed_user_id ? ['/members', child.claimed_user_id] : null" (click)="closeChildrenList()">
+              <span class="family-avatar family-list-avatar">
+                <img *ngIf="child.profile_photo_url" [src]="child.profile_photo_url" [alt]="child.name || 'Child'">
+                <span *ngIf="!child.profile_photo_url">{{ familyInitials(child.name) }}</span>
+              </span>
+              <div class="family-list-copy"><strong>{{ child.name || 'Ogbia Member' }}</strong><small>{{ child.claim_status === 'claimed' ? 'Personal account linked' : 'Family-managed profile' }}</small></div>
+              <ion-icon name="chevron-forward-outline" *ngIf="child.claimed_user_id"></ion-icon>
+            </a>
+            <button *ngIf="child.claim_status !== 'claimed'" type="button" class="family-invite-button" (click)="shareFamilyClaim(child)">Invite</button>
+          </div>
           <p class="family-list-empty" *ngIf="!family.children.length">No children have been added yet.</p>
         </section>
       </div>
