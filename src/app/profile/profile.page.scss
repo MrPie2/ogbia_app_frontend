@@ -608,32 +608,3 @@
     flex-basis: 30px;
   }
 }
-
-
-/* Neumorphic treatment for profile-page buttons. Preserve each control's
-   existing shape while giving it a soft raised surface and pressed state. */
-.profile-page button:not(.profile-photo-viewer-close) {
-  border: 1px solid rgba(255,255,255,.88);
-  box-shadow: 5px 5px 10px rgba(72,64,112,.14), -4px -4px 10px rgba(255,255,255,.92);
-  transition: box-shadow .18s ease, transform .18s ease, background .18s ease;
-}
-.profile-page button:not(.profile-photo-viewer-close):active:not(:disabled) {
-  transform: translateY(1px);
-  box-shadow: inset 3px 3px 7px rgba(72,64,112,.14), inset -3px -3px 7px rgba(255,255,255,.9);
-}
-.profile-page button:disabled {
-  box-shadow: none;
-  opacity: .55;
-}
-.profile-page .photo-edit-icon {
-  border: 2px solid #fff;
-  box-shadow: 3px 3px 7px rgba(19,16,62,.22), -2px -2px 5px rgba(255,255,255,.22);
-}
-.profile-page .family-avatar,
-.profile-page .memory-action {
-  box-shadow: 5px 5px 10px rgba(72,64,112,.14), -4px -4px 10px rgba(255,255,255,.92);
-}
-.profile-page .family-avatar:active:not(:disabled),
-.profile-page .memory-action:active:not(:disabled) {
-  box-shadow: inset 3px 3px 7px rgba(72,64,112,.14), inset -3px -3px 7px rgba(255,255,255,.9);
-}
