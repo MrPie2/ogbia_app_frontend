@@ -444,10 +444,10 @@
 .family-avatar{display:grid;place-items:center;overflow:hidden;flex:0 0 auto;border:2px solid #eeecf7;border-radius:50%;background:#e5e1f1;color:#393185;font-weight:800;text-decoration:none;box-shadow:3px 3px 7px rgba(72,64,112,.13),-3px -3px 7px rgba(255,255,255,.9)}
 .family-avatar img{display:block;width:100%;height:100%;object-fit:cover}
 .family-avatar>span{display:grid;place-items:center;width:100%;height:100%}
-.family-avatar-stack{display:flex;align-items:center;justify-content:center;max-width:100%;padding-left:8px}
-.family-child-avatar{width:34px;height:34px;margin-left:-8px;font-size:9px}
-.family-child-avatar:first-child{margin-left:0}
-.family-eye-button{width:34px;height:34px;margin-left:-8px;padding:0;border:2px solid #eeecf7;background:#393185;color:#fff;font-size:16px;cursor:pointer;z-index:20}
+.family-avatar-stack{display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:100%;padding:8px 0 0}
+.family-child-avatar{width:34px;height:34px;margin-top:-9px;font-size:9px}
+.family-child-avatar:first-child{margin-top:0}
+.family-eye-button{width:34px;height:34px;margin-top:-9px;padding:0;border:2px solid #eeecf7;background:#393185;color:#fff;font-size:16px;cursor:pointer;z-index:20}
 .family-self{display:flex;flex-direction:column;align-items:center;gap:7px}
 .family-self-avatar{width:66px;height:66px;border:3px solid #fff;font-size:18px;box-shadow:6px 6px 13px rgba(72,64,112,.16),-5px -5px 12px rgba(255,255,255,.95)}
 .family-self>strong{color:#393185;font-size:10px;font-weight:850}
@@ -492,3 +492,6 @@
 .family-list-person{display:flex;align-items:center;gap:11px;flex:1;min-width:0;color:#302b4d;text-decoration:none}
 
 .family-remove-action{background:#f5e8ed!important;color:#a23e55!important}
+
+.family-empty-avatar{padding:0;border:2px dashed rgba(57,49,133,.35);background:#eeecf7;color:#7569a8;cursor:pointer;font-size:17px}.family-parent-empty{display:flex;flex-direction:column;align-items:center;gap:3px}.family-parent-empty small{color:#817b98;font-size:9px;font-weight:750}
+@media(max-width:360px){.family-child-avatar,.family-eye-button{width:30px;height:30px}}
