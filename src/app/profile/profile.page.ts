@@ -5,7 +5,7 @@ import { HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { AuthService, AuthUser, CommunityLeader, UserMemory } from '../services/auth.service';
+import { AuthService, AuthUser, CommunityLeader, FamilyMember, FamilyProfileResponse, UserMemory } from '../services/auth.service';
 import { KnowledgeBaseService } from '../services/knowledge-base.service';
 
 @Component({
@@ -26,6 +26,10 @@ export class ProfilePage implements OnInit, OnDestroy {
   photoPreview: string | null = null;
   profilePhotoViewerOpen = false;
   selectedPhoto: File | null = null;
+  family: FamilyProfileResponse['data'] = { children: [], father: null, mother: null };
+  familyLoading = true;
+  familyError = '';
+  childrenListOpen = false;
   memories: UserMemory[] = [];
   selectedMemory: File | null = null;
   loadingMemories = true;
@@ -48,6 +52,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadFamilyProfile();
     this.loadCommunityLeaders();
     this.loadMemories();
     this.user = this.auth.getCachedUser();
@@ -70,6 +75,35 @@ export class ProfilePage implements OnInit, OnDestroy {
       },
     });
   }
+
+  get visibleChildren(): FamilyMember[] {
+    return this.family.children.slice(0, 4);
+  }
+
+  familyInitials(name: string | null | undefined): string {
+    return (name || 'Ogbia Member').trim().split(/\\s+/).filter(Boolean).slice(0, 2)
+      .map(part => part[0]).join('').toUpperCase();
+  }
+
+  loadFamilyProfile(): void {
+    this.familyLoading = true;
+    this.familyError = '';
+    this.auth.getFamilyProfile().subscribe({
+      next: response => {
+        this.family = response.data || { children: [], father: null, mother: null };
+        this.familyLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.familyLoading = false;
+        this.familyError = 'Your family connections could not be loaded.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  openChildrenList(): void { this.childrenListOpen = true; }
+  closeChildrenList(): void { this.childrenListOpen = false; }
 
   private loadHometownWards(hometown: string | null | undefined): void {
     this.hometownWards = [];
