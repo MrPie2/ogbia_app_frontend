@@ -16,11 +16,11 @@ export class FamilyClaimPage implements OnInit {
   token = '';
   phone = '';
   code = '';
-  password = '';
-  passwordConfirmation = '';
   otpSent = false;
   sendingOtp = false;
-  claiming = false;
+  verifying = false;
+  verified = false;
+  claimId: number | null = null;
   error = '';
   message = '';
 
@@ -43,18 +43,17 @@ export class FamilyClaimPage implements OnInit {
   claimProfile(): void {
     if (!this.otpSent) { this.error = 'Request a verification code first.'; return; }
     if (!/^\d{6}$/.test(this.code.trim())) { this.error = 'Enter the six-digit verification code.'; return; }
-    if (this.password && this.password !== this.passwordConfirmation) { this.error = 'Your passwords do not match.'; return; }
-    this.claiming = true; this.error = ''; this.message = '';
-    this.auth.verifyFamilyClaim(this.token, this.phone.trim(), this.code.trim(), this.password, this.passwordConfirmation).subscribe({
+    this.verifying = true; this.error = ''; this.message = '';
+    this.auth.verifyFamilyClaim(this.token, this.phone.trim(), this.code.trim()).subscribe({
       next: response => {
-        this.claiming = false;
-        this.message = response.message || 'Family profile claimed successfully.';
-        void this.router.navigateByUrl(response.user?.email ? '/home' : '/complete-profile', { replaceUrl: true });
+        this.verifying = false;
+        this.verified = true;
+        this.claimId = response.data?.claim_id ?? null;
+        this.message = response.message || 'Your phone number is verified. The profile creator has been notified.';
       },
       error: error => {
-        this.claiming = false;
-        const errors = error.error?.errors;
-        this.error = errors?.code?.[0] || errors?.password?.[0] || error.error?.message || 'We could not verify this family profile.';
+        this.verifying = false;
+        this.error = error.error?.message || 'We could not verify this family profile.';
       }
     });
   }
