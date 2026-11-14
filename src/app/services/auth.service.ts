@@ -47,6 +47,22 @@ export interface MemberProfile {
 }
 export interface MemberProfileResponse { success: boolean; data: MemberProfile; }
 
+export interface FamilyMember {
+  id: number;
+  name: string | null;
+  relationship: 'child' | 'father' | 'mother';
+  profile_photo_url: string | null;
+}
+
+export interface FamilyProfileResponse {
+  success: boolean;
+  data: {
+    children: FamilyMember[];
+    father: FamilyMember | null;
+    mother: FamilyMember | null;
+  };
+}
+
 export interface UserMemory {
   id: number;
   media_type: 'image' | 'video';
@@ -140,6 +156,12 @@ export class AuthService {
     const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
     return this.http.get<MemberProfileResponse>(`${this.apiUrl}/members/${id}`, { headers });
   }
+  getFamilyProfile(): Observable<FamilyProfileResponse> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.get<FamilyProfileResponse>(`${this.apiUrl}/profile/family`, { headers });
+  }
+
   getMyMemories(): Observable<UserMemoriesResponse> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
