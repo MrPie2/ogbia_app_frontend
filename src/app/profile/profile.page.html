@@ -7,9 +7,6 @@
 
       <section class="profile-hero fade-up" *ngIf="user as currentUser">
         <input #photoInput class="visually-hidden-file" type="file" accept="image/jpeg,image/png,image/webp" (change)="onPhotoSelected($event)">
-        <h1>{{ displayName }}<ng-container *ngIf="currentUser.hometown"> - {{ currentUser.hometown }}</ng-container></h1>
-        <p *ngIf="currentUser.email">{{ currentUser.email }}</p>
-        <p *ngIf="currentUser.phone">{{ currentUser.phone }}</p>
         <div class="photo-actions" *ngIf="selectedPhoto">
           <span>{{ selectedPhoto.name }}</span>
           <button type="button" (click)="uploadProfilePhoto()" [disabled]="savingPhoto">{{ savingPhoto ? 'Uploading…' : 'Save picture' }}</button>
@@ -54,7 +51,7 @@
                       </button>
                       <button class="photo-edit-icon" type="button" (click)="photoInput.click()" aria-label="Change profile picture"><ion-icon name="create-outline"></ion-icon></button>
                     </div>
-                    <input #photoInput class="visually-hidden-file" type="file" accept="image/jpeg,image/png,image/webp" (change)="onPhotoSelected($event)">
+
           </div>
 
           <div class="family-side family-parents">
@@ -95,6 +92,11 @@
               </button><small>Mother</small>
             </div>
           </div>
+        </div>
+        <div class="profile-identity-under-photo">
+          <h1>{{ displayName }}<ng-container *ngIf="currentUser.hometown"> - {{ currentUser.hometown }}</ng-container></h1>
+          <p *ngIf="currentUser.email">{{ currentUser.email }}</p>
+          <p *ngIf="currentUser.phone">{{ currentUser.phone }}</p>
         </div>
         <ng-template #familyLoadingState><div class="family-loading">Loading family profile…</div></ng-template>
         <p class="family-error" *ngIf="familyError" role="status">{{ familyError }} <button type="button" (click)="loadFamilyProfile()">Try again</button></p>
