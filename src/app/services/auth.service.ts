@@ -73,6 +73,17 @@ export interface FamilyClaimVerificationResponse {
   message: string;
   data: { claim_id: number; status: 'verified' | 'pending' };
 }
+export interface AdminFamilyClaimItem {
+  id: number;
+  profile_name: string | null;
+  relationship: string | null;
+  claimant_name: string | null;
+  phone_last_four: string;
+  status: string;
+  review_notes: string | null;
+  verified_at: string | null;
+  created_at: string;
+}
 export interface FamilyClaimStatusResponse {
   success: boolean;
   data: { claim_id: number; profile_name: string | null; status: string; can_complete: boolean; completed: boolean };
@@ -240,6 +251,18 @@ export class AuthService {
     return this.http.post<FamilyClaimVerificationResponse>(`${this.apiUrl}/family/claim/verify`, {
       claim_token: claimToken, phone, code,
     }).pipe(tap(response => { if (response.data?.claim_id) localStorage.setItem('ogbia_pending_family_claim_id', String(response.data.claim_id)); }));
+  }
+
+  getAdminFamilyClaims(): Observable<{ success: boolean; data: AdminFamilyClaimItem[] }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.get<{ success: boolean; data: AdminFamilyClaimItem[] }>(`${this.apiUrl}/admin/family/claims`, { headers });
+  }
+
+  reviewFamilyClaimAsAdmin(claimId: number, decision: 'approved' | 'rejected', notes = ''): Observable<{ success: boolean; status: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.post<{ success: boolean; status: string }>(`${this.apiUrl}/admin/family/claims/${claimId}/review`, { decision, notes }, { headers });
   }
 
   getPendingFamilyClaims(): Observable<{ success: boolean; data: FamilyClaimReviewItem[] }> {
