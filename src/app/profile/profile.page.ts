@@ -41,6 +41,8 @@ export class ProfilePage implements OnInit, OnDestroy {
   familySaving = false;
   familyFormName = '';
   familyFormPhone = '';
+  selectedFamilyPhoto: File | null = null;
+  familyPhotoPreview: string | null = null;
   familyFormRelationship: 'child' | 'father' | 'mother' = 'child';
   familyGuardianRelationship: 'father' | 'mother' = 'father';
   familyFormError = '';
@@ -253,19 +255,47 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.familyFormRelationship = relationship;
     this.familyFormName = '';
     this.familyFormPhone = '';
+    this.selectedFamilyPhoto = null;
+    this.familyPhotoPreview = null;
     this.familyFormError = '';
     this.familyFormOpen = true;
   }
   closeFamilyForm(): void { this.familyFormOpen = false; }
 
+  onFamilyPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+    if (!file) return;
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      this.familyFormError = 'Choose a JPG, PNG, or WebP image.';
+      input.value = '';
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      this.familyFormError = 'The profile picture must be 5 MB or smaller.';
+      input.value = '';
+      return;
+    }
+    this.selectedFamilyPhoto = file;
+    this.familyFormError = '';
+    const reader = new FileReader();
+    reader.onload = () => { this.familyPhotoPreview = String(reader.result || ''); this.cdr.markForCheck(); };
+    reader.readAsDataURL(file);
+  }
+
+  removeFamilyPhoto(): void {
+    this.selectedFamilyPhoto = null;
+    this.familyPhotoPreview = null;
+  }
+
   saveFamilyProfile(): void {
     const name = this.familyFormName.trim();
     if (name.length < 2) { this.familyFormError = 'Enter the family member’s full name.'; return; }
     this.familySaving = true; this.familyFormError = '';
-    this.auth.createFamilyProfile(name, this.familyFormRelationship, this.familyFormPhone, this.familyGuardianRelationship).subscribe({
+    this.auth.createFamilyProfile(name, this.familyFormRelationship, this.familyFormPhone, this.familyGuardianRelationship, this.selectedFamilyPhoto ?? undefined).subscribe({
       next: response => {
         this.familySaving = false; this.familyFormOpen = false;
-        this.familyFormName = ''; this.familyFormPhone = ''; this.familyFormRelationship = 'child'; this.familyGuardianRelationship = 'father';
+        this.familyFormName = ''; this.familyFormPhone = ''; this.selectedFamilyPhoto = null; this.familyPhotoPreview = null; this.familyFormRelationship = 'child'; this.familyGuardianRelationship = 'father';
         this.loadFamilyProfile();
         if (response.data?.claim_token) { this.newFamilyClaimLink = this.familyClaimUrl(response.data.claim_token); this.familyInviteReady = true; }
         this.cdr.markForCheck();
