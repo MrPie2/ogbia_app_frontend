@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject, tap, timeout } from 'rxjs';
+import { Observable, Subject, of, switchMap, tap, timeout } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface AuthUser {
@@ -234,7 +234,7 @@ export class AuthService {
   verifyFamilyClaim(claimToken: string, phone: string, code: string): Observable<FamilyClaimVerificationResponse> {
     return this.http.post<FamilyClaimVerificationResponse>(`${this.apiUrl}/family/claim/verify`, {
       claim_token: claimToken, phone, code,
-    });
+    }).pipe(tap(response => { if (response.data?.claim_id) localStorage.setItem('ogbia_pending_family_claim_id', String(response.data.claim_id)); }));
   }
 
   getPendingFamilyClaims(): Observable<{ success: boolean; data: FamilyClaimReviewItem[] }> {
@@ -262,6 +262,15 @@ export class AuthService {
     return this.http.post<{ success: boolean; message: string }>(`${this.apiUrl}/family/claims/${claimId}/complete`, {}, { headers });
   }
 
+
+  resumePendingFamilyClaim(): Observable<{ success: boolean; message: string } | null> {
+    const claimId = Number(localStorage.getItem('ogbia_pending_family_claim_id'));
+    if (!claimId || !localStorage.getItem('token')) return of(null);
+    return this.attachFamilyClaimToAccount(claimId).pipe(
+      switchMap(() => this.completeFamilyClaim(claimId)),
+      tap(() => localStorage.removeItem('ogbia_pending_family_claim_id'))
+    );
+  }
 
   getFamilyTree(): Observable<FamilyTreeResponse> {
     const token = localStorage.getItem('token');
