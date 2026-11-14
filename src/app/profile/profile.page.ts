@@ -61,7 +61,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadFamilyProfile();\n    this.loadPendingFamilyClaims();
+    this.loadFamilyProfile();\n    this.loadPendingFamilyClaims();\n    this.resumeFamilyClaimOwnership();
     this.loadCommunityLeaders();
     this.loadMemories();
     this.user = this.auth.getCachedUser();
@@ -107,6 +107,20 @@ export class ProfilePage implements OnInit, OnDestroy {
         this.familyLoading = false;
         this.familyError = 'Your family connections could not be loaded.';
         this.cdr.markForCheck();
+      }
+    });
+  }
+
+  resumeFamilyClaimOwnership(): void {
+    this.auth.resumePendingFamilyClaim().subscribe({
+      next: response => {
+        if (response?.success) {
+          this.loadFamilyProfile();
+          this.cdr.markForCheck();
+        }
+      },
+      error: () => {
+        // Keep the pending claim locally; the creator may not have approved it yet.
       }
     });
   }
