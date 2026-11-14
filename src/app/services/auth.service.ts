@@ -232,10 +232,16 @@ export class AuthService {
     return this.http.get<FamilyProfileResponse>(`${this.apiUrl}/profile/family`, { headers }).pipe(timeout(15000));
   }
 
-  createFamilyProfile(name: string, relationship: 'child' | 'father' | 'mother', phone = '', guardianRelationship: 'father' | 'mother' = 'father'): Observable<{ success: boolean; message: string; data: FamilyMember }> {
+  createFamilyProfile(name: string, relationship: 'child' | 'father' | 'mother', phone = '', guardianRelationship: 'father' | 'mother' = 'father', photo?: File): Observable<{ success: boolean; message: string; data: FamilyMember }> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
-    return this.http.post<{ success: boolean; message: string; data: FamilyMember }>(`${this.apiUrl}/profile/family`, { name, relationship, phone: phone.trim() || null, guardian_relationship: relationship === 'child' ? guardianRelationship : null }, { headers });
+    const form = new FormData();
+    form.append('name', name);
+    form.append('relationship', relationship);
+    if (phone.trim()) form.append('phone', phone.trim());
+    if (relationship === 'child') form.append('guardian_relationship', guardianRelationship);
+    if (photo) form.append('profile_photo', photo, photo.name);
+    return this.http.post<{ success: boolean; message: string; data: FamilyMember }>(`${this.apiUrl}/profile/family`, form, { headers });
   }
 
   deleteFamilyProfile(id: number): Observable<{ success: boolean; message: string }> {
