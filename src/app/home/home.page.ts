@@ -521,7 +521,7 @@ export class HomePage implements OnInit, OnDestroy {
           this.router.navigate(['/login']);
         } else if (error.status === 404) {
           this.commentsError = 'This post is no longer available.';
-        } else if (error.name === 'TimeoutError' || error.error === 'TimeoutError') {
+        } else if (error.status === 0 || error.error?.name === 'TimeoutError' || error.error === 'TimeoutError') {
           this.commentsError = 'Comments are taking too long to load. Check your connection and retry.';
         } else {
           this.commentsError = 'Comments could not be loaded. Please try again.';
