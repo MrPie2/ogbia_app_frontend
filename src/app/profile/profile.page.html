@@ -62,10 +62,6 @@
                   <span *ngIf="!father.profile_photo_url">{{ familyInitials(father.name) }}</span>
                 </span><small>Father</small>
               </a>
-              <ng-container *ngIf="father.claim_status !== 'claimed'">
-                <button type="button" class="family-parent-invite" (click)="shareFamilyClaim(father)" aria-label="Invite father to claim account"><ion-icon name="share-outline"></ion-icon></button>
-                <button type="button" class="family-parent-invite family-remove-action" (click)="removeFamilyProfile(father)" aria-label="Remove father profile"><ion-icon name="trash-outline"></ion-icon></button>
-              </ng-container>
             </div>
             <div class="family-parent" *ngIf="family.mother as mother">
               <a [routerLink]="mother.claimed_user_id ? ['/members', mother.claimed_user_id] : null">
@@ -74,22 +70,6 @@
                   <span *ngIf="!mother.profile_photo_url">{{ familyInitials(mother.name) }}</span>
                 </span><small>Mother</small>
               </a>
-              <ng-container *ngIf="mother.claim_status !== 'claimed'">
-                <button type="button" class="family-parent-invite" (click)="shareFamilyClaim(mother)" aria-label="Invite mother to claim account"><ion-icon name="share-outline"></ion-icon></button>
-                <button type="button" class="family-parent-invite family-remove-action" (click)="removeFamilyProfile(mother)" aria-label="Remove mother profile"><ion-icon name="trash-outline"></ion-icon></button>
-              </ng-container>
-            </div>
-            <div class="family-parent family-parent-empty" *ngIf="!family.father">
-              <button class="family-avatar family-parent-avatar family-empty-avatar" type="button"
-                (click)="openFamilyFormFor('father')" aria-label="Add father">
-                <ion-icon name="add"></ion-icon>
-              </button><small>Father</small>
-            </div>
-            <div class="family-parent family-parent-empty" *ngIf="!family.mother">
-              <button class="family-avatar family-parent-avatar family-empty-avatar" type="button"
-                (click)="openFamilyFormFor('mother')" aria-label="Add mother">
-                <ion-icon name="add"></ion-icon>
-              </button><small>Mother</small>
             </div>
           </div>
         </div>
