@@ -39,7 +39,8 @@
                 *ngFor="let child of visibleChildren; let i = index"
                 [routerLink]="child.claimed_user_id ? ['/members', child.claimed_user_id] : null"
                 [style.zIndex]="visibleChildren.length - i"
-                [attr.aria-label]="child.name || 'Child profile'">
+                [attr.aria-label]="child.name || 'Child profile'"
+                (click)="child.claim_status !== 'claimed' ? shareFamilyClaim(child) : null">
                 <img *ngIf="child.profile_photo_url" [src]="child.profile_photo_url" [alt]="child.name || 'Child'">
                 <span *ngIf="!child.profile_photo_url">{{ familyInitials(child.name) }}</span>
               </a>
@@ -83,7 +84,7 @@
           </div>
         </div>
         <ng-template #familyLoadingState><div class="family-loading">Loading family profile…</div></ng-template>
-        <p class="family-error" *ngIf="familyError" role="status">{{ familyError }}</p>
+        <p class="family-error" *ngIf="familyError" role="status">{{ familyError }} <button type="button" (click)="loadFamilyProfile()">Try again</button></p>
       </section>
 
       <div class="family-form-overlay" *ngIf="familyFormOpen" (click)="closeFamilyForm()">
