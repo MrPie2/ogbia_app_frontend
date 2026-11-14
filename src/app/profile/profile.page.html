@@ -69,7 +69,10 @@
                   <span *ngIf="!father.profile_photo_url">{{ familyInitials(father.name) }}</span>
                 </span><small>Father</small>
               </a>
-              <button *ngIf="father.claim_status !== 'claimed'" type="button" class="family-parent-invite" (click)="shareFamilyClaim(father)" aria-label="Invite father to claim account"><ion-icon name="share-outline"></ion-icon></button>
+              <ng-container *ngIf="father.claim_status !== 'claimed'">
+                <button type="button" class="family-parent-invite" (click)="shareFamilyClaim(father)" aria-label="Invite father to claim account"><ion-icon name="share-outline"></ion-icon></button>
+                <button type="button" class="family-parent-invite family-remove-action" (click)="removeFamilyProfile(father)" aria-label="Remove father profile"><ion-icon name="trash-outline"></ion-icon></button>
+              </ng-container>
             </div>
             <div class="family-parent" *ngIf="family.mother as mother">
               <a [routerLink]="mother.claimed_user_id ? ['/members', mother.claimed_user_id] : null">
@@ -78,7 +81,10 @@
                   <span *ngIf="!mother.profile_photo_url">{{ familyInitials(mother.name) }}</span>
                 </span><small>Mother</small>
               </a>
-              <button *ngIf="mother.claim_status !== 'claimed'" type="button" class="family-parent-invite" (click)="shareFamilyClaim(mother)" aria-label="Invite mother to claim account"><ion-icon name="share-outline"></ion-icon></button>
+              <ng-container *ngIf="mother.claim_status !== 'claimed'">
+                <button type="button" class="family-parent-invite" (click)="shareFamilyClaim(mother)" aria-label="Invite mother to claim account"><ion-icon name="share-outline"></ion-icon></button>
+                <button type="button" class="family-parent-invite family-remove-action" (click)="removeFamilyProfile(mother)" aria-label="Remove mother profile"><ion-icon name="trash-outline"></ion-icon></button>
+              </ng-container>
             </div>
             <span class="family-no-parents" *ngIf="!family.father && !family.mother">Parents</span>
           </div>
@@ -135,10 +141,13 @@
                 <img *ngIf="child.profile_photo_url" [src]="child.profile_photo_url" [alt]="child.name || 'Child'">
                 <span *ngIf="!child.profile_photo_url">{{ familyInitials(child.name) }}</span>
               </span>
-              <div class="family-list-copy"><strong>{{ child.name || 'Ogbia Member' }}</strong><small>{{ child.claim_status === 'claimed' ? 'Personal account linked' : 'Family-managed profile' }}</small></div>
+              <div class="family-list-copy"><strong>{{ child.name || 'Ogbia Member' }}</strong><small>{{ child.claim_status === 'claimed' ? 'Personal account linked' : child.claim_status === 'pending' ? 'Verification started' : 'Family-managed profile' }}</small></div>
               <ion-icon name="chevron-forward-outline" *ngIf="child.claimed_user_id"></ion-icon>
             </a>
-            <button *ngIf="child.claim_status !== 'claimed'" type="button" class="family-invite-button" (click)="shareFamilyClaim(child)">Invite</button>
+            <ng-container *ngIf="child.claim_status !== 'claimed'">
+              <button type="button" class="family-invite-button" (click)="shareFamilyClaim(child)">Invite</button>
+              <button type="button" class="family-invite-button family-remove-action" (click)="removeFamilyProfile(child)" aria-label="Remove family profile"><ion-icon name="trash-outline"></ion-icon></button>
+            </ng-container>
           </div>
           <p class="family-list-empty" *ngIf="!family.children.length">No children have been added yet.</p>
         </section>
