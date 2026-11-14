@@ -608,3 +608,20 @@
     flex-basis: 30px;
   }
 }
+
+
+/* Final override: profile buttons should have clean, flat surfaces.
+   This intentionally removes older component-level neumorphic shadows too. */
+.profile-page button,
+.profile-page button:hover,
+.profile-page button:focus,
+.profile-page button:active,
+.profile-page button:disabled,
+.profile-page .family-avatar,
+.profile-page .family-avatar:hover,
+.profile-page .family-avatar:active,
+.profile-page .memory-action {
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
