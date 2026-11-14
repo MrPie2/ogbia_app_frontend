@@ -28,7 +28,11 @@ export class ProfilePage implements OnInit, OnDestroy {
   selectedPhoto: File | null = null;
   family: FamilyProfileResponse['data'] = { children: [], father: null, mother: null, all: [] };
   familyLoading = true;
-  familyError = '';\n  familyClaims: FamilyClaimReviewItem[] = [];\n  familyClaimsLoading = false;\n  familyClaimActionId: number | null = null;\n  familyClaimsError = '';
+  familyError = '';
+  familyClaims: FamilyClaimReviewItem[] = [];
+  familyClaimsLoading = false;
+  familyClaimActionId: number | null = null;
+  familyClaimsError = '';
   childrenListOpen = false;
   familyFormOpen = false;
   familySaving = false;
@@ -61,7 +65,9 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadFamilyProfile();\n    this.loadPendingFamilyClaims();\n    this.resumeFamilyClaimOwnership();
+    this.loadFamilyProfile();
+    this.loadPendingFamilyClaims();
+    this.resumeFamilyClaimOwnership();
     this.loadCommunityLeaders();
     this.loadMemories();
     this.user = this.auth.getCachedUser();
