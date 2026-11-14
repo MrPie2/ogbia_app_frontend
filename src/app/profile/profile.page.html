@@ -106,6 +106,13 @@
         </div>
         <ng-template #familyLoadingState><div class="family-loading">Loading family profile…</div></ng-template>
         <p class="family-error" *ngIf="familyError" role="status">{{ familyError }} <button type="button" (click)="loadFamilyProfile()">Try again</button></p>
+        <section class="family-claim-review claimant-claim-status" *ngIf="hasPendingFamilyClaim">
+          <div class="family-claim-review-heading"><div><strong>Your family profile claim</strong><small>Check whether your request has been approved and finish linking your account</small></div></div>
+          <p class="family-claim-review-loading" *ngIf="familyClaimStatusMessage" role="status">{{ familyClaimStatusMessage }}</p>
+          <button type="button" class="claim-confirm-button" (click)="checkAndFinishFamilyClaim()" [disabled]="checkingFamilyClaim">
+            {{ checkingFamilyClaim ? 'Checking…' : 'Check approval & finish linking' }}
+          </button>
+        </section>
         <section class="family-claim-review" *ngIf="familyClaimsLoading || familyClaims.length || familyClaimsError">
           <div class="family-claim-review-heading"><div><strong>Family claim requests</strong><small>Review people requesting ownership of a managed profile</small></div><button type="button" (click)="loadPendingFamilyClaims()" aria-label="Refresh family claims"><ion-icon name="refresh-outline"></ion-icon></button></div>
           <p class="family-claim-review-error" *ngIf="familyClaimsError">{{ familyClaimsError }}</p>
