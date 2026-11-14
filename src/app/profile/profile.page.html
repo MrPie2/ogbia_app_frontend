@@ -72,6 +72,12 @@
               </a>
             </div>
           </div>
+            <div class="family-parent family-parent-empty" *ngIf="!family.father">
+              <button class="family-avatar family-parent-avatar family-empty-avatar" type="button"
+                (click)="openFamilyFormFor('father')" aria-label="Add father">
+                <ion-icon name="add"></ion-icon>
+              </button><small>Father</small>
+            </div>
         </div>
         <div class="profile-identity-under-photo">
           <h1>{{ displayName }}<ng-container *ngIf="currentUser.hometown"> - {{ currentUser.hometown }}</ng-container></h1>
