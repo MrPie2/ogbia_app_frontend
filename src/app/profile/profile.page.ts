@@ -30,6 +30,14 @@ export class ProfilePage implements OnInit, OnDestroy {
   familyLoading = true;
   familyError = '';
   childrenListOpen = false;
+  familyFormOpen = false;
+  familySaving = false;
+  familyFormName = '';
+  familyFormPhone = '';
+  familyFormRelationship: 'child' | 'father' | 'mother' = 'child';
+  familyFormError = '';
+  newFamilyClaimLink = '';
+  familyInviteReady = false;
   memories: UserMemory[] = [];
   selectedMemory: File | null = null;
   loadingMemories = true;
@@ -81,7 +89,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   familyInitials(name: string | null | undefined): string {
-    return (name || 'Ogbia Member').trim().split(/\\s+/).filter(Boolean).slice(0, 2)
+    return (name || 'Ogbia Member').trim().split(/\s+/).filter(Boolean).slice(0, 2)
       .map(part => part[0]).join('').toUpperCase();
   }
 
@@ -104,6 +112,44 @@ export class ProfilePage implements OnInit, OnDestroy {
 
   openChildrenList(): void { this.childrenListOpen = true; }
   closeChildrenList(): void { this.childrenListOpen = false; }
+  openFamilyForm(): void { this.familyFormOpen = true; this.familyFormError = ''; }
+  closeFamilyForm(): void { this.familyFormOpen = false; }
+
+  saveFamilyProfile(): void {
+    const name = this.familyFormName.trim();
+    if (name.length < 2) { this.familyFormError = 'Enter the family member’s full name.'; return; }
+    this.familySaving = true; this.familyFormError = '';
+    this.auth.createFamilyProfile(name, this.familyFormRelationship, this.familyFormPhone).subscribe({
+      next: response => {
+        this.familySaving = false; this.familyFormOpen = false;
+        this.familyFormName = ''; this.familyFormPhone = ''; this.familyFormRelationship = 'child';
+        this.loadFamilyProfile();
+        if (response.data?.claim_token) { this.newFamilyClaimLink = this.familyClaimUrl(response.data.claim_token); this.familyInviteReady = true; }
+        this.cdr.markForCheck();
+      },
+      error: error => {
+        this.familySaving = false;
+        this.familyFormError = error.error?.errors?.relationship?.[0] || error.error?.message || 'Could not create this family profile.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  familyClaimUrl(token: string): string { return `${window.location.origin}/family/claim/${token}`; }
+
+  async shareFamilyClaim(member: FamilyMember): Promise<void> {
+    const link = this.familyClaimUrl(member.claim_token);
+    try {
+      if (navigator.share) await navigator.share({ title: 'Claim your Ogbia family profile', text: 'Use this secure link to claim your family profile on Ogbia Connect.', url: link });
+      else await navigator.clipboard.writeText(link);
+    } catch { try { await navigator.clipboard.writeText(link); } catch { window.prompt('Copy this family claim link:', link); } }
+  }
+
+  async copyNewFamilyClaimLink(): Promise<void> {
+    if (!this.newFamilyClaimLink) return;
+    try { await navigator.clipboard.writeText(this.newFamilyClaimLink); } catch { window.prompt('Copy family claim link:', this.newFamilyClaimLink); }
+    this.familyInviteReady = false;
+  }
 
   private loadHometownWards(hometown: string | null | undefined): void {
     this.hometownWards = [];
@@ -115,7 +161,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     }
 
     this.wardLookupLoading = true;
-    const normalize = (value: string) => value.trim().toLocaleLowerCase().replace(/\\s+/g, ' ');
+    const normalize = (value: string) => value.trim().toLocaleLowerCase().replace(/\s+/g, ' ');
     this.knowledgeBase.getCommunities().subscribe({
       next: response => {
         const community = (response.data || []).find(item => normalize(item.name) === normalize(communityName));
@@ -178,7 +224,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   initialsForLeader(name: string | null | undefined): string {
-    return (name || 'Ogbia Member').split(/\\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+    return (name || 'Ogbia Member').split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
   }
 
   get displayName(): string {
