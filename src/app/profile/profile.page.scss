@@ -480,6 +480,15 @@
 .family-form-overlay{position:fixed;z-index:10080;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:0 0 calc(64px + env(safe-area-inset-bottom));background:rgba(22,18,45,.5);backdrop-filter:blur(5px)}
 .family-form-dialog{width:100%;max-width:none;max-height:calc(100dvh - max(16px,env(safe-area-inset-top)) - 64px - env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;padding:19px;margin:0;border:1px solid rgba(255,255,255,.9);border-bottom:0;border-radius:22px 22px 0 0;background:#eeecf7;box-shadow:0 18px 50px rgba(20,16,48,.25)}
 .family-form-dialog label{display:block;margin:13px 0 6px;color:#4a4562;font-size:11px;font-weight:750}.family-form-dialog label span{color:#918aa5;font-weight:500}
+.family-photo-field{display:flex;align-items:center;gap:13px;margin:4px 0 15px;padding:12px;border:1px solid rgba(120,110,160,.16);border-radius:14px;background:#f3f1fa}
+.family-photo-preview{width:58px;height:58px;flex:0 0 58px;display:grid;place-items:center;overflow:hidden;border-radius:50%;background:#e4e0f0;color:#8176ad;font-size:29px}
+.family-photo-preview img{width:100%;height:100%;object-fit:cover}
+.family-photo-controls{display:flex;min-width:0;align-items:center;gap:5px;flex-wrap:wrap}
+.family-photo-controls strong{width:100%;color:#4a4562;font-size:11px}
+.family-photo-controls strong span{color:#918aa5;font-weight:500}
+.family-form-dialog .family-photo-choose{display:inline-flex;align-items:center;gap:5px;margin:2px 0 0;padding:7px 10px;border-radius:9px;background:#e4e0f0;color:#393185;font-size:10px;font-weight:800;cursor:pointer}
+.family-photo-controls small{width:100%;color:#918aa5;font-size:9px}
+.family-photo-remove{padding:6px 8px;border:0;background:transparent;color:#a04455;font-size:10px;font-weight:700}
 .family-form-input{display:block;width:100%;min-height:43px;padding:10px 12px;border:1px solid rgba(120,110,160,.18);border-radius:11px;outline:0;background:#f3f1fa;color:#302b4d;font:inherit;font-size:12px;box-shadow:inset 3px 3px 7px rgba(72,64,112,.08),inset -3px -3px 7px rgba(255,255,255,.8)}
 .family-form-hint{margin:12px 0;color:#817b98;font-size:10px;line-height:1.5}.family-submit-button{width:100%;min-height:45px;margin-top:8px;border:0;border-radius:12px;background:#393185;color:#fff;font-size:12px;font-weight:800}.family-submit-button:disabled{opacity:.6}
 .family-list-copy{display:flex;min-width:0;flex:1;flex-direction:column;gap:4px}.family-list-copy small{color:#817b98;font-size:9px}
