@@ -84,6 +84,7 @@ export interface AdminFamilyClaimItem {
   verified_at: string | null;
   created_at: string;
 }
+export interface MyFamilyClaimItem { id: number; profile_name: string | null; relationship: string | null; status: string; phone_last_four: string; can_complete: boolean; }
 export interface FamilyClaimStatusResponse {
   success: boolean;
   data: { claim_id: number; profile_name: string | null; status: string; can_complete: boolean; completed: boolean };
@@ -276,6 +277,12 @@ export class AuthService {
     const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
     const body = decision === 'dispute' ? { reason } : {};
     return this.http.post<{ success: boolean; message: string; status: string }>(`${this.apiUrl}/family/claims/${claimId}/${decision}`, body, { headers });
+  }
+
+  getMyFamilyClaims(): Observable<{ success: boolean; data: MyFamilyClaimItem[] }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.get<{ success: boolean; data: MyFamilyClaimItem[] }>(`${this.apiUrl}/family/claims/mine`, { headers });
   }
 
   getFamilyClaimStatus(claimId: number): Observable<FamilyClaimStatusResponse> {
