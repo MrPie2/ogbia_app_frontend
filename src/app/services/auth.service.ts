@@ -68,6 +68,21 @@ export interface FamilyProfileResponse {
 }
 
 
+export interface FamilyClaimVerificationResponse {
+  success: boolean;
+  message: string;
+  data: { claim_id: number; status: 'verified' | 'pending' };
+}
+export interface FamilyClaimReviewItem {
+  id: number;
+  family_profile_id: number;
+  profile_name: string;
+  relationship: string;
+  phone_last_four: string;
+  status: string;
+  verified_at: string | null;
+  created_at: string;
+}
 export interface FamilyTreePerson {
   id: number;
   name: string;
@@ -216,11 +231,35 @@ export class AuthService {
     return this.http.post<{ success: boolean; message: string }>(`${this.apiUrl}/family/claim/request-otp`, { claim_token: claimToken, phone });
   }
 
-  verifyFamilyClaim(claimToken: string, phone: string, code: string, password = '', passwordConfirmation = ''): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/family/claim/verify`, {
+  verifyFamilyClaim(claimToken: string, phone: string, code: string): Observable<FamilyClaimVerificationResponse> {
+    return this.http.post<FamilyClaimVerificationResponse>(`${this.apiUrl}/family/claim/verify`, {
       claim_token: claimToken, phone, code,
-      ...(password ? { password, password_confirmation: passwordConfirmation } : {}),
-    }).pipe(tap(response => this.storeSession(response)));
+    });
+  }
+
+  getPendingFamilyClaims(): Observable<{ success: boolean; data: FamilyClaimReviewItem[] }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.get<{ success: boolean; data: FamilyClaimReviewItem[] }>(`${this.apiUrl}/family/claims/pending`, { headers });
+  }
+
+  reviewFamilyClaim(claimId: number, decision: 'confirm' | 'dispute', reason = ''): Observable<{ success: boolean; message: string; status: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    const body = decision === 'dispute' ? { reason } : {};
+    return this.http.post<{ success: boolean; message: string; status: string }>(`${this.apiUrl}/family/claims/${claimId}/${decision}`, body, { headers });
+  }
+
+  attachFamilyClaimToAccount(claimId: number): Observable<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.post<{ success: boolean; message: string }>(`${this.apiUrl}/family/claims/${claimId}/attach-account`, {}, { headers });
+  }
+
+  completeFamilyClaim(claimId: number): Observable<{ success: boolean; message: string }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.post<{ success: boolean; message: string }>(`${this.apiUrl}/family/claims/${claimId}/complete`, {}, { headers });
   }
 
 
