@@ -23,7 +23,7 @@
       </ng-container>
 
       <p class="family-claim-message" *ngIf="message" role="status">{{ message }}</p>
-      <p class="family-claim-hint" *ngIf="verified">You can close this page. Your profile creator will review the request. Phone verification alone does not transfer ownership.</p>
+      <p class="family-claim-hint" *ngIf="verified">You can close this page. Your profile creator will review the request. After approval, sign in or register using this same phone number to finish linking the profile.</p>
       <p class="family-claim-error" *ngIf="error" role="alert">{{ error }}</p>
       <p class="family-claim-footnote">Never share your verification code with anyone. It expires after 5 minutes.</p>
     </section>
