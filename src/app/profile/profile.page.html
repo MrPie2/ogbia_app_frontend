@@ -30,13 +30,14 @@
       <section class="family-section" *ngIf="user as currentUser">
         <div class="family-heading">
           <div><h2>My Family</h2><p>Your family connections on Ogbia Connect</p></div>
+          <button type="button" class="family-add-button" (click)="openFamilyForm()"><ion-icon name="person-add-outline"></ion-icon> Add</button>
         </div>
         <div class="family-layout" *ngIf="!familyLoading; else familyLoadingState">
           <div class="family-side family-children" aria-label="Children">
             <div class="family-avatar-stack" *ngIf="family.children.length">
               <a class="family-avatar family-child-avatar"
                 *ngFor="let child of visibleChildren; let i = index"
-                [routerLink]="['/members', child.id]"
+                [routerLink]="child.claimed_user_id ? ['/members', child.claimed_user_id] : null"
                 [style.zIndex]="visibleChildren.length - i"
                 [attr.aria-label]="child.name || 'Child profile'">
                 <img *ngIf="child.profile_photo_url" [src]="child.profile_photo_url" [alt]="child.name || 'Child'">
@@ -60,14 +61,14 @@
           </div>
 
           <div class="family-side family-parents">
-            <a class="family-parent" *ngIf="family.father as father" [routerLink]="['/members', father.id]">
+            <a class="family-parent" *ngIf="family.father as father" [routerLink]="father.claimed_user_id ? ['/members', father.claimed_user_id] : null">
               <span class="family-avatar family-parent-avatar">
                 <img *ngIf="father.profile_photo_url" [src]="father.profile_photo_url" [alt]="father.name || 'Father'">
                 <span *ngIf="!father.profile_photo_url">{{ familyInitials(father.name) }}</span>
               </span>
               <small>Father</small>
             </a>
-            <a class="family-parent" *ngIf="family.mother as mother" [routerLink]="['/members', mother.id]">
+            <a class="family-parent" *ngIf="family.mother as mother" [routerLink]="mother.claimed_user_id ? ['/members', mother.claimed_user_id] : null">
               <span class="family-avatar family-parent-avatar">
                 <img *ngIf="mother.profile_photo_url" [src]="mother.profile_photo_url" [alt]="mother.name || 'Mother'">
                 <span *ngIf="!mother.profile_photo_url">{{ familyInitials(mother.name) }}</span>
@@ -81,18 +82,39 @@
         <p class="family-error" *ngIf="familyError" role="status">{{ familyError }}</p>
       </section>
 
+      <div class="family-form-overlay" *ngIf="familyFormOpen" (click)="closeFamilyForm()">
+        <section class="family-form-dialog" role="dialog" aria-modal="true" aria-label="Add a family member" (click)="$event.stopPropagation()">
+          <div class="family-list-heading">
+            <div><h2>Add family member</h2><p>Create a managed profile that can later be claimed.</p></div>
+            <button type="button" (click)="closeFamilyForm()" aria-label="Close"><ion-icon name="close"></ion-icon></button>
+          </div>
+          <label>Full name</label>
+          <input class="family-form-input" [(ngModel)]="familyFormName" placeholder="Enter their full name" maxlength="160">
+          <label>Relationship to you</label>
+          <select class="family-form-input" [(ngModel)]="familyFormRelationship">
+            <option value="child">Child</option><option value="father">Father</option><option value="mother">Mother</option>
+          </select>
+          <label>Phone number <span>(optional)</span></label>
+          <input class="family-form-input" [(ngModel)]="familyFormPhone" type="tel" placeholder="e.g. 08012345678">
+          <p class="family-form-hint">A managed profile does not need its own login yet. The family member can claim it later using a secure SMS verification code.</p>
+          <p class="family-error" *ngIf="familyFormError" role="alert">{{ familyFormError }}</p>
+          <button type="button" class="family-submit-button" (click)="saveFamilyProfile()" [disabled]="familySaving">{{ familySaving ? 'Creating…' : 'Create family profile' }}</button>
+        </section>
+      </div>
+
       <div class="family-list-overlay" *ngIf="childrenListOpen" role="presentation" (click)="closeChildrenList()">
         <section class="family-list-dialog" role="dialog" aria-modal="true" aria-label="All children" (click)="$event.stopPropagation()">
           <div class="family-list-heading"><div><h2>Children</h2><p>{{ family.children.length }} {{ family.children.length === 1 ? 'child' : 'children' }}</p></div>
             <button type="button" (click)="closeChildrenList()" aria-label="Close children list"><ion-icon name="close"></ion-icon></button>
           </div>
-          <a class="family-list-item" *ngFor="let child of family.children" [routerLink]="['/members', child.id]" (click)="closeChildrenList()">
+          <a class="family-list-item" *ngFor="let child of family.children" [routerLink]="child.claimed_user_id ? ['/members', child.claimed_user_id] : null" (click)="closeChildrenList()">
             <span class="family-avatar family-list-avatar">
               <img *ngIf="child.profile_photo_url" [src]="child.profile_photo_url" [alt]="child.name || 'Child'">
               <span *ngIf="!child.profile_photo_url">{{ familyInitials(child.name) }}</span>
             </span>
-            <strong>{{ child.name || 'Ogbia Member' }}</strong>
-            <ion-icon name="chevron-forward-outline"></ion-icon>
+            <div class="family-list-copy"><strong>{{ child.name || 'Ogbia Member' }}</strong><small>{{ child.claim_status === 'claimed' ? 'Personal account linked' : 'Family-managed profile' }}</small></div>
+            <button *ngIf="child.claim_status !== 'claimed'" type="button" class="family-invite-button" (click)="shareFamilyClaim(child); $event.preventDefault(); $event.stopPropagation()">Invite</button>
+            <ion-icon name="chevron-forward-outline" *ngIf="child.claimed_user_id"></ion-icon>
           </a>
           <p class="family-list-empty" *ngIf="!family.children.length">No children have been added yet.</p>
         </section>
