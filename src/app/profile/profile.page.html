@@ -25,15 +25,9 @@
         </div>
         <p class="profile-feedback error" role="alert" *ngIf="photoError">{{ photoError }}</p>
         <p class="profile-feedback success" role="status" *ngIf="photoSuccess">{{ photoSuccess }}</p>
-      </section>
 
-      <section class="family-section" *ngIf="user as currentUser">
-        <div class="family-heading">
-          <div><h2>My Family</h2><p>Your family connections on Ogbia Connect</p></div>
-        <a *ngIf="currentUser['is_admin']" class="family-tree-link" routerLink="/admin/family-claims"><span><ion-icon name="shield-checkmark-outline"></ion-icon></span><span><strong>Administrator claim reviews</strong><small>Review disputed family identity requests</small></span><ion-icon name="chevron-forward-outline"></ion-icon></a>
-
-          <button type="button" class="family-add-button" (click)="openFamilyForm()"><ion-icon name="person-add-outline"></ion-icon> Add</button>
-        </div>
+        <ng-container *ngIf="user as currentUser">
+          <a *ngIf="currentUser['is_admin']" class="family-tree-link admin-family-link" routerLink="/admin/family-claims"><span><ion-icon name="shield-checkmark-outline"></ion-icon></span><span><strong>Administrator claim reviews</strong><small>Review disputed family identity requests</small></span><ion-icon name="chevron-forward-outline"></ion-icon></a>
         <div class="family-layout" *ngIf="!familyLoading; else familyLoadingState">
           <div class="family-side family-children" aria-label="Children">
             <div class="family-avatar-stack">
@@ -127,7 +121,7 @@
             </div>
           </article>
         </section>
-        <a class="family-tree-link" routerLink="/family-tree"><span><ion-icon name="git-network-outline"></ion-icon></span><span><strong>View full family tree</strong><small>Explore grandparents, siblings and extended family</small></span><ion-icon name="chevron-forward-outline"></ion-icon></a>
+      </ng-container>
       </section>
 
       <div class="family-form-overlay" *ngIf="familyFormOpen" (click)="closeFamilyForm()">
@@ -223,6 +217,7 @@
           </span>
           <span class="memory-folder-open">Open <ion-icon name="chevron-forward-outline"></ion-icon></span>
         </a>
+        <a class="family-tree-link" routerLink="/family-tree"><span><ion-icon name="git-network-outline"></ion-icon></span><span><strong>View full family tree</strong><small>Explore grandparents, siblings and extended family</small></span><ion-icon name="chevron-forward-outline"></ion-icon></a>
       </section>
 
       <section class="profile-information" *ngIf="user as currentUser">
