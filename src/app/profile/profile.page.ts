@@ -35,6 +35,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   familyFormName = '';
   familyFormPhone = '';
   familyFormRelationship: 'child' | 'father' | 'mother' = 'child';
+  familyGuardianRelationship: 'father' | 'mother' = 'father';
   familyFormError = '';
   newFamilyClaimLink = '';
   familyInviteReady = false;
@@ -119,10 +120,10 @@ export class ProfilePage implements OnInit, OnDestroy {
     const name = this.familyFormName.trim();
     if (name.length < 2) { this.familyFormError = 'Enter the family member’s full name.'; return; }
     this.familySaving = true; this.familyFormError = '';
-    this.auth.createFamilyProfile(name, this.familyFormRelationship, this.familyFormPhone).subscribe({
+    this.auth.createFamilyProfile(name, this.familyFormRelationship, this.familyFormPhone, this.familyGuardianRelationship).subscribe({
       next: response => {
         this.familySaving = false; this.familyFormOpen = false;
-        this.familyFormName = ''; this.familyFormPhone = ''; this.familyFormRelationship = 'child';
+        this.familyFormName = ''; this.familyFormPhone = ''; this.familyFormRelationship = 'child'; this.familyGuardianRelationship = 'father';
         this.loadFamilyProfile();
         if (response.data?.claim_token) { this.newFamilyClaimLink = this.familyClaimUrl(response.data.claim_token); this.familyInviteReady = true; }
         this.cdr.markForCheck();
@@ -135,12 +136,12 @@ export class ProfilePage implements OnInit, OnDestroy {
     });
   }
 
-  familyClaimUrl(token: string): string { return `${window.location.origin}/family/claim/${token}`; }
+  familyClaimUrl(token: string): string { return window.location.protocol.startsWith('http') ? `${window.location.origin}/family/claim/${token}` : token; }
 
   async shareFamilyClaim(member: FamilyMember): Promise<void> {
     const link = this.familyClaimUrl(member.claim_token);
     try {
-      if (navigator.share) await navigator.share({ title: 'Claim your Ogbia family profile', text: 'Use this secure link to claim your family profile on Ogbia Connect.', url: link });
+      if (navigator.share) await navigator.share({ title: 'Claim your Ogbia family profile', text: link.startsWith('http') ? 'Use this secure link to claim your family profile on Ogbia Connect.' : `Your Ogbia Connect family claim code is: ${link}. Open the app and choose Claim family profile.`, ...(link.startsWith('http') ? { url: link } : {}) });
       else await navigator.clipboard.writeText(link);
     } catch { try { await navigator.clipboard.writeText(link); } catch { window.prompt('Copy this family claim link:', link); } }
   }
