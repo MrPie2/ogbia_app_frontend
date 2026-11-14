@@ -277,6 +277,7 @@ export class ProfilePage implements OnInit, OnDestroy {
       return;
     }
     this.selectedFamilyPhoto = file;
+    input.value = '';
     this.familyFormError = '';
     const reader = new FileReader();
     reader.onload = () => { this.familyPhotoPreview = String(reader.result || ''); this.cdr.markForCheck(); };
