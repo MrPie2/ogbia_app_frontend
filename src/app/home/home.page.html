@@ -178,7 +178,14 @@
           <textarea rows="2" maxlength="2000" [value]="commentDraft" (input)="onCommentInput($event)" [placeholder]="replyToComment ? 'Write a reply…' : 'Write a comment…'" [attr.aria-label]="replyToComment ? 'Write a reply' : 'Write a comment'"></textarea>
           <button type="submit" [disabled]="!commentDraft.trim() || commentSending" aria-label="Send comment or reply"><ion-icon [name]="commentSending ? 'hourglass-outline' : 'send'"></ion-icon><span>{{ commentSending ? 'Sending…' : (replyToComment ? 'Reply' : 'Send') }}</span></button>
         </form>
-        @if (commentsError) { <p class="comments-error" role="alert">{{ commentsError }}</p> }
+        @if (commentsError) {
+          <div class="comments-error" role="alert">
+            <span>{{ commentsError }}</span>
+            @if (!commentsLoading && activeCommentPost; as failedPost) {
+              <button type="button" (click)="loadComments(failedPost)">Retry</button>
+            }
+          </div>
+        }
         <div class="comments-list">
           @if (commentsLoading) { <p class="comments-empty">Loading comments…</p> }
           @else if (!postComments.length) { <p class="comments-empty">No comments yet. Start the conversation.</p> }
