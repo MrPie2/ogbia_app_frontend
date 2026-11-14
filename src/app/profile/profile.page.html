@@ -94,11 +94,28 @@
           <select class="family-form-input" [(ngModel)]="familyFormRelationship">
             <option value="child">Child</option><option value="father">Father</option><option value="mother">Mother</option>
           </select>
+          <ng-container *ngIf="familyFormRelationship === 'child'">
+            <label>I am their</label>
+            <select class="family-form-input" [(ngModel)]="familyGuardianRelationship">
+              <option value="father">Father</option><option value="mother">Mother</option>
+            </select>
+          </ng-container>
           <label>Phone number <span>(optional)</span></label>
           <input class="family-form-input" [(ngModel)]="familyFormPhone" type="tel" placeholder="e.g. 08012345678">
           <p class="family-form-hint">A managed profile does not need its own login yet. The family member can claim it later using a secure SMS verification code.</p>
           <p class="family-error" *ngIf="familyFormError" role="alert">{{ familyFormError }}</p>
           <button type="button" class="family-submit-button" (click)="saveFamilyProfile()" [disabled]="familySaving">{{ familySaving ? 'Creating…' : 'Create family profile' }}</button>
+        </section>
+      </div>
+
+      <div class="family-form-overlay" *ngIf="familyInviteReady" (click)="familyInviteReady = false">
+        <section class="family-form-dialog family-created-dialog" role="dialog" aria-modal="true" aria-label="Family profile created" (click)="$event.stopPropagation()">
+          <div class="family-created-icon"><ion-icon name="checkmark-circle"></ion-icon></div>
+          <h2>Family profile created</h2>
+          <p>Share this claim code with the family member. They can use it in Ogbia Connect to verify their phone and activate their own account.</p>
+          <code>{{ newFamilyClaimLink }}</code>
+          <button type="button" class="family-submit-button" (click)="copyNewFamilyClaimLink()">Copy claim code</button>
+          <button type="button" class="family-created-close" (click)="familyInviteReady = false">Done</button>
         </section>
       </div>
 
