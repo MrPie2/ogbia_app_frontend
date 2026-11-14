@@ -71,6 +71,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.loadFamilyProfile();
     this.loadPendingFamilyClaims();
     this.hasPendingFamilyClaim = !!localStorage.getItem('ogbia_pending_family_claim_id');
+    this.loadMyFamilyClaims();
     this.resumeFamilyClaimOwnership();
     this.loadCommunityLeaders();
     this.loadMemories();
@@ -118,6 +119,27 @@ export class ProfilePage implements OnInit, OnDestroy {
         this.familyError = 'Your family connections could not be loaded.';
         this.cdr.markForCheck();
       }
+    });
+  }
+
+  loadMyFamilyClaims(): void {
+    this.auth.getMyFamilyClaims().subscribe({
+      next: response => {
+        const latest = response.data?.[0];
+        if (latest) {
+          localStorage.setItem('ogbia_pending_family_claim_id', String(latest.id));
+          this.hasPendingFamilyClaim = true;
+          this.familyClaimStatusMessage = latest.status === 'approved'
+            ? 'Your family profile claim has been approved. You can now finish linking it.'
+            : latest.status === 'disputed'
+              ? 'Your request is under administrator review.'
+              : 'Your phone is verified. Waiting for the profile creator to review your request.';
+        } else if (!localStorage.getItem('ogbia_pending_family_claim_id')) {
+          this.hasPendingFamilyClaim = false;
+        }
+        this.cdr.markForCheck();
+      },
+      error: () => { /* Claim lookup is optional; the profile remains usable if unavailable. */ }
     });
   }
 
