@@ -49,7 +49,7 @@
                 <ion-icon name="eye-outline"></ion-icon>
               </button>
             </div>
-            <span class="family-side-label">Children</span>
+            <span class="family-side-label">Children</span><a class="family-claim-entry" routerLink="/family/claim">Claim an invitation</a>
           </div>
 
           <div class="family-self">
@@ -61,20 +61,24 @@
           </div>
 
           <div class="family-side family-parents">
-            <a class="family-parent" *ngIf="family.father as father" [routerLink]="father.claimed_user_id ? ['/members', father.claimed_user_id] : null">
-              <span class="family-avatar family-parent-avatar">
-                <img *ngIf="father.profile_photo_url" [src]="father.profile_photo_url" [alt]="father.name || 'Father'">
-                <span *ngIf="!father.profile_photo_url">{{ familyInitials(father.name) }}</span>
-              </span>
-              <small>Father</small>
-            </a>
-            <a class="family-parent" *ngIf="family.mother as mother" [routerLink]="mother.claimed_user_id ? ['/members', mother.claimed_user_id] : null">
-              <span class="family-avatar family-parent-avatar">
-                <img *ngIf="mother.profile_photo_url" [src]="mother.profile_photo_url" [alt]="mother.name || 'Mother'">
-                <span *ngIf="!mother.profile_photo_url">{{ familyInitials(mother.name) }}</span>
-              </span>
-              <small>Mother</small>
-            </a>
+            <div class="family-parent" *ngIf="family.father as father">
+              <a [routerLink]="father.claimed_user_id ? ['/members', father.claimed_user_id] : null">
+                <span class="family-avatar family-parent-avatar">
+                  <img *ngIf="father.profile_photo_url" [src]="father.profile_photo_url" [alt]="father.name || 'Father'">
+                  <span *ngIf="!father.profile_photo_url">{{ familyInitials(father.name) }}</span>
+                </span><small>Father</small>
+              </a>
+              <button *ngIf="father.claim_status !== 'claimed'" type="button" class="family-parent-invite" (click)="shareFamilyClaim(father)" aria-label="Invite father to claim account"><ion-icon name="share-outline"></ion-icon></button>
+            </div>
+            <div class="family-parent" *ngIf="family.mother as mother">
+              <a [routerLink]="mother.claimed_user_id ? ['/members', mother.claimed_user_id] : null">
+                <span class="family-avatar family-parent-avatar">
+                  <img *ngIf="mother.profile_photo_url" [src]="mother.profile_photo_url" [alt]="mother.name || 'Mother'">
+                  <span *ngIf="!mother.profile_photo_url">{{ familyInitials(mother.name) }}</span>
+                </span><small>Mother</small>
+              </a>
+              <button *ngIf="mother.claim_status !== 'claimed'" type="button" class="family-parent-invite" (click)="shareFamilyClaim(mother)" aria-label="Invite mother to claim account"><ion-icon name="share-outline"></ion-icon></button>
+            </div>
             <span class="family-no-parents" *ngIf="!family.father && !family.mother">Parents</span>
           </div>
         </div>
