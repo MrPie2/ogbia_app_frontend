@@ -99,7 +99,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     this.familyError = '';
     this.auth.getFamilyProfile().subscribe({
       next: response => {
-        this.family = response.data || { children: [], father: null, mother: null };
+        this.family = response.data || { children: [], father: null, mother: null, all: [] };
         this.familyLoading = false;
         this.cdr.markForCheck();
       },
