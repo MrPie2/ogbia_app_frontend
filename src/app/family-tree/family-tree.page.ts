@@ -38,6 +38,8 @@ export class FamilyTreePage implements OnInit {
   dateOfBirth = '';
   gender = '';
   hometown = '';
+  selectedPhoto: File | null = null;
+  photoPreview = '';
   privacy: 'private' | 'family' | 'public' = 'family';
   matches: FamilyMatchCandidate[] = [];
   selectedMatch: FamilyMatchCandidate | null = null;
@@ -109,6 +111,37 @@ export class FamilyTreePage implements OnInit {
     this.addOpen = false;
     this.matches = [];
     this.selectedMatch = null;
+    this.selectedPhoto = null;
+    this.photoPreview = '';
+  }
+
+  onPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] || null;
+    this.formError = '';
+    if (!file) return;
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      this.formError = 'Choose a JPG, PNG or WebP image.';
+      input.value = '';
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      this.formError = 'The profile photo must be 5 MB or smaller.';
+      input.value = '';
+      return;
+    }
+    this.selectedPhoto = file;
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.photoPreview = typeof reader.result === 'string' ? reader.result : '';
+      this.cdr.markForCheck();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removeSelectedPhoto(): void {
+    this.selectedPhoto = null;
+    this.photoPreview = '';
   }
 
   searchMatches(): void {
@@ -141,6 +174,7 @@ export class FamilyTreePage implements OnInit {
 
   chooseMatch(match: FamilyMatchCandidate): void {
     this.selectedMatch = this.selectedMatch?.match_reference === match.match_reference ? null : match;
+    if (this.selectedMatch) this.removeSelectedPhoto();
   }
 
   saveRelationship(): void {
@@ -159,6 +193,7 @@ export class FamilyTreePage implements OnInit {
         ...(this.gender ? { gender: this.gender } : {}),
         ...(this.hometown.trim() ? { hometown: this.hometown.trim() } : {}),
         privacy: this.privacy,
+        ...(this.selectedPhoto ? { photo: this.selectedPhoto } : {}),
       } : { match_reference: this.selectedMatch.match_reference }),
     }).subscribe({
       next: () => {
@@ -169,7 +204,8 @@ export class FamilyTreePage implements OnInit {
       },
       error: error => {
         this.saving = false;
-        this.formError = error?.error?.errors?.match_reference?.[0]
+        this.formError = error?.error?.errors?.profile_photo?.[0]
+          || error?.error?.errors?.match_reference?.[0]
           || error?.error?.errors?.relationship?.[0]
           || error?.error?.message
           || 'Could not add this family relationship.';
