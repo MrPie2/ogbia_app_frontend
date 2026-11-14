@@ -38,6 +38,7 @@ export class HomePage implements OnInit, OnDestroy {
   likingCommentIds = new Set<number>();
   commentsLoading = false;
   commentSending = false;
+  private commentsRequestVersion = 0;
   commentsError = '';
   events: CommunityPost[] = [];
   loadingEvents = true;
@@ -496,27 +497,47 @@ export class HomePage implements OnInit, OnDestroy {
     this.commentDraft = '';
     this.replyToComment = null;
     this.commentsError = '';
+    this.loadComments(post);
+  }
+
+  loadComments(post: CommunityPost): void {
+    const requestVersion = ++this.commentsRequestVersion;
     this.commentsLoading = true;
-    this.postsService.getComments(post.id).subscribe({
-      next: (response) => {
+    this.commentsError = '';
+    this.postsService.getComments(post.id).pipe(timeout(15000)).subscribe({
+      next: response => {
+        if (requestVersion !== this.commentsRequestVersion || this.activeCommentPost?.id !== post.id) return;
         this.postComments = response.data || [];
         this.updateCommentCount(post.id, response.comments_count);
         this.commentsLoading = false;
         this.cdr.markForCheck();
       },
-      error: () => {
+      error: (error: HttpErrorResponse) => {
+        if (requestVersion !== this.commentsRequestVersion || this.activeCommentPost?.id !== post.id) return;
         this.commentsLoading = false;
-        this.commentsError = 'Comments could not be loaded. Please try again.';
+        if (error.status === 401) {
+          this.commentsError = 'Your session has expired. Please sign in again.';
+          this.auth.logout();
+          this.router.navigate(['/login']);
+        } else if (error.status === 404) {
+          this.commentsError = 'This post is no longer available.';
+        } else if (error.name === 'TimeoutError' || error.error === 'TimeoutError') {
+          this.commentsError = 'Comments are taking too long to load. Check your connection and retry.';
+        } else {
+          this.commentsError = 'Comments could not be loaded. Please try again.';
+        }
         this.cdr.markForCheck();
       }
     });
   }
 
   closeComments(): void {
+    this.commentsRequestVersion++;
     this.activeCommentPost = null;
     this.commentDraft = '';
     this.replyToComment = null;
     this.commentsError = '';
+    this.commentsLoading = false;
   }
 
   onCommentInput(event: Event): void {
