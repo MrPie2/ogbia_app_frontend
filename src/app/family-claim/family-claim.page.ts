@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
@@ -24,7 +24,7 @@ export class FamilyClaimPage implements OnInit {
   error = '';
   message = '';
 
-  constructor(private readonly route: ActivatedRoute, private readonly auth: AuthService, private readonly router: Router) {}
+  constructor(private readonly route: ActivatedRoute, private readonly auth: AuthService) {}
 
   ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token') || '';
