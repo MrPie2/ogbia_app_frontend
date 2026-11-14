@@ -191,6 +191,7 @@ export class AuthService {
       localStorage.setItem('token', response.token);
       if (response.user) localStorage.setItem('auth_user', JSON.stringify(response.user));
       this.sessionChanges.next(true);
+      this.resumePendingFamilyClaim().subscribe({ error: () => { /* Retry from the profile page after creator approval. */ } });
     }
   }
 
