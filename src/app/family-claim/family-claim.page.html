@@ -6,6 +6,8 @@
       <h1>Claim your family profile</h1>
       <p class="family-claim-intro">Verify the phone number connected to this invitation to make this family profile your own Ogbia Connect account.</p>
 
+      <label for="claim-token" *ngIf="!token">Family claim code</label>
+      <input id="claim-token" *ngIf="!token" [(ngModel)]="token" autocomplete="off" placeholder="Paste the claim code">
       <label for="claim-phone">Phone number</label>
       <input id="claim-phone" [(ngModel)]="phone" type="tel" autocomplete="tel" placeholder="e.g. 08012345678" [disabled]="otpSent">
 
