@@ -30,6 +30,8 @@
       <section class="family-section" *ngIf="user as currentUser">
         <div class="family-heading">
           <div><h2>My Family</h2><p>Your family connections on Ogbia Connect</p></div>
+        <a *ngIf="currentUser['is_admin']" class="family-tree-link" routerLink="/admin/family-claims"><span><ion-icon name="shield-checkmark-outline"></ion-icon></span><span><strong>Administrator claim reviews</strong><small>Review disputed family identity requests</small></span><ion-icon name="chevron-forward-outline"></ion-icon></a>
+
           <button type="button" class="family-add-button" (click)="openFamilyForm()"><ion-icon name="person-add-outline"></ion-icon> Add</button>
         </div>
         <div class="family-layout" *ngIf="!familyLoading; else familyLoadingState">
