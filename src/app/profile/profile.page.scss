@@ -591,3 +591,20 @@
   .profile-page .family-parent-avatar { width: 27px; height: 27px; }
   .profile-page .family-self .profile-photo { width: 58px; height: 58px; }
 }
+
+
+/* Keep parent and child avatar circles exactly the same size. */
+.profile-page .family-parent-avatar,
+.profile-page .family-parent-empty .family-parent-avatar {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+}
+@media (max-width: 360px) {
+  .profile-page .family-parent-avatar,
+  .profile-page .family-parent-empty .family-parent-avatar {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
+  }
+}
