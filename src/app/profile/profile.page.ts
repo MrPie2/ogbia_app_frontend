@@ -26,7 +26,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   photoPreview: string | null = null;
   profilePhotoViewerOpen = false;
   selectedPhoto: File | null = null;
-  family: FamilyProfileResponse['data'] = { children: [], father: null, mother: null };
+  family: FamilyProfileResponse['data'] = { children: [], father: null, mother: null, all: [] };
   familyLoading = true;
   familyError = '';
   childrenListOpen = false;
