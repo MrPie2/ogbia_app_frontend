@@ -518,3 +518,8 @@
 .claim-confirm-button{background:#393185;color:#fff}.claim-dispute-button{background:#e3e0f0;color:#554b83}
 .family-claim-review-actions button:disabled{opacity:.5}
 .family-claim-review-error{color:#b42318;font-size:11px}.family-claim-review-loading{color:#817b98;font-size:11px}
+
+
+/* Keep family avatars visually integrated with the main profile card. */
+.profile-hero .family-layout{margin:18px 0 8px;padding-top:14px;border-top:1px solid rgba(112,103,153,.14)}
+.profile-hero .admin-family-link{margin:14px 2px 0;text-align:left}
