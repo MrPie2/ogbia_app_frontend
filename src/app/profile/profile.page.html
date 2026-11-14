@@ -114,6 +114,19 @@
             <div><h2>Add family member</h2><p>Create a managed profile that can later be claimed.</p></div>
             <button type="button" (click)="closeFamilyForm()" aria-label="Close"><ion-icon name="close"></ion-icon></button>
           </div>
+          <div class="family-photo-field">
+            <div class="family-photo-preview">
+              <img *ngIf="familyPhotoPreview" [src]="familyPhotoPreview" alt="Selected family profile picture">
+              <ion-icon *ngIf="!familyPhotoPreview" name="person-circle-outline"></ion-icon>
+            </div>
+            <div class="family-photo-controls">
+              <strong>Profile picture <span>(optional)</span></strong>
+              <label class="family-photo-choose" for="familyProfilePhotoInput"><ion-icon name="image-outline"></ion-icon> Choose photo</label>
+              <input id="familyProfilePhotoInput" class="visually-hidden-file" type="file" accept="image/jpeg,image/png,image/webp" (change)="onFamilyPhotoSelected($event)">
+              <button *ngIf="selectedFamilyPhoto" type="button" class="family-photo-remove" (click)="removeFamilyPhoto()">Remove</button>
+              <small>JPG, PNG or WebP · up to 5 MB</small>
+            </div>
+          </div>
           <label>Full name</label>
           <input class="family-form-input" [(ngModel)]="familyFormName" placeholder="Enter their full name" maxlength="160">
           <label>Relationship to you</label>
