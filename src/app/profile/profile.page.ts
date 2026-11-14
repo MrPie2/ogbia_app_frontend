@@ -114,6 +114,13 @@ export class ProfilePage implements OnInit, OnDestroy {
   openChildrenList(): void { this.childrenListOpen = true; }
   closeChildrenList(): void { this.childrenListOpen = false; }
   openFamilyForm(): void { this.familyFormOpen = true; this.familyFormError = ''; }
+  openFamilyFormFor(relationship: 'child' | 'father' | 'mother'): void {
+    this.familyFormRelationship = relationship;
+    this.familyFormName = '';
+    this.familyFormPhone = '';
+    this.familyFormError = '';
+    this.familyFormOpen = true;
+  }
   closeFamilyForm(): void { this.familyFormOpen = false; }
 
   saveFamilyProfile(): void {
