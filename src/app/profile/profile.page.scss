@@ -625,3 +625,60 @@
   filter: none !important;
   text-shadow: none !important;
 }
+
+
+/* Full-width, softly rounded neumorphic primary actions. */
+.profile-page .family-submit-button,
+.profile-page .claim-confirm-button,
+.profile-page .memory-pending button,
+.profile-page .copy-referral,
+.profile-page .photo-actions button,
+.profile-page .leaders-error button,
+.profile-page .family-error button {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border: 1px solid rgba(255,255,255,.78);
+  border-radius: 15px;
+  box-shadow: 4px 4px 8px rgba(72,64,112,.12), -4px -4px 8px rgba(255,255,255,.88) !important;
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+.profile-page .family-submit-button:active:not(:disabled),
+.profile-page .claim-confirm-button:active:not(:disabled),
+.profile-page .memory-pending button:active:not(:disabled),
+.profile-page .copy-referral:active:not(:disabled),
+.profile-page .photo-actions button:active:not(:disabled),
+.profile-page .leaders-error button:active:not(:disabled),
+.profile-page .family-error button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: inset 3px 3px 6px rgba(72,64,112,.12), inset -3px -3px 6px rgba(255,255,255,.86) !important;
+}
+.profile-page .family-submit-button,
+.profile-page .claim-confirm-button,
+.profile-page .memory-pending button,
+.profile-page .copy-referral,
+.profile-page .photo-actions button,
+.profile-page .leaders-error button {
+  background: #393185;
+  color: #fff;
+}
+.profile-page .family-submit-button:disabled,
+.profile-page .claim-confirm-button:disabled,
+.profile-page .memory-pending button:disabled,
+.profile-page .photo-actions button:disabled {
+  opacity: .55;
+  box-shadow: none !important;
+}
+.profile-page .family-error button {
+  display: inline-flex;
+  width: auto;
+  min-height: 32px;
+  padding: 6px 12px;
+  background: #eeecf7;
+  color: #393185;
+}
