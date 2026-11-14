@@ -67,6 +67,40 @@ export interface FamilyProfileResponse {
   };
 }
 
+
+export interface FamilyTreePerson {
+  id: number;
+  name: string;
+  profile_photo_url: string | null;
+  is_managed: boolean;
+  is_claimed: boolean;
+  privacy: string;
+  date_of_birth?: string | null;
+  gender?: string | null;
+  hometown?: string | null;
+  claim_status?: string | null;
+  relationship?: string | null;
+}
+export interface FamilyTreeEdge {
+  id: number;
+  person_id: number;
+  related_person_id: number;
+  relationship: string;
+  viewer_relationship: string;
+  status: string;
+}
+export interface FamilyTreeResponse {
+  success: boolean;
+  data: { root_id: number; people: FamilyTreePerson[]; relationships: FamilyTreeEdge[] };
+}
+export interface FamilyMatchCandidate {
+  match_reference: string;
+  confidence: 'strong' | 'possible';
+  display_hint: string;
+}
+export interface FamilyMatchesResponse { success: boolean; message: string; data: FamilyMatchCandidate[]; }
+export interface FamilyTreePersonResponse { success: boolean; data: FamilyTreePerson; }
+
 export interface UserMemory {
   id: number;
   media_type: 'image' | 'video';
@@ -187,6 +221,36 @@ export class AuthService {
       claim_token: claimToken, phone, code,
       ...(password ? { password, password_confirmation: passwordConfirmation } : {}),
     }).pipe(tap(response => this.storeSession(response)));
+  }
+
+
+  getFamilyTree(): Observable<FamilyTreeResponse> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.get<FamilyTreeResponse>(`${this.apiUrl}/family/tree`, { headers }).pipe(timeout(20000));
+  }
+
+  getFamilyTreePerson(id: number): Observable<FamilyTreePersonResponse> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.get<FamilyTreePersonResponse>(`${this.apiUrl}/family/tree/people/${id}`, { headers }).pipe(timeout(15000));
+  }
+
+  searchFamilyMatches(criteria: { name: string; date_of_birth?: string; gender?: string; hometown?: string }): Observable<FamilyMatchesResponse> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.post<FamilyMatchesResponse>(`${this.apiUrl}/family/matches`, criteria, { headers }).pipe(timeout(20000));
+  }
+
+  addFamilyRelationship(payload: {
+    relationship: string; name?: string; date_of_birth?: string; gender?: string;
+    hometown?: string; privacy?: 'private' | 'family' | 'public'; match_reference?: string;
+  }): Observable<{ success: boolean; message: string; data: { person: FamilyTreePerson; relationship: string } }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.post<{ success: boolean; message: string; data: { person: FamilyTreePerson; relationship: string } }>(
+      `${this.apiUrl}/family/tree/relationships`, payload, { headers }
+    ).pipe(timeout(20000));
   }
 
   getMyMemories(): Observable<UserMemoriesResponse> {
