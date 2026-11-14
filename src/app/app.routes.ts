@@ -36,6 +36,10 @@ export const routes: Routes = [
     loadComponent: () => import('./friends/friends.page').then(m => m.FriendsPage)
   },
   {
+    path: 'family-tree',
+    loadComponent: () => import('./family-tree/family-tree.page').then(m => m.FamilyTreePage)
+  },
+  {
     path: 'family/claim',
     loadComponent: () => import('./family-claim/family-claim.page').then(m => m.FamilyClaimPage)
   },
