@@ -57,6 +57,20 @@
         <div><label>Gender <small>(optional)</small></label><select class="tree-input" [(ngModel)]="gender"><option value="">Not specified</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select></div>
       </div>
       <label>Hometown / community <small>(optional)</small></label><input class="tree-input" [(ngModel)]="hometown" placeholder="e.g. Otuokpoti" maxlength="160">
+      <label>Profile photo <small>(optional · JPG, PNG or WebP, up to 5 MB)</small></label>
+      <div class="tree-photo-control" *ngIf="!selectedMatch">
+        <span class="tree-photo-preview">
+          <img *ngIf="photoPreview" [src]="photoPreview" alt="Selected family profile photo">
+          <ion-icon *ngIf="!photoPreview" name="camera-outline"></ion-icon>
+        </span>
+        <div class="tree-photo-actions">
+          <label class="tree-photo-pick" for="family-profile-photo">{{ selectedPhoto ? 'Change photo' : 'Choose photo' }}</label>
+          <small>{{ selectedPhoto?.name || 'No photo selected' }}</small>
+        </div>
+        <button *ngIf="selectedPhoto" type="button" class="tree-photo-remove" (click)="removeSelectedPhoto()" aria-label="Remove selected photo"><ion-icon name="close"></ion-icon></button>
+        <input id="family-profile-photo" type="file" accept="image/jpeg,image/png,image/webp" (change)="onPhotoSelected($event)">
+      </div>
+      <p class="tree-photo-match-note" *ngIf="selectedMatch">An existing profile keeps its current photo. You can only upload a photo when creating a new managed profile.</p>
       <label>Profile privacy</label><select class="tree-input" [(ngModel)]="privacy"><option value="private">Only me</option><option value="family">Family</option><option value="public">Public</option></select>
       <button type="button" class="tree-search-button" (click)="searchMatches()" [disabled]="searching"><ion-icon name="search-outline"></ion-icon>{{ searching ? 'Searching…' : 'Check for an existing profile' }}</button>
       <div class="tree-matches" *ngIf="matches.length">
