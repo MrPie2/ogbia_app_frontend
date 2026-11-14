@@ -112,7 +112,7 @@
           <p class="family-claim-review-loading" *ngIf="familyClaimsLoading">Checking claim requests…</p>
           <article class="family-claim-review-item" *ngFor="let claim of familyClaims">
             <div class="family-claim-review-copy"><strong>{{ claim.profile_name }}</strong><small>{{ claim.relationship | titlecase }} · phone ending {{ claim.phone_last_four }}</small><small class="claim-status">{{ claim.status === 'disputed' ? 'Needs administrator review' : claim.status === 'approved' ? 'Approved — waiting for member to connect account' : 'Phone verified — your review is needed' }}</small></div>
-            <div class="family-claim-review-actions" *ngIf="claim.status === 'verified' || claim.status === 'disputed'">
+            <div class="family-claim-review-actions" *ngIf="claim.status === 'verified'">
               <button type="button" class="claim-confirm-button" (click)="reviewFamilyClaim(claim, 'confirm')" [disabled]="familyClaimActionId === claim.id">Confirm</button>
               <button type="button" class="claim-dispute-button" (click)="reviewFamilyClaim(claim, 'dispute')" [disabled]="familyClaimActionId === claim.id">Flag</button>
             </div>
