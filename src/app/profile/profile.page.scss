@@ -504,3 +504,17 @@
 .family-tree-link strong{color:#393185;font-size:11px;font-weight:850}
 .family-tree-link small{color:#817b98;font-size:9px;line-height:1.4}
 .family-tree-link>ion-icon{color:#9389ad;font-size:16px}
+
+
+.family-claim-review{margin:16px 0;padding:14px;border-radius:18px;background:#eeecf7;box-shadow:inset 3px 3px 7px rgba(72,64,112,.07),inset -3px -3px 7px rgba(255,255,255,.8)}
+.family-claim-review-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.family-claim-review-heading strong,.family-claim-review-copy strong{display:block;color:#393185;font-size:12px;font-weight:850}
+.family-claim-review-heading small,.family-claim-review-copy small{display:block;margin-top:3px;color:#827c99;font-size:10px;line-height:1.4}
+.family-claim-review-heading button{width:32px;height:32px;border:0;border-radius:10px;background:#e6e2f2;color:#393185}
+.family-claim-review-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid rgba(92,80,140,.12)}
+.family-claim-review-copy{min-width:0}.family-claim-review-copy strong{color:#393185}.family-claim-review-copy .claim-status{color:#62579a;font-weight:700}
+.family-claim-review-actions{display:flex;gap:6px;flex-shrink:0}
+.family-claim-review-actions button{padding:7px 10px;border:0;border-radius:9px;font-size:10px;font-weight:800}
+.claim-confirm-button{background:#393185;color:#fff}.claim-dispute-button{background:#e3e0f0;color:#554b83}
+.family-claim-review-actions button:disabled{opacity:.5}
+.family-claim-review-error{color:#b42318;font-size:11px}.family-claim-review-loading{color:#817b98;font-size:11px}
