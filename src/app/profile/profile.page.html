@@ -106,6 +106,7 @@
         </div>
         <ng-template #familyLoadingState><div class="family-loading">Loading family profile…</div></ng-template>
         <p class="family-error" *ngIf="familyError" role="status">{{ familyError }} <button type="button" (click)="loadFamilyProfile()">Try again</button></p>
+        <a class="family-tree-link" routerLink="/family-tree"><span><ion-icon name="git-network-outline"></ion-icon></span><span><strong>View full family tree</strong><small>Explore grandparents, siblings and extended family</small></span><ion-icon name="chevron-forward-outline"></ion-icon></a>
       </section>
 
       <div class="family-form-overlay" *ngIf="familyFormOpen" (click)="closeFamilyForm()">
