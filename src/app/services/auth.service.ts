@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, Subject, tap, timeout } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface AuthUser {
@@ -163,7 +163,7 @@ export class AuthService {
   getFamilyProfile(): Observable<FamilyProfileResponse> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
-    return this.http.get<FamilyProfileResponse>(`${this.apiUrl}/profile/family`, { headers });
+    return this.http.get<FamilyProfileResponse>(`${this.apiUrl}/profile/family`, { headers }).pipe(timeout(15000));
   }
 
   createFamilyProfile(name: string, relationship: 'child' | 'father' | 'mother', phone = '', guardianRelationship: 'father' | 'mother' = 'father'): Observable<{ success: boolean; message: string; data: FamilyMember }> {
