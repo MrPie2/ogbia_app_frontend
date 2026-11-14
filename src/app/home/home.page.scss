@@ -1098,3 +1098,15 @@
   min-width: 0;
 }
 
+
+
+/* Comments opened from the media preview must sit above the preview overlay. */
+.comments-backdrop {
+  position: fixed !important;
+  z-index: 30000 !important;
+  isolation: isolate;
+}
+.comments-modal {
+  position: relative;
+  z-index: 1;
+}
