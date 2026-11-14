@@ -146,6 +146,18 @@ export class ProfilePage implements OnInit, OnDestroy {
     } catch { try { await navigator.clipboard.writeText(link); } catch { window.prompt('Copy this family claim link:', link); } }
   }
 
+  removeFamilyProfile(member: FamilyMember): void {
+    if (member.claim_status === 'claimed') return;
+    if (!window.confirm(`Remove ${member.name || 'this family profile'}?`)) return;
+    this.auth.deleteFamilyProfile(member.id).subscribe({
+      next: () => { this.loadFamilyProfile(); this.cdr.markForCheck(); },
+      error: error => {
+        this.familyError = error.error?.message || 'Could not remove this family profile.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
   async copyNewFamilyClaimLink(): Promise<void> {
     if (!this.newFamilyClaimLink) return;
     try { await navigator.clipboard.writeText(this.newFamilyClaimLink); } catch { window.prompt('Copy family claim link:', this.newFamilyClaimLink); }
