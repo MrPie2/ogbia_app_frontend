@@ -5,7 +5,7 @@ import { HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { AuthService, AuthUser, CommunityLeader, FamilyMember, FamilyProfileResponse, UserMemory } from '../services/auth.service';
+import { AuthService, AuthUser, CommunityLeader, FamilyMember, FamilyProfileResponse, FamilyClaimReviewItem, UserMemory } from '../services/auth.service';
 import { KnowledgeBaseService } from '../services/knowledge-base.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   selectedPhoto: File | null = null;
   family: FamilyProfileResponse['data'] = { children: [], father: null, mother: null, all: [] };
   familyLoading = true;
-  familyError = '';
+  familyError = '';\n  familyClaims: FamilyClaimReviewItem[] = [];\n  familyClaimsLoading = false;\n  familyClaimActionId: number | null = null;\n  familyClaimsError = '';
   childrenListOpen = false;
   familyFormOpen = false;
   familySaving = false;
@@ -61,7 +61,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadFamilyProfile();
+    this.loadFamilyProfile();\n    this.loadPendingFamilyClaims();
     this.loadCommunityLeaders();
     this.loadMemories();
     this.user = this.auth.getCachedUser();
@@ -106,6 +106,46 @@ export class ProfilePage implements OnInit, OnDestroy {
       error: () => {
         this.familyLoading = false;
         this.familyError = 'Your family connections could not be loaded.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  loadPendingFamilyClaims(): void {
+    this.familyClaimsLoading = true;
+    this.familyClaimsError = '';
+    this.auth.getPendingFamilyClaims().subscribe({
+      next: response => {
+        this.familyClaims = response.data || [];
+        this.familyClaimsLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.familyClaimsLoading = false;
+        this.familyClaimsError = 'Family claim requests could not be loaded.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  reviewFamilyClaim(claim: FamilyClaimReviewItem, decision: 'confirm' | 'dispute'): void {
+    const reason = decision === 'dispute'
+      ? window.prompt('Briefly explain why this claim needs administrator review:')?.trim()
+      : '';
+    if (decision === 'dispute' && (!reason || reason.length < 5)) return;
+    if (decision === 'confirm' && !window.confirm('Confirm that this person is the family member represented by this profile?')) return;
+
+    this.familyClaimActionId = claim.id;
+    this.auth.reviewFamilyClaim(claim.id, decision, reason).subscribe({
+      next: () => {
+        this.familyClaimActionId = null;
+        this.loadPendingFamilyClaims();
+        this.loadFamilyProfile();
+        this.cdr.markForCheck();
+      },
+      error: error => {
+        this.familyClaimActionId = null;
+        this.familyClaimsError = error.error?.message || 'Could not update this claim request.';
         this.cdr.markForCheck();
       }
     });
