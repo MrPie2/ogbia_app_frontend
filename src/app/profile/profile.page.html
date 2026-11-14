@@ -27,6 +27,77 @@
         <p class="profile-feedback success" role="status" *ngIf="photoSuccess">{{ photoSuccess }}</p>
       </section>
 
+      <section class="family-section" *ngIf="user as currentUser">
+        <div class="family-heading">
+          <div><h2>My Family</h2><p>Your family connections on Ogbia Connect</p></div>
+        </div>
+        <div class="family-layout" *ngIf="!familyLoading; else familyLoadingState">
+          <div class="family-side family-children" aria-label="Children">
+            <div class="family-avatar-stack" *ngIf="family.children.length">
+              <a class="family-avatar family-child-avatar"
+                *ngFor="let child of visibleChildren; let i = index"
+                [routerLink]="['/members', child.id]"
+                [style.zIndex]="visibleChildren.length - i"
+                [attr.aria-label]="child.name || 'Child profile'">
+                <img *ngIf="child.profile_photo_url" [src]="child.profile_photo_url" [alt]="child.name || 'Child'">
+                <span *ngIf="!child.profile_photo_url">{{ familyInitials(child.name) }}</span>
+              </a>
+              <button *ngIf="family.children.length > visibleChildren.length"
+                class="family-avatar family-eye-button" type="button"
+                (click)="openChildrenList()" aria-label="View all children">
+                <ion-icon name="eye-outline"></ion-icon>
+              </button>
+            </div>
+            <span class="family-side-label">Children</span>
+          </div>
+
+          <div class="family-self">
+            <div class="family-avatar family-self-avatar">
+              <img *ngIf="currentUser.profile_photo_url" [src]="currentUser.profile_photo_url" [alt]="displayName">
+              <span *ngIf="!currentUser.profile_photo_url">{{ initials }}</span>
+            </div>
+            <strong>You</strong>
+          </div>
+
+          <div class="family-side family-parents">
+            <a class="family-parent" *ngIf="family.father as father" [routerLink]="['/members', father.id]">
+              <span class="family-avatar family-parent-avatar">
+                <img *ngIf="father.profile_photo_url" [src]="father.profile_photo_url" [alt]="father.name || 'Father'">
+                <span *ngIf="!father.profile_photo_url">{{ familyInitials(father.name) }}</span>
+              </span>
+              <small>Father</small>
+            </a>
+            <a class="family-parent" *ngIf="family.mother as mother" [routerLink]="['/members', mother.id]">
+              <span class="family-avatar family-parent-avatar">
+                <img *ngIf="mother.profile_photo_url" [src]="mother.profile_photo_url" [alt]="mother.name || 'Mother'">
+                <span *ngIf="!mother.profile_photo_url">{{ familyInitials(mother.name) }}</span>
+              </span>
+              <small>Mother</small>
+            </a>
+            <span class="family-no-parents" *ngIf="!family.father && !family.mother">Parents</span>
+          </div>
+        </div>
+        <ng-template #familyLoadingState><div class="family-loading">Loading family profile…</div></ng-template>
+        <p class="family-error" *ngIf="familyError" role="status">{{ familyError }}</p>
+      </section>
+
+      <div class="family-list-overlay" *ngIf="childrenListOpen" role="presentation" (click)="closeChildrenList()">
+        <section class="family-list-dialog" role="dialog" aria-modal="true" aria-label="All children" (click)="$event.stopPropagation()">
+          <div class="family-list-heading"><div><h2>Children</h2><p>{{ family.children.length }} {{ family.children.length === 1 ? 'child' : 'children' }}</p></div>
+            <button type="button" (click)="closeChildrenList()" aria-label="Close children list"><ion-icon name="close"></ion-icon></button>
+          </div>
+          <a class="family-list-item" *ngFor="let child of family.children" [routerLink]="['/members', child.id]" (click)="closeChildrenList()">
+            <span class="family-avatar family-list-avatar">
+              <img *ngIf="child.profile_photo_url" [src]="child.profile_photo_url" [alt]="child.name || 'Child'">
+              <span *ngIf="!child.profile_photo_url">{{ familyInitials(child.name) }}</span>
+            </span>
+            <strong>{{ child.name || 'Ogbia Member' }}</strong>
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </a>
+          <p class="family-list-empty" *ngIf="!family.children.length">No children have been added yet.</p>
+        </section>
+      </div>
+
       <section class="memories-section" *ngIf="user as currentUser">
         <div class="memories-heading">
           <div><h2>My Memories</h2><p>Keep your favourite moments close</p></div>
