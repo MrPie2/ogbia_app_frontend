@@ -166,10 +166,10 @@ export class AuthService {
     return this.http.get<FamilyProfileResponse>(`${this.apiUrl}/profile/family`, { headers });
   }
 
-  createFamilyProfile(name: string, relationship: 'child' | 'father' | 'mother', phone = ''): Observable<{ success: boolean; message: string; data: FamilyMember }> {
+  createFamilyProfile(name: string, relationship: 'child' | 'father' | 'mother', phone = '', guardianRelationship: 'father' | 'mother' = 'father'): Observable<{ success: boolean; message: string; data: FamilyMember }> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
-    return this.http.post<{ success: boolean; message: string; data: FamilyMember }>(`${this.apiUrl}/profile/family`, { name, relationship, phone: phone.trim() || null }, { headers });
+    return this.http.post<{ success: boolean; message: string; data: FamilyMember }>(`${this.apiUrl}/profile/family`, { name, relationship, phone: phone.trim() || null, guardian_relationship: relationship === 'child' ? guardianRelationship : null }, { headers });
   }
 
   deleteFamilyProfile(id: number): Observable<{ success: boolean; message: string }> {
