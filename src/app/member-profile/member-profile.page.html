@@ -23,7 +23,7 @@
               </div>
             </div>
             <div class="member-family-parents" aria-label="Parents">
-              <div class="member-family-parent" *ngIf="currentMember.family?.father as father">
+              <div class="member-family-parent" *ngIf="currentMember.family.father as father">
                 <a *ngIf="father.claimed_user_id; else fatherManaged" [routerLink]="['/members', father.claimed_user_id]">
                   <span class="family-avatar family-parent-avatar">
                     <img *ngIf="father.profile_photo_url" [src]="father.profile_photo_url" [alt]="father.name || 'Father'">
@@ -32,7 +32,7 @@
                 </a>
                 <ng-template #fatherManaged><span><span class="family-avatar family-parent-avatar"><img *ngIf="father.profile_photo_url" [src]="father.profile_photo_url" [alt]="father.name || 'Father'"><span *ngIf="!father.profile_photo_url">{{ familyInitials(father.name) }}</span></span><small>Father</small></span></ng-template>
               </div>
-              <div class="member-family-parent" *ngIf="currentMember.family?.mother as mother">
+              <div class="member-family-parent" *ngIf="currentMember.family.mother as mother">
                 <a *ngIf="mother.claimed_user_id; else motherManaged" [routerLink]="['/members', mother.claimed_user_id]">
                   <span class="family-avatar family-parent-avatar">
                     <img *ngIf="mother.profile_photo_url" [src]="mother.profile_photo_url" [alt]="mother.name || 'Mother'">
