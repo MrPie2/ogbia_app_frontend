@@ -40,6 +40,10 @@ export const routes: Routes = [
     loadComponent: () => import('./admin-family-claims/admin-family-claims.page').then(m => m.AdminFamilyClaimsPage)
   },
   {
+    path: 'family-tree/member/:id',
+    loadComponent: () => import('./family-tree/family-tree.page').then(m => m.FamilyTreePage)
+  },
+  {
     path: 'family-tree',
     loadComponent: () => import('./family-tree/family-tree.page').then(m => m.FamilyTreePage)
   },
