@@ -235,6 +235,7 @@ export class FamilyTreePage implements OnInit {
 
   openPerson(person: FamilyTreePerson): void {
     this.selectedPerson = person;
+    if (this.isPublicView) return;
     this.auth.getFamilyTreePerson(person.id).subscribe({
       next: response => {
         this.selectedPerson = response.data;
