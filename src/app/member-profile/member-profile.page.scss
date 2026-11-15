@@ -141,3 +141,61 @@
   background: rgba(30,28,42,.75);
   font-size: 23px;
 }
+
+/* Family connections shown on another member's public profile. */
+.member-view-page .member-family-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  align-items:center;
+  gap:7px;
+  width:min(100%,320px);
+  min-height:104px;
+  margin:0 auto 8px;
+}
+.member-view-page .member-family-self{
+  grid-column:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.member-view-page .member-family-self .member-photo{margin:0}
+.member-view-page .member-family-parents{
+  grid-column:3;
+  display:flex;
+  min-width:0;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.member-view-page .member-family-parent a,
+.member-view-page .member-family-parent>span{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  color:#716b86;
+  text-decoration:none;
+}
+.member-view-page .family-avatar{
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  flex:0 0 auto;
+  border:2px solid #eeecf7;
+  border-radius:50%;
+  background:#e5e1f1;
+  color:#393185;
+  font-size:8px;
+  font-weight:800;
+  text-decoration:none;
+  box-shadow:3px 3px 7px rgba(72,64,112,.13),-3px -3px 7px rgba(255,255,255,.9);
+}
+.member-view-page .family-avatar img{display:block;width:100%;height:100%;object-fit:cover}
+.member-view-page .family-avatar>span{display:grid;place-items:center;width:100%;height:100%}
+.member-view-page .family-parent-avatar{width:31px;height:31px}
+.member-view-page .member-family-parent small{font-size:9px;font-weight:750}
+@media(max-width:360px){
+  .member-view-page .member-family-layout{gap:4px;min-height:98px}
+  .member-view-page .member-family-parent-avatar{width:28px;height:28px}
+}
