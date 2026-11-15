@@ -152,6 +152,11 @@ export class MemberProfilePage implements OnInit {
     return this.member?.community_role ? labels[this.member.community_role] || 'Ogbia Connect Member' : 'Ogbia Connect Member';
   }
 
+  familyInitials(name: string | null | undefined): string {
+    return (name || 'Ogbia Member').trim().split(/\s+/).filter(Boolean).slice(0, 2)
+      .map(part => part[0]).join('').toUpperCase();
+  }
+
   get initials(): string {
     return (this.member?.name || 'Ogbia Member').trim().split(/\s+/).slice(0, 2).map(part => part[0]).join('').toUpperCase();
   }
