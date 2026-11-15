@@ -8,7 +8,7 @@
 
     <section class="tree-intro">
       <div class="tree-intro-icon"><ion-icon name="git-network-outline"></ion-icon></div>
-      <div><strong>{{ isPublicView ? 'Community ancestry' : 'Your family, connected' }}</strong><span>{{ isPublicView ? 'This view includes relatives whose family profiles have been shared publicly. Private and family-only branches remain hidden.' : 'Build your family history one relationship at a time. Managed profiles can be claimed by their rightful owners.' }}</span></div>
+      <div><strong>{{ isPublicView ? 'Community ancestry' : 'Your family, connected' }}</strong><span>{{ isPublicView ? 'Public relatives are visible to Ogbia members. Family-only branches are visible to accepted friends; private branches stay hidden.' : 'Build your family history one relationship at a time. Managed profiles can be claimed by their rightful owners.' }}</span></div>
     </section>
 
     <div class="tree-state" *ngIf="loading"><span class="tree-loader"></span>{{ isPublicView ? 'Loading family tree…' : 'Loading your family tree…' }}</div>
@@ -40,7 +40,7 @@
       <ng-template #noRelatives>
         <section class="tree-empty"><span><ion-icon name="people-outline"></ion-icon></span><strong>{{ isPublicView ? 'No public family connections yet' : 'Your family tree starts with one connection' }}</strong><p>{{ isPublicView ? 'This member has not shared any family connections publicly.' : 'Add your parents, children, grandparents or another relative to begin building your family history.' }}</p><button *ngIf="!isPublicView" type="button" (click)="openAdd()">Add your first relative</button></section>
       </ng-template>
-      <p class="tree-privacy-note"><ion-icon name="lock-closed-outline"></ion-icon> {{ isPublicView ? 'Only publicly shared family profiles are shown in this community view.' : 'Family profile visibility follows each member’s privacy settings.' }}</p>
+      <p class="tree-privacy-note"><ion-icon name="lock-closed-outline"></ion-icon> {{ isPublicView ? 'Public relatives and family-only branches shared with accepted friends are shown here; private branches stay hidden.' : 'Family profile visibility follows each member’s privacy settings.' }}</p>
     </ng-container>
   </main>
 
