@@ -13,12 +13,44 @@
 
       <ng-container *ngIf="!loading && member as currentMember">
         <section class="profile-hero member-profile-hero fade-up">
-          <button type="button" class="profile-photo member-photo member-photo-preview" *ngIf="profilePhotoUrl && !photoFailed" (click)="openMediaPreview(profilePhotoUrl, currentMember.name || 'Member photo')" [attr.aria-label]="'View ' + (currentMember.name || 'member') + ' profile photo'">
-            <img [src]="profilePhotoUrl" (error)="onPhotoError()" [alt]="currentMember.name || 'Member photo'">
-          </button>
-          <div class="profile-photo member-photo" *ngIf="!profilePhotoUrl || photoFailed">
-            <span class="profile-initials">{{ initials }}</span>
+          <div class="member-family-layout" *ngIf="currentMember.family?.father || currentMember.family?.mother; else memberPhotoOnly">
+            <div class="member-family-self">
+              <button type="button" class="profile-photo member-photo member-photo-preview" *ngIf="profilePhotoUrl && !photoFailed" (click)="openMediaPreview(profilePhotoUrl, currentMember.name || 'Member photo')" [attr.aria-label]="'View ' + (currentMember.name || 'member') + ' profile photo'">
+                <img [src]="profilePhotoUrl" (error)="onPhotoError()" [alt]="currentMember.name || 'Member photo'">
+              </button>
+              <div class="profile-photo member-photo" *ngIf="!profilePhotoUrl || photoFailed">
+                <span class="profile-initials">{{ initials }}</span>
+              </div>
+            </div>
+            <div class="member-family-parents" aria-label="Parents">
+              <div class="member-family-parent" *ngIf="currentMember.family?.father as father">
+                <a *ngIf="father.claimed_user_id; else fatherManaged" [routerLink]="['/members', father.claimed_user_id]">
+                  <span class="family-avatar family-parent-avatar">
+                    <img *ngIf="father.profile_photo_url" [src]="father.profile_photo_url" [alt]="father.name || 'Father'">
+                    <span *ngIf="!father.profile_photo_url">{{ familyInitials(father.name) }}</span>
+                  </span><small>Father</small>
+                </a>
+                <ng-template #fatherManaged><span><span class="family-avatar family-parent-avatar"><img *ngIf="father.profile_photo_url" [src]="father.profile_photo_url" [alt]="father.name || 'Father'"><span *ngIf="!father.profile_photo_url">{{ familyInitials(father.name) }}</span></span><small>Father</small></span></ng-template>
+              </div>
+              <div class="member-family-parent" *ngIf="currentMember.family?.mother as mother">
+                <a *ngIf="mother.claimed_user_id; else motherManaged" [routerLink]="['/members', mother.claimed_user_id]">
+                  <span class="family-avatar family-parent-avatar">
+                    <img *ngIf="mother.profile_photo_url" [src]="mother.profile_photo_url" [alt]="mother.name || 'Mother'">
+                    <span *ngIf="!mother.profile_photo_url">{{ familyInitials(mother.name) }}</span>
+                  </span><small>Mother</small>
+                </a>
+                <ng-template #motherManaged><span><span class="family-avatar family-parent-avatar"><img *ngIf="mother.profile_photo_url" [src]="mother.profile_photo_url" [alt]="mother.name || 'Mother'"><span *ngIf="!mother.profile_photo_url">{{ familyInitials(mother.name) }}</span></span><small>Mother</small></span></ng-template>
+              </div>
+            </div>
           </div>
+          <ng-template #memberPhotoOnly>
+            <button type="button" class="profile-photo member-photo member-photo-preview" *ngIf="profilePhotoUrl && !photoFailed" (click)="openMediaPreview(profilePhotoUrl, currentMember.name || 'Member photo')" [attr.aria-label]="'View ' + (currentMember.name || 'member') + ' profile photo'">
+              <img [src]="profilePhotoUrl" (error)="onPhotoError()" [alt]="currentMember.name || 'Member photo'">
+            </button>
+            <div class="profile-photo member-photo" *ngIf="!profilePhotoUrl || photoFailed">
+              <span class="profile-initials">{{ initials }}</span>
+            </div>
+          </ng-template>
           <h1>{{ currentMember.name || 'Ogbia Member' }}<ng-container *ngIf="currentMember.hometown"> - {{ currentMember.hometown }}</ng-container></h1>
           <p class="member-role"><ion-icon name="ribbon-outline"></ion-icon>{{ roleLabel }}</p>
         </section>
