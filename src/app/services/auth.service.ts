@@ -327,6 +327,12 @@ export class AuthService {
     );
   }
 
+  getMemberFamilyTree(memberId: number): Observable<FamilyTreeResponse> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
+    return this.http.get<FamilyTreeResponse>(`${this.apiUrl}/family/tree/members/${memberId}`, { headers }).pipe(timeout(20000));
+  }
+
   getFamilyTree(): Observable<FamilyTreeResponse> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({ Authorization: `Bearer ${token ?? ''}`, Accept: 'application/json' });
