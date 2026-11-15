@@ -53,6 +53,7 @@
           </ng-template>
           <h1>{{ currentMember.name || 'Ogbia Member' }}<ng-container *ngIf="currentMember.hometown"> - {{ currentMember.hometown }}</ng-container></h1>
           <p class="member-role"><ion-icon name="ribbon-outline"></ion-icon>{{ roleLabel }}</p>
+          <a class="member-family-tree-link" [routerLink]="['/family-tree/member', currentMember.id]"><ion-icon name="git-network-outline"></ion-icon><span>View full family tree</span><ion-icon name="arrow-forward-outline"></ion-icon></a>
         </section>
 
         <section class="member-information">
