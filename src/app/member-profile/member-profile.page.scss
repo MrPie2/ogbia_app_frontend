@@ -199,3 +199,25 @@
   .member-view-page .member-family-layout{gap:4px;min-height:98px}
   .member-view-page .member-family-parent .family-parent-avatar{width:28px;height:28px}
 }
+
+
+/* Community member family-tree entry point. */
+.member-view-page .member-family-tree-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  min-height:42px;
+  margin:8px auto 0;
+  padding:0 15px;
+  border:1px solid rgba(57,49,133,.12);
+  border-radius:13px;
+  background:#eeecf7;
+  color:#393185;
+  font-size:11px;
+  font-weight:800;
+  text-decoration:none;
+  box-shadow:3px 3px 8px rgba(72,64,112,.10),-3px -3px 8px rgba(255,255,255,.9);
+}
+.member-view-page .member-family-tree-link ion-icon{font-size:17px}
+.member-view-page .member-family-tree-link ion-icon:last-child{font-size:13px;opacity:.7}
