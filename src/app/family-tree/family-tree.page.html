@@ -1,17 +1,17 @@
 <ion-content [fullscreen]="true">
   <main class="family-tree-page">
     <header class="tree-header">
-      <a routerLink="/profile" class="tree-back" aria-label="Back to profile"><ion-icon name="arrow-back-outline"></ion-icon></a>
-      <div><span class="tree-eyebrow">OGBIA CONNECT</span><h1>My family tree</h1><p>Explore the people and relationships that connect your family.</p></div>
-      <button type="button" class="tree-add-top" (click)="openAdd()" aria-label="Add family member"><ion-icon name="add"></ion-icon></button>
+      <a [routerLink]="isPublicView ? ['/members', targetMemberId] : ['/profile']" class="tree-back" [attr.aria-label]="isPublicView ? 'Back to member profile' : 'Back to profile'"><ion-icon name="arrow-back-outline"></ion-icon></a>
+      <div><span class="tree-eyebrow">OGBIA CONNECT</span><h1>{{ isPublicView ? rootName + '’s family tree' : 'My family tree' }}</h1><p>{{ isPublicView ? 'Explore publicly shared ancestry and family connections recorded for this member.' : 'Explore the people and relationships that connect your family.' }}</p></div>
+      <button *ngIf="!isPublicView" type="button" class="tree-add-top" (click)="openAdd()" aria-label="Add family member"><ion-icon name="add"></ion-icon></button>
     </header>
 
     <section class="tree-intro">
       <div class="tree-intro-icon"><ion-icon name="git-network-outline"></ion-icon></div>
-      <div><strong>Your family, connected</strong><span>Build your family history one relationship at a time. Managed profiles can be claimed by their rightful owners.</span></div>
+      <div><strong>{{ isPublicView ? 'Community ancestry' : 'Your family, connected' }}</strong><span>{{ isPublicView ? 'This view includes relatives whose family profiles have been shared publicly. Private and family-only branches remain hidden.' : 'Build your family history one relationship at a time. Managed profiles can be claimed by their rightful owners.' }}</span></div>
     </section>
 
-    <div class="tree-state" *ngIf="loading"><span class="tree-loader"></span>Loading your family tree…</div>
+    <div class="tree-state" *ngIf="loading"><span class="tree-loader"></span>{{ isPublicView ? 'Loading family tree…' : 'Loading your family tree…' }}</div>
     <div class="tree-error" *ngIf="!loading && error"><ion-icon name="alert-circle-outline"></ion-icon><span>{{ error }}</span><button type="button" (click)="loadTree()">Retry</button></div>
 
     <ng-container *ngIf="!loading && !error">
@@ -21,11 +21,11 @@
             <img *ngIf="person.profile_photo_url" [src]="person.profile_photo_url" alt="">
             <span *ngIf="!person.profile_photo_url">{{ initials(person.name) }}</span>
           </span>
-          <div><small>THIS IS YOU</small><strong>{{ person.name }}</strong><span>Your family connection starts here</span></div>
+          <div><small>{{ isPublicView ? 'FAMILY TREE OWNER' : 'THIS IS YOU' }}</small><strong>{{ person.name }}</strong><span>{{ isPublicView ? 'Ancestry recorded on Ogbia Connect' : 'Your family connection starts here' }}</span></div>
         </ng-container>
       </section>
 
-      <div class="tree-section-heading"><div><h2>Family connections</h2><p>{{ relatives.length }} linked {{ relatives.length === 1 ? 'person' : 'people' }}</p></div><button type="button" (click)="openAdd()"><ion-icon name="person-add-outline"></ion-icon> Add relative</button></div>
+      <div class="tree-section-heading"><div><h2>Family connections</h2><p>{{ relatives.length }} {{ isPublicView ? 'publicly visible ' : '' }}linked {{ relatives.length === 1 ? 'person' : 'people' }}</p></div><button *ngIf="!isPublicView" type="button" (click)="openAdd()"><ion-icon name="person-add-outline"></ion-icon> Add relative</button></div>
 
       <section class="tree-people" *ngIf="relatives.length; else noRelatives">
         <button type="button" class="tree-person" *ngFor="let person of relatives" (click)="openPerson(person)">
@@ -38,9 +38,9 @@
         </button>
       </section>
       <ng-template #noRelatives>
-        <section class="tree-empty"><span><ion-icon name="people-outline"></ion-icon></span><strong>Your family tree starts with one connection</strong><p>Add your parents, children, grandparents or another relative to begin building your family history.</p><button type="button" (click)="openAdd()">Add your first relative</button></section>
+        <section class="tree-empty"><span><ion-icon name="people-outline"></ion-icon></span><strong>{{ isPublicView ? 'No public family connections yet' : 'Your family tree starts with one connection' }}</strong><p>{{ isPublicView ? 'This member has not shared any family connections publicly.' : 'Add your parents, children, grandparents or another relative to begin building your family history.' }}</p><button *ngIf="!isPublicView" type="button" (click)="openAdd()">Add your first relative</button></section>
       </ng-template>
-      <p class="tree-privacy-note"><ion-icon name="lock-closed-outline"></ion-icon> Family profile visibility follows each member's privacy settings.</p>
+      <p class="tree-privacy-note"><ion-icon name="lock-closed-outline"></ion-icon> {{ isPublicView ? 'Only publicly shared family profiles are shown in this community view.' : 'Family profile visibility follows each member’s privacy settings.' }}</p>
     </ng-container>
   </main>
 
