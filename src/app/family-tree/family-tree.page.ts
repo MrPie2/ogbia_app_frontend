@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
 import {
   AuthService, FamilyMatchCandidate, FamilyTreeEdge,
@@ -25,6 +25,8 @@ export class FamilyTreePage implements OnInit {
   loading = true;
   error = '';
   rootId: number | null = null;
+  targetMemberId: number | null = null;
+  isPublicView = false;
   people: FamilyTreePerson[] = [];
   relationships: FamilyTreeEdge[] = [];
   selectedPerson: FamilyTreePerson | null = null;
@@ -57,14 +59,25 @@ export class FamilyTreePage implements OnInit {
     { value: 'partner', label: 'Partner' },
   ];
 
-  constructor(private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef) {}
+  constructor(private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef, private readonly route: ActivatedRoute) {}
 
-  ngOnInit(): void { this.loadTree(); }
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const rawId = params.get('id');
+      const parsedId = rawId ? Number(rawId) : null;
+      this.targetMemberId = parsedId && Number.isInteger(parsedId) && parsedId > 0 ? parsedId : null;
+      this.isPublicView = this.targetMemberId !== null;
+      this.loadTree();
+    });
+  }
 
   loadTree(): void {
     this.loading = true;
     this.error = '';
-    this.auth.getFamilyTree().subscribe({
+    const request = this.targetMemberId
+      ? this.auth.getMemberFamilyTree(this.targetMemberId)
+      : this.auth.getFamilyTree();
+    request.subscribe({
       next: (response: FamilyTreeResponse) => {
         this.rootId = response.data.root_id;
         this.people = response.data.people || [];
@@ -74,10 +87,14 @@ export class FamilyTreePage implements OnInit {
       },
       error: error => {
         this.loading = false;
-        this.error = error?.error?.message || 'Your family tree could not be loaded.';
+        this.error = error?.error?.message || (this.isPublicView ? 'This member’s public family tree could not be loaded.' : 'Your family tree could not be loaded.');
         this.cdr.markForCheck();
       },
     });
+  }
+
+  get rootName(): string {
+    return this.people.find(person => person.id === this.rootId)?.name || 'Ogbia member';
   }
 
   get relatives(): FamilyTreePerson[] {
@@ -103,6 +120,7 @@ export class FamilyTreePage implements OnInit {
   }
 
   openAdd(): void {
+    if (this.isPublicView) return;
     this.formError = '';
     this.addOpen = true;
   }
@@ -178,6 +196,7 @@ export class FamilyTreePage implements OnInit {
   }
 
   saveRelationship(): void {
+    if (this.isPublicView) return;
     if (!this.selectedMatch && this.name.trim().length < 2) {
       this.formError = 'Enter a name or select a possible match.';
       return;
