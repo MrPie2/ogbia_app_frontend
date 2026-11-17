@@ -13,7 +13,8 @@
         <div class="input-wrap">
           <ion-icon name="call-outline" aria-hidden="true"></ion-icon>
           <input id="phoneNumber" name="phoneNumber" type="tel" inputmode="tel" autocomplete="tel"
-            [(ngModel)]="phoneNumber" placeholder="e.g. +234 801 234 5678" required maxlength="20">
+            [(ngModel)]="phoneNumber" (ngModelChange)="onPhoneNumberChange($event)"
+            placeholder="+234 801 234 5678" required maxlength="20">
         </div>
       </div>
 
