@@ -13,7 +13,7 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
 })
 export class LoginPage {
-  phoneNumber = '';
+  phoneNumber = '+234';
   password = '';
   loading = false;
   errorMessage = '';
@@ -25,9 +25,24 @@ export class LoginPage {
     }
   }
 
+  onPhoneNumberChange(value: string): void {
+    this.phoneNumber = this.normalizeNigerianPhone(value);
+  }
+
+  private normalizeNigerianPhone(value: string): string {
+    const compact = (value || '').replace(/[\s().-]/g, '');
+    const digits = compact.replace(/\D/g, '');
+
+    if (compact.startsWith('+234')) return '+234' + digits.slice(3);
+    if (digits.startsWith('234')) return '+234' + digits.slice(3);
+    if (digits.startsWith('0')) return '+234' + digits.slice(1);
+    return '+234' + digits;
+  }
+
   login(): void {
-    const phone = this.phoneNumber.trim();
-    if (!phone || !this.password) {
+    const phone = this.normalizeNigerianPhone(this.phoneNumber);
+    this.phoneNumber = phone;
+    if (phone.length <= 4 || !this.password) {
       this.errorMessage = 'Enter your phone number and password to continue.';
       return;
     }
