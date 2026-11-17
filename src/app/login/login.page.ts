@@ -33,10 +33,10 @@ export class LoginPage {
     const compact = (value || '').replace(/[\s().-]/g, '');
     const digits = compact.replace(/\D/g, '');
 
-    if (compact.startsWith('+234')) return '+234' + digits.slice(3);
-    if (digits.startsWith('234')) return '+234' + digits.slice(3);
+    if (compact.startsWith('+234')) return '+234' + digits.slice(3).replace(/^0/, '');
+    if (digits.startsWith('234')) return '+234' + digits.slice(3).replace(/^0/, '');
     if (digits.startsWith('0')) return '+234' + digits.slice(1);
-    return '+234' + digits;
+    return '+234' + digits.replace(/^0/, '');
   }
 
   login(): void {
