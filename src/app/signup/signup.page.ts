@@ -14,7 +14,7 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
 })
 export class SignupPage {
-  phoneNumber = '';
+  phoneNumber = '+234';
   referralId = '';
   submitting = false;
   errorMessage = '';
@@ -22,15 +22,30 @@ export class SignupPage {
 
   constructor(private readonly auth: AuthService, private readonly router: Router) {}
 
+  onPhoneNumberChange(value: string): void {
+    this.phoneNumber = this.normalizeNigerianPhone(value);
+  }
+
+  private normalizeNigerianPhone(value: string): string {
+    const compact = (value || '').replace(/[\s().-]/g, '');
+    const digits = compact.replace(/\D/g, '');
+
+    if (compact.startsWith('+234')) return '+234' + digits.slice(3);
+    if (digits.startsWith('234')) return '+234' + digits.slice(3);
+    if (digits.startsWith('0')) return '+234' + digits.slice(1);
+    return '+234' + digits;
+  }
+
   register(): void {
     this.errorMessage = '';
     this.successMessage = '';
-    const phone = this.phoneNumber.trim();
+    const phone = this.normalizeNigerianPhone(this.phoneNumber);
+    this.phoneNumber = phone;
     const referral = this.referralId.trim();
 
-    if (!phone) { this.errorMessage = 'Enter your phone number to continue.'; return; }
-    if (!/^\+?[0-9\s().-]{7,20}$/.test(phone)) {
-      this.errorMessage = 'Enter a valid phone number, including your country code if needed.';
+    if (phone.length <= 4) { this.errorMessage = 'Enter your phone number to continue.'; return; }
+    if (!/^\+234[0-9]{7,10}$/.test(phone)) {
+      this.errorMessage = 'Enter a valid Nigerian phone number after +234.';
       return;
     }
     if (!referral) { this.errorMessage = 'A Referral ID is required. Ogbia Connect is invite-only.'; return; }
