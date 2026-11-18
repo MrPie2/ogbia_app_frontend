@@ -82,7 +82,7 @@
         <div class="composer-tools">
           <label class="tool-button"><ion-icon name="image-outline"></ion-icon><span>{{ selectedImages.length ? 'Add more photos' : 'Photos' }}</span><input type="file" accept="image/jpeg,image/png,image/webp" multiple (change)="onImagesSelected($event)" aria-label="Choose multiple photos" [disabled]="submitting || selectedImages.length >= 10"></label>
           <label class="tool-button"><ion-icon name="videocam-outline"></ion-icon><span>Video</span><input type="file" accept="video/mp4,video/quicktime,video/webm" (change)="onFileSelected($event)" aria-label="Choose video" [disabled]="submitting"></label>
-          <span class="media-hint">Up to 10 photos · 10 MB each, or one video up to 50 MB</span>
+          <span class="media-hint">Up to 10 photos · 10 MB each / 50 MB total, or one video up to 50 MB</span>
         </div>
       </form>
 
