@@ -60,6 +60,8 @@ export class CreatePostPage implements OnDestroy {
     this.errorMessage = '';
     this.successMessage = '';
     if (!files.length) return;
+    this.clearVideoPreview();
+    this.selectedFile = null;
 
     const remaining = 10 - this.selectedImages.length;
     if (files.length > remaining) this.errorMessage = 'You can add up to 10 images to one post.';
@@ -98,7 +100,8 @@ export class CreatePostPage implements OnDestroy {
       return;
     }
 
-    this.clearVideoPreview();
+    this.clearImagePreviews();
+    this.selectedImages = [];
     this.selectedFile = file;
     this.previewUrl = URL.createObjectURL(file);
     input.value = '';
