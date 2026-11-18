@@ -9,6 +9,7 @@ export interface AppNotification {
   id?: string;
   title: string;
   body: string;
+  image?: string;
   role?: string;
   role_label?: string;
   url?: string;
@@ -78,6 +79,7 @@ export class NotificationService {
             id: latest.id,
             title: String(data['title'] ?? 'You have a new notification'),
             body: String(data['body'] ?? ''),
+            image: data['image'] ? String(data['image']) : undefined,
             role: data['role'] ? String(data['role']) : undefined,
             role_label: data['role_label'] ? String(data['role_label']) : undefined,
             url: data['url'] ? String(data['url']) : undefined,
@@ -116,6 +118,7 @@ export class NotificationService {
             id: notificationId,
             title: notification.title || 'My Ogbia notification',
             body: notification.body || '',
+            image: typeof notification.data?.['image'] === 'string' ? notification.data['image'] : undefined,
             url: typeof notification.data?.['url'] === 'string' ? notification.data['url'] : undefined,
             data: notification.data as Record<string, unknown>
           });
