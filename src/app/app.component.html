@@ -31,7 +31,11 @@
   <ion-router-outlet class="app-router-outlet" [class.welcome-route]="isWelcomeRoute"></ion-router-outlet>
   @if (notificationToast; as toast) {
     <div class="ogbia-notification-toast" role="status" aria-live="polite">
-      <div class="notification-toast-icon"><ion-icon name="checkmark-circle-outline"></ion-icon></div>
+      @if (toast.image) {
+        <img class="notification-toast-image" [src]="toast.image" alt="">
+      } @else {
+        <div class="notification-toast-icon"><ion-icon name="checkmark-circle-outline"></ion-icon></div>
+      }
       <div class="notification-toast-copy" (click)="openToastNotification(toast)" [class.clickable]="!!toast.url">
         <div class="notification-toast-eyebrow">MY OGBIA · CONGRATULATIONS</div>
         <div class="notification-toast-title">{{ toast.title }}</div>
