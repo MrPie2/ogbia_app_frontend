@@ -33,12 +33,13 @@
       <section class="directory-section">
         <div class="section-heading">
           <div><span class="section-kicker">EXPLORE OGBIA</span><h2>Community directory</h2></div>
-          <span class="directory-count">{{ activeTab === 'communities' ? filteredCommunities.length : wards.length }} {{ activeTab === 'communities' ? 'communities' : 'wards' }}</span>
+          <span class="directory-count">{{ activeTab === 'communities' ? filteredCommunities.length : activeTab === 'wards' ? wards.length : stateConstituencies.length }} {{ activeTab === 'communities' ? 'communities' : activeTab === 'wards' ? 'wards' : 'state constituencies' }}</span>
         </div>
 
         <div class="directory-tabs" role="tablist" aria-label="Directory type">
           <button type="button" role="tab" [attr.aria-selected]="activeTab === 'communities'" [class.active]="activeTab === 'communities'" (click)="selectTab('communities')"><ion-icon name="home-outline"></ion-icon> Communities</button>
           <button type="button" role="tab" [attr.aria-selected]="activeTab === 'wards'" [class.active]="activeTab === 'wards'" (click)="selectTab('wards')"><ion-icon name="grid-outline"></ion-icon> Wards</button>
+          <button type="button" role="tab" [attr.aria-selected]="activeTab === 'constituencies'" [class.active]="activeTab === 'constituencies'" (click)="selectTab('constituencies')"><ion-icon name="business-outline"></ion-icon> Constituencies</button>
         </div>
 
         @if (activeTab === 'communities') {
@@ -65,7 +66,7 @@
             <div class="empty-state"><ion-icon name="search-outline"></ion-icon><strong>{{ communities.length ? 'No community found' : 'No communities published yet' }}</strong><p>{{ communities.length ? 'Try another spelling or search term.' : 'Community records will appear here when they are added to the knowledge base.' }}</p></div>
           }
           }
-        } @else {
+        } @else if (activeTab === 'wards') {
           <div class="ward-grid">
             @for (ward of wards; track ward.id) {
               <article class="ward-card">
@@ -76,6 +77,44 @@
             }
           </div>
           <p class="directory-note"><ion-icon name="information-circle-outline"></ion-icon> Ward names and community-to-ward assignments will be confirmed against official electoral records.</p>
+        } @else {
+          @if (selectedStateConstituency) {
+            <button class="back-link constituency-back-link" type="button" (click)="selectedStateConstituency = null"><ion-icon name="arrow-back-outline"></ion-icon> All state constituencies</button>
+            <div class="community-hero constituency-hero">
+              <div class="large-community-symbol"><ion-icon name="business-outline"></ion-icon></div>
+              <div><span class="section-kicker">OGBIA FEDERAL CONSTITUENCY</span><h2>{{ selectedStateConstituency }}</h2><p>Bayelsa State House of Assembly constituency</p></div>
+            </div>
+            <div class="constituency-community-list">
+              @for (community of getConstituencyCommunities(selectedStateConstituency); track community.id) {
+                <button class="community-card" type="button" (click)="openCommunity(community)">
+                  <span class="community-symbol"><ion-icon name="location-outline"></ion-icon></span>
+                  <span class="community-copy"><strong>{{ community.name }}</strong><small>{{ community.wards_count ?? community.wards?.length ?? 0 }} linked wards · Community profile</small></span>
+                  <ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon>
+                </button>
+              }
+              @if (!getConstituencyCommunities(selectedStateConstituency).length) {
+                <div class="empty-state"><ion-icon name="people-outline"></ion-icon><strong>Community assignments pending</strong><p>Communities will appear here once their state constituency assignments have been added and verified.</p></div>
+              }
+            </div>
+          } @else {
+            <div class="constituency-overview">
+              <div class="constituency-overview-heading">
+                <span class="section-kicker">FEDERAL REPRESENTATION</span>
+                <h3>Ogbia Federal Constituency</h3>
+                <p>Ogbia has three State Constituencies represented in the Bayelsa State House of Assembly.</p>
+              </div>
+              <div class="state-constituency-grid">
+                @for (constituency of stateConstituencies; track constituency) {
+                  <button type="button" class="state-constituency-card" (click)="selectStateConstituency(constituency)">
+                    <span class="state-constituency-icon"><ion-icon name="business-outline"></ion-icon></span>
+                    <span class="state-constituency-copy"><small>STATE CONSTITUENCY</small><strong>{{ constituency }}</strong><span>{{ getConstituencyCommunities(constituency).length }} linked communities</span></span>
+                    <ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon>
+                  </button>
+                }
+              </div>
+              <p class="directory-note"><ion-icon name="information-circle-outline"></ion-icon> The three State Constituencies are Ogbia I, Ogbia II and Ogbia III. Community assignments will be shown as they are confirmed.</p>
+            </div>
+          }
         }
       </section>
     } @else {
