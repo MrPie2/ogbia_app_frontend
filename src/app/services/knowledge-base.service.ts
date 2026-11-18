@@ -36,6 +36,7 @@ export interface KnowledgeCommunity {
   description: string | null;
   history?: string | null;
   constituency?: string | null;
+  state_constituency?: string | null;
   cover_photo_url?: string | null;
   clan_name: string | null;
   source: string | null;
