@@ -1,18 +1,17 @@
 <ion-content [fullscreen]="true" [scrollY]="false" class="welcome-content">
   <main class="welcome-shell" [class.is-leaving]="isLeaving">
-    <span class="welcome-orb orb-top-left" aria-hidden="true"></span>
-    <span class="welcome-orb orb-top-right" aria-hidden="true"></span>
-    <span class="welcome-orb orb-bottom-right" aria-hidden="true"></span>
+    
 
     <img class="welcome-tree" src="assets/images/ogbia-tree.svg" alt="" aria-hidden="true">
 
-    <div class="welcome-logo" aria-label="myOGBIA">
-      <span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span class="logo-word">myOGBIA</span>
+    <div class="welcome-log" aria-label="myOGBI">
+                <img class="welcome-tree" src="assets/images/ogbialogo.png" alt="" aria-hidden="true" style="margin-top: 5cm; width: 90px; height: 70px">
+
     </div>
 
     <div class="welcome-actions">
-      <button type="button" class="join-button" (click)="openLogin()" [disabled]="isLeaving">
+
+      <button type="button" class="join-button btn-sm" (click)="openLogin()" [disabled]="isLeaving">
         Join Ogbia Connect
       </button>
       <a routerLink="/family/claim" class="family-invitation">
@@ -20,6 +19,6 @@
       </a>
     </div>
 
-    <p class="welcome-footer">powered by ogbia.com</p>
+    <p class="welcome-footer" style="font-size: 8pt">powered by ogbia.com</p>
   </main>
 </ion-content>
