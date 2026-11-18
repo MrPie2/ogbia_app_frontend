@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { PostsService, PostPrivacy } from '../services/posts.service';
@@ -27,7 +27,7 @@ export class CreatePostPage implements OnDestroy {
   eventStartsAt = '';
   eventEndsAt = '';
   eventLocation = '';
-  submitting = false;
+  submitting = false;\n  uploadProgress: number | null = null;
   errorMessage = '';
   successMessage = '';
 
@@ -138,7 +138,7 @@ export class CreatePostPage implements OnDestroy {
       return;
     }
 
-    this.submitting = true;
+    this.submitting = true;\n    this.uploadProgress = 0;
     const eventDetails = this.postType === 'event' ? {
       title: this.eventTitle.trim(),
       startsAt: this.eventStartsAt,
