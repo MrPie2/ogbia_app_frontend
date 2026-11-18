@@ -28,6 +28,15 @@
   color: #7650cf;
   font-size: 24px;
 }
+.notification-toast-image {
+  display: block;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #f0eaff;
+}
 .notification-toast-copy { min-width: 0; flex: 1; }
 .notification-toast-eyebrow { color: #7650cf; font-size: 10px; font-weight: 800; letter-spacing: .12em; margin-bottom: 4px; }
 .notification-toast-title { font-size: 14px; font-weight: 800; line-height: 1.35; }
