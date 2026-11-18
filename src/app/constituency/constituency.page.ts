@@ -138,7 +138,7 @@ export class ConstituencyPage implements OnInit {
   getConstituencyCommunities(name: string): KnowledgeCommunity[] {
     const expected = this.normalizeConstituencyName(name);
     return this.communities.filter(community =>
-      this.normalizeConstituencyName(community.constituency || '') === expected
+      this.normalizeConstituencyName(community.state_constituency || '') === expected
     );
   }
 
