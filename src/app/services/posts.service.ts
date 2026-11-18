@@ -6,13 +6,20 @@ import { environment } from '../../environments/environment';
 export type PostPrivacy = 'only_me' | 'villagers' | 'public';
 export type PostCategory = 'general' | 'politics' | 'entertainment';
 
-export interface PostMediaItem {\n  id: number;\n  media_type: 'image' | 'video';\n  media_url: string;\n}\n\nexport interface CommunityPost {
+export interface PostMediaItem {
+  id: number;
+  media_type: 'image' | 'video';
+  media_url: string;
+}
+
+export interface CommunityPost {
   id: number;
   user_id: number;
   content: string | null;
   media_path: string | null;
   media_type: 'image' | 'video' | null;
-  media_url: string | null;\n  media_items?: PostMediaItem[];
+  media_url: string | null;
+  media_items?: PostMediaItem[];
   privacy: PostPrivacy;
   is_event: boolean;
   category?: PostCategory;
@@ -92,7 +99,11 @@ export class PostsService {
   ): Observable<{ message: string; data: CommunityPost }> {
     const form = new FormData();
     if (content.trim()) form.append('content', content.trim());
-    if (Array.isArray(media)) {\n      media.forEach(file => form.append('images[]', file, file.name));\n    } else if (media) {\n      form.append('media', media, media.name);\n    }
+    if (Array.isArray(media)) {
+      media.forEach(file => form.append('images[]', file, file.name));
+    } else if (media) {
+      form.append('media', media, media.name);
+    }
     form.append('privacy', privacy);
     form.append('is_event', event ? '1' : '0');
     if (event) {
