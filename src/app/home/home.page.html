@@ -98,8 +98,8 @@
               </div>
             }
             @if (post.media_items?.length) {
-              <div class="post-gallery" [class.single-image]="post.media_items.length === 1" [class.multi-image]="post.media_items.length > 1">
-                @for (media of post.media_items; track media.id) {
+              <div class="post-gallery" [class.single-image]="(post.media_items?.length ?? 0) === 1" [class.multi-image]="(post.media_items?.length ?? 0) > 1">
+                @for (media of (post.media_items ?? []); track media.id) {
                   <button type="button" class="post-gallery-item" (click)="openMediaPreview(post, 'image', media.media_url)" [attr.aria-label]="'Preview post image ' + ($index + 1)">
                     <img [src]="media.media_url" [alt]="'Image ' + ($index + 1) + ' attached to post'" loading="lazy" decoding="async">
                     <span class="gallery-expand"><ion-icon name="expand-outline"></ion-icon></span>
