@@ -27,7 +27,8 @@ export class CreatePostPage implements OnDestroy {
   eventStartsAt = '';
   eventEndsAt = '';
   eventLocation = '';
-  submitting = false;\n  uploadProgress: number | null = null;
+  submitting = false;
+  uploadProgress: number | null = null;
   errorMessage = '';
   successMessage = '';
 
@@ -138,7 +139,8 @@ export class CreatePostPage implements OnDestroy {
       return;
     }
 
-    this.submitting = true;\n    this.uploadProgress = 0;
+    this.submitting = true;
+    this.uploadProgress = 0;
     const eventDetails = this.postType === 'event' ? {
       title: this.eventTitle.trim(),
       startsAt: this.eventStartsAt,
