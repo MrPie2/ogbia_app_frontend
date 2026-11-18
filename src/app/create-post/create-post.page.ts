@@ -151,7 +151,7 @@ export class CreatePostPage implements OnDestroy {
       location: this.eventLocation.trim()
     } : undefined;
     const media = this.selectedImages.length ? this.selectedImages : this.selectedFile;
-    this.posts.createPost(this.content, media, this.privacy, eventDetails).pipe(timeout(180000)).subscribe({
+    this.posts.createPost(this.content, media, this.privacy, eventDetails).pipe(timeout({ first: 180000, each: 180000 })).subscribe({
       next: (event) => {
         if (event.type === HttpEventType.UploadProgress) {
           this.uploadProgress = event.total ? Math.round((event.loaded / event.total) * 100) : null;
