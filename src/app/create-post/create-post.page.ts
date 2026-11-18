@@ -152,8 +152,14 @@ export class CreatePostPage implements OnDestroy {
     } : undefined;
     const media = this.selectedImages.length ? this.selectedImages : this.selectedFile;
     this.posts.createPost(this.content, media, this.privacy, eventDetails).pipe(timeout(180000)).subscribe({
-      next: () => {
+      next: (event) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.uploadProgress = event.total ? Math.round((event.loaded / event.total) * 100) : null;
+          return;
+        }
+        if (event.type !== HttpEventType.Response) return;
         this.submitting = false;
+        this.uploadProgress = null;
         this.content = '';
         this.eventTitle = '';
         this.eventStartsAt = '';
@@ -168,12 +174,13 @@ export class CreatePostPage implements OnDestroy {
       },
       error: (error: HttpErrorResponse) => {
         this.submitting = false;
+        this.uploadProgress = null;
         if (error.status === 401) {
           this.router.navigate(['/login']);
           return;
         }
         const validation = error.error?.errors;
-        if (error.error === 'TimeoutError') {
+        if (error.name === 'TimeoutError' || error.error === 'TimeoutError') {
           this.errorMessage = 'The upload is taking longer than expected. Check your feed before retrying so you do not publish the same post twice.';
         } else if (error.status === 0) {
           this.errorMessage = 'Could not reach the Ogbia server. Check your internet connection and try again.';
