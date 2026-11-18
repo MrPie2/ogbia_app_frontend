@@ -75,6 +75,11 @@ export class CreatePostPage implements OnDestroy {
         this.errorMessage = 'Each image must be 10 MB or smaller.';
         continue;
       }
+      const currentTotal = this.selectedImages.reduce((total, selected) => total + selected.size, 0);
+      if (currentTotal + file.size > 50 * 1024 * 1024) {
+        this.errorMessage = 'The combined image upload must be 50 MB or smaller.';
+        continue;
+      }
       this.selectedImages.push(file);
       this.imagePreviewUrls.push(URL.createObjectURL(file));
     }
