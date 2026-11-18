@@ -190,3 +190,23 @@
     4px 4px 8px rgba(72,64,112,.13),
     -4px -4px 8px rgba(255,255,255,.96);
 }
+
+
+/* State constituency directory */
+.directory-tabs { flex-wrap:wrap; }
+.state-constituency-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.state-constituency-card { display:flex; align-items:center; gap:11px; min-width:0; min-height:94px; padding:14px; border:1px solid #e9e7f7; border-radius:15px; text-align:left; color:#302347; background:#fff; cursor:pointer; transition:border-color .18s,background .18s,transform .18s; }
+.state-constituency-card:hover,.state-constituency-card:focus-visible { border-color:#c3c0ec; background:#f8f7ff; transform:translateY(-1px); outline:none; }
+.state-constituency-icon { display:grid; place-items:center; flex:0 0 42px; width:42px; height:42px; border-radius:13px; color:#393185; background:#efeeff; font-size:21px; }
+.state-constituency-copy { flex:1; min-width:0; }
+.state-constituency-copy small,.state-constituency-copy strong,.state-constituency-copy span { display:block; }
+.state-constituency-copy small { color:#8987a0; font-size:8px; font-weight:800; letter-spacing:.7px; }
+.state-constituency-copy strong { margin-top:4px; color:#30296f; font-size:14px; font-weight:800; }
+.state-constituency-copy span { margin-top:5px; color:#8987a0; font-size:9px; }
+.constituency-overview-heading { margin-bottom:15px; }
+.constituency-overview-heading h3 { margin:6px 0 5px; color:#302347; font-size:19px; }
+.constituency-overview-heading p { margin:0; color:#77758d; font-size:11px; line-height:1.6; }
+.constituency-community-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin-top:15px; }
+.constituency-hero { margin-bottom:14px; }
+@media(max-width:700px) { .state-constituency-grid { grid-template-columns:1fr; } }
+@media(max-width:600px) { .constituency-community-list { grid-template-columns:1fr; } .directory-tabs button { font-size:10px; gap:5px; } }
