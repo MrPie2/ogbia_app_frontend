@@ -19,6 +19,8 @@ export class CreatePostPage implements OnDestroy {
   displayName = 'Your profile';
   selectedFile: File | null = null;
   previewUrl: string | null = null;
+  selectedImages: File[] = [];
+  imagePreviewUrls: string[] = [];
   privacy: PostPrivacy = 'public';
   postType: 'standard' | 'event' = 'standard';
   eventTitle = '';
@@ -47,9 +49,33 @@ export class CreatePostPage implements OnDestroy {
     return this.displayName.trim().charAt(0).toUpperCase() || 'O';
   }
 
-  get mediaKind(): 'image' | 'video' | null {
-    if (!this.selectedFile) return null;
-    return this.selectedFile.type.startsWith('video/') ? 'video' : 'image';
+  get mediaKind(): 'video' | null {
+    return this.selectedFile ? 'video' : null;
+  }
+
+  onImagesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+    this.errorMessage = '';
+    this.successMessage = '';
+    if (!files.length) return;
+
+    const remaining = 10 - this.selectedImages.length;
+    if (files.length > remaining) this.errorMessage = 'You can add up to 10 images to one post.';
+
+    for (const file of files.slice(0, Math.max(0, remaining))) {
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+        this.errorMessage = 'Choose JPG, PNG or WebP images only.';
+        continue;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        this.errorMessage = 'Each image must be 10 MB or smaller.';
+        continue;
+      }
+      this.selectedImages.push(file);
+      this.imagePreviewUrls.push(URL.createObjectURL(file));
+    }
+    input.value = '';
   }
 
   onFileSelected(event: Event): void {
@@ -59,32 +85,41 @@ export class CreatePostPage implements OnDestroy {
     this.successMessage = '';
     if (!file) return;
 
-    const isImage = ['image/jpeg', 'image/png', 'image/webp'].includes(file.type);
     const isVideo = ['video/mp4', 'video/quicktime', 'video/webm'].includes(file.type);
-    if (!isImage && !isVideo) {
-      this.errorMessage = 'Choose a JPG, PNG or WebP image, or an MP4, MOV or WebM video.';
+    if (!isVideo) {
+      this.errorMessage = 'Choose an MP4, MOV or WebM video.';
       input.value = '';
       return;
     }
     if (file.size > 50 * 1024 * 1024) {
-      this.errorMessage = 'Your file must be 50 MB or smaller.';
+      this.errorMessage = 'Your video must be 50 MB or smaller.';
       input.value = '';
       return;
     }
 
-    this.clearPreview();
+    this.clearVideoPreview();
     this.selectedFile = file;
     this.previewUrl = URL.createObjectURL(file);
+    input.value = '';
+  }
+
+  removeImage(index: number): void {
+    const preview = this.imagePreviewUrls[index];
+    if (preview) URL.revokeObjectURL(preview);
+    this.imagePreviewUrls.splice(index, 1);
+    this.selectedImages.splice(index, 1);
   }
 
   removeMedia(): void {
-    this.clearPreview();
+    this.clearVideoPreview();
     this.selectedFile = null;
   }
 
   publish(): void {
     this.errorMessage = '';
     this.successMessage = '';
+    if (this.submitting) return;
+
     if (this.postType === 'event') {
       if (!this.eventTitle.trim() || !this.eventStartsAt || !this.eventLocation.trim()) {
         this.errorMessage = 'Add an event title, start date and time, and location.';
@@ -98,7 +133,7 @@ export class CreatePostPage implements OnDestroy {
         this.errorMessage = 'The event end time must be after its start time.';
         return;
       }
-    } else if (!this.content.trim() && !this.selectedFile) {
+    } else if (!this.content.trim() && !this.selectedFile && !this.selectedImages.length) {
       this.errorMessage = 'Write something or add a photo/video before posting.';
       return;
     }
@@ -110,7 +145,8 @@ export class CreatePostPage implements OnDestroy {
       endsAt: this.eventEndsAt || null,
       location: this.eventLocation.trim()
     } : undefined;
-    this.posts.createPost(this.content, this.selectedFile, this.privacy, eventDetails).pipe(timeout(45000)).subscribe({
+    const media = this.selectedImages.length ? this.selectedImages : this.selectedFile;
+    this.posts.createPost(this.content, media, this.privacy, eventDetails).pipe(timeout(180000)).subscribe({
       next: () => {
         this.submitting = false;
         this.content = '';
@@ -119,8 +155,10 @@ export class CreatePostPage implements OnDestroy {
         this.eventEndsAt = '';
         this.eventLocation = '';
         this.postType = 'standard';
-        this.clearPreview();
+        this.clearVideoPreview();
+        this.clearImagePreviews();
         this.selectedFile = null;
+        this.selectedImages = [];
         this.router.navigate(['/home']);
       },
       error: (error: HttpErrorResponse) => {
@@ -131,24 +169,30 @@ export class CreatePostPage implements OnDestroy {
         }
         const validation = error.error?.errors;
         if (error.error === 'TimeoutError') {
-          this.errorMessage = 'The server took too long to respond. Your post may not have been saved. Please check your feed before trying again.';
+          this.errorMessage = 'The upload is taking longer than expected. Check your feed before retrying so you do not publish the same post twice.';
         } else if (error.status === 0) {
           this.errorMessage = 'Could not reach the Ogbia server. Check your internet connection and try again.';
         } else {
           this.errorMessage = validation
             ? Object.values(validation).flat().join(' ')
-            : (error.error?.message || `We could not publish your post (HTTP ${error.status}). Please try again.`);
+            : (error.error?.message || ('We could not publish your post (HTTP ' + error.status + '). Please try again.'));
         }
       }
     });
   }
 
   ngOnDestroy(): void {
-    this.clearPreview();
+    this.clearVideoPreview();
+    this.clearImagePreviews();
   }
 
-  private clearPreview(): void {
+  private clearVideoPreview(): void {
     if (this.previewUrl) URL.revokeObjectURL(this.previewUrl);
     this.previewUrl = null;
+  }
+
+  private clearImagePreviews(): void {
+    this.imagePreviewUrls.forEach(url => URL.revokeObjectURL(url));
+    this.imagePreviewUrls = [];
   }
 }
