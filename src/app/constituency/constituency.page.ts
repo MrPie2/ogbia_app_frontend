@@ -15,7 +15,9 @@ import { KnowledgeBaseService, KnowledgeCommunity, KnowledgeWard, KnowledgeRepre
 export class ConstituencyPage implements OnInit {
   searchTerm = '';
   selectedCommunity: KnowledgeCommunity | null = null;
-  activeTab: 'communities' | 'wards' = 'communities';
+  activeTab: 'communities' | 'wards' | 'constituencies' = 'communities';
+  selectedStateConstituency: string | null = null;
+  readonly stateConstituencies = ['Ogbia I', 'Ogbia II', 'Ogbia III'];
   communities: KnowledgeCommunity[] = [];
   wards: KnowledgeWard[] = [];
   loading = false;
@@ -123,9 +125,29 @@ export class ConstituencyPage implements OnInit {
     this.detailError = '';
   }
 
-  selectTab(tab: 'communities' | 'wards'): void {
+  selectTab(tab: 'communities' | 'wards' | 'constituencies'): void {
     this.activeTab = tab;
     this.selectedCommunity = null;
+    this.selectedStateConstituency = null;
+  }
+
+  selectStateConstituency(name: string): void {
+    this.selectedStateConstituency = name;
+  }
+
+  getConstituencyCommunities(name: string): KnowledgeCommunity[] {
+    const expected = this.normalizeConstituencyName(name);
+    return this.communities.filter(community =>
+      this.normalizeConstituencyName(community.constituency || '') === expected
+    );
+  }
+
+  private normalizeConstituencyName(value: string): string {
+    return value.toLocaleLowerCase()
+      .replace(/\bstate\s+constituency\b/g, '')
+      .replace(/\bconstituency\b/g, '')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
   }
 
   roleIcon(role: string): string {
