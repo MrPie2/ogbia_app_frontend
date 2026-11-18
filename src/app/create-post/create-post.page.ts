@@ -5,7 +5,7 @@ import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { PostsService, PostPrivacy } from '../services/posts.service';
-import { timeout } from 'rxjs';
+import { TimeoutError, timeout } from 'rxjs';
 
 @Component({
   selector: 'app-create-post',
@@ -177,23 +177,33 @@ export class CreatePostPage implements OnDestroy {
         this.selectedImages = [];
         this.router.navigate(['/home']);
       },
-      error: (error: HttpErrorResponse) => {
+      error: (error: unknown) => {
         this.submitting = false;
         this.uploadProgress = null;
-        if (error.status === 401) {
-          this.router.navigate(['/login']);
+
+        if (error instanceof TimeoutError) {
+          this.errorMessage = 'The upload is taking longer than expected. Check your feed before retrying so you do not publish the same post twice.';
           return;
         }
-        const validation = error.error?.errors;
-        if (error.name === 'TimeoutError' || error.error === 'TimeoutError') {
-          this.errorMessage = 'The upload is taking longer than expected. Check your feed before retrying so you do not publish the same post twice.';
-        } else if (error.status === 0) {
-          this.errorMessage = 'Could not reach the Ogbia server. Check your internet connection and try again.';
-        } else {
-          this.errorMessage = validation
-            ? Object.values(validation).flat().join(' ')
-            : (error.error?.message || ('We could not publish your post (HTTP ' + error.status + '). Please try again.'));
+
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 401) {
+            this.router.navigate(['/login']);
+            return;
+          }
+
+          const validation = error.error?.errors;
+          if (error.status === 0) {
+            this.errorMessage = 'Could not reach the Ogbia server. Check your internet connection and try again.';
+          } else {
+            this.errorMessage = validation
+              ? Object.values(validation).flat().join(' ')
+              : (error.error?.message || ('We could not publish your post (HTTP ' + error.status + '). Please try again.'));
+          }
+          return;
         }
+
+        this.errorMessage = 'An unexpected error occurred while publishing your post. Please try again.';
       }
     });
   }
