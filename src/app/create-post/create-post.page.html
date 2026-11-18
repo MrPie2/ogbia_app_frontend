@@ -81,13 +81,20 @@
 
         <div class="composer-tools">
           <label class="tool-button"><ion-icon name="image-outline"></ion-icon><span>{{ selectedImages.length ? 'Add more photos' : 'Photos' }}</span><input type="file" accept="image/jpeg,image/png,image/webp" multiple (change)="onImagesSelected($event)" aria-label="Choose multiple photos" [disabled]="submitting || selectedImages.length >= 10"></label>
-          <label class="tool-button"><ion-icon name="videocam-outline"></ion-icon><span>Video</span><input type="file" accept="video/mp4,video/quicktime,video/webm" (change)="onFileSelected($event)" aria-label="Choose video"></label>
+          <label class="tool-button"><ion-icon name="videocam-outline"></ion-icon><span>Video</span><input type="file" accept="video/mp4,video/quicktime,video/webm" (change)="onFileSelected($event)" aria-label="Choose video" [disabled]="submitting"></label>
           <span class="media-hint">Up to 10 photos · 10 MB each, or one video up to 50 MB</span>
         </div>
       </form>
 
       @if (errorMessage) { <p class="form-message error" role="alert">{{ errorMessage }}</p> }
       @if (successMessage) { <p class="form-message success" role="status">{{ successMessage }}</p> }
+      @if (submitting) {
+        <div class="upload-progress" role="status" aria-live="polite">
+          <div><b>Uploading your post</b><span>{{ uploadProgress === null ? 'Preparing upload…' : uploadProgress + '%' }}</span></div>
+          <progress max="100" [value]="uploadProgress ?? 0"></progress>
+          <small>Keep Ogbia open until the upload finishes.</small>
+        </div>
+      }
 
       <button class="post-btn" type="button" (click)="publish()" [disabled]="submitting">
         @if (submitting) { <ion-icon name="sync-outline" class="spin"></ion-icon> Publishing… }
