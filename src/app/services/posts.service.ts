@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -96,7 +96,7 @@ export class PostsService {
     media?: File | File[] | null,
     privacy: PostPrivacy = 'public',
     event?: { title: string; startsAt: string; endsAt: string | null; location: string }
-  ): Observable<{ message: string; data: CommunityPost }> {
+  ): Observable<HttpEvent<{ message: string; data: CommunityPost }>> {
     const form = new FormData();
     if (content.trim()) form.append('content', content.trim());
     if (Array.isArray(media)) {
@@ -114,7 +114,9 @@ export class PostsService {
     }
 
     return this.http.post<{ message: string; data: CommunityPost }>(`${this.apiUrl}/posts`, form, {
-      headers: this.authHeaders()
+      headers: this.authHeaders(),
+      observe: 'events',
+      reportProgress: true
     });
   }
 
