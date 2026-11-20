@@ -149,6 +149,7 @@
         <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'house_reps'" [class.active]="politicalTab === 'house_reps'" (click)="selectPoliticalTab('house_reps')">House of Reps</button>
         <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'assembly'" [class.active]="politicalTab === 'assembly'" (click)="selectPoliticalTab('assembly')">House of Assembly</button>
         <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'councilors'" [class.active]="politicalTab === 'councilors'" (click)="selectPoliticalTab('councilors')">Councilors</button>
+        <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'community_leaders'" [class.active]="politicalTab === 'community_leaders'" (click)="selectPoliticalTab('community_leaders')">Community Leaders</button>
       </div>
 
       @if (politicalLoading) {
