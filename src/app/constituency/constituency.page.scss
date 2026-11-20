@@ -141,7 +141,7 @@
 .political-card-heading h2{margin:5px 0 6px;color:#302347;font-size:19px;letter-spacing:-.35px}
 .political-card-heading p{max-width:520px;margin:0;color:#77758d;font-size:11px;line-height:1.55}
 .political-heading-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:15px;color:#fff;background:#393185;font-size:24px}
-.political-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:5px;margin-bottom:14px;border-radius:13px;background:#f4f3ff}
+.political-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding:5px;margin-bottom:14px;border-radius:13px;background:#f4f3ff}
 .political-tabs button{min-width:0;min-height:40px;padding:7px 5px;border:0;border-radius:9px;color:#77758d;background:transparent;font-size:10px;font-weight:750;line-height:1.25;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s}
 .political-tabs button.active{color:#fff;background:#393185;box-shadow:0 4px 10px rgba(57,49,133,.18)}
 .political-representatives-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
@@ -210,3 +210,6 @@
 .constituency-hero { margin-bottom:14px; }
 @media(max-width:700px) { .state-constituency-grid { grid-template-columns:1fr; } }
 @media(max-width:600px) { .constituency-community-list { grid-template-columns:1fr; } .directory-tabs button { font-size:10px; gap:5px; } }
+
+.ward-card-button{width:100%;text-align:left;color:inherit;background:#fff;cursor:pointer}.ward-card-button:focus-visible{outline:2px solid #393185;outline-offset:2px}
+@media(max-width:600px){.political-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
