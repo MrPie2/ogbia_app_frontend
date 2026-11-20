@@ -31,7 +31,8 @@ export class HomePage implements OnInit, OnDestroy {
   private loadingRequestedPostId: number | null = null;
   likingPostIds = new Set<number>();
   activeCommentPost: CommunityPost | null = null;
-  activeMediaPreview: { type: 'image' | 'video'; url: string; post: CommunityPost } | null = null;
+  activeMediaPreview: { type: 'image' | 'video'; url: string; post: CommunityPost; imageIndex: number } | null = null;
+  private mediaTouchStartY: number | null = null;
   postComments: PostComment[] = [];
   commentDraft = '';
   replyToComment: PostComment | null = null;
@@ -476,7 +477,45 @@ export class HomePage implements OnInit, OnDestroy {
 
   openMediaPreview(post: CommunityPost, type: 'image' | 'video', url: string): void {
     if (!url) return;
-    this.activeMediaPreview = { type, url, post };
+    const imageIndex = type === 'image'
+      ? Math.max(0, (post.media_items || []).findIndex(item => item.media_url === url))
+      : -1;
+    this.activeMediaPreview = { type, url, post, imageIndex };
+  }
+
+  selectPreviewImage(index: number): void {
+    const preview = this.activeMediaPreview;
+    const media = preview?.post.media_items?.[index];
+    if (!preview || preview.type !== 'image' || !media) return;
+    this.activeMediaPreview = { ...preview, url: media.media_url, imageIndex: index };
+  }
+
+  nextPreviewImage(): void {
+    const preview = this.activeMediaPreview;
+    const images = preview?.post.media_items || [];
+    if (!preview || preview.type !== 'image' || images.length < 2) return;
+    this.selectPreviewImage(Math.min(preview.imageIndex + 1, images.length - 1));
+  }
+
+  previousPreviewImage(): void {
+    const preview = this.activeMediaPreview;
+    const images = preview?.post.media_items || [];
+    if (!preview || preview.type !== 'image' || images.length < 2) return;
+    this.selectPreviewImage(Math.max(preview.imageIndex - 1, 0));
+  }
+
+  onMediaTouchStart(event: TouchEvent): void {
+    this.mediaTouchStartY = event.changedTouches[0]?.clientY ?? null;
+  }
+
+  onMediaTouchEnd(event: TouchEvent): void {
+    if (this.mediaTouchStartY === null) return;
+    const endY = event.changedTouches[0]?.clientY;
+    const deltaY = endY === undefined ? 0 : endY - this.mediaTouchStartY;
+    this.mediaTouchStartY = null;
+    if (Math.abs(deltaY) < 45) return;
+    if (deltaY < 0) this.nextPreviewImage();
+    else this.previousPreviewImage();
   }
 
   closeMediaPreview(): void {
