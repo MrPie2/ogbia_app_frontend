@@ -98,6 +98,7 @@
           @else if (errorMessage) { <div class="empty-state"><strong>Directory unavailable</strong><p>{{ errorMessage }}</p><button type="button" class="retry-button" (click)="loadCommunities()">Try again</button></div> }
           @else { <div class="community-grid">@for (community of filteredCommunities; track community.id) { <button class="community-card" type="button" (click)="openCommunity(community)"><span class="community-symbol"><ion-icon name="location-outline"></ion-icon></span><span class="community-copy"><strong>{{ community.name }}</strong><small>{{ community.state_constituency || 'Community profile' }}</small></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }</div> }
         }
+      </section>
     } @else {
       <section class="community-detail">
         <button class="back-link" type="button" (click)="closeCommunity()"><ion-icon name="arrow-back-outline"></ion-icon> Back to directory</button>
