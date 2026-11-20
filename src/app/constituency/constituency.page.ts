@@ -13,7 +13,10 @@ export class ConstituencyPage implements OnInit {
   searchTerm = '';
   selectedCommunity: KnowledgeCommunity | null = null;
   activeTab: DirectoryTab = 'senatorial';
+  selectedSenatorialDistrict: string | null = null;
+  selectedFederalConstituency: string | null = null;
   selectedStateConstituency: string | null = null;
+  selectedWard: KnowledgeWard | null = null;
   readonly defaultSenatorialDistrict = 'Bayelsa East Senatorial District';
   readonly defaultFederalConstituency = 'Ogbia Federal Constituency';
   readonly stateConstituencies = ['Ogbia I', 'Ogbia II', 'Ogbia III'];
@@ -59,14 +62,18 @@ export class ConstituencyPage implements OnInit {
     this.knowledgeBase.getWards().subscribe({next:r=>{this.wards=r.data??[];this.changeDetector.markForCheck();},error:()=>{this.wards=[];this.changeDetector.markForCheck();}});
   }
   selectTab(tab: DirectoryTab): void {
-    this.activeTab=tab; this.selectedCommunity=null; this.selectedStateConstituency=null;
+    this.activeTab=tab; this.selectedCommunity=null; this.selectedSenatorialDistrict=null; this.selectedFederalConstituency=null; this.selectedStateConstituency=null; this.selectedWard=null;
     const map:Record<DirectoryTab,PoliticalTab>={senatorial:'senators',federal:'house_reps',state:'assembly',wards:'councilors',communities:'councilors'};
     this.setPoliticalTab(map[tab]);
   }
-  selectSenatorialDistrict(name:string):void { this.setPoliticalTab('senators',{senatorial_district:name}); }
-  selectFederalConstituency(name:string):void { this.setPoliticalTab('house_reps',{federal_constituency:name}); }
-  selectStateConstituency(name:string):void { this.selectedStateConstituency=name;this.setPoliticalTab('assembly',{state_constituency:name}); }
-  selectWard(ward:KnowledgeWard):void { this.setPoliticalTab('councilors',{ward_id:ward.id}); }
+  selectSenatorialDistrict(name:string):void { this.selectedSenatorialDistrict=name;this.selectedFederalConstituency=null;this.setPoliticalTab('senators',{senatorial_district:name}); }
+  clearSenatorialDistrict():void { this.selectedSenatorialDistrict=null;this.setPoliticalTab('senators'); }
+  selectFederalConstituency(name:string):void { this.selectedFederalConstituency=name;this.selectedStateConstituency=null;this.setPoliticalTab('house_reps',{federal_constituency:name}); }
+  clearFederalConstituency():void { this.selectedFederalConstituency=null;this.setPoliticalTab('house_reps'); }
+  selectStateConstituency(name:string):void { this.selectedStateConstituency=name;this.selectedWard=null;this.setPoliticalTab('assembly',{state_constituency:name}); }
+  clearStateConstituency():void { this.selectedStateConstituency=null;this.setPoliticalTab('assembly'); }
+  selectWard(ward:KnowledgeWard):void { this.selectedWard=ward;this.setPoliticalTab('councilors',{ward_id:ward.id}); }
+  clearWard():void { this.selectedWard=null;this.setPoliticalTab('councilors'); }
   selectPoliticalTab(tab:PoliticalTab):void { this.setPoliticalTab(tab); }
   private setPoliticalTab(tab:PoliticalTab,scope:Record<string,string|number>={}):void {this.politicalTab=tab;this.politicalScope=scope;this.loadPoliticalRepresentatives();}
   loadPoliticalRepresentatives():void {
@@ -80,6 +87,10 @@ export class ConstituencyPage implements OnInit {
   getConstituencyCommunities(name:string):KnowledgeCommunity[]{const n=this.norm(name).replace(/state constituency|constituency/g,'').trim();return this.communities.filter(c=>this.norm(c.state_constituency).replace(/state constituency|constituency/g,'').trim()===n);}
   getFederalCommunities(name:string):KnowledgeCommunity[]{return this.communities.filter(c=>this.norm(c.federal_constituency)===this.norm(name));}
   getDistrictCommunities(name:string):KnowledgeCommunity[]{return this.communities.filter(c=>this.norm(c.senatorial_district)===this.norm(name));}
+  getDistrictFederalConstituencies(name:string):string[]{const values=this.uniqueValues([...this.communities.filter(c=>this.norm(c.senatorial_district)===this.norm(name)).map(c=>c.federal_constituency),...this.wards.filter(w=>this.norm(w.senatorial_district)===this.norm(name)).map(w=>w.federal_constituency)]);return values.length?values:this.federalConstituencies;}
+  getFederalStateConstituencies(name:string):string[]{const values=this.uniqueValues([...this.communities.filter(c=>this.norm(c.federal_constituency)===this.norm(name)).map(c=>c.state_constituency),...this.wards.filter(w=>this.norm(w.federal_constituency)===this.norm(name)).map(w=>w.state_constituency)]);return values.length?values:this.stateConstituencyNames;}
+  getStateWards(name:string):KnowledgeWard[]{return this.wards.filter(w=>this.norm(w.state_constituency)===this.norm(name));}
+  getWardCommunities(ward:KnowledgeWard):KnowledgeCommunity[]{const ids=new Set((ward.communities||[]).map(c=>c.id));return this.communities.filter(c=>ids.has(c.id));}
   representativeLocation(p:KnowledgeRepresentative):string{return [p.senatorial_district,p.federal_constituency,p.state_constituency,p.constituency,p.ward?.name,p.community?.name].filter((v):v is string=>!!v?.trim()).filter((v,i,a)=>a.indexOf(v)===i).join(' · ')||'Ogbia representation';}
   openCommunity(c:KnowledgeCommunity):void {
     this.setPoliticalTab('councilors',{community_id:c.id});
