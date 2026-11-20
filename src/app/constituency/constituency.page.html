@@ -33,90 +33,71 @@
       <section class="directory-section">
         <div class="section-heading">
           <div><span class="section-kicker">EXPLORE OGBIA</span><h2>Community directory</h2></div>
-          <span class="directory-count">{{ activeTab === 'communities' ? filteredCommunities.length : activeTab === 'wards' ? wards.length : stateConstituencies.length }} {{ activeTab === 'communities' ? 'communities' : activeTab === 'wards' ? 'wards' : 'state constituencies' }}</span>
+          <span class="directory-count">{{ activeTab === 'communities' ? filteredCommunities.length : activeTab === 'wards' ? wards.length : activeTab === 'state' ? stateConstituencyNames.length : activeTab === 'federal' ? federalConstituencies.length : senatorialDistricts.length }} {{ activeTab === 'communities' ? 'communities' : activeTab === 'wards' ? 'wards' : activeTab === 'state' ? 'state constituencies' : activeTab === 'federal' ? 'federal constituencies' : 'senatorial districts' }}</span>
         </div>
 
-        <div class="directory-tabs" role="tablist" aria-label="Directory type">
-          <button type="button" role="tab" [attr.aria-selected]="activeTab === 'communities'" [class.active]="activeTab === 'communities'" (click)="selectTab('communities')"><ion-icon name="home-outline"></ion-icon> Communities</button>
-          <button type="button" role="tab" [attr.aria-selected]="activeTab === 'wards'" [class.active]="activeTab === 'wards'" (click)="selectTab('wards')"><ion-icon name="grid-outline"></ion-icon> Wards</button>
-          <button type="button" role="tab" [attr.aria-selected]="activeTab === 'constituencies'" [class.active]="activeTab === 'constituencies'" (click)="selectTab('constituencies')"><ion-icon name="business-outline"></ion-icon> Constituencies</button>
+        <div class="directory-tabs" role="tablist" aria-label="Directory hierarchy">
+          <button type="button" role="tab" [attr.aria-selected]="activeTab === 'senatorial'" [class.active]="activeTab === 'senatorial'" (click)="selectTab('senatorial')">Senatorial District</button>
+          <button type="button" role="tab" [attr.aria-selected]="activeTab === 'federal'" [class.active]="activeTab === 'federal'" (click)="selectTab('federal')">Federal Constituency</button>
+          <button type="button" role="tab" [attr.aria-selected]="activeTab === 'state'" [class.active]="activeTab === 'state'" (click)="selectTab('state')">State Constituency</button>
+          <button type="button" role="tab" [attr.aria-selected]="activeTab === 'wards'" [class.active]="activeTab === 'wards'" (click)="selectTab('wards')">Wards</button>
+          <button type="button" role="tab" [attr.aria-selected]="activeTab === 'communities'" [class.active]="activeTab === 'communities'" (click)="selectTab('communities')">Communities</button>
         </div>
 
-        @if (activeTab === 'communities') {
-          <label class="search-box">
-            <ion-icon name="search-outline"></ion-icon>
-            <input type="search" placeholder="Search for your community..." [value]="searchTerm" (input)="searchTerm = $any($event.target).value" aria-label="Search communities">
-            @if (searchTerm) { <button type="button" aria-label="Clear search" (click)="searchTerm = ''"><ion-icon name="close-circle"></ion-icon></button> }
-          </label>
-          @if (loading) {
-            <div class="empty-state"><ion-icon name="sync-outline"></ion-icon><strong>Loading communities…</strong><p>Getting the latest directory from the Ogbia knowledge base.</p></div>
-          } @else if (errorMessage) {
-            <div class="empty-state"><ion-icon name="cloud-offline-outline"></ion-icon><strong>Directory unavailable</strong><p>{{ errorMessage }}</p><button type="button" class="retry-button" (click)="loadCommunities()">Try again</button></div>
-          } @else {
-          <div class="community-grid">
-            @for (community of filteredCommunities; track community.id) {
-              <button class="community-card" type="button" (click)="openCommunity(community)">
-                <span class="community-symbol"><ion-icon name="location-outline"></ion-icon></span>
-                <span class="community-copy"><strong>{{ community.name }}</strong><small>Community profile</small></span>
-                <ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon>
-              </button>
+        @if (activeTab === 'senatorial') {
+          @if (selectedSenatorialDistrict) {
+            <button class="back-link" type="button" (click)="clearSenatorialDistrict()">← All senatorial districts</button>
+            <div class="constituency-overview-heading"><span class="section-kicker">FEDERAL CONSTITUENCIES</span><h3>{{ selectedSenatorialDistrict }}</h3><p>Select the federal constituency within this senatorial district.</p></div>
+            @for (name of getDistrictFederalConstituencies(selectedSenatorialDistrict); track name) {
+              <button type="button" class="state-constituency-card" (click)="selectFederalConstituency(name)"><span class="state-constituency-copy"><small>FEDERAL CONSTITUENCY</small><strong>{{ name }}</strong><span>{{ getFederalCommunities(name).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button>
             }
-          </div>
-          @if (!filteredCommunities.length) {
-            <div class="empty-state"><ion-icon name="search-outline"></ion-icon><strong>{{ communities.length ? 'No community found' : 'No communities published yet' }}</strong><p>{{ communities.length ? 'Try another spelling or search term.' : 'Community records will appear here when they are added to the knowledge base.' }}</p></div>
+          } @else {
+            <div class="constituency-overview"><div class="constituency-overview-heading"><span class="section-kicker">SENATORIAL REPRESENTATION</span><h3>Senatorial District</h3><p>Select the district to explore its federal constituency.</p></div>
+              @for (district of senatorialDistricts; track district) { <button type="button" class="state-constituency-card" (click)="selectSenatorialDistrict(district)"><span class="state-constituency-copy"><small>SENATORIAL DISTRICT</small><strong>{{ district }}</strong><span>{{ getDistrictCommunities(district).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }
+            </div>
           }
+        } @else if (activeTab === 'federal') {
+          @if (selectedFederalConstituency) {
+            <button class="back-link" type="button" (click)="clearFederalConstituency()">← All federal constituencies</button>
+            <div class="constituency-overview-heading"><span class="section-kicker">STATE CONSTITUENCIES</span><h3>{{ selectedFederalConstituency }}</h3><p>Select a state constituency to view its wards.</p></div>
+            @for (name of getFederalStateConstituencies(selectedFederalConstituency); track name) {
+              <button type="button" class="state-constituency-card" (click)="selectStateConstituency(name)"><span class="state-constituency-copy"><small>STATE CONSTITUENCY</small><strong>{{ name }}</strong><span>{{ getConstituencyCommunities(name).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button>
+            }
+          } @else {
+            <div class="constituency-overview"><div class="constituency-overview-heading"><span class="section-kicker">FEDERAL REPRESENTATION</span><h3>Federal Constituency</h3><p>Select a federal constituency to explore its state constituencies.</p></div>
+              @for (name of federalConstituencies; track name) { <button type="button" class="state-constituency-card" (click)="selectFederalConstituency(name)"><span class="state-constituency-copy"><small>FEDERAL CONSTITUENCY</small><strong>{{ name }}</strong><span>{{ getFederalCommunities(name).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }
+            </div>
+          }
+        } @else if (activeTab === 'state') {
+          @if (selectedStateConstituency) {
+            <button class="back-link" type="button" (click)="clearStateConstituency()">← All state constituencies</button>
+            <div class="community-hero constituency-hero"><div class="large-community-symbol"><ion-icon name="business-outline"></ion-icon></div><div><span class="section-kicker">STATE CONSTITUENCY</span><h2>{{ selectedStateConstituency }}</h2><p>Bayelsa State House of Assembly constituency</p></div></div>
+            @if (getStateWards(selectedStateConstituency).length) {
+              <div class="ward-grid">@for (ward of getStateWards(selectedStateConstituency); track ward.id) { <button type="button" class="ward-card ward-card-button" (click)="selectWard(ward)"><span class="ward-number">{{ ward.code || ward.id.toString().padStart(2, '0') }}</span><div><strong>{{ ward.name }}</strong><small>{{ ward.communities_count || ward.communities?.length || 0 }} linked communities</small></div></button> }</div>
+            } @else {
+              <div class="constituency-community-list">@for (community of getConstituencyCommunities(selectedStateConstituency); track community.id) { <button class="community-card" type="button" (click)="openCommunity(community)"><span class="community-copy"><strong>{{ community.name }}</strong><small>Community profile</small></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }</div>
+            }
+          } @else {
+            <div class="constituency-overview"><div class="constituency-overview-heading"><span class="section-kicker">STATE REPRESENTATION</span><h3>Ogbia State Constituencies</h3><p>Choose a state constituency to view its wards and communities.</p></div><div class="state-constituency-grid">
+              @for (name of stateConstituencyNames; track name) { <button type="button" class="state-constituency-card" (click)="selectStateConstituency(name)"><span class="state-constituency-copy"><small>STATE CONSTITUENCY</small><strong>{{ name }}</strong><span>{{ getConstituencyCommunities(name).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }
+            </div></div>
           }
         } @else if (activeTab === 'wards') {
-          <div class="ward-grid">
-            @for (ward of wards; track ward.id) {
-              <article class="ward-card">
-                <span class="ward-number">{{ ward.code || ward.id.toString().padStart(2, '0') }}</span>
-                <div><strong>{{ ward.name }}</strong><small>{{ ward.description || (ward.communities?.length ? ward.communities.length + ' linked communities' : 'Community mapping to be confirmed') }}</small></div>
-                <span class="verification-tag" [class.verified-tag]="ward.is_verified"><ion-icon [name]="ward.is_verified ? 'checkmark-circle-outline' : 'time-outline'"></ion-icon> {{ ward.is_verified ? 'Verified' : 'To verify' }}</span>
-              </article>
-            }
-          </div>
-          <p class="directory-note"><ion-icon name="information-circle-outline"></ion-icon> Ward names and community-to-ward assignments will be confirmed against official electoral records.</p>
-        } @else {
-          @if (selectedStateConstituency) {
-            <button class="back-link constituency-back-link" type="button" (click)="selectedStateConstituency = null"><ion-icon name="arrow-back-outline"></ion-icon> All state constituencies</button>
-            <div class="community-hero constituency-hero">
-              <div class="large-community-symbol"><ion-icon name="business-outline"></ion-icon></div>
-              <div><span class="section-kicker">OGBIA FEDERAL CONSTITUENCY</span><h2>{{ selectedStateConstituency }}</h2><p>Bayelsa State House of Assembly constituency</p></div>
-            </div>
-            <div class="constituency-community-list">
-              @for (community of getConstituencyCommunities(selectedStateConstituency); track community.id) {
-                <button class="community-card" type="button" (click)="openCommunity(community)">
-                  <span class="community-symbol"><ion-icon name="location-outline"></ion-icon></span>
-                  <span class="community-copy"><strong>{{ community.name }}</strong><small>{{ community.wards_count ?? community.wards?.length ?? 0 }} linked wards · Community profile</small></span>
-                  <ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon>
-                </button>
-              }
-              @if (!getConstituencyCommunities(selectedStateConstituency).length) {
-                <div class="empty-state"><ion-icon name="people-outline"></ion-icon><strong>Community assignments pending</strong><p>Communities will appear here once their state constituency assignments have been added and verified.</p></div>
-              }
-            </div>
+          @if (selectedWard) {
+            <button class="back-link" type="button" (click)="clearWard()">← All wards</button>
+            <div class="community-hero constituency-hero"><div class="large-community-symbol"><ion-icon name="grid-outline"></ion-icon></div><div><span class="section-kicker">WARD</span><h2>{{ selectedWard.name }}</h2><p>{{ selectedWard.state_constituency || 'Ogbia Local Government Area' }}</p></div></div>
+            <div class="community-grid">@for (community of getWardCommunities(selectedWard); track community.id) { <button class="community-card" type="button" (click)="openCommunity(community)"><span class="community-symbol"><ion-icon name="location-outline"></ion-icon></span><span class="community-copy"><strong>{{ community.name }}</strong><small>Community profile</small></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }</div>
+            @if (!getWardCommunities(selectedWard).length) { <div class="empty-state"><strong>No communities linked to this ward yet</strong></div> }
           } @else {
-            <div class="constituency-overview">
-              <div class="constituency-overview-heading">
-                <span class="section-kicker">FEDERAL REPRESENTATION</span>
-                <h3>Ogbia Federal Constituency</h3>
-                <p>Ogbia has three State Constituencies represented in the Bayelsa State House of Assembly.</p>
-              </div>
-              <div class="state-constituency-grid">
-                @for (constituency of stateConstituencies; track constituency) {
-                  <button type="button" class="state-constituency-card" (click)="selectStateConstituency(constituency)">
-                    <span class="state-constituency-icon"><ion-icon name="business-outline"></ion-icon></span>
-                    <span class="state-constituency-copy"><small>STATE CONSTITUENCY</small><strong>{{ constituency }}</strong><span>{{ getConstituencyCommunities(constituency).length }} linked communities</span></span>
-                    <ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon>
-                  </button>
-                }
-              </div>
-              <p class="directory-note"><ion-icon name="information-circle-outline"></ion-icon> The three State Constituencies are Ogbia I, Ogbia II and Ogbia III. Community assignments will be shown as they are confirmed.</p>
-            </div>
+            <div class="ward-grid">@for (ward of wards; track ward.id) { <button type="button" class="ward-card ward-card-button" (click)="selectWard(ward)"><span class="ward-number">{{ ward.code || ward.id.toString().padStart(2, '0') }}</span><div><strong>{{ ward.name }}</strong><small>{{ ward.state_constituency || 'Ward directory entry' }}</small></div></button> }</div>
+            @if (!wards.length) { <div class="empty-state"><strong>No wards published yet</strong></div> }
           }
+        } @else {
+          <label class="search-box"><ion-icon name="search-outline"></ion-icon><input type="search" placeholder="Search for your community..." [value]="searchTerm" (input)="searchTerm = $any($event.target).value" aria-label="Search communities"></label>
+          @if (loading) { <div class="empty-state"><strong>Loading communities…</strong></div> }
+          @else if (errorMessage) { <div class="empty-state"><strong>Directory unavailable</strong><p>{{ errorMessage }}</p><button type="button" class="retry-button" (click)="loadCommunities()">Try again</button></div> }
+          @else { <div class="community-grid">@for (community of filteredCommunities; track community.id) { <button class="community-card" type="button" (click)="openCommunity(community)"><span class="community-symbol"><ion-icon name="location-outline"></ion-icon></span><span class="community-copy"><strong>{{ community.name }}</strong><small>{{ community.state_constituency || 'Community profile' }}</small></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }</div> }
         }
-      </section>
     } @else {
       <section class="community-detail">
         <button class="back-link" type="button" (click)="closeCommunity()"><ion-icon name="arrow-back-outline"></ion-icon> Back to directory</button>
@@ -163,9 +144,10 @@
       </div>
 
       <div class="political-tabs" role="tablist" aria-label="Political representative categories">
+        <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'senators'" [class.active]="politicalTab === 'senators'" (click)="selectPoliticalTab('senators')">Senate</button>
         <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'house_reps'" [class.active]="politicalTab === 'house_reps'" (click)="selectPoliticalTab('house_reps')">House of Reps</button>
-        <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'senators'" [class.active]="politicalTab === 'senators'" (click)="selectPoliticalTab('senators')">Senators</button>
-        <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'assembly'" [class.active]="politicalTab === 'assembly'" (click)="selectPoliticalTab('assembly')">Assembly Members</button>
+        <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'assembly'" [class.active]="politicalTab === 'assembly'" (click)="selectPoliticalTab('assembly')">House of Assembly</button>
+        <button type="button" role="tab" [attr.aria-selected]="politicalTab === 'councilors'" [class.active]="politicalTab === 'councilors'" (click)="selectPoliticalTab('councilors')">Councilors</button>
       </div>
 
       @if (politicalLoading) {

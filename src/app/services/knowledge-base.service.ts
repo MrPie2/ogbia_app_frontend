@@ -9,6 +9,10 @@ export interface KnowledgeRepresentative {
   full_name: string | null;
   party: string | null;
   constituency: string | null;
+  representation_level?: string | null;
+  senatorial_district?: string | null;
+  federal_constituency?: string | null;
+  state_constituency?: string | null;
   phone: string | null;
   email: string | null;
   photo_url: string | null;
@@ -24,8 +28,11 @@ export interface KnowledgeWard {
   name: string;
   code: string | null;
   description: string | null;
+  senatorial_district?: string | null;
+  federal_constituency?: string | null;
+  state_constituency?: string | null;
   is_verified: boolean;
-  communities?: Array<{ id: number; name: string; slug: string; is_verified: boolean }>;
+  communities?: Array<{ id: number; name: string; slug: string; is_verified: boolean; state_constituency?: string | null }>;
   communities_count?: number;
 }
 
@@ -36,6 +43,8 @@ export interface KnowledgeCommunity {
   description: string | null;
   history?: string | null;
   constituency?: string | null;
+  senatorial_district?: string | null;
+  federal_constituency?: string | null;
   state_constituency?: string | null;
   cover_photo_url?: string | null;
   clan_name: string | null;
@@ -71,8 +80,9 @@ export class KnowledgeBaseService {
     return this.http.get<{ data: KnowledgeWard[] }>(`${this.apiUrl}/knowledge-base/wards`);
   }
 
-  getPoliticalRepresentatives(type: 'house_reps' | 'senators' | 'assembly'): Observable<{ data: KnowledgeRepresentative[] }> {
-    const params = new HttpParams().set('type', type);
+  getPoliticalRepresentatives(type: 'house_reps' | 'senators' | 'assembly' | 'councilors', scope: Record<string, string | number> = {}): Observable<{ data: KnowledgeRepresentative[] }> {
+    let params = new HttpParams().set('type', type);
+    Object.entries(scope).forEach(([key, value]) => { params = params.set(key, String(value)); });
     return this.http.get<{ data: KnowledgeRepresentative[] }>(
       `${this.apiUrl}/knowledge-base/representatives`, { params }
     );
