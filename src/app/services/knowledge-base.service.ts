@@ -80,7 +80,7 @@ export class KnowledgeBaseService {
     return this.http.get<{ data: KnowledgeWard[] }>(`${this.apiUrl}/knowledge-base/wards`);
   }
 
-  getPoliticalRepresentatives(type: 'house_reps' | 'senators' | 'assembly' | 'councilors', scope: Record<string, string | number> = {}): Observable<{ data: KnowledgeRepresentative[] }> {
+  getPoliticalRepresentatives(type: 'house_reps' | 'senators' | 'assembly' | 'councilors' | 'community_leaders', scope: Record<string, string | number> = {}): Observable<{ data: KnowledgeRepresentative[] }> {
     let params = new HttpParams().set('type', type);
     Object.entries(scope).forEach(([key, value]) => { params = params.set(key, String(value)); });
     return this.http.get<{ data: KnowledgeRepresentative[] }>(
