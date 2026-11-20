@@ -6,7 +6,7 @@ import { IonContent, IonIcon } from '@ionic/angular';
 import { KnowledgeBaseService, KnowledgeCommunity, KnowledgeWard, KnowledgeRepresentative } from '../services/knowledge-base.service';
 
 type DirectoryTab = 'senatorial' | 'federal' | 'state' | 'wards' | 'communities';
-type PoliticalTab = 'senators' | 'house_reps' | 'assembly' | 'councilors';
+type PoliticalTab = 'senators' | 'house_reps' | 'assembly' | 'councilors' | 'community_leaders';
 
 @Component({ selector: 'app-constituency', standalone: true, imports: [CommonModule, IonContent, IonIcon, RouterLink], templateUrl: './constituency.page.html', styleUrl: './constituency.page.scss' })
 export class ConstituencyPage implements OnInit {
@@ -63,7 +63,7 @@ export class ConstituencyPage implements OnInit {
   }
   selectTab(tab: DirectoryTab): void {
     this.activeTab=tab; this.selectedCommunity=null; this.selectedSenatorialDistrict=null; this.selectedFederalConstituency=null; this.selectedStateConstituency=null; this.selectedWard=null;
-    const map:Record<DirectoryTab,PoliticalTab>={senatorial:'senators',federal:'house_reps',state:'assembly',wards:'councilors',communities:'councilors'};
+    const map:Record<DirectoryTab,PoliticalTab>={senatorial:'senators',federal:'house_reps',state:'assembly',wards:'councilors',communities:'community_leaders'};
     this.setPoliticalTab(map[tab]);
   }
   selectSenatorialDistrict(name:string):void { this.selectedSenatorialDistrict=name;this.selectedFederalConstituency=null;this.setPoliticalTab('senators',{senatorial_district:name}); }
@@ -93,7 +93,7 @@ export class ConstituencyPage implements OnInit {
   getWardCommunities(ward:KnowledgeWard):KnowledgeCommunity[]{const ids=new Set((ward.communities||[]).map(c=>c.id));return this.communities.filter(c=>ids.has(c.id));}
   representativeLocation(p:KnowledgeRepresentative):string{return [p.senatorial_district,p.federal_constituency,p.state_constituency,p.constituency,p.ward?.name,p.community?.name].filter((v):v is string=>!!v?.trim()).filter((v,i,a)=>a.indexOf(v)===i).join(' · ')||'Ogbia representation';}
   openCommunity(c:KnowledgeCommunity):void {
-    this.setPoliticalTab('councilors',{community_id:c.id});
+    this.setPoliticalTab('community_leaders',{community_id:c.id});
     void this.router.navigate(['/community', c.slug]);
   }
   closeCommunity():void{this.selectedCommunity=null;this.detailError='';this.setPoliticalTab('councilors');}
