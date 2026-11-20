@@ -99,10 +99,14 @@
             }
             @if (post.media_items?.length) {
               <div class="post-gallery" [class.single-image]="(post.media_items?.length ?? 0) === 1" [class.multi-image]="(post.media_items?.length ?? 0) > 1">
-                @for (media of (post.media_items ?? []); track media.id) {
-                  <button type="button" class="post-gallery-item" (click)="openMediaPreview(post, 'image', media.media_url)" [attr.aria-label]="'Preview post image ' + ($index + 1)">
+                @for (media of (post.media_items ?? []).slice(0, 4); track media.id) {
+                  <button type="button" class="post-gallery-item" [class.has-more-images]="$index === 3 && (post.media_items?.length ?? 0) > 4" (click)="openMediaPreview(post, 'image', media.media_url)" [attr.aria-label]="'Preview post image ' + ($index + 1) + ' of ' + (post.media_items?.length ?? 0)">
                     <img [src]="media.media_url" [alt]="'Image ' + ($index + 1) + ' attached to post'" loading="lazy" decoding="async">
-                    <span class="gallery-expand"><ion-icon name="expand-outline"></ion-icon></span>
+                    @if ($index === 3 && (post.media_items?.length ?? 0) > 4) {
+                      <span class="gallery-more-count">{{ post.media_items?.length }}+</span>
+                    } @else {
+                      <span class="gallery-expand"><ion-icon name="expand-outline"></ion-icon></span>
+                    }
                   </button>
                 }
               </div>
@@ -238,13 +242,22 @@
       <section class="media-preview-dialog" role="dialog" aria-modal="true" aria-label="Media preview" (click)="$event.stopPropagation()">
         <button type="button" class="media-preview-close" (click)="closeMediaPreview()" aria-label="Close media preview"><span aria-hidden="true">×</span></button>
         <div class="media-preview-content">
-          <div class="media-preview-media">
+          <div class="media-preview-media" (touchstart)="onMediaTouchStart($event)" (touchend)="onMediaTouchEnd($event)">
             @if (preview.type === 'image') {
               <img [src]="preview.url" alt="Full-size post image">
             } @else {
               <video [src]="preview.url" controls autoplay playsinline preload="metadata"></video>
             }
           </div>
+          @if (preview.type === 'image' && (preview.post.media_items?.length ?? 0) > 1) {
+            <div class="media-preview-thumbnails" aria-label="Post image thumbnails">
+              @for (media of (preview.post.media_items ?? []); track media.id; let imageIndex = $index) {
+                <button type="button" class="media-preview-thumbnail" [class.active]="preview.imageIndex === imageIndex" (click)="selectPreviewImage(imageIndex)" [attr.aria-label]="'Show image ' + (imageIndex + 1)">
+                  <img [src]="media.media_url" [alt]="'Thumbnail ' + (imageIndex + 1)" loading="lazy" decoding="async">
+                </button>
+              }
+            </div>
+          }
           <div class="media-preview-post-footer">
             <div class="media-preview-author">
               @if (preview.post.author; as author) {
