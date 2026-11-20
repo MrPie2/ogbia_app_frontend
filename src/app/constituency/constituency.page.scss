@@ -235,3 +235,45 @@
     white-space:nowrap;
   }
 }
+
+
+/* Neumorphic treatment for the two directory panels. Keep the panel face
+   slightly darker than the page surface, with raised soft edges. */
+.directory-section,
+.political-representatives-card {
+  border: 1px solid rgba(255,255,255,.72);
+  background: #e7e4f1;
+  box-shadow:
+    8px 8px 18px rgba(72,64,112,.17),
+    -8px -8px 18px rgba(255,255,255,.92);
+}
+
+.directory-tabs {
+  border: 1px solid rgba(255,255,255,.62);
+  background: #e7e4f1;
+  box-shadow:
+    inset 3px 3px 7px rgba(72,64,112,.10),
+    inset -3px -3px 7px rgba(255,255,255,.88);
+}
+.directory-tabs button.active {
+  background: #e7e4f1;
+  box-shadow:
+    4px 4px 8px rgba(72,64,112,.16),
+    -4px -4px 8px rgba(255,255,255,.94);
+}
+
+.political-tabs {
+  border: 1px solid rgba(255,255,255,.62);
+  background: #e7e4f1;
+  box-shadow:
+    inset 3px 3px 7px rgba(72,64,112,.10),
+    inset -3px -3px 7px rgba(255,255,255,.88);
+}
+.political-tabs button.active {
+  color: #393185;
+  border: 1px solid rgba(255,255,255,.72);
+  background: #e7e4f1;
+  box-shadow:
+    4px 4px 8px rgba(72,64,112,.16),
+    -4px -4px 8px rgba(255,255,255,.94);
+}
