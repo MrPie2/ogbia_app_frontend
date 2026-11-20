@@ -68,11 +68,11 @@ export class ConstituencyPage implements OnInit {
   }
   selectSenatorialDistrict(name:string):void { this.selectedSenatorialDistrict=name;this.selectedFederalConstituency=null;this.setPoliticalTab('senators',{senatorial_district:name}); }
   clearSenatorialDistrict():void { this.selectedSenatorialDistrict=null;this.setPoliticalTab('senators'); }
-  selectFederalConstituency(name:string):void { this.selectedFederalConstituency=name;this.selectedStateConstituency=null;this.setPoliticalTab('house_reps',{federal_constituency:name}); }
+  selectFederalConstituency(name:string):void { this.activeTab='federal'; this.selectedFederalConstituency=name;this.selectedStateConstituency=null;this.setPoliticalTab('house_reps',{federal_constituency:name}); }
   clearFederalConstituency():void { this.selectedFederalConstituency=null;this.setPoliticalTab('house_reps'); }
-  selectStateConstituency(name:string):void { this.selectedStateConstituency=name;this.selectedWard=null;this.setPoliticalTab('assembly',{state_constituency:name}); }
+  selectStateConstituency(name:string):void { this.activeTab='state'; this.selectedStateConstituency=name;this.selectedWard=null;this.setPoliticalTab('assembly',{state_constituency:name}); }
   clearStateConstituency():void { this.selectedStateConstituency=null;this.setPoliticalTab('assembly'); }
-  selectWard(ward:KnowledgeWard):void { this.selectedWard=ward;this.setPoliticalTab('councilors',{ward_id:ward.id}); }
+  selectWard(ward:KnowledgeWard):void { this.activeTab='wards'; this.selectedWard=ward;this.setPoliticalTab('councilors',{ward_id:ward.id}); }
   clearWard():void { this.selectedWard=null;this.setPoliticalTab('councilors'); }
   selectPoliticalTab(tab:PoliticalTab):void { this.setPoliticalTab(tab); }
   private setPoliticalTab(tab:PoliticalTab,scope:Record<string,string|number>={}):void {this.politicalTab=tab;this.politicalScope=scope;this.loadPoliticalRepresentatives();}
