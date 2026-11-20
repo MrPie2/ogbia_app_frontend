@@ -43,34 +43,61 @@
           <button type="button" role="tab" [attr.aria-selected]="activeTab === 'wards'" [class.active]="activeTab === 'wards'" (click)="selectTab('wards')">Wards</button>
           <button type="button" role="tab" [attr.aria-selected]="activeTab === 'communities'" [class.active]="activeTab === 'communities'" (click)="selectTab('communities')">Communities</button>
         </div>
+
         @if (activeTab === 'senatorial') {
-          <div class="constituency-overview"><div class="constituency-overview-heading"><span class="section-kicker">SENATORIAL REPRESENTATION</span><h3>Senatorial District</h3><p>Select the district to view its senator.</p></div>
-            @for (district of senatorialDistricts; track district) { <button type="button" class="state-constituency-card" (click)="selectSenatorialDistrict(district)"><span class="state-constituency-copy"><small>SENATORIAL DISTRICT</small><strong>{{ district }}</strong><span>{{ getDistrictCommunities(district).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }
-          </div>
+          @if (selectedSenatorialDistrict) {
+            <button class="back-link" type="button" (click)="clearSenatorialDistrict()">← All senatorial districts</button>
+            <div class="constituency-overview-heading"><span class="section-kicker">FEDERAL CONSTITUENCIES</span><h3>{{ selectedSenatorialDistrict }}</h3><p>Select the federal constituency within this senatorial district.</p></div>
+            @for (name of getDistrictFederalConstituencies(selectedSenatorialDistrict); track name) {
+              <button type="button" class="state-constituency-card" (click)="selectFederalConstituency(name)"><span class="state-constituency-copy"><small>FEDERAL CONSTITUENCY</small><strong>{{ name }}</strong><span>{{ getFederalCommunities(name).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button>
+            }
+          } @else {
+            <div class="constituency-overview"><div class="constituency-overview-heading"><span class="section-kicker">SENATORIAL REPRESENTATION</span><h3>Senatorial District</h3><p>Select the district to explore its federal constituency.</p></div>
+              @for (district of senatorialDistricts; track district) { <button type="button" class="state-constituency-card" (click)="selectSenatorialDistrict(district)"><span class="state-constituency-copy"><small>SENATORIAL DISTRICT</small><strong>{{ district }}</strong><span>{{ getDistrictCommunities(district).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }
+            </div>
+          }
         } @else if (activeTab === 'federal') {
-          <div class="constituency-overview"><div class="constituency-overview-heading"><span class="section-kicker">FEDERAL REPRESENTATION</span><h3>Federal Constituency</h3><p>Select the constituency to view its House of Representatives member.</p></div>
-            @for (name of federalConstituencies; track name) { <button type="button" class="state-constituency-card" (click)="selectFederalConstituency(name)"><span class="state-constituency-copy"><small>FEDERAL CONSTITUENCY</small><strong>{{ name }}</strong><span>{{ getFederalCommunities(name).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }
-          </div>
+          @if (selectedFederalConstituency) {
+            <button class="back-link" type="button" (click)="clearFederalConstituency()">← All federal constituencies</button>
+            <div class="constituency-overview-heading"><span class="section-kicker">STATE CONSTITUENCIES</span><h3>{{ selectedFederalConstituency }}</h3><p>Select a state constituency to view its wards.</p></div>
+            @for (name of getFederalStateConstituencies(selectedFederalConstituency); track name) {
+              <button type="button" class="state-constituency-card" (click)="selectStateConstituency(name)"><span class="state-constituency-copy"><small>STATE CONSTITUENCY</small><strong>{{ name }}</strong><span>{{ getConstituencyCommunities(name).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button>
+            }
+          } @else {
+            <div class="constituency-overview"><div class="constituency-overview-heading"><span class="section-kicker">FEDERAL REPRESENTATION</span><h3>Federal Constituency</h3><p>Select a federal constituency to explore its state constituencies.</p></div>
+              @for (name of federalConstituencies; track name) { <button type="button" class="state-constituency-card" (click)="selectFederalConstituency(name)"><span class="state-constituency-copy"><small>FEDERAL CONSTITUENCY</small><strong>{{ name }}</strong><span>{{ getFederalCommunities(name).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }
+            </div>
+          }
         } @else if (activeTab === 'state') {
           @if (selectedStateConstituency) {
-            <button class="back-link" type="button" (click)="selectedStateConstituency = null">← All state constituencies</button>
+            <button class="back-link" type="button" (click)="clearStateConstituency()">← All state constituencies</button>
             <div class="community-hero constituency-hero"><div class="large-community-symbol"><ion-icon name="business-outline"></ion-icon></div><div><span class="section-kicker">STATE CONSTITUENCY</span><h2>{{ selectedStateConstituency }}</h2><p>Bayelsa State House of Assembly constituency</p></div></div>
-            <div class="constituency-community-list">@for (community of getConstituencyCommunities(selectedStateConstituency); track community.id) { <button class="community-card" type="button" (click)="openCommunity(community)"><span class="community-copy"><strong>{{ community.name }}</strong><small>Community profile</small></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }</div>
+            @if (getStateWards(selectedStateConstituency).length) {
+              <div class="ward-grid">@for (ward of getStateWards(selectedStateConstituency); track ward.id) { <button type="button" class="ward-card ward-card-button" (click)="selectWard(ward)"><span class="ward-number">{{ ward.code || ward.id.toString().padStart(2, '0') }}</span><div><strong>{{ ward.name }}</strong><small>{{ ward.communities_count || ward.communities?.length || 0 }} linked communities</small></div></button> }</div>
+            } @else {
+              <div class="constituency-community-list">@for (community of getConstituencyCommunities(selectedStateConstituency); track community.id) { <button class="community-card" type="button" (click)="openCommunity(community)"><span class="community-copy"><strong>{{ community.name }}</strong><small>Community profile</small></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }</div>
+            }
           } @else {
-            <div class="constituency-overview"><div class="constituency-overview-heading"><span class="section-kicker">STATE REPRESENTATION</span><h3>Ogbia State Constituencies</h3><p>Choose a state constituency to view its House of Assembly member.</p></div><div class="state-constituency-grid">
-              @for (constituency of stateConstituencyNames; track constituency) { <button type="button" class="state-constituency-card" (click)="selectStateConstituency(constituency)"><span class="state-constituency-copy"><small>STATE CONSTITUENCY</small><strong>{{ constituency }}</strong><span>{{ getConstituencyCommunities(constituency).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }
+            <div class="constituency-overview"><div class="constituency-overview-heading"><span class="section-kicker">STATE REPRESENTATION</span><h3>Ogbia State Constituencies</h3><p>Choose a state constituency to view its wards and communities.</p></div><div class="state-constituency-grid">
+              @for (name of stateConstituencyNames; track name) { <button type="button" class="state-constituency-card" (click)="selectStateConstituency(name)"><span class="state-constituency-copy"><small>STATE CONSTITUENCY</small><strong>{{ name }}</strong><span>{{ getConstituencyCommunities(name).length }} linked communities</span></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }
             </div></div>
           }
         } @else if (activeTab === 'wards') {
-          <div class="ward-grid">@for (ward of wards; track ward.id) { <button type="button" class="ward-card ward-card-button" (click)="selectWard(ward)"><span class="ward-number">{{ ward.code || ward.id.toString().padStart(2, '0') }}</span><div><strong>{{ ward.name }}</strong><small>{{ ward.description || 'Ward directory entry' }}</small></div></button> }</div>
-          @if (!wards.length) { <div class="empty-state"><strong>No wards published yet</strong></div> }
+          @if (selectedWard) {
+            <button class="back-link" type="button" (click)="clearWard()">← All wards</button>
+            <div class="community-hero constituency-hero"><div class="large-community-symbol"><ion-icon name="grid-outline"></ion-icon></div><div><span class="section-kicker">WARD</span><h2>{{ selectedWard.name }}</h2><p>{{ selectedWard.state_constituency || 'Ogbia Local Government Area' }}</p></div></div>
+            <div class="community-grid">@for (community of getWardCommunities(selectedWard); track community.id) { <button class="community-card" type="button" (click)="openCommunity(community)"><span class="community-symbol"><ion-icon name="location-outline"></ion-icon></span><span class="community-copy"><strong>{{ community.name }}</strong><small>Community profile</small></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }</div>
+            @if (!getWardCommunities(selectedWard).length) { <div class="empty-state"><strong>No communities linked to this ward yet</strong></div> }
+          } @else {
+            <div class="ward-grid">@for (ward of wards; track ward.id) { <button type="button" class="ward-card ward-card-button" (click)="selectWard(ward)"><span class="ward-number">{{ ward.code || ward.id.toString().padStart(2, '0') }}</span><div><strong>{{ ward.name }}</strong><small>{{ ward.state_constituency || 'Ward directory entry' }}</small></div></button> }</div>
+            @if (!wards.length) { <div class="empty-state"><strong>No wards published yet</strong></div> }
+          }
         } @else {
           <label class="search-box"><ion-icon name="search-outline"></ion-icon><input type="search" placeholder="Search for your community..." [value]="searchTerm" (input)="searchTerm = $any($event.target).value" aria-label="Search communities"></label>
           @if (loading) { <div class="empty-state"><strong>Loading communities…</strong></div> }
           @else if (errorMessage) { <div class="empty-state"><strong>Directory unavailable</strong><p>{{ errorMessage }}</p><button type="button" class="retry-button" (click)="loadCommunities()">Try again</button></div> }
           @else { <div class="community-grid">@for (community of filteredCommunities; track community.id) { <button class="community-card" type="button" (click)="openCommunity(community)"><span class="community-symbol"><ion-icon name="location-outline"></ion-icon></span><span class="community-copy"><strong>{{ community.name }}</strong><small>{{ community.state_constituency || 'Community profile' }}</small></span><ion-icon class="community-arrow" name="chevron-forward-outline"></ion-icon></button> }</div> }
         }
-      </section>
     } @else {
       <section class="community-detail">
         <button class="back-link" type="button" (click)="closeCommunity()"><ion-icon name="arrow-back-outline"></ion-icon> Back to directory</button>
