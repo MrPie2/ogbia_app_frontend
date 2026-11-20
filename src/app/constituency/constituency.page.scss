@@ -277,3 +277,52 @@
     4px 4px 8px rgba(72,64,112,.16),
     -4px -4px 8px rgba(255,255,255,.94);
 }
+
+
+/* Neumorphic surfaces for the data-bearing items inside both directory panels. */
+.community-card,
+.ward-card,
+.official-card,
+.political-representative,
+.state-constituency-card {
+  border: 1px solid rgba(255,255,255,.76);
+  border-radius: 14px;
+  background: #eeecf7;
+  box-shadow:
+    5px 5px 11px rgba(72,64,112,.14),
+    -5px -5px 11px rgba(255,255,255,.94);
+}
+
+.community-card:hover,
+.community-card:focus-visible,
+.state-constituency-card:hover,
+.state-constituency-card:focus-visible {
+  border-color: rgba(255,255,255,.9);
+  background: #eeecf7;
+  box-shadow:
+    inset 3px 3px 7px rgba(72,64,112,.10),
+    inset -3px -3px 7px rgba(255,255,255,.94);
+  transform: none;
+}
+
+.community-symbol,
+.ward-number,
+.official-icon,
+.political-representative-photo,
+.political-representative-avatar,
+.state-constituency-icon {
+  border: 1px solid rgba(255,255,255,.78);
+  background: #eeecf7;
+  box-shadow:
+    3px 3px 7px rgba(72,64,112,.13),
+    -3px -3px 7px rgba(255,255,255,.96);
+}
+
+/* Keep clickable ward rows on the same raised surface as the other list items. */
+.ward-card-button {
+  border: 1px solid rgba(255,255,255,.76);
+  background: #eeecf7;
+  box-shadow:
+    5px 5px 11px rgba(72,64,112,.14),
+    -5px -5px 11px rgba(255,255,255,.94);
+}
