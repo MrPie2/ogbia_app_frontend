@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { KnowledgeBaseService, KnowledgeCommunity, KnowledgeWard, KnowledgeRepresentative } from '../services/knowledge-base.service';
@@ -25,7 +25,7 @@ export class ConstituencyPage implements OnInit {
   politicalLoading = false; politicalError = '';
   private politicalScope: Record<string, string | number> = {};
 
-  constructor(private readonly knowledgeBase: KnowledgeBaseService, private readonly changeDetector: ChangeDetectorRef) {}
+  constructor(private readonly knowledgeBase: KnowledgeBaseService, private readonly router: Router, private readonly changeDetector: ChangeDetectorRef) {}
   ngOnInit(): void { this.loadCommunities(); this.loadWards(); this.loadPoliticalRepresentatives(); }
 
   get filteredCommunities(): KnowledgeCommunity[] {
@@ -82,8 +82,8 @@ export class ConstituencyPage implements OnInit {
   getDistrictCommunities(name:string):KnowledgeCommunity[]{return this.communities.filter(c=>this.norm(c.senatorial_district)===this.norm(name));}
   representativeLocation(p:KnowledgeRepresentative):string{return [p.senatorial_district,p.federal_constituency,p.state_constituency,p.constituency,p.ward?.name,p.community?.name].filter((v):v is string=>!!v?.trim()).filter((v,i,a)=>a.indexOf(v)===i).join(' · ')||'Ogbia representation';}
   openCommunity(c:KnowledgeCommunity):void {
-    this.selectedCommunity=c;this.setPoliticalTab('councilors',{community_id:c.id});this.detailLoading=true;this.detailError='';
-    this.knowledgeBase.getCommunity(c.slug).subscribe({next:r=>{this.selectedCommunity=r.data;this.detailLoading=false;this.changeDetector.markForCheck();},error:()=>{this.detailLoading=false;this.detailError='Community details could not be loaded.';this.changeDetector.markForCheck();}});
+    this.setPoliticalTab('councilors',{community_id:c.id});
+    void this.router.navigate(['/community', c.slug]);
   }
   closeCommunity():void{this.selectedCommunity=null;this.detailError='';this.setPoliticalTab('councilors');}
   roleIcon(role:string):string{const v=role.toLowerCase();if(v.includes('clan')||v.includes('traditional'))return'ribbon-outline';if(v.includes('senate')||v.includes('senator'))return'podium-outline';if(v.includes('assembly'))return'business-outline';if(v.includes('representative')||v.includes('house of reps'))return'people-circle-outline';if(v.includes('ward')||v.includes('councillor')||v.includes('councilor'))return'people-outline';return'home-outline';}
