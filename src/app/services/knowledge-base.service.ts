@@ -32,7 +32,7 @@ export interface KnowledgeWard {
   federal_constituency?: string | null;
   state_constituency?: string | null;
   is_verified: boolean;
-  communities?: Array<{ id: number; name: string; slug: string; is_verified: boolean }>;
+  communities?: Array<{ id: number; name: string; slug: string; is_verified: boolean; state_constituency?: string | null }>;
   communities_count?: number;
 }
 

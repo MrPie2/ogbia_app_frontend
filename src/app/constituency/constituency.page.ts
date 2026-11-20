@@ -89,7 +89,7 @@ export class ConstituencyPage implements OnInit {
   getDistrictCommunities(name:string):KnowledgeCommunity[]{return this.communities.filter(c=>this.norm(c.senatorial_district)===this.norm(name));}
   getDistrictFederalConstituencies(name:string):string[]{const values=this.uniqueValues([...this.communities.filter(c=>this.norm(c.senatorial_district)===this.norm(name)).map(c=>c.federal_constituency),...this.wards.filter(w=>this.norm(w.senatorial_district)===this.norm(name)).map(w=>w.federal_constituency)]);return values.length?values:this.federalConstituencies;}
   getFederalStateConstituencies(name:string):string[]{const values=this.uniqueValues([...this.communities.filter(c=>this.norm(c.federal_constituency)===this.norm(name)).map(c=>c.state_constituency),...this.wards.filter(w=>this.norm(w.federal_constituency)===this.norm(name)).map(w=>w.state_constituency)]);return values.length?values:this.stateConstituencyNames;}
-  getStateWards(name:string):KnowledgeWard[]{return this.wards.filter(w=>this.norm(w.state_constituency)===this.norm(name));}
+  getStateWards(name:string):KnowledgeWard[]{return this.wards.filter(w=>this.norm(w.state_constituency)===this.norm(name)||(w.communities||[]).some(c=>this.norm(c.state_constituency)===this.norm(name)));}
   getWardCommunities(ward:KnowledgeWard):KnowledgeCommunity[]{const ids=new Set((ward.communities||[]).map(c=>c.id));return this.communities.filter(c=>ids.has(c.id));}
   representativeLocation(p:KnowledgeRepresentative):string{return [p.senatorial_district,p.federal_constituency,p.state_constituency,p.constituency,p.ward?.name,p.community?.name].filter((v):v is string=>!!v?.trim()).filter((v,i,a)=>a.indexOf(v)===i).join(' · ')||'Ogbia representation';}
   openCommunity(c:KnowledgeCommunity):void {
