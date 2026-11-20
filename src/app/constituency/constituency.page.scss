@@ -213,3 +213,25 @@
 
 .ward-card-button{width:100%;text-align:left;color:inherit;background:#fff;cursor:pointer}.ward-card-button:focus-visible{outline:2px solid #393185;outline-offset:2px}
 @media(max-width:600px){.political-tabs{display:flex;flex-wrap:nowrap;gap:5px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch}.political-tabs::-webkit-scrollbar{display:none}.political-tabs button{flex:0 0 auto;min-width:max-content;padding:8px 11px;white-space:nowrap}}
+
+
+/* Keep community directory tabs on one swipeable horizontal row on mobile. */
+@media (max-width:600px) {
+  .directory-tabs {
+    display:flex;
+    flex-wrap:nowrap;
+    gap:5px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    white-space:nowrap;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .directory-tabs::-webkit-scrollbar { display:none; }
+  .directory-tabs button {
+    flex:0 0 auto;
+    min-width:max-content;
+    padding:8px 11px;
+    white-space:nowrap;
+  }
+}
