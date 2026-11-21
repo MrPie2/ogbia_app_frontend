@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { timeout } from 'rxjs';
 import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService, MemberProfile, UserMemory } from '../services/auth.service';
+import { FriendsService } from '../services/friends.service';
 import { KnowledgeBaseService } from '../services/knowledge-base.service';
 
 @Component({
@@ -23,8 +24,10 @@ export class MemberProfilePage implements OnInit {
   wardLookupLoading = false;
   wardLookupFailed = false;
   constituencyName = 'Not available';
+  unfriendLoading = false;
+  unfriendError = '';
 
-  constructor(private readonly route: ActivatedRoute, private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef, private readonly knowledgeBase: KnowledgeBaseService) {}
+  constructor(private readonly route: ActivatedRoute, private readonly auth: AuthService, private readonly friends: FriendsService, private readonly cdr: ChangeDetectorRef, private readonly knowledgeBase: KnowledgeBaseService) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -60,6 +63,55 @@ export class MemberProfilePage implements OnInit {
                 : 'Unable to load this member profile. Please try again.';
         }
       });
+    });
+  }
+
+  unfriend(): void {
+    const memberId = this.member?.id;
+    if (!memberId || !this.member?.is_friend || this.unfriendLoading) return;
+
+    if (!window.confirm(`Unfriend ${this.member.name || 'this member'}? They will not be notified.`)) return;
+
+    this.unfriendLoading = true;
+    this.unfriendError = '';
+    this.friends.unfriend(memberId).subscribe({
+      next: () => {
+        // Refresh the profile so friendship-only memories and family details
+        // are removed according to the server's current privacy rules.
+        this.auth.getMemberProfile(memberId).pipe(timeout(15000)).subscribe({
+          next: response => {
+            this.member = response?.data ?? {
+              ...this.member!,
+              is_friend: false,
+              memories_visible: false,
+              memories: [],
+              family: { father: null, mother: null },
+            };
+            this.unfriendLoading = false;
+            this.cdr.markForCheck();
+          },
+          error: () => {
+            if (this.member) {
+              this.member = {
+                ...this.member,
+                is_friend: false,
+                memories_visible: false,
+                memories: [],
+                family: { father: null, mother: null },
+              };
+            }
+            this.unfriendLoading = false;
+            this.cdr.markForCheck();
+          }
+        });
+      },
+      error: error => {
+        this.unfriendLoading = false;
+        this.unfriendError = error.status === 404
+          ? 'This friendship is no longer active.'
+          : 'Unable to unfriend this member. Please try again.';
+        this.cdr.markForCheck();
+      }
     });
   }
 
