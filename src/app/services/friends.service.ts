@@ -83,6 +83,10 @@ export class FriendsService {
     );
   }
 
+  unfriend(userId: number): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/friends/${userId}`, this.authOptions());
+  }
+
   acceptRequest(requestId: number): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(
       `${this.apiUrl}/friends/requests/${requestId}/accept`, {}, this.authOptions()
