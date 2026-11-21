@@ -38,7 +38,7 @@ export class HomePage implements OnInit, OnDestroy {
   likingPostIds = new Set<number>();
   activeCommentPost: CommunityPost | null = null;
   activeMediaPreview: { type: 'image' | 'video'; url: string; post: CommunityPost; imageIndex: number } | null = null;
-  private mediaTouchStartY: number | null = null;
+  private mediaTouchStartX: number | null = null;
   postComments: PostComment[] = [];
   commentDraft = '';
   replyToComment: PostComment | null = null;
@@ -554,16 +554,17 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   onMediaTouchStart(event: TouchEvent): void {
-    this.mediaTouchStartY = event.changedTouches[0]?.clientY ?? null;
+    this.mediaTouchStartX = event.changedTouches[0]?.clientX ?? null;
   }
 
   onMediaTouchEnd(event: TouchEvent): void {
-    if (this.mediaTouchStartY === null) return;
-    const endY = event.changedTouches[0]?.clientY;
-    const deltaY = endY === undefined ? 0 : endY - this.mediaTouchStartY;
-    this.mediaTouchStartY = null;
-    if (Math.abs(deltaY) < 45) return;
-    if (deltaY < 0) this.nextPreviewImage();
+    if (this.mediaTouchStartX === null) return;
+    const endX = event.changedTouches[0]?.clientX;
+    const deltaX = endX === undefined ? 0 : endX - this.mediaTouchStartX;
+    this.mediaTouchStartX = null;
+    if (Math.abs(deltaX) < 45) return;
+    // Follow the standard gallery convention: left advances, right goes back.
+    if (deltaX < 0) this.nextPreviewImage();
     else this.previousPreviewImage();
   }
 
