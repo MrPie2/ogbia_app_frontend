@@ -48,7 +48,7 @@ export interface MemberFamilyPerson {
   claimed_user_id: number | null;
 }
 export interface MemberProfile {
-  id: number; name: string | null; hometown: string | null; community_role: string | null;
+  id: number; name: string | null; hometown: string | null; state_constituency?: string | null; community_role: string | null;
   profile_photo_url: string | null; created_at: string | null;
   memories?: UserMemory[]; memories_visible?: boolean;
   family?: { father: MemberFamilyPerson | null; mother: MemberFamilyPerson | null };
