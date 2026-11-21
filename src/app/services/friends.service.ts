@@ -51,7 +51,12 @@ export class FriendsService {
     };
   }
 
-  getSuggestions(limit = 12): Observable<{ data: FriendUser[] }> {\n    const params = new HttpParams().set('limit', String(limit));\n    return this.http.get<{ data: FriendUser[] }>(`${this.apiUrl}/friends/suggestions`, { ...this.authOptions(), params });\n  }\n\n  getFriends(): Observable<FriendListResponse> {
+  getSuggestions(limit = 12): Observable<{ data: FriendUser[] }> {
+    const params = new HttpParams().set('limit', String(limit));
+    return this.http.get<{ data: FriendUser[] }>(`${this.apiUrl}/friends/suggestions`, { ...this.authOptions(), params });
+  }
+
+  getFriends(): Observable<FriendListResponse> {
     return this.http.get<FriendListResponse>(`${this.apiUrl}/friends`, this.authOptions());
   }
 
