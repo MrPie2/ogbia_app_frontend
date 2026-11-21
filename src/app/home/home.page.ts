@@ -7,6 +7,7 @@ import { IonContent, IonIcon } from '@ionic/angular';
 import { AuthService, AuthUser } from '../services/auth.service';
 import { CommunityPost, FeedBroadcast, PostComment, PostsService } from '../services/posts.service';
 import { StoriesService, StoryGroup, StoryItem } from '../services/stories.service';
+import { FriendsService, FriendUser } from '../services/friends.service';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,10 @@ export class HomePage implements OnInit, OnDestroy {
   loadingUser = true;
   userError = '';
   posts: CommunityPost[] = [];
+  suggestedPeople: FriendUser[] = [];
+  loadingSuggestedPeople = false;
+  sendingFriendRequestIds = new Set<number>();
+  sentFriendRequestIds = new Set<number>();
   broadcasts: FeedBroadcast[] = [];
   activeBroadcastIndex = 0;
   private broadcastTimer: ReturnType<typeof setInterval> | null = null;
@@ -67,6 +72,7 @@ export class HomePage implements OnInit, OnDestroy {
     private readonly auth: AuthService,
     private readonly postsService: PostsService,
     private readonly storiesService: StoriesService,
+    private readonly friendsService: FriendsService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly cdr: ChangeDetectorRef
@@ -126,6 +132,7 @@ export class HomePage implements OnInit, OnDestroy {
     }
 
     this.loadFeed();
+    this.loadSuggestedPeople();
     this.loadStories();
     this.loadBroadcasts();
   }
@@ -160,6 +167,40 @@ export class HomePage implements OnInit, OnDestroy {
     });
   }
 
+
+  loadSuggestedPeople(): void {
+    this.loadingSuggestedPeople = this.suggestedPeople.length === 0;
+    this.friendsService.getSuggestions(12).subscribe({
+      next: response => {
+        this.suggestedPeople = response.data || [];
+        this.loadingSuggestedPeople = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.loadingSuggestedPeople = false;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  sendSuggestedFriendRequest(person: FriendUser): void {
+    if (this.sendingFriendRequestIds.has(person.id) || this.sentFriendRequestIds.has(person.id)) return;
+    this.sendingFriendRequestIds.add(person.id);
+    this.friendsService.sendRequest(person.id).subscribe({
+      next: () => {
+        this.sentFriendRequestIds.add(person.id);
+        this.sendingFriendRequestIds.delete(person.id);
+        this.cdr.markForCheck();
+      },
+      error: error => {
+        this.sendingFriendRequestIds.delete(person.id);
+        if (error.status === 409) {
+          this.sentFriendRequestIds.add(person.id);
+        }
+        this.cdr.markForCheck();
+      }
+    });
+  }
 
   private scrollToRequestedPost(): void {
     const postId = this.requestedPostId;
