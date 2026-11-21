@@ -67,10 +67,11 @@ export class PostsService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getPosts(page = 1, search = '', category = ''): Observable<PostsPage> {
+  getPosts(page = 1, search = '', category = '', feedSeed?: number): Observable<PostsPage> {
     const searchParam = search.trim() ? `&search=${encodeURIComponent(search.trim())}` : '';
     const categoryParam = category ? `&category=${encodeURIComponent(category)}` : '';
-    return this.http.get<PostsPage>(`${this.apiUrl}/posts?page=${page}${searchParam}${categoryParam}`, {
+    const seedParam = Number.isInteger(feedSeed) && feedSeed! > 0 ? `&feed_seed=${feedSeed}` : '';
+    return this.http.get<PostsPage>(`${this.apiUrl}/posts?page=${page}${searchParam}${categoryParam}${seedParam}`, {
       headers: this.authHeaders()
     });
   }
