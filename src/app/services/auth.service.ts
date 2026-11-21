@@ -50,7 +50,7 @@ export interface MemberFamilyPerson {
 export interface MemberProfile {
   id: number; name: string | null; hometown: string | null; state_constituency?: string | null; community_role: string | null;
   profile_photo_url: string | null; created_at: string | null;
-  memories?: UserMemory[]; memories_visible?: boolean;
+  memories?: UserMemory[]; memories_visible?: boolean; is_friend?: boolean;
   family?: { father: MemberFamilyPerson | null; mother: MemberFamilyPerson | null };
 }
 export interface MemberProfileResponse { success: boolean; data: MemberProfile; }
