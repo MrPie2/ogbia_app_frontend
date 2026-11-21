@@ -103,7 +103,7 @@
                   <button type="button" class="post-gallery-item" [class.has-more-images]="$index === 3 && (post.media_items?.length ?? 0) > 4" (click)="openMediaPreview(post, 'image', media.media_url)" [attr.aria-label]="'Preview post image ' + ($index + 1) + ' of ' + (post.media_items?.length ?? 0)">
                     <img [src]="media.media_url" [alt]="'Image ' + ($index + 1) + ' attached to post'" loading="lazy" decoding="async">
                     @if ($index === 3 && (post.media_items?.length ?? 0) > 4) {
-                      <span class="gallery-more-count">{{ post.media_items?.length }}+</span>
+                      <span class="gallery-more-count">{{ post.media_items.length }}+</span>
                     } @else {
                       <span class="gallery-expand"><ion-icon name="expand-outline"></ion-icon></span>
                     }
