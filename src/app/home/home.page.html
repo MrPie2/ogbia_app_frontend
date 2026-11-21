@@ -137,6 +137,33 @@
               </button>
             </div>
           </article>
+          @if ((i + 1) % 2 === 0 && suggestedPeople.length) {
+            <section class="feed-people-section" aria-label="People you may know">
+              <div class="feed-people-heading">
+                <div><h3>People You May Know</h3><p>Connect with people across Ogbia</p></div>
+              </div>
+              <div class="feed-people-track">
+                @for (person of suggestedPeople; track person.id) {
+                  <article class="feed-person-card">
+                    <a class="feed-person-photo" [routerLink]="['/members', person.id]" [attr.aria-label]="'View ' + person.name + ' profile'">
+                      @if (person.profile_photo_url) {
+                        <img [src]="person.profile_photo_url" [alt]="person.name + ' profile picture'" loading="lazy" decoding="async">
+                      } @else {
+                        <span>{{ person.name.split(' ').slice(0, 2).map(part => part[0]).join('').toUpperCase() }}</span>
+                      }
+                    </a>
+                    <a class="feed-person-name" [routerLink]="['/members', person.id]">{{ person.name }}</a>
+                    <span class="feed-person-community">{{ person.hometown || 'Ogbia community' }}</span>
+                    <button type="button" class="feed-person-action" [disabled]="sendingFriendRequestIds.has(person.id) || sentFriendRequestIds.has(person.id)" (click)="sendSuggestedFriendRequest(person)">
+                      @if (sentFriendRequestIds.has(person.id)) { <ion-icon name="checkmark-circle-outline"></ion-icon> Request Sent }
+                      @else if (sendingFriendRequestIds.has(person.id)) { Sending… }
+                      @else { <ion-icon name="person-add-outline"></ion-icon> Add Friend }
+                    </button>
+                  </article>
+                }
+              </div>
+            </section>
+          }
           @if ((i + 1) % 4 === 0 && broadcasts.length) {
             <section class="feed-broadcast" aria-label="Community announcements">
               @for (broadcast of [broadcasts[activeBroadcastIndex]]; track broadcast.id) {
