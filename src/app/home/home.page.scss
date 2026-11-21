@@ -1255,7 +1255,7 @@
 }
 .home-page .feed-people-track::-webkit-scrollbar { display:none; }
 .home-page .feed-person-card {
-  box-sizing:border-box; flex:0 0 calc((100% - 35px) / 3.5); min-width:0;
+  box-sizing:border-box; flex:0 0 calc((100% - 25px) / 3.5); min-width:0;
   display:flex; flex-direction:column; align-items:center; gap:7px; padding:11px 8px 10px;
   border:1px solid rgba(255,255,255,.78); border-radius:15px; background:#eeecf7;
   box-shadow:5px 5px 11px rgba(80,73,112,.13),-4px -4px 10px rgba(255,255,255,.9);
@@ -1276,6 +1276,6 @@
 .home-page .feed-person-action:disabled { background:#d9d5e8; color:#625d78; opacity:1; }
 .home-page .feed-person-action ion-icon { font-size:12px; }
 @media (max-width:360px) {
-  .home-page .feed-person-card { flex-basis:calc((100% - 31px) / 3.5); padding:9px 6px; }
+  .home-page .feed-person-card { flex-basis:calc((100% - 25px) / 3.5); padding:9px 6px; }
   .home-page .feed-person-photo { width:52px; height:52px; flex-basis:52px; }
 }
