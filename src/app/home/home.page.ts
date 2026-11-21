@@ -23,6 +23,7 @@ export class HomePage implements OnInit, OnDestroy {
   loadingUser = true;
   userError = '';
   posts: CommunityPost[] = [];
+  private feedSeed = 0;
   suggestedPeople: FriendUser[] = [];
   loadingSuggestedPeople = false;
   sendingFriendRequestIds = new Set<number>();
@@ -142,9 +143,12 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   loadFeed(): void {
+    // A new seed creates a fresh randomized order for this feed visit.
+    // The same seed is retained by the API while pages are requested.
+    this.feedSeed = Math.floor(Math.random() * 2147483646) + 1;
     // Keep already-rendered posts visible while refreshing a cached page.
     this.loadingPosts = this.posts.length === 0;
-    this.postsService.getPosts().pipe(timeout(15000)).subscribe({
+    this.postsService.getPosts(1, '', '', this.feedSeed).pipe(timeout(15000)).subscribe({
       next: (response) => {
         this.posts = response.data || [];
         this.loadingPosts = false;
