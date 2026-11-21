@@ -81,7 +81,9 @@
             @if (post.is_event) {
               <div class="feed-event-details">
                 <div class="feed-event-label"><ion-icon name="calendar-outline"></ion-icon><span>COMMUNITY EVENT</span></div>
-                <h3>{{ post.event_title || 'Community event' }}</h3>
+                @if (post.event_title?.trim()?.toLowerCase() !== 'community event' && post.event_title) {
+                  <h3>{{ post.event_title }}</h3>
+                }
                 @if (post.event_starts_at) { <p><ion-icon name="time-outline"></ion-icon><span>{{ post.event_starts_at | date:'EEE, d MMM yyyy · h:mm a' }}@if (post.event_ends_at) { – {{ post.event_ends_at | date:'h:mm a' }}}</span></p> }
                 @if (post.event_location) { <p><ion-icon name="location-outline"></ion-icon><span>{{ post.event_location }}</span></p> }
               </div>
