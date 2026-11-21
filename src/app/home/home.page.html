@@ -149,7 +149,7 @@
                       @if (person.profile_photo_url) {
                         <img [src]="person.profile_photo_url" [alt]="person.name + ' profile picture'" loading="lazy" decoding="async">
                       } @else {
-                        <span>{{ person.name.split(' ').slice(0, 2).map(part => part[0]).join('').toUpperCase() }}</span>
+                        <span>{{ suggestedPersonInitials(person) }}</span>
                       }
                     </a>
                     <a class="feed-person-name" [routerLink]="['/members', person.id]">{{ person.name }}</a>
