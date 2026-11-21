@@ -60,7 +60,7 @@ export class ProfilePage implements OnInit, OnDestroy {
   hometownWards: string[] = [];
   wardLookupLoading = false;
   wardLookupFailed = false;
-  readonly constituencyName = 'Ogbia Federal Constituency';
+  constituencyName = 'Not available';
 
   constructor(private readonly auth: AuthService, private readonly router: Router, private readonly cdr: ChangeDetectorRef, private readonly knowledgeBase: KnowledgeBaseService) {}
 

@@ -22,7 +22,7 @@ export class MemberProfilePage implements OnInit {
   hometownWards: string[] = [];
   wardLookupLoading = false;
   wardLookupFailed = false;
-  readonly constituencyName = 'Ogbia Federal Constituency';
+  constituencyName = 'Not available';
 
   constructor(private readonly route: ActivatedRoute, private readonly auth: AuthService, private readonly cdr: ChangeDetectorRef, private readonly knowledgeBase: KnowledgeBaseService) {}
 
@@ -45,7 +45,7 @@ export class MemberProfilePage implements OnInit {
           this.member = response?.data ?? null;
           this.loading = false;
           if (!this.member) this.errorMessage = 'This member profile could not be found.';
-          else this.loadHometownWards(this.member.hometown);
+          else { this.constituencyName = this.member.state_constituency?.trim() || 'Not available'; this.loadHometownWards(this.member.hometown); }
           this.cdr.markForCheck();
         },
         error: error => {
