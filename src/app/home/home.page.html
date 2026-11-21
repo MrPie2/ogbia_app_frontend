@@ -276,7 +276,7 @@
               <video [src]="preview.url" controls autoplay playsinline preload="metadata"></video>
             }
           </div>
-          @if (preview.type === 'image' && (preview.post.media_items.length) > 1) {
+          @if (preview.type === 'image' && ((preview.post.media_items?.length ?? 0)) > 1) {
             <div class="media-preview-thumbnails" aria-label="Post image thumbnails">
               @for (media of (preview.post.media_items ?? []); track media.id; let imageIndex = $index) {
                 <button type="button" class="media-preview-thumbnail" [class.active]="preview.imageIndex === imageIndex" (click)="selectPreviewImage(imageIndex)" [attr.aria-label]="'Show image ' + (imageIndex + 1)">
