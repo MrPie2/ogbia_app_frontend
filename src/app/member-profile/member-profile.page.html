@@ -53,6 +53,11 @@
           </ng-template>
           <h1>{{ currentMember.name || 'Ogbia Member' }}<ng-container *ngIf="currentMember.hometown"> - {{ currentMember.hometown }}</ng-container></h1>
           <p class="member-role"><ion-icon name="ribbon-outline"></ion-icon>{{ roleLabel }}</p>
+          <button *ngIf="currentMember.is_friend" type="button" class="member-unfriend-button" (click)="unfriend()" [disabled]="unfriendLoading">
+            <ion-icon name="person-remove-outline"></ion-icon>
+            <span>{{ unfriendLoading ? 'Unfriending…' : 'Unfriend' }}</span>
+          </button>
+          <p class="member-unfriend-error" *ngIf="unfriendError" role="alert">{{ unfriendError }}</p>
           <a class="member-family-tree-link" [routerLink]="['/family-tree/member', currentMember.id]"><ion-icon name="git-network-outline"></ion-icon><span>View full family tree</span><ion-icon name="arrow-forward-outline"></ion-icon></a>
         </section>
 
