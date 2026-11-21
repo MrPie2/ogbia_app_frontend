@@ -510,9 +510,11 @@ export class HomePage implements OnInit, OnDestroy {
     this.likingPostIds.add(post.id);
     this.postsService.toggleLike(post.id).subscribe({
       next: (result) => {
-        this.posts = this.posts.map(item => item.id === post.id
-          ? { ...item, liked_by_me: result.liked, likes_count: result.likes_count }
-          : item);
+        this.updatePostState(post.id, item => ({
+          ...item,
+          liked_by_me: result.liked,
+          likes_count: result.likes_count
+        }));
         this.likingPostIds.delete(post.id);
         this.cdr.markForCheck();
       },
@@ -703,8 +705,22 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   private updateCommentCount(postId: number, count: number): void {
-    this.posts = this.posts.map(item => item.id === postId ? { ...item, comments_count: count } : item);
-    if (this.activeCommentPost?.id === postId) this.activeCommentPost = { ...this.activeCommentPost, comments_count: count };
+    this.updatePostState(postId, item => ({ ...item, comments_count: count }));
+  }
+
+  private updatePostState(postId: number, update: (post: CommunityPost) => CommunityPost): void {
+    this.posts = this.posts.map(item => item.id === postId ? update(item) : item);
+
+    if (this.activeCommentPost?.id === postId) {
+      this.activeCommentPost = update(this.activeCommentPost);
+    }
+
+    if (this.activeMediaPreview?.post.id === postId) {
+      this.activeMediaPreview = {
+        ...this.activeMediaPreview,
+        post: update(this.activeMediaPreview.post)
+      };
+    }
   }
 
   sharePost(post: CommunityPost): void {
