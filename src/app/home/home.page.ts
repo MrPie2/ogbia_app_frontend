@@ -183,7 +183,7 @@ export class HomePage implements OnInit, OnDestroy {
     });
   }
 
-  sendSuggestedFriendRequest(person: FriendUser): void {
+  suggestedPersonInitials(person: FriendUser): string {\n    return (person.name || 'Ogbia member').split(/\\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();\n  }\n\n  sendSuggestedFriendRequest(person: FriendUser): void {
     if (this.sendingFriendRequestIds.has(person.id) || this.sentFriendRequestIds.has(person.id)) return;
     this.sendingFriendRequestIds.add(person.id);
     this.friendsService.sendRequest(person.id).subscribe({
