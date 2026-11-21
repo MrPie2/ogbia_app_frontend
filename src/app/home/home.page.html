@@ -265,7 +265,7 @@
   }
 
   @if (activeMediaPreview; as preview) {
-    <div class="media-preview-backdrop" role="presentation" (click)="closeMediaPreview()">
+    <div class="media-preview-backdrop" data-no-page-swipe role="presentation" (click)="closeMediaPreview()">
       <section class="media-preview-dialog" role="dialog" aria-modal="true" aria-label="Media preview" (click)="$event.stopPropagation()">
         <button type="button" class="media-preview-close" (click)="closeMediaPreview()" aria-label="Close media preview"><span aria-hidden="true">×</span></button>
         <div class="media-preview-content">
