@@ -906,7 +906,8 @@
 
 /* Author identity and vertical actions belong to the expanded media preview only. */
 .media-preview-content { display:flex; flex-direction:column; width:100%; max-height:100%; min-height:0; }
-.media-preview-media { display:flex; align-items:center; justify-content:center; min-height:0; flex:1 1 auto; overflow:hidden; }
+.media-preview-media {
+  touch-action: pan-y; display:flex; align-items:center; justify-content:center; min-height:0; flex:1 1 auto; overflow:hidden; }
 .media-preview-media > img,.media-preview-media > video { display:block; width:100%; max-height:calc(100dvh - 190px); object-fit:contain; }
 .media-preview-post-footer { display:flex; align-items:center; justify-content:space-between; gap:14px; flex:0 0 auto; padding:14px 16px max(14px, env(safe-area-inset-bottom)); color:#302b4d; background:#f1eff8; border-top:1px solid rgba(112,103,153,.14); }
 .media-preview-author { display:flex; align-items:center; flex:1 1 auto; min-width:0; gap:10px; }
@@ -949,6 +950,7 @@
   min-height: 0;
 }
 .media-preview-media {
+  touch-action: pan-y;
   position: absolute;
   /* Reserve a dedicated lower band for the author card so media never sits
      behind or visually collides with the user's details. */
@@ -1025,6 +1027,7 @@
 }
 @media (max-width: 360px) {
   .media-preview-media {
+  touch-action: pan-y;
     bottom: calc(154px + env(safe-area-inset-bottom));
   }
   .media-preview-author {
