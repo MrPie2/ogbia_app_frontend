@@ -116,7 +116,7 @@ export class FriendsPage implements OnInit, OnDestroy {
 
   loadRequests(): void {
     this.friendsService.getRequests().pipe(timeout(15000)).subscribe({
-      next: response => { this.incomingRequests = response.incoming || []; this.cdr.markForCheck(); },
+      next: response => { this.incomingRequests = response.incoming || []; this.friendsService.setPendingRequestsCount(response.incoming_count ?? this.incomingRequests.length); this.cdr.markForCheck(); },
       error: () => { this.errorMessage = 'Friend requests could not be loaded. Check the API server/network.'; this.cdr.markForCheck(); }
     });
   }
@@ -200,6 +200,7 @@ export class FriendsPage implements OnInit, OnDestroy {
     this.friendsService.acceptRequest(request.request_id).subscribe({
       next: response => {
         this.incomingRequests = this.incomingRequests.filter(item => item.request_id !== request.request_id);
+        this.friendsService.setPendingRequestsCount(this.incomingRequests.length);
         this.successMessage = response.message || 'Friend request accepted.';
         this.cdr.markForCheck();
         this.loadFriends();
