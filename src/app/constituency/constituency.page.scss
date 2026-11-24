@@ -326,3 +326,30 @@
     5px 5px 11px rgba(72,64,112,.14),
     -5px -5px 11px rgba(255,255,255,.94);
 }
+
+
+/* Traditional institutions and expandable former office holders. */
+.past-representatives-action{display:flex;justify-content:flex-start;margin-top:13px;padding-top:12px;border-top:1px solid rgba(112,103,157,.16)}
+.past-representatives-action a{color:#393185;font-size:10px;font-weight:800;text-decoration:none}
+.past-representatives-action a:hover{text-decoration:underline}
+.past-representatives-action span{margin-left:3px;color:#8987a0;font-weight:700}
+.past-representatives-panel{margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.72);border-radius:15px;background:rgba(255,255,255,.28)}
+.past-representatives-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.past-representatives-heading strong{color:#30296f;font-size:12px}
+.past-representatives-heading span{color:#8987a0;font-size:9px}
+.traditional-institutions-card{margin-top:18px;padding:22px;border:1px solid rgba(255,255,255,.72);border-radius:22px;background:#e7e4f1;box-shadow:8px 8px 18px rgba(72,64,112,.17),-8px -8px 18px rgba(255,255,255,.92)}
+.traditional-institutions-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.traditional-institution{display:flex;gap:12px;align-items:flex-start;min-width:0;padding:14px;border:1px solid rgba(255,255,255,.76);border-radius:15px;background:#eeecf7;box-shadow:5px 5px 11px rgba(72,64,112,.14),-5px -5px 11px rgba(255,255,255,.94)}
+.traditional-institution-cover,.traditional-institution-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:14px;object-fit:cover;color:#393185;background:#eeecf7;box-shadow:3px 3px 7px rgba(72,64,112,.13),-3px -3px 7px rgba(255,255,255,.96);font-size:22px}
+.traditional-institution-content{flex:1;min-width:0}
+.traditional-institution-content h3{margin:2px 0 6px;color:#30296f;font-size:13px;font-weight:850;line-height:1.35}
+.traditional-institution-description{margin:0 0 10px;color:#77758d;font-size:10px;line-height:1.55}
+.traditional-institution details{padding:8px 0;border-top:1px solid rgba(112,103,157,.15)}
+.traditional-institution details summary{color:#393185;font-size:10px;font-weight:800;cursor:pointer;list-style:none}
+.traditional-institution details summary::-webkit-details-marker{display:none}
+.traditional-institution details summary:after{content:'+';float:right;font-size:14px;line-height:10px}
+.traditional-institution details[open] summary:after{content:'−'}
+.institution-detail-copy{margin:8px 0 2px;color:#625d7e;font-size:10px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.institution-website{display:inline-flex;align-items:center;gap:5px;margin-top:8px;color:#393185;font-size:10px;font-weight:800;text-decoration:none}
+.institution-website ion-icon{font-size:13px}
+@media(max-width:600px){.traditional-institutions-card{padding:15px 12px;border-radius:18px}.traditional-institutions-list{grid-template-columns:1fr}.traditional-institution{padding:12px}.past-representatives-panel{padding:10px}.past-representatives-heading{align-items:flex-start;flex-direction:column;gap:4px}}
