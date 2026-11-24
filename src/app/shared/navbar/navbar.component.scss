@@ -447,3 +447,33 @@
   font-weight: 800;
   box-shadow: 0 2px 5px rgba(229,72,101,.25);
 }
+
+
+/* Separate pending friend requests from unread chat counts on Friends. */
+.app-bottom-nav .friends-nav .friend-request-nav-badge,
+.app-bottom-nav .friends-nav .message-nav-badge {
+  position: absolute;
+  top: 1px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border: 2px solid #eeecf7;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 800;
+}
+.app-bottom-nav .friends-nav .friend-request-nav-badge {
+  left: calc(50% + 6px);
+  background: #e54865;
+  box-shadow: 0 2px 5px rgba(229,72,101,.25);
+}
+.app-bottom-nav .friends-nav .message-nav-badge {
+  left: calc(50% - 19px);
+  background: #393185;
+  box-shadow: 0 2px 5px rgba(57,49,133,.22);
+}
