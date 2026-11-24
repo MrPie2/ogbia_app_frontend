@@ -110,10 +110,12 @@ export class ConstituencyPage implements OnInit {
       this.showingPastRepresentatives=true;
       return;
     }
+    this.pastRepresentativesError='';
+    this.showingPastRepresentatives=true;
     this.pastRepresentativesLoading=true;
     this.knowledgeBase.getPoliticalRepresentatives(this.politicalTab,this.politicalScope,true).subscribe({
       next:r=>{this.pastPoliticalRepresentatives=r.data??[];this.pastRepresentativesLoading=false;this.showingPastRepresentatives=true;this.changeDetector.markForCheck();},
-      error:()=>{this.pastRepresentativesLoading=false;this.pastRepresentativesError='Past representatives could not be loaded. Please try again.';this.changeDetector.markForCheck();}
+      error:()=>{this.pastRepresentativesLoading=false;this.showingPastRepresentatives=true;this.pastRepresentativesError='Past representatives could not be loaded. Please try again.';this.changeDetector.markForCheck();}
     });
   }
   retryPastRepresentatives():void {
