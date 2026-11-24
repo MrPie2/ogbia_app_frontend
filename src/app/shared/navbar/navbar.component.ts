@@ -28,6 +28,7 @@ export class NavbarComponent implements OnDestroy {
   searchPosts: CommunityPost[] = [];
   searchUsers: FriendUser[] = [];
   unreadMessagesCount = 0;
+  pendingFriendRequestsCount = 0;
   private readonly conversationUnreadCounts: Record<number, number> = {};
   private readonly locallyReadConversations = new Set<number>();
 
@@ -50,6 +51,20 @@ export class NavbarComponent implements OnDestroy {
         this.closeMenu();
         this.closeSearch();
       });
+
+    this.friendsService.pendingRequestsCount$.pipe(takeUntil(this.destroy$)).subscribe(count => {
+      this.pendingFriendRequestsCount = count;
+    });
+
+    merge(
+      timer(0, 15000),
+      this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+    ).pipe(
+      switchMap(() => this.friendsService.getRequests().pipe(catchError(() => of(null)))),
+      takeUntil(this.destroy$)
+    ).subscribe(response => {
+      if (response) this.friendsService.setPendingRequestsCount(response.incoming_count ?? response.incoming?.length ?? 0);
+    });
 
     this.messaging.conversationOpened$.pipe(takeUntil(this.destroy$)).subscribe(conversationId => {
       this.locallyReadConversations.add(conversationId);
