@@ -29,6 +29,7 @@ export class ConstituencyPage implements OnInit {
   pastRepresentativeCount = 0;
   showingPastRepresentatives = false;
   pastRepresentativesLoading = false;
+  pastRepresentativesError = '';
   traditionalInstitutions: KnowledgeTraditionalInstitution[] = [];
   traditionalInstitutionsLoading = false;
   traditionalInstitutionsError = '';
@@ -89,6 +90,7 @@ export class ConstituencyPage implements OnInit {
     this.pastRepresentativeCount=0;
     this.showingPastRepresentatives=false;
     this.pastRepresentativesLoading=false;
+    this.pastRepresentativesError='';
     this.loadPoliticalRepresentatives();
   }
   loadPoliticalRepresentatives():void {
@@ -111,7 +113,7 @@ export class ConstituencyPage implements OnInit {
     this.pastRepresentativesLoading=true;
     this.knowledgeBase.getPoliticalRepresentatives(this.politicalTab,this.politicalScope,true).subscribe({
       next:r=>{this.pastPoliticalRepresentatives=r.data??[];this.pastRepresentativesLoading=false;this.showingPastRepresentatives=true;this.changeDetector.markForCheck();},
-      error:()=>{this.pastRepresentativesLoading=false;this.politicalError='Past representatives could not be loaded. Please try again.';this.changeDetector.markForCheck();}
+      error:()=>{this.pastRepresentativesLoading=false;this.pastRepresentativesError='Past representatives could not be loaded. Please try again.';this.changeDetector.markForCheck();}
     });
   }
   get pastRepresentativeLinkLabel():string {
