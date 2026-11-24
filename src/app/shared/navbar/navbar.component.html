@@ -124,6 +124,9 @@
   </a>
   <a class="friends-nav" routerLink="/friends" routerLinkActive="active" aria-label="Friends">
     <ion-icon name="people-outline"></ion-icon>
+    @if (pendingFriendRequestsCount > 0) {
+      <b class="friend-request-nav-badge" [attr.aria-label]="pendingFriendRequestsCount + ' pending friend requests'">{{ pendingFriendRequestsCount > 99 ? '99+' : pendingFriendRequestsCount }}</b>
+    }
     @if (unreadMessagesCount > 0) {
       <b class="message-nav-badge" [attr.aria-label]="unreadMessagesCount + ' unread messages'">{{ unreadMessagesCount > 99 ? '99+' : unreadMessagesCount }}</b>
     }
