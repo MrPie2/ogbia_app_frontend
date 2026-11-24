@@ -116,6 +116,11 @@ export class ConstituencyPage implements OnInit {
       error:()=>{this.pastRepresentativesLoading=false;this.pastRepresentativesError='Past representatives could not be loaded. Please try again.';this.changeDetector.markForCheck();}
     });
   }
+  retryPastRepresentatives():void {
+    this.showingPastRepresentatives=false;
+    this.pastRepresentativesError='';
+    this.togglePastRepresentatives();
+  }
   get pastRepresentativeLinkLabel():string {
     const labels:Record<PoliticalTab,string>={
       senators:'See past Senators',
