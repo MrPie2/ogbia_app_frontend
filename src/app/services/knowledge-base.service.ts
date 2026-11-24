@@ -17,10 +17,26 @@ export interface KnowledgeRepresentative {
   email: string | null;
   photo_url: string | null;
   bio: string | null;
+  term_start?: string | null;
+  term_end?: string | null;
   source: string | null;
   verified_at: string | null;
   community?: { id?: number; name: string; slug?: string } | null;
   ward?: { id?: number; name: string; code?: string | null } | null;
+}
+
+
+export interface KnowledgeTraditionalInstitution {
+  id: number;
+  name: string;
+  slug: string;
+  description: string | null;
+  history: string | null;
+  leadership: string | null;
+  constitution: string | null;
+  additional_info: string | null;
+  website_url: string | null;
+  cover_image_url: string | null;
 }
 
 export interface KnowledgeWard {
@@ -80,11 +96,19 @@ export class KnowledgeBaseService {
     return this.http.get<{ data: KnowledgeWard[] }>(`${this.apiUrl}/knowledge-base/wards`);
   }
 
-  getPoliticalRepresentatives(type: 'house_reps' | 'senators' | 'assembly' | 'councilors' | 'community_leaders', scope: Record<string, string | number> = {}): Observable<{ data: KnowledgeRepresentative[] }> {
+  getPoliticalRepresentatives(type: 'house_reps' | 'senators' | 'assembly' | 'councilors' | 'community_leaders', scope: Record<string, string | number> = {}, past = false): Observable<{ data: KnowledgeRepresentative[]; past_count?: number }> {
     let params = new HttpParams().set('type', type);
     Object.entries(scope).forEach(([key, value]) => { params = params.set(key, String(value)); });
+    if (past) params = params.set('past', '1');
     return this.http.get<{ data: KnowledgeRepresentative[] }>(
       `${this.apiUrl}/knowledge-base/representatives`, { params }
+    );
+  }
+
+
+  getTraditionalInstitutions(): Observable<{ data: KnowledgeTraditionalInstitution[] }> {
+    return this.http.get<{ data: KnowledgeTraditionalInstitution[] }>(
+      `${this.apiUrl}/knowledge-base/traditional-institutions`
     );
   }
 
