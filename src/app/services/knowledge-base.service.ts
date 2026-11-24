@@ -100,7 +100,7 @@ export class KnowledgeBaseService {
     let params = new HttpParams().set('type', type);
     Object.entries(scope).forEach(([key, value]) => { params = params.set(key, String(value)); });
     if (past) params = params.set('past', '1');
-    return this.http.get<{ data: KnowledgeRepresentative[] }>(
+    return this.http.get<{ data: KnowledgeRepresentative[]; past_count?: number }>(
       `${this.apiUrl}/knowledge-base/representatives`, { params }
     );
   }
