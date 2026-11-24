@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IonContent, IonIcon } from '@ionic/angular';
-import { KnowledgeBaseService, KnowledgeCommunity, KnowledgeWard, KnowledgeRepresentative } from '../services/knowledge-base.service';
+import { KnowledgeBaseService, KnowledgeCommunity, KnowledgeWard, KnowledgeRepresentative, KnowledgeTraditionalInstitution } from '../services/knowledge-base.service';
 
 type DirectoryTab = 'senatorial' | 'federal' | 'state' | 'wards' | 'communities';
 type PoliticalTab = 'senators' | 'house_reps' | 'assembly' | 'councilors' | 'community_leaders';
@@ -25,11 +25,18 @@ export class ConstituencyPage implements OnInit {
   loading = false; detailLoading = false; errorMessage = ''; detailError = '';
   politicalTab: PoliticalTab = 'senators';
   politicalRepresentatives: KnowledgeRepresentative[] = [];
+  pastPoliticalRepresentatives: KnowledgeRepresentative[] = [];
+  pastRepresentativeCount = 0;
+  showingPastRepresentatives = false;
+  pastRepresentativesLoading = false;
+  traditionalInstitutions: KnowledgeTraditionalInstitution[] = [];
+  traditionalInstitutionsLoading = false;
+  traditionalInstitutionsError = '';
   politicalLoading = false; politicalError = '';
   private politicalScope: Record<string, string | number> = {};
 
   constructor(private readonly knowledgeBase: KnowledgeBaseService, private readonly router: Router, private readonly changeDetector: ChangeDetectorRef) {}
-  ngOnInit(): void { this.loadCommunities(); this.loadWards(); this.loadPoliticalRepresentatives(); }
+  ngOnInit(): void { this.loadCommunities(); this.loadWards(); this.loadPoliticalRepresentatives(); this.loadTraditionalInstitutions(); }
 
   get filteredCommunities(): KnowledgeCommunity[] {
     const term = this.searchTerm.trim().toLocaleLowerCase();
@@ -75,12 +82,59 @@ export class ConstituencyPage implements OnInit {
   selectWard(ward:KnowledgeWard):void { this.activeTab='wards'; this.selectedWard=ward;this.setPoliticalTab('councilors',{ward_id:ward.id}); }
   clearWard():void { this.selectedWard=null;this.setPoliticalTab('councilors'); }
   selectPoliticalTab(tab:PoliticalTab):void { this.setPoliticalTab(tab); }
-  private setPoliticalTab(tab:PoliticalTab,scope:Record<string,string|number>={}):void {this.politicalTab=tab;this.politicalScope=scope;this.loadPoliticalRepresentatives();}
+  private setPoliticalTab(tab:PoliticalTab,scope:Record<string,string|number>={}):void {
+    this.politicalTab=tab;
+    this.politicalScope=scope;
+    this.pastPoliticalRepresentatives=[];
+    this.pastRepresentativeCount=0;
+    this.showingPastRepresentatives=false;
+    this.pastRepresentativesLoading=false;
+    this.loadPoliticalRepresentatives();
+  }
   loadPoliticalRepresentatives():void {
     this.politicalLoading=true;this.politicalError='';this.changeDetector.markForCheck();
     this.knowledgeBase.getPoliticalRepresentatives(this.politicalTab,this.politicalScope).subscribe({
-      next:r=>{this.politicalRepresentatives=r.data??[];this.politicalLoading=false;this.changeDetector.markForCheck();},
+      next:r=>{this.politicalRepresentatives=r.data??[];this.pastRepresentativeCount=r.past_count??0;this.politicalLoading=false;this.changeDetector.markForCheck();},
       error:()=>{this.politicalRepresentatives=[];this.politicalLoading=false;this.politicalError='Political representatives could not be loaded. Please try again.';this.changeDetector.markForCheck();}
+    });
+  }
+
+  togglePastRepresentatives():void {
+    if (this.showingPastRepresentatives) {
+      this.showingPastRepresentatives=false;
+      return;
+    }
+    if (this.pastPoliticalRepresentatives.length) {
+      this.showingPastRepresentatives=true;
+      return;
+    }
+    this.pastRepresentativesLoading=true;
+    this.knowledgeBase.getPoliticalRepresentatives(this.politicalTab,this.politicalScope,true).subscribe({
+      next:r=>{this.pastPoliticalRepresentatives=r.data??[];this.pastRepresentativesLoading=false;this.showingPastRepresentatives=true;this.changeDetector.markForCheck();},
+      error:()=>{this.pastRepresentativesLoading=false;this.politicalError='Past representatives could not be loaded. Please try again.';this.changeDetector.markForCheck();}
+    });
+  }
+  get pastRepresentativeLinkLabel():string {
+    const labels:Record<PoliticalTab,string>={
+      senators:'See past Senators',
+      house_reps:'See past House of Representatives members',
+      assembly:'See past House of Assembly members',
+      councilors:'See past Councillors',
+      community_leaders:'See past community leaders'
+    };
+    return labels[this.politicalTab];
+  }
+  servicePeriod(person:KnowledgeRepresentative):string {
+    const start=person.term_start?new Date(person.term_start).toLocaleDateString(undefined,{year:'numeric',month:'short'}):'Start date not recorded';
+    const end=person.term_end?new Date(person.term_end).toLocaleDateString(undefined,{year:'numeric',month:'short'}):'Present';
+    return start+' – '+end;
+  }
+  loadTraditionalInstitutions():void {
+    this.traditionalInstitutionsLoading=true;
+    this.traditionalInstitutionsError='';
+    this.knowledgeBase.getTraditionalInstitutions().subscribe({
+      next:r=>{this.traditionalInstitutions=r.data??[];this.traditionalInstitutionsLoading=false;this.changeDetector.markForCheck();},
+      error:()=>{this.traditionalInstitutions=[];this.traditionalInstitutionsLoading=false;this.traditionalInstitutionsError='Traditional institutions could not be loaded. Please try again.';this.changeDetector.markForCheck();}
     });
   }
   private norm(v:string|null|undefined):string{return (v||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();}
