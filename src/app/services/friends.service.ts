@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface FriendUser {
@@ -33,11 +33,14 @@ export interface FriendListResponse {
 export interface FriendRequestsResponse {
   incoming: FriendRequestUser[];
   outgoing: FriendRequestUser[];
+  incoming_count?: number;
 }
 
 @Injectable({ providedIn: 'root' })
 export class FriendsService {
   private readonly apiUrl = environment.apiUrl;
+  private readonly pendingRequestsCountSubject = new BehaviorSubject<number>(0);
+  readonly pendingRequestsCount$ = this.pendingRequestsCountSubject.asObservable();
 
   constructor(private readonly http: HttpClient) {}
 
@@ -65,6 +68,10 @@ export class FriendsService {
     return this.http.get<{ data: FriendUser[]; current_page: number; last_page: number }>(
       `${this.apiUrl}/friends/find`, { ...this.authOptions(), params }
     );
+  }
+
+  setPendingRequestsCount(count: number): void {
+    this.pendingRequestsCountSubject.next(Math.max(0, Number(count) || 0));
   }
 
   getRequests(): Observable<FriendRequestsResponse> {
