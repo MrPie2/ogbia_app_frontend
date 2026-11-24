@@ -205,7 +205,7 @@
           @if (pastRepresentativesLoading) {
             <div class="political-empty-state"><ion-icon name="sync-outline" class="political-loading-icon"></ion-icon><strong>Loading past members…</strong></div>
           } @else if (pastRepresentativesError) {
-            <div class="political-empty-state"><strong>{{ pastRepresentativesError }}</strong><button type="button" class="retry-button" (click)="togglePastRepresentatives()">Try again</button></div>
+            <div class="political-empty-state"><strong>{{ pastRepresentativesError }}</strong><button type="button" class="retry-button" (click)="retryPastRepresentatives()">Try again</button></div>
           } @else if (pastPoliticalRepresentatives.length) {
             <div class="political-representatives-list">
               @for (person of pastPoliticalRepresentatives; track person.id) {
