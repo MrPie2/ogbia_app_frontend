@@ -170,6 +170,7 @@
                 <span class="political-role">{{ person.role }}</span>
                 <small class="political-location"><ion-icon name="location-outline"></ion-icon>{{ representativeLocation(person) }}</small>
                 @if (person.party) { <small class="political-party">{{ person.party }}</small> }
+                @if (person.term_start || person.term_end) { <small class="political-party">Served: {{ servicePeriod(person) }}</small> }
               </div>
               <span class="political-verification" [class.verified]="!!person.verified_at" [attr.title]="person.verified_at ? 'Verified record' : 'Not yet verified'">
                 <ion-icon [name]="person.verified_at ? 'checkmark-circle' : 'time-outline'"></ion-icon>
@@ -185,8 +186,107 @@
           <p>Verified political representatives will appear here when their details are added to the Ogbia knowledge base.</p>
         </div>
       }
+
+      @if (pastRepresentativeCount > 0) {
+        <div class="past-representatives-action">
+          <a href="#" (click)="$event.preventDefault(); togglePastRepresentatives()">
+            {{ showingPastRepresentatives ? 'Hide past members' : pastRepresentativeLinkLabel }}
+            <span>({{ pastRepresentativeCount }})</span>
+          </a>
+        </div>
+      }
+
+      @if (showingPastRepresentatives) {
+        <div class="past-representatives-panel">
+          <div class="past-representatives-heading">
+            <strong>Past office holders</strong>
+            <span>Previous terms of service</span>
+          </div>
+          @if (pastRepresentativesLoading) {
+            <div class="political-empty-state"><ion-icon name="sync-outline" class="political-loading-icon"></ion-icon><strong>Loading past members…</strong></div>
+          } @else if (pastRepresentativesError) {
+            <div class="political-empty-state"><strong>{{ pastRepresentativesError }}</strong><button type="button" class="retry-button" (click)="togglePastRepresentatives()">Try again</button></div>
+          } @else if (pastPoliticalRepresentatives.length) {
+            <div class="political-representatives-list">
+              @for (person of pastPoliticalRepresentatives; track person.id) {
+                <article class="political-representative">
+                  @if (person.photo_url) {
+                    <img class="political-representative-photo" [src]="person.photo_url" [alt]="person.full_name || 'Former representative'" loading="lazy">
+                  } @else {
+                    <span class="political-representative-avatar"><ion-icon name="person-outline"></ion-icon></span>
+                  }
+                  <div class="political-representative-info">
+                    <strong>{{ person.full_name }}</strong>
+                    <span class="political-role">{{ person.role }}</span>
+                    <small class="political-location"><ion-icon name="location-outline"></ion-icon>{{ representativeLocation(person) }}</small>
+                    @if (person.party) { <small class="political-party">{{ person.party }}</small> }
+                    <small class="political-party">Served: {{ servicePeriod(person) }}</small>
+                  </div>
+                  <span class="political-verification" [class.verified]="!!person.verified_at">
+                    <ion-icon [name]="person.verified_at ? 'checkmark-circle' : 'time-outline'"></ion-icon>
+                    <span>{{ person.verified_at ? 'Verified' : 'Pending' }}</span>
+                  </span>
+                </article>
+              }
+            </div>
+          } @else {
+            <div class="political-empty-state"><strong>No past members found.</strong></div>
+          }
+        </div>
+      }
     </section>
 
-    
+    <section class="traditional-institutions-card" aria-labelledby="traditional-institutions-title">
+      <div class="political-card-heading">
+        <div>
+          <span class="section-kicker">OUR TRADITIONAL HERITAGE</span>
+          <h2 id="traditional-institutions-title">Traditional Institutions</h2>
+          <p>Discover the institutions that preserve Ogbia's identity, customs, history and traditional leadership.</p>
+        </div>
+        <span class="political-heading-icon"><ion-icon name="ribbon-outline"></ion-icon></span>
+      </div>
+
+      @if (traditionalInstitutionsLoading) {
+        <div class="political-empty-state"><ion-icon name="sync-outline" class="political-loading-icon"></ion-icon><strong>Loading traditional institutions…</strong></div>
+      } @else if (traditionalInstitutionsError) {
+        <div class="political-empty-state"><ion-icon name="cloud-offline-outline"></ion-icon><strong>{{ traditionalInstitutionsError }}</strong><button type="button" class="retry-button" (click)="loadTraditionalInstitutions()">Try again</button></div>
+      } @else if (traditionalInstitutions.length) {
+        <div class="traditional-institutions-list">
+          @for (institution of traditionalInstitutions; track institution.id) {
+            <article class="traditional-institution">
+              @if (institution.cover_image_url) {
+                <img class="traditional-institution-cover" [src]="institution.cover_image_url" [alt]="institution.name" loading="lazy">
+              } @else {
+                <span class="traditional-institution-icon"><ion-icon name="library-outline"></ion-icon></span>
+              }
+              <div class="traditional-institution-content">
+                <h3>{{ institution.name }}</h3>
+                @if (institution.description) { <p class="traditional-institution-description">{{ institution.description }}</p> }
+                @if (institution.history) {
+                  <details><summary>History</summary><p class="institution-detail-copy">{{ institution.history }}</p></details>
+                }
+                @if (institution.leadership) {
+                  <details><summary>Leadership</summary><p class="institution-detail-copy">{{ institution.leadership }}</p></details>
+                }
+                @if (institution.constitution) {
+                  <details><summary>Constitution</summary><p class="institution-detail-copy">{{ institution.constitution }}</p></details>
+                }
+                @if (institution.additional_info) {
+                  <details><summary>More information</summary><p class="institution-detail-copy">{{ institution.additional_info }}</p></details>
+                }
+                @if (institution.website_url) { <a class="institution-website" [href]="institution.website_url" target="_blank" rel="noopener noreferrer">Visit institution website <ion-icon name="open-outline"></ion-icon></a> }
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="political-empty-state">
+          <ion-icon name="ribbon-outline"></ion-icon>
+          <strong>Traditional institutions will appear here</strong>
+          <p>Institution profiles will be published by the Ogbia administrator as verified information becomes available.</p>
+        </div>
+      }
+    </section>
+
   </main>
 </ion-content>
